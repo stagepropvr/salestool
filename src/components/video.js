@@ -28,7 +28,7 @@ class Video extends React.Component {
   videoCall = new VideoCall();
 
   componentDidMount() {
-    const socket = io.connect("https://mysterious-dusk-60271.herokuapp.com");
+    const socket = io.connect("mysterious-dusk-60271.herokuapp.com");
     const component = this;
     this.setState({ socket });
     const { roomId } = this.props.match.params;
