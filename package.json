@@ -1,4 +1,5 @@
 {
+  "homepage": "https://propVR.io",
   "name": "webrtc",
   "version": "0.1.0",
   "private": true,
@@ -6,6 +7,7 @@
     "aframe": "^1.0.4",
     "aframe-look-at-component": "^1.0.0",
     "express": "^4.16.4",
+    "gh-pages": "^3.1.0",
     "jquery": "^3.5.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -23,10 +25,11 @@
     "video-chat.now.sh"
   ],
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
-    "start:local": "node server/server.js & export NODE_ENV=local &&  react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "browserslist": [
