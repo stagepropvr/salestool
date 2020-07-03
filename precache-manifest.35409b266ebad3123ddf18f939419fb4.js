@@ -16,20 +16,20 @@ self.__precacheManifest = [
     "url": "/room/static/js/2.732d17d1.chunk.js"
   },
   {
-    "revision": "d7d5d4588a9f50c99264bc12e4892a7c",
-    "url": "/room/static/media/OpenSans-Regular.d7d5d458.ttf"
-  },
-  {
     "revision": "c720fb4f16d69cc3c5dba61bc96cdc0d",
     "url": "/room/static/media/arrow-left.c720fb4f.cur"
   },
   {
-    "revision": "f5331cb6372b6c0d8baf2dd7e200498c",
-    "url": "/room/static/media/OpenSans-Bold.f5331cb6.ttf"
-  },
-  {
     "revision": "ef69e791ae57424b1901a28e2ad4d708",
     "url": "/room/static/media/arrow-right.ef69e791.cur"
+  },
+  {
+    "revision": "d7d5d4588a9f50c99264bc12e4892a7c",
+    "url": "/room/static/media/OpenSans-Regular.d7d5d458.ttf"
+  },
+  {
+    "revision": "f5331cb6372b6c0d8baf2dd7e200498c",
+    "url": "/room/static/media/OpenSans-Bold.f5331cb6.ttf"
   },
   {
     "revision": "e1c83f9474e0cc1d84a13c6d1ddf3ca5",
