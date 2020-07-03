@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import Video from './components/video'
-import './App.css';
-import './styles/video.css'
+import Salespage from './Layouts/Salespage'
+
 import { BrowserRouter, Route } from 'react-router-dom';
 import { goToRoomInput } from './components/goToRoomInput';
 class App extends Component {
@@ -10,7 +9,7 @@ class App extends Component {
       <BrowserRouter>
        <React.Fragment>
           <Route path="/" exact component={goToRoomInput}/>
-          <Route path="/:roomId" exact component={Video}/>
+          <Route path="/:roomid" exact component={Salespage}/>
         </React.Fragment>
       </BrowserRouter>
     )

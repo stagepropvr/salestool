@@ -1,11 +1,14 @@
 import React from 'react';
 import VideoCall from '../helpers/simple-peer';
-import '../styles/video.css';
+import '../App.css';
+import '../styles/video.css'
 import io from 'socket.io-client';
 import { getDisplayStream } from '../helpers/media-access';
+import Data from "../Data/data.json"
 import Peer from 'simple-peer'
 import VideoItem from "./videoItem"
 import SceneControls from "./SceneControls.js";
+import Scene from "./Scene"
 let userId = null
 
 class Video extends React.Component {
@@ -22,31 +25,60 @@ class Video extends React.Component {
       micState: true,
       camState: true,
       peers: {},
-      streams: {},
+      streams: {}, current_image: {
+        "info" : {
+            "About Innov8" : {
+                "Description" : "Innov8 Coworking offers beautifully crafted workspaces where people can create, connect, and grow their businesses at prime locations in multiple cities pan-India. Innov8 hosts people from diverse backgrounds such as digital nomads, entrepreneurs, freelancers, corporates employees and startup enthusiasts.",
+                "buyurl" : "",
+                "info3diosurl" : "",
+                "info3durl" : "",
+                "infoimgurl" : "",
+                "knowurl" : "",
+                "position" : "-0.8980867539712181 0.00034748211845683774 0.4203239232941025",
+                "vidurl" : "https://www.youtube.com/embed/0UA80LzjJh0"
+                }
+        },
+        "links" : {
+            "theatere" : {
+            "name" : "Theatre",
+            "dest-image" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2F1579863181062-20200124_161208_885.jpg?alt=media&token=dc168d99-2e45-4758-b0fb-c41b356eb675",
+            "dest-thumb" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2Fthumbs%2F1579863191216-20200124_161208_885.jpg?alt=media&token=bbffb628-3d4e-4369-8571-a0af07abb52b",
+            "position" : "0.8826060510846503 -0.08739164477592737 -0.48291200668298667"
+        }
+    },
+        "name" : "Entrance",
+        "thumbnail" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2Fthumbs%2F1579863216723-20200124_161250_786.jpg?alt=media&token=95e7d027-8490-4cf5-9679-0d5b7404ce14",
+        "url" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2F1579863210017-20200124_161250_786.jpg?alt=media&token=3311ca91-4238-4b73-b75a-dfc37fdc6d24"
+        },
+      socket:io.connect("mysterious-dusk-60271.herokuapp.com")
     };
+ 
+    this.images = Object.values(Data.images);   
+   
+   
   }
   videoCall = new VideoCall();
 
   componentDidMount() {
-    const socket = io.connect("mysterious-dusk-60271.herokuapp.com");
+    
     const component = this;
-    this.setState({ socket });
-    const { roomId } = this.props.match.params;
+    // this.setState({ socket });
+    const { roomId } = this.props.roomId;
     this.getUserMedia().then(() => {
-      socket.emit('join', { roomId });
+      this.state.socket.emit('join', { roomId });
       console.log("socket.on join", roomId)
 
     });
 
-    socket.on('init', (data) => {
+    this.state.socket.on('init', (data) => {
 
       console.log("socket.on init", data)
 
       userId = data.userId;
-      socket.emit('ready', { room: roomId, userId });
+      this.state.socket.emit('ready', { room: roomId, userId });
     });
 
-    socket.on("users", ({ initiator, users }) => {
+    this.state.socket.on("users", ({ initiator, users }) => {
       console.log("socket.on  users", users)
 
       Object.keys(users.sockets)
@@ -82,7 +114,7 @@ class Video extends React.Component {
               signal: data
             };
 
-            socket.emit('signal', signal);
+            this.state.socket.emit('signal', signal);
           });
           peer.on('stream', stream => {
             console.log("peer.on  stream", stream)
@@ -105,20 +137,25 @@ class Video extends React.Component {
         })
     })
 
-    socket.on('signal', ({ userId, signal }) => {
+    this.state.socket.on('signal', ({ userId, signal }) => {
       console.log("socket.on  signal userId", userId, "signal", signal)
 
       const peer = this.state.peers[userId]
       peer.signal(signal)
     })
-
-    socket.on('disconnected', () => {
+    this.state.socket.on('chat message', ({ message, user }) => {
+     console.log("fsdsadasdasdsadsad");
+    });
+    this.state.socket.on('disconnect', (disuser) => {
+      console.log(disuser);
       component.setState({ initiator: true });
     });
+   
   }
 
 
   getUserMedia(cb) {
+    
     return new Promise((resolve, reject) => {
       navigator.mediaDevices.getUserMedia = navigator.getUserMedia =
         navigator.getUserMedia ||
@@ -144,6 +181,13 @@ class Video extends React.Component {
   }
 
   setAudioLocal() {
+    console.log(this.state.socket.id)
+    const message={
+      room:this.props.roomId,
+      user:this.state.socket.id,
+mesage:"asd"
+    };
+    this.state.socket.emit('chat message', message);
     if (this.state.localStream.getAudioTracks().length > 0) {
       this.state.localStream.getAudioTracks().forEach(track => {
         track.enabled = !track.enabled;
@@ -184,10 +228,20 @@ class Video extends React.Component {
       })
     });
   }
-
+  changeImage(str){
+    // console.log(str);
+    this.setState({current_image:str})
+ 
+}
   render() {
 
     return (
+      <>
+       <Scene 
+                        data={this.images} 
+                        image={this.state.current_image}
+                        changeImage={this.changeImage.bind(this)}
+                    />
       <div className='video-wrapper'>
         <div className='local-video-wrapper'>
           <video
@@ -209,7 +263,8 @@ class Video extends React.Component {
 
 
        
-<SceneControls 
+<SceneControls images={this.images} 
+   changeImage={this.changeImage.bind(this)} images = {this.images}
 screenaction={() => {
   this.getDisplay();
 }} 
@@ -221,10 +276,8 @@ videoaction={() => {
 }}
 />
 
-
-        
       </div>
-    );
+   </> );
   }
 }
 

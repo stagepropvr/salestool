@@ -80,6 +80,7 @@
     visibility: hidden; }
   .owl-carousel.owl-drag .owl-item {
     -ms-touch-action: pan-y;
+    margin:0px 10px;
         touch-action: pan-y;
     -webkit-user-select: none;
     -moz-user-select: none;
