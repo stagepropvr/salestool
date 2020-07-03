@@ -1,14 +1,14 @@
 {
-  "main.css": "/room/static/css/main.66398db5.chunk.css",
-  "main.js": "/room/static/js/main.438045f3.chunk.js",
-  "main.js.map": "/room/static/js/main.438045f3.chunk.js.map",
-  "runtime~main.js": "/room/static/js/runtime~main.1f7b91a4.js",
-  "runtime~main.js.map": "/room/static/js/runtime~main.1f7b91a4.js.map",
-  "static/js/2.732d17d1.chunk.js": "/room/static/js/2.732d17d1.chunk.js",
-  "static/js/2.732d17d1.chunk.js.map": "/room/static/js/2.732d17d1.chunk.js.map",
-  "index.html": "/room/index.html",
-  "precache-manifest.35409b266ebad3123ddf18f939419fb4.js": "/room/precache-manifest.35409b266ebad3123ddf18f939419fb4.js",
-  "service-worker.js": "/room/service-worker.js",
-  "static/css/main.66398db5.chunk.css.map": "/room/static/css/main.66398db5.chunk.css.map",
-  "static/media/material-kit.css?v=2.0.7": "/room/static/media/arrow-right.ef69e791.cur"
+  "main.css": "/salestool/static/css/main.bf4833d6.chunk.css",
+  "main.js": "/salestool/static/js/main.e644cabd.chunk.js",
+  "main.js.map": "/salestool/static/js/main.e644cabd.chunk.js.map",
+  "runtime~main.js": "/salestool/static/js/runtime~main.a86b20c4.js",
+  "runtime~main.js.map": "/salestool/static/js/runtime~main.a86b20c4.js.map",
+  "static/js/2.8fb5273b.chunk.js": "/salestool/static/js/2.8fb5273b.chunk.js",
+  "static/js/2.8fb5273b.chunk.js.map": "/salestool/static/js/2.8fb5273b.chunk.js.map",
+  "index.html": "/salestool/index.html",
+  "precache-manifest.2b1dfef561b7f57b742957ae3e64ae92.js": "/salestool/precache-manifest.2b1dfef561b7f57b742957ae3e64ae92.js",
+  "service-worker.js": "/salestool/service-worker.js",
+  "static/css/main.bf4833d6.chunk.css.map": "/salestool/static/css/main.bf4833d6.chunk.css.map",
+  "static/media/material-kit.css?v=2.0.7": "/salestool/static/media/arrow-right.ef69e791.cur"
 }
