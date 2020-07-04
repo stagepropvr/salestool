@@ -2,8 +2,11 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import "../assets/css/material-kit.css?v=2.0.7" ;
-import Slider from "react-slick";
 
+
+import OwlCarousel from 'react-owl-carousel';
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
 
 import "../assets/demo/demo.css";
 import "../assets/css/Custom.css";
@@ -13,59 +16,28 @@ import "../assets/css/owl.theme.default.css";
 class SceneControls extends React.Component { 
   constructor(props){
     super(props);
-    this.next = this.next.bind(this);
-    this.previous = this.previous.bind(this);
-    console.log(this.props.camstate);
 
-  }
-  next() {
-    this.slider.slickNext();
-  }
-  previous() {
-    this.slider.slickPrev();
   }
   render() {
-    var settings = {
-      dots: false,
-      infinite: false,
-      speed: 1000,
-      arrows:false,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      responsive: [
-        {
-            breakpoint: 1024,
-            settings: {
-                slidesToShow: 5,
-                slidesToScroll: 5,
-            }
+  
+    const res = {
+        0:{
+            items:1
         },
-        {
-          breakpoint: 812,
-          settings: {
-              slidesToShow: 4,
-              slidesToScroll: 4,
-          }
-      },
-        {
-            breakpoint: 600,
-            settings: {
-                slidesToShow: 3,
-                slidesToScroll: 3
-            }
+        700:{
+            items:2
         },
-        {
-            breakpoint: 480,
-            settings: {
-                slidesToShow: 3,
-                slidesToScroll: 3
-            }
+        1000:{
+            items:4
+        },
+        1200:{
+            items:5
         }
-
-  ]
-    };
-
+    
+    }
+    const nav=['<svg id="left_light_mode" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24"><defs><path id="prefix__left" d="M5.829 14c-.292 0-.582-.127-.78-.373l-4.828-6c-.298-.371-.294-.901.01-1.267l5-6c.354-.424.985-.481 1.41-.128.424.353.48.984.127 1.408L2.293 7.011l4.315 5.362c.346.43.278 1.06-.153 1.406-.184.149-.406.221-.626.221"/></defs><g fill="none" fill-rule="evenodd" transform="translate(8 5)"><use fill="#FFF" xlink:href="#prefix__left"/></g></svg><svg id="left_dark_mode" style="display:none;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24"><defs><path id="prefix__pre_dark" d="M5.829 14c-.292 0-.582-.127-.78-.373l-4.828-6c-.298-.371-.294-.901.01-1.267l5-6c.354-.424.985-.481 1.41-.128.424.353.48.984.127 1.408L2.293 7.011l4.315 5.362c.346.43.278 1.06-.153 1.406-.184.149-.406.221-.626.221"/></defs><g fill="none" fill-rule="evenodd" transform="translate(8 5)"><use fill="#222B45" xlink:href="#prefix__pre_dark"/></g></svg>','<svg id="right_light_mode" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24"><defs><path id="prefix__right" d="M1 14c-.227 0-.454-.076-.64-.232-.424-.353-.481-.984-.128-1.408l4.476-5.371L.391 1.627C.047 1.197.115.567.545.221c.431-.346 1.06-.278 1.407.152l4.828 6c.298.371.295.901-.01 1.267l-5 6c-.198.237-.482.36-.77.36"/></defs><g fill="none" fill-rule="evenodd" transform="translate(9 5)"><use fill="#FFF" xlink:href="#prefix__right"/></g></svg><svg id="right_dark_mode" style="display:none;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24"><defs><path id="prefix__nxt_dark" d="M1 14c-.227 0-.454-.076-.64-.232-.424-.353-.481-.984-.128-1.408l4.476-5.371L.391 1.627C.047 1.197.115.567.545.221c.431-.346 1.06-.278 1.407.152l4.828 6c.298.371.295.901-.01 1.267l-5 6c-.198.237-.482.36-.77.36"/></defs><g fill="none" fill-rule="evenodd" transform="translate(9 5)"><use fill="#222B45" xlink:href="#prefix__nxt_dark"/></g></svg>']
 return (
+  
 <div id="bottom" className="container">
         <div style={{height: '72px', flexWrap: 'nowrap'}} className="row">
           <div className="content_padding dropup">
@@ -188,27 +160,87 @@ return (
             </button>
             <span className="content_separate" />
           </div>
-          <div id="MultiCarousel" className="MultiCarousel owl-carousel owl-loaded owl-drag">
-            <div className="owl-stage-outer"><div className="owl-stage" style={{left: '0px', width: '2045px'}}>
-            <Slider ref={c => (this.slider = c)} {...settings}>
-                  {this.props.images.map((value,index) => {
-                    return(
-                      <div className="owl-item" onClick={() => this.props.changeImage(value)} key={index} style={{width: '175.9px', marginRight: '10px'}}><div className="MultiCarousel-inner">  
-                      <div className="item">
-                        <div className="pad15">
-                    <p className="slider_name">{value.name}</p>
+          
+          <OwlCarousel responsiveClass={true} margin={0} navText={nav} responsive={res} nav={true} id="MultiCarousel" className="MultiCarousel owl-carousel">
+          <div class="MultiCarousel-inner">  
+                            <div class="item item_active">
+                            <div class="pad15">
+                                <p class="slider_name">Living room</p>
+                            </div>
+                        </div> 
                         </div>
-                      </div>
-                    </div></div>
-                    );
-                })}
-                 </Slider>
-                  
-                  
-                </div></div>
-                <div className="owl-nav"><button type="button" onClick={() => this.slider.slickPrev()} role="presentation" className="owl-prev disabled"><svg id="left_light_mode" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24"><defs><path id="prefix__left" d="M5.829 14c-.292 0-.582-.127-.78-.373l-4.828-6c-.298-.371-.294-.901.01-1.267l5-6c.354-.424.985-.481 1.41-.128.424.353.48.984.127 1.408L2.293 7.011l4.315 5.362c.346.43.278 1.06-.153 1.406-.184.149-.406.221-.626.221" /></defs><g fill="none" fillRule="evenodd" transform="translate(8 5)"><use fill="#FFF" xlinkHref="#prefix__left" /></g></svg><svg id="left_dark_mode" style={{display: 'none'}} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24"><defs><path id="prefix__pre_dark" d="M5.829 14c-.292 0-.582-.127-.78-.373l-4.828-6c-.298-.371-.294-.901.01-1.267l5-6c.354-.424.985-.481 1.41-.128.424.353.48.984.127 1.408L2.293 7.011l4.315 5.362c.346.43.278 1.06-.153 1.406-.184.149-.406.221-.626.221" /></defs><g fill="none" fillRule="evenodd" transform="translate(8 5)"><use fill="#222B45" xlinkHref="#prefix__pre_dark" /></g></svg></button><button onClick={() => this.slider.slickNext()}  type="button" role="presentation" className="owl-next"><svg id="right_light_mode" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24"><defs><path id="prefix__right" d="M1 14c-.227 0-.454-.076-.64-.232-.424-.353-.481-.984-.128-1.408l4.476-5.371L.391 1.627C.047 1.197.115.567.545.221c.431-.346 1.06-.278 1.407.152l4.828 6c.298.371.295.901-.01 1.267l-5 6c-.198.237-.482.36-.77.36" /></defs><g fill="none" fillRule="evenodd" transform="translate(9 5)"><use fill="#FFF" xlinkHref="#prefix__right" /></g></svg><svg id="right_dark_mode" style={{display: 'none'}} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24"><defs>
-                  <path id="prefix__nxt_dark" d="M1 14c-.227 0-.454-.076-.64-.232-.424-.353-.481-.984-.128-1.408l4.476-5.371L.391 1.627C.047 1.197.115.567.545.221c.431-.346 1.06-.278 1.407.152l4.828 6c.298.371.295.901-.01 1.267l-5 6c-.198.237-.482.36-.77.36" /></defs><g fill="none" fillRule="evenodd" transform="translate(9 5)"><use fill="#222B45" xlinkHref="#prefix__nxt_dark" /></g></svg></button></div>
-                  <div className="owl-dots disabled" /></div>
+                        <div class="MultiCarousel-inner">  
+                            <div class="item">
+                            <div class="pad15">
+                                <p class="slider_name">Kitchen</p>
+                            </div>
+                        </div> 
+                        </div>
+                        <div class="MultiCarousel-inner">  
+                            <div class="item">
+                            <div class="pad15">
+                                <p class="slider_name">Master bedroom</p>
+                            </div>
+                        </div>
+                     </div>
+                        <div class="MultiCarousel-inner"> 
+                            <div class="item">
+                            <div class="pad15">
+                                <p class="slider_name">Kids bedroom</p>
+                            </div>
+                        </div> 
+                    </div>
+                        <div class="MultiCarousel-inner">  
+                            <div class="item">
+                            <div class="pad15">
+                                <p class="slider_name">Work room</p>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="MultiCarousel-inner">  
+                            <div class="item">
+                            <div class="pad15">
+                                <p class="slider_name">Guest room</p>
+                            </div>
+                        </div>
+                     </div>
+                        <div class="MultiCarousel-inner"> 
+                             <div class="item">
+                            <div class="pad15">
+                                <p class="slider_name">Guest room</p>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="MultiCarousel-inner">  
+                        <div class="item">
+                        <div class="pad15">
+                            <p class="slider_name">Guest room1</p>
+                        </div>
+                    </div> 
+                    </div> 
+                    <div class="MultiCarousel-inner">  
+                        <div class="item">
+                        <div class="pad15">
+                            <p class="slider_name">Guest room1</p>
+                        </div>
+                    </div> 
+                    </div> 
+                    <div class="MultiCarousel-inner">  
+                        <div class="item">
+                        <div class="pad15">
+                            <p class="slider_name">Guest room1</p>
+                        </div>
+                    </div> 
+                    </div> 
+                    <div class="MultiCarousel-inner">  
+                        <div class="item">
+                        <div class="pad15">
+                            <p class="slider_name">Guest room1</p>
+                        </div>
+                    </div> 
+                    </div>
+          </OwlCarousel>
+          
         </div>
       </div>
 )}
