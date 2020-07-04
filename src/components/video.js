@@ -91,9 +91,9 @@ class Video extends React.Component {
             config: {
               iceServers: [
                 {
-                  urls: "turn:turnserver.example.org",
-                        username: "webrtc",
-                        credential: "turnpassword" 
+                  urls: 'turn:52.15.126.155:3478',
+    credential: 'revsmart123',
+    username: 'propvr'
                                       }
               ]
             },
@@ -237,7 +237,8 @@ mesage:"asd"
 
     return (
       <>
-       <Scene 
+       <Scene           micstate={this.state.micState}
+                        camstate={this.state.camstate}
                         data={this.images} 
                         image={this.state.current_image}
                         changeImage={this.changeImage.bind(this)}
@@ -263,7 +264,9 @@ mesage:"asd"
 
 
        
-<SceneControls images={this.images} 
+<SceneControls 
+micstate={this.state.micState}
+images={this.images} 
    changeImage={this.changeImage.bind(this)} images = {this.images}
 screenaction={() => {
   this.getDisplay();
@@ -274,6 +277,8 @@ micaction={() => {
 videoaction={() => {
   this.setVideoLocal();
 }}
+
+camstate={this.state.camState}
 />
 
       </div>

@@ -15,6 +15,8 @@ class SceneControls extends React.Component {
     super(props);
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
+    console.log(this.props.camstate);
+
   }
   next() {
     this.slider.slickNext();
@@ -62,6 +64,7 @@ class SceneControls extends React.Component {
 
   ]
     };
+
 return (
 <div id="bottom" className="container">
         <div style={{height: '72px', flexWrap: 'nowrap'}} className="row">
@@ -158,18 +161,20 @@ return (
                 <path fill="#222B45" fillRule="evenodd" d="M13 17.92V20h2.105c.493 0 .895.402.895.895v.21c0 .493-.402.895-.895.895h-6.21C8.402 22 8 21.598 8 21.106v-.211c0-.493.402-.895.895-.895H11v-2.08c-3.387-.488-6-3.4-6-6.92 0-.552.447-1 1-1 .553 0 1 .448 1 1 0 2.757 2.243 5 5 5s5-2.243 5-5c0-.552.447-1 1-1 .553 0 1 .448 1 1 0 3.52-2.613 6.432-6 6.92zM10 6c0-1.103.897-2 2-2s2 .897 2 2v5c0 1.103-.897 2-2 2s-2-.897-2-2V6zm2 9c2.206 0 4-1.794 4-4V6c0-2.205-1.794-4-4-4S8 3.795 8 6v5c0 2.206 1.794 4 4 4z" />
               </svg>                
             </button>
-            <button onclick="offvideo(this);" onClick={this.props.videoaction} className="menu_option" style={{background: '#fff'}}>
-              <svg id="video_on" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
-                <defs>
+            <button onclick="offvideo(this);"  onClick={this.props.videoaction}  className={this.props.camstate?"menu_option video_on":"menu_option video_off"}>
+              
+            {this.props.camstate?<svg id="video_on" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
+               <defs>
                   <path id="prefix__z" d="M18 9.6L15.191 7 18 4.4v5.2zM13 11c0 .552-.448 1-1 1H3c-.552 0-1-.448-1-1V3c0-.551.448-1 1-1h9c.552 0 1 .449 1 1v8zm6.012-8.854c-.626-.273-1.352-.154-1.851.306l-2.161 2V3c0-1.654-1.346-3-3-3H3C1.346 0 0 1.346 0 3v8c0 1.655 1.346 3 3 3h9c1.654 0 3-1.345 3-3V9.549l2.161 1.999c.32.297.735.452 1.158.452.234 0 .469-.047.693-.145.609-.266.988-.835.988-1.484V3.63c0-.65-.379-1.218-.988-1.484z" />
                 </defs>
                 <g fill="none" fillRule="evenodd" transform="translate(2 5)">
                   <use fill="#222B45" xlinkHref="#prefix__z" />
                 </g>
-              </svg>
-              <svg style={{display: 'none'}} id="video_off" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
+              </svg>:<div><svg id="video_off" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
                 <path fill="#fff" fillRule="evenodd" d="M20 9.4L17.191 12 20 14.6V9.4zm2-.77v6.74c0 .65-.379 1.218-.988 1.484-.224.098-.459.146-.693.146-.206 0-.409-.038-.601-.11L15 12.17v-4.17c0-.553-.448-1-1-1H9.828l-2-2H14c1.654 0 3 1.344 3 3v1.45l2.161-2c.499-.46 1.225-.578 1.851-.306.609.266.988.835.988 1.484zM14 17H5c-.552 0-1-.449-1-1V8c0-.32.161-.593.396-.777L2.974 5.801C2.379 6.351 2 7.13 2 8.001v8c0 1.653 1.346 3 3 3h9c.616 0 1.188-.189 1.665-.508l-1.522-1.523c-.049.008-.092.03-.143.03zm6.707 2.293c.391.39.391 1.023 0 1.414-.195.195-.451.293-.707.293-.256 0-.512-.098-.707-.293L16.386 17.8l-1.455-1.455L5.586 7l-1.76-1.76-.533-.533c-.391-.39-.391-1.024 0-1.414.391-.39 1.023-.39 1.414 0L6.414 5l2 2L15 13.586l2 2 3.707 3.707z" />
-              </svg>
+              </svg></div>} 
+            
+              
             </button>
             <button onclick="close_session();" className="menu_option" style={{background: '#fff'}}>
               <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
