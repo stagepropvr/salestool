@@ -84,3 +84,7 @@ width: fit-content;
     margin-top: 12px;
   }
 }
+
+.owl-carousel.owl-drag .owl-item{
+  margin-right: 0px;
+}
