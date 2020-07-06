@@ -245,16 +245,91 @@ mesage:"asd"
 
 
 changedevice(){
+  navigator.mediaDevices.getUserMedia = navigator.getUserMedia =
+  navigator.getUserMedia ||
+  navigator.webkitGetUserMedia || 
+  navigator.mozGetUserMedia;
   if(this.state.videoop==="environment"){
     this.setState({
 videoop:"user"
     });
-    this.getUserMedia();
+    this.setState({
+      devices:navigator.mediaDevices.enumerateDevices()
+    });
+    console.log(this.state.devices);
+    const op = {
+      video: {
+        width: { min: 160, ideal: 640, max: 1280 },
+        height: { min: 120, ideal: 360, max: 720 },
+        facingMode: this.state.videoop
+      },
+      audio: true
+    };
+    navigator.getUserMedia(
+      op,
+      stream => {
+    
+        stream.oninactive = () => {
+          Object.keys(this.state.peers).forEach((key)=>{
+            this.state.peers[key].removeStream(this.state.localStream);
+          })
+          this.getUserMedia().then(() => {
+            Object.keys(this.state.peers).forEach((key)=>{
+              this.state.peers[key].addStream(this.state.localStream);
+            })
+          });
+        };
+        this.setState({ streamUrl: stream, localStream: stream });
+        this.localVideo.srcObject = stream;
+        Object.keys(this.state.peers).forEach((key)=>{
+          this.state.peers[key].addStream(this.state.localStream);
+        })
+        
+      },() => { }
+    
+    );
+  
   }
   this.setState({
     videoop:"environment"
   })
-this.getUserMedia();
+  
+        this.setState({
+          devices:navigator.mediaDevices.enumerateDevices()
+        });
+        console.log(this.state.devices);
+        const op = {
+          video: {
+            width: { min: 160, ideal: 640, max: 1280 },
+            height: { min: 120, ideal: 360, max: 720 },
+            facingMode: this.state.videoop
+          },
+          audio: true
+        };
+        navigator.getUserMedia(
+          op,
+          stream => {
+        
+            stream.oninactive = () => {
+              Object.keys(this.state.peers).forEach((key)=>{
+                this.state.peers[key].removeStream(this.state.localStream);
+              })
+              this.getUserMedia().then(() => {
+                Object.keys(this.state.peers).forEach((key)=>{
+                  this.state.peers[key].addStream(this.state.localStream);
+                })
+              });
+            };
+            this.setState({ streamUrl: stream, localStream: stream });
+            this.localVideo.srcObject = stream;
+            Object.keys(this.state.peers).forEach((key)=>{
+              this.state.peers[key].addStream(this.state.localStream);
+            })
+            
+          }, () => { }
+        
+        );
+      
 }
   render() {
 
