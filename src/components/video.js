@@ -24,7 +24,9 @@ class Video extends React.Component {
       waiting: true,
       micState: true,
       camState: true,
+      devices:[],
       peers: {},
+      videoop:"environment",
       streams: {}, current_image: {
         "info" : {
             "About Innov8" : {
@@ -54,7 +56,7 @@ class Video extends React.Component {
     };
  
     this.images = Object.values(Data.images);   
-   
+   this.changedevice=this.changedevice.bind(this);
    
   }
   videoCall = new VideoCall();
@@ -154,8 +156,9 @@ class Video extends React.Component {
   }
 
 
-  getUserMedia(cb) {
-    
+  getUserMedia() {
+  
+  
     return new Promise((resolve, reject) => {
       navigator.mediaDevices.getUserMedia = navigator.getUserMedia =
         navigator.getUserMedia ||
@@ -164,7 +167,8 @@ class Video extends React.Component {
       const op = {
         video: {
           width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 }
+          height: { min: 120, ideal: 360, max: 720 },
+          facingMode: this.state.videoop
         },
         audio: true
       };
@@ -210,6 +214,10 @@ mesage:"asd"
   }
 
   getDisplay() {
+    this.setState({
+      devices:navigator.mediaDevices.enumerateDevices()
+    });
+    console.log(this.state.devices);
     getDisplayStream().then(stream => {
       stream.oninactive = () => {
         Object.keys(this.state.peers).forEach((key)=>{
@@ -232,6 +240,20 @@ mesage:"asd"
     // console.log(str);
     this.setState({current_image:str})
  
+}
+
+
+changedevice(){
+  if(this.state.videoop==="environment"){
+    this.setState({
+videoop:"user"
+    });
+    this.getUserMedia();
+  }
+  this.setState({
+    videoop:"environment"
+  })
+this.getUserMedia();
 }
   render() {
 
@@ -269,7 +291,7 @@ micstate={this.state.micState}
 images={this.images} 
    changeImage={this.changeImage.bind(this)} images = {this.images}
 screenaction={() => {
-  this.getDisplay();
+  this.changedevice();
 }} 
 micaction={() => {
   this.setAudioLocal();

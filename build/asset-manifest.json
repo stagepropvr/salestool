@@ -1,14 +1,14 @@
 {
-  "main.css": "/salestool/static/css/main.bf4833d6.chunk.css",
-  "main.js": "/salestool/static/js/main.e644cabd.chunk.js",
-  "main.js.map": "/salestool/static/js/main.e644cabd.chunk.js.map",
-  "runtime~main.js": "/salestool/static/js/runtime~main.a86b20c4.js",
-  "runtime~main.js.map": "/salestool/static/js/runtime~main.a86b20c4.js.map",
-  "static/js/2.8fb5273b.chunk.js": "/salestool/static/js/2.8fb5273b.chunk.js",
-  "static/js/2.8fb5273b.chunk.js.map": "/salestool/static/js/2.8fb5273b.chunk.js.map",
-  "index.html": "/salestool/index.html",
-  "precache-manifest.2b1dfef561b7f57b742957ae3e64ae92.js": "/salestool/precache-manifest.2b1dfef561b7f57b742957ae3e64ae92.js",
-  "service-worker.js": "/salestool/service-worker.js",
-  "static/css/main.bf4833d6.chunk.css.map": "/salestool/static/css/main.bf4833d6.chunk.css.map",
-  "static/media/material-kit.css?v=2.0.7": "/salestool/static/media/arrow-right.ef69e791.cur"
+  "main.css": "/video-conf/static/css/main.6b75224a.chunk.css",
+  "main.js": "/video-conf/static/js/main.913ba04a.chunk.js",
+  "main.js.map": "/video-conf/static/js/main.913ba04a.chunk.js.map",
+  "runtime~main.js": "/video-conf/static/js/runtime~main.2b4ac1fa.js",
+  "runtime~main.js.map": "/video-conf/static/js/runtime~main.2b4ac1fa.js.map",
+  "static/js/2.a572f2a2.chunk.js": "/video-conf/static/js/2.a572f2a2.chunk.js",
+  "static/js/2.a572f2a2.chunk.js.map": "/video-conf/static/js/2.a572f2a2.chunk.js.map",
+  "index.html": "/video-conf/index.html",
+  "precache-manifest.75742311f595e994b0b1ce59c375ff3e.js": "/video-conf/precache-manifest.75742311f595e994b0b1ce59c375ff3e.js",
+  "service-worker.js": "/video-conf/service-worker.js",
+  "static/css/main.6b75224a.chunk.css.map": "/video-conf/static/css/main.6b75224a.chunk.css.map",
+  "static/media/material-kit.css?v=2.0.7": "/video-conf/static/media/arrow-right.ef69e791.cur"
 }

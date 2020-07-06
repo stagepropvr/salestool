@@ -8,3 +8,16 @@ background:#fff;
 .video_off{
     background:rgb(255, 61, 113);
 }
+.owl-stage {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-box;
+    display: box;
+    }
+.owl-item{
+    margin:0px 7px !important;
+}
+
+    .item{
+        margin:0px !important;
+    }

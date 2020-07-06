@@ -82,7 +82,7 @@ class Scene extends React.Component {
     this.loadLinks();
     return (
     <div style={{"position":"absolute"}}>
-        <a-scene >
+        <a-scene loading-screen="dotsColor: transparent; backgroundColor: transparent" >
             {/* Loads Assets a*/}
             <AssestsLoader data = {this.props.data}/>
             
