@@ -24,9 +24,7 @@ class Video extends React.Component {
       waiting: true,
       micState: true,
       camState: true,
-      devices:[],
       peers: {},
-      videoop:"user",
       streams: {}, current_image: {
         "info" : {
             "About Innov8" : {
@@ -52,11 +50,11 @@ class Video extends React.Component {
         "thumbnail" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2Fthumbs%2F1579863216723-20200124_161250_786.jpg?alt=media&token=95e7d027-8490-4cf5-9679-0d5b7404ce14",
         "url" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2F1579863210017-20200124_161250_786.jpg?alt=media&token=3311ca91-4238-4b73-b75a-dfc37fdc6d24"
         },
-      socket:io.connect("mysterious-dusk-60271.herokuapp.com")
+      socket:io.connect("localhost:5000")
     };
  
     this.images = Object.values(Data.images);   
-   this.changedevice=this.changedevice.bind(this);
+   
    
   }
   videoCall = new VideoCall();
@@ -67,7 +65,7 @@ class Video extends React.Component {
     // this.setState({ socket });
     const { roomId } = this.props.roomId;
     this.getUserMedia().then(() => {
-      this.state.socket.emit('join', { roomId });
+      this.state.socket.emit('join', { room:this.props.roomId});
       console.log("socket.on join", roomId)
 
     });
@@ -77,12 +75,12 @@ class Video extends React.Component {
       console.log("socket.on init", data)
 
       userId = data.userId;
-      this.state.socket.emit('ready', { room: roomId, userId });
+      this.state.socket.emit('ready', { room: this.props.roomId, user:userId });
     });
 
     this.state.socket.on("users", ({ initiator, users }) => {
       console.log("socket.on  users", users)
-
+      
       Object.keys(users.sockets)
         .filter(
           sid =>
@@ -107,15 +105,19 @@ class Video extends React.Component {
             },
             stream: this.state.localStream,
           })
+          const peersTemp = { ...this.state.peers }
+          peersTemp[sid] = peer
 
+          this.setState({ peers: peersTemp })
           peer.on('signal', data => {
             console.log("peer.on  signal", users)
 
             const signal = {
               userId: sid,
-              signal: data
+              signal: data,
+              room:this.props.roomId
             };
-
+            console.log(data);
             this.state.socket.emit('signal', signal);
           });
           peer.on('stream', stream => {
@@ -132,17 +134,16 @@ class Video extends React.Component {
             console.log(err);
           });
 
-          const peersTemp = { ...this.state.peers }
-          peersTemp[sid] = peer
-
-          this.setState({ peers: peersTemp })
+         
         })
     })
-
+  
     this.state.socket.on('signal', ({ userId, signal }) => {
       console.log("socket.on  signal userId", userId, "signal", signal)
 
-      const peer = this.state.peers[userId]
+      const peer = this.state.peers[userId];
+      console.log(this.state.peers);
+      console.log(this.state.peers[userId]);
       peer.signal(signal)
     })
     this.state.socket.on('chat message', ({ message, user }) => {
@@ -156,20 +157,17 @@ class Video extends React.Component {
   }
 
 
-  getUserMedia() {
-  
-  
+  getUserMedia(cb) {
+    
     return new Promise((resolve, reject) => {
       navigator.mediaDevices.getUserMedia = navigator.getUserMedia =
         navigator.getUserMedia ||
         navigator.webkitGetUserMedia || 
         navigator.mozGetUserMedia;
-        alert(this.state.videoop);
       const op = {
         video: {
           width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 },
-          facingMode: this.state.videoop
+          height: { min: 120, ideal: 360, max: 720 }
         },
         audio: true
       };
@@ -215,10 +213,6 @@ mesage:"asd"
   }
 
   getDisplay() {
-    this.setState({
-      devices:navigator.mediaDevices.enumerateDevices()
-    });
-    console.log(this.state.devices);
     getDisplayStream().then(stream => {
       stream.oninactive = () => {
         Object.keys(this.state.peers).forEach((key)=>{
@@ -241,95 +235,6 @@ mesage:"asd"
     // console.log(str);
     this.setState({current_image:str})
  
-}
-
-
-changedevice(){
-  navigator.mediaDevices.getUserMedia = navigator.getUserMedia =
-  navigator.getUserMedia ||
-  navigator.webkitGetUserMedia || 
-  navigator.mozGetUserMedia;
-  if(this.state.videoop==="environment"){
-    this.setState({
-videoop:"user"
-    });
-    this.setState({
-      devices:navigator.mediaDevices.enumerateDevices()
-    });
-    console.log(this.state.devices);
-    const op = {
-      video: {
-        width: { min: 160, ideal: 640, max: 1280 },
-        height: { min: 120, ideal: 360, max: 720 },
-        facingMode: this.state.videoop
-      },
-      audio: true
-    };
-    navigator.getUserMedia(
-      op,
-      stream => {
-    
-        stream.oninactive = () => {
-          Object.keys(this.state.peers).forEach((key)=>{
-            this.state.peers[key].removeStream(this.state.localStream);
-          })
-          this.getUserMedia().then(() => {
-            Object.keys(this.state.peers).forEach((key)=>{
-              this.state.peers[key].addStream(this.state.localStream);
-            })
-          });
-        };
-        this.setState({ streamUrl: stream, localStream: stream });
-        this.localVideo.srcObject = stream;
-        Object.keys(this.state.peers).forEach((key)=>{
-          this.state.peers[key].addStream(this.state.localStream);
-        })
-        
-      },() => { }
-    
-    );
-  
-  }
-  this.setState({
-    videoop:"environment"
-  })
-  
-        this.setState({
-          devices:navigator.mediaDevices.enumerateDevices()
-        });
-        console.log(this.state.devices);
-        const op = {
-          video: {
-            width: { min: 160, ideal: 640, max: 1280 },
-            height: { min: 120, ideal: 360, max: 720 },
-            facingMode: this.state.videoop
-          },
-          audio: true
-        };
-        navigator.getUserMedia(
-          op,
-          stream => {
-        
-            stream.oninactive = () => {
-              Object.keys(this.state.peers).forEach((key)=>{
-                this.state.peers[key].removeStream(this.state.localStream);
-              })
-              this.getUserMedia().then(() => {
-                Object.keys(this.state.peers).forEach((key)=>{
-                  this.state.peers[key].addStream(this.state.localStream);
-                })
-              });
-            };
-            this.setState({ streamUrl: stream, localStream: stream });
-            this.localVideo.srcObject = stream;
-            Object.keys(this.state.peers).forEach((key)=>{
-              this.state.peers[key].addStream(this.state.localStream);
-            })
-            
-          }, () => { }
-        
-        );
-      
 }
   render() {
 
@@ -367,7 +272,7 @@ micstate={this.state.micState}
 images={this.images} 
    changeImage={this.changeImage.bind(this)} images = {this.images}
 screenaction={() => {
-  this.changedevice();
+  this.getDisplay();
 }} 
 micaction={() => {
   this.setAudioLocal();

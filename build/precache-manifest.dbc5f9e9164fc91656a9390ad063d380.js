@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "5e6077112483a6b9b8a7",
+    "revision": "3a478bc3bf2010bbc87c",
     "url": "/video-conf/static/css/main.f61353f1.chunk.css"
   },
   {
-    "revision": "5e6077112483a6b9b8a7",
-    "url": "/video-conf/static/js/main.24ceae36.chunk.js"
+    "revision": "3a478bc3bf2010bbc87c",
+    "url": "/video-conf/static/js/main.5738be7f.chunk.js"
   },
   {
     "revision": "c92635a476b988961914",
@@ -40,7 +40,7 @@ self.__precacheManifest = [
     "url": "/video-conf/static/media/OpenSans-SemiBold.e1c83f94.ttf"
   },
   {
-    "revision": "ca593a5d09940218d665ba28c7d40cbd",
+    "revision": "16b3000a754c579c45c81d8c615872be",
     "url": "/video-conf/index.html"
   }
 ];
