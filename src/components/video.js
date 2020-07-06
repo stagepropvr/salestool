@@ -50,7 +50,7 @@ class Video extends React.Component {
         "thumbnail" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2Fthumbs%2F1579863216723-20200124_161250_786.jpg?alt=media&token=95e7d027-8490-4cf5-9679-0d5b7404ce14",
         "url" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2F1579863210017-20200124_161250_786.jpg?alt=media&token=3311ca91-4238-4b73-b75a-dfc37fdc6d24"
         },
-      socket:io.connect("mysterious-dusk-60271.herokuapp.com")
+      socket:io.connect("localhost:5000")
     };
  
     this.images = Object.values(Data.images);   
@@ -65,7 +65,7 @@ class Video extends React.Component {
     // this.setState({ socket });
     const { roomId } = this.props.roomId;
     this.getUserMedia().then(() => {
-      this.state.socket.emit('join', { roomId });
+      this.state.socket.emit('join', { room:this.props.roomId});
       console.log("socket.on join", roomId)
 
     });
@@ -75,12 +75,12 @@ class Video extends React.Component {
       console.log("socket.on init", data)
 
       userId = data.userId;
-      this.state.socket.emit('ready', { room: roomId, userId });
+      this.state.socket.emit('ready', { room: this.props.roomId, user:userId });
     });
 
     this.state.socket.on("users", ({ initiator, users }) => {
       console.log("socket.on  users", users)
-
+      
       Object.keys(users.sockets)
         .filter(
           sid =>
@@ -105,15 +105,19 @@ class Video extends React.Component {
             },
             stream: this.state.localStream,
           })
+          const peersTemp = { ...this.state.peers }
+          peersTemp[sid] = peer
 
+          this.setState({ peers: peersTemp })
           peer.on('signal', data => {
             console.log("peer.on  signal", users)
 
             const signal = {
               userId: sid,
-              signal: data
+              signal: data,
+              room:this.props.roomId
             };
-
+            console.log(data);
             this.state.socket.emit('signal', signal);
           });
           peer.on('stream', stream => {
@@ -130,17 +134,16 @@ class Video extends React.Component {
             console.log(err);
           });
 
-          const peersTemp = { ...this.state.peers }
-          peersTemp[sid] = peer
-
-          this.setState({ peers: peersTemp })
+         
         })
     })
-
+  
     this.state.socket.on('signal', ({ userId, signal }) => {
       console.log("socket.on  signal userId", userId, "signal", signal)
 
-      const peer = this.state.peers[userId]
+      const peer = this.state.peers[userId];
+      console.log(this.state.peers);
+      console.log(this.state.peers[userId]);
       peer.signal(signal)
     })
     this.state.socket.on('chat message', ({ message, user }) => {
