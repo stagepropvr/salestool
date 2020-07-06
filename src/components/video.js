@@ -164,6 +164,7 @@ class Video extends React.Component {
         navigator.getUserMedia ||
         navigator.webkitGetUserMedia || 
         navigator.mozGetUserMedia;
+        alert(this.state.videoop);
       const op = {
         video: {
           width: { min: 160, ideal: 640, max: 1280 },
