@@ -26,7 +26,7 @@ class Video extends React.Component {
       camState: true,
       devices:[],
       peers: {},
-      videoop:"environment",
+      videoop:"user",
       streams: {}, current_image: {
         "info" : {
             "About Innov8" : {
