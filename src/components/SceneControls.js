@@ -161,7 +161,7 @@ return (
             <span className="content_separate" />
           </div>
           
-          <OwlCarousel responsiveClass={true} margin={0} navText={nav} responsive={res} nav={true} id="MultiCarousel" className="MultiCarousel owl-carousel">
+          <OwlCarousel  responsiveClass={true} margin={0} navText={nav} responsive={res} nav={true} id="MultiCarousel" className="MultiCarousel owl-carousel">
           <div class="MultiCarousel-inner">  
                             <div class="item item_active">
                             <div class="pad15">
