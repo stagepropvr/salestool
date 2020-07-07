@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as  Redirect, Route, Link } from "react-router-dom";
+import { Redirect, Route, Link } from "react-router-dom";
 import Fire from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
@@ -7,7 +7,7 @@ class Signup extends React.Component {
   constructor(props){
     super(props);
     this.state={
-        redirect:false,
+        redirect:true,
         name:'',
         cname:'',
         password:'',
@@ -28,7 +28,7 @@ class Signup extends React.Component {
            });
         } else {
            this.setState({
-              redirect: false
+              redirect: true
            })
         }
      });
@@ -140,7 +140,7 @@ handleregister(event){
 
   render() {
     if(this.state.redirect){
-        return (<Redirect to="/dashboard" />)
+        return <Redirect to="/dashboard" />
     }
     else{
         return( 
@@ -162,7 +162,7 @@ handleregister(event){
                             <span>prop vr</span>                
                         </a>
                         <h2 className="Welcome-to-Prop-VR">Welcome to Prop VR!</h2>
-                            <p className="Have-an-account-alre">Have an account already?   <a style={{paddingLeft: "10px"}} href="/login" className="login_span">Login</a>
+                            <p className="Have-an-account-alre">Have an account already?   <Link style={{paddingLeft: "10px"}} to="/login" className="login_span">Login</Link>
                             </p>
 						<form onSubmit={this.handleregister} className="form" style={{paddingTop: "25px"}}>
 							<div className="card-content">							

@@ -12,27 +12,24 @@ class App extends Component {
   render() {
     return (
       
-        <Router >
-          <Switch>
+       
         <div style={{width:"100%"}}>
+      <Router >
+       <Switch> 
         <Route  path='/login' component={Login} />
          
 
-         <Router path='/signup' component={Signup} />
+         <Route path='/signup' component={Signup} />
 
          <Route  path='/dashboard' component={Dashboard} />
 
          <Route  path='/projects' component={Projects} />
-
-        </div>
-       {/* <React.Fragment>
-          <Route path="/" exact component={goToRoomInput}/>
-          <Route path="/:roomid" exact component={Salespage}/>
-        </React.Fragment> */}
-
-       
-</Switch>
-        </Router>
+        
+         </Switch>
+         </Router>
+   </div>
+ 
+      
      
       
     )

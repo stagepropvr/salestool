@@ -46,7 +46,7 @@ async comonentDidMount(){
                             <span>prop vr</span>                
                         </a>
                         <h2 style={{paddingTop: "25px"}} class="Welcome-to-Prop-VR">Hello! Welcome back!</h2>
-                            <p class="Have-an-account-alre">New to Prop VR?   <a style={{paddingLeft: "10px"}} href="/signup" class="login_span">Sign up</a></p>
+                            <p class="Have-an-account-alre">New to Prop VR?   <Link style={{paddingLeft: "10px"}} to="/signup" class="login_span">Sign up</Link></p>
 						<form class="form" style={{paddingTop: "12px"}}>
 							<div class="card-content">							
 									<div class="form-group">
