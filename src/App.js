@@ -11,7 +11,9 @@ import { goToRoomInput } from './components/goToRoomInput';
 class App extends Component {
   render() {
     return (
-      <Router >
+      
+        <Router >
+          <Switch>
         <div style={{width:"100%"}}>
         <Route  path='/login' component={Login} />
          
@@ -29,8 +31,10 @@ class App extends Component {
         </React.Fragment> */}
 
        
-
+</Switch>
         </Router>
+     
+      
     )
   }
 }
