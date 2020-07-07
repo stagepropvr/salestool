@@ -1,17 +1,34 @@
 import React, { Component } from 'react';
-import Salespage from './Layouts/Salespage'
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 
-import { BrowserRouter, Route } from 'react-router-dom';
+import Salespage from './Layouts/Salespage'
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import Dashboard from "./components/Dashboard";
+import Projects from "./components/Projects";
+
 import { goToRoomInput } from './components/goToRoomInput';
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
-       <React.Fragment>
-          <Route path="/" exact component={goToRoomInput}/>
-          <Route path="/:roomid" exact component={Salespage}/>
-        </React.Fragment>
-      </BrowserRouter>
+      
+      <Router >
+       <Switch> 
+        <Route  path='/login' component={Login} />
+         
+
+         <Route path='/signup' component={Signup} />
+
+         <Route  path='/dashboard' component={Dashboard} />
+
+         <Route  path='/projects' component={Projects} />
+         </Switch>
+     
+ 
+
+       
+
+        </Router>
     )
   }
 }

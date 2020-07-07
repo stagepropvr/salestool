@@ -12968,9 +12968,9 @@ fieldset[disabled] .is-focused .switch label:focus {
   border-color: #3366ff !important;
 } */
 
-.form-control:invalid {
+/* .form-control:invalid {
   background-image: linear-gradient(to top, #f44336 2px, rgba(244, 67, 54, 0) 2px), linear-gradient(to top, #d2d2d2 1px, rgba(210, 210, 210, 0) 1px);
-}
+} */
 
 .form-control:read-only {
   background-image: linear-gradient(to top, #d2d2d2 1px, rgba(210, 210, 210, 0) 1px), linear-gradient(to top, #d2d2d2 1px, rgba(210, 210, 210, 0) 1px);
@@ -16982,7 +16982,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 }
 
 .header-filter::before {
-  background: rgba(0, 0, 0, 0.5);
+  /* background: rgba(0, 0, 0, 0.5); */
 }
 
 .header-filter .container {
@@ -19321,7 +19321,8 @@ display:none;
   border-radius: 4px;
   border: solid 1px #e4e9f2;
   background: #F7F9FC;
-  text-align: center;
+  text-align: left;
+  padding-left: 10px;
     font-style: normal;
     font-weight: 600;
     color: #222B45;
@@ -19347,7 +19348,7 @@ height: 40px;
 }
 
 ::-webkit-input-placeholder {
-  text-align: center;
+  text-align: left;
   font-size: 15px;
   font-family: 'propvr';
   font-weight: normal;
