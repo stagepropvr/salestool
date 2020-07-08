@@ -9,11 +9,12 @@ import Peer from 'simple-peer'
 import VideoItem from "./videoItem"
 import SceneControls from "./SceneControls.js";
 import Scene from "./Scene"
+import {firestore} from "../firebase/firebase.utils"
 let userId = null
 
 class Video extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       localStream: {},
       remoteStreamUrl: '',
@@ -50,17 +51,100 @@ class Video extends React.Component {
         "thumbnail" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2Fthumbs%2F1579863216723-20200124_161250_786.jpg?alt=media&token=95e7d027-8490-4cf5-9679-0d5b7404ce14",
         "url" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2F1579863210017-20200124_161250_786.jpg?alt=media&token=3311ca91-4238-4b73-b75a-dfc37fdc6d24"
         },
-      socket:io.connect("localhost:5000")
+      socket:io.connect("localhost:5000"),
+      host:true
     };
  
+    this.doc_id = null;
     this.images = Object.values(Data.images);   
    
    
   }
   videoCall = new VideoCall();
 
-  componentDidMount() {
+
+  get = async(data) => {
+    if(data){
+      console.log("Async",data);
+    }
+    // const ref = firestore.collection('test').doc('cdJnGkoY9ahOXXyCjfpA');
+    // const doc = await ref.get();
+    // if (!doc.exists) {
+    //   console.log('No such document!');
+    // } else {
+    //   console.log('Document data:', doc.data());
+    // }
+
+    // occupants.forEach(function(item,index){
+    //   if(socket.id == item.id){ind = index}
+    // });   
+
+    // firestore.collection("users").add({
+    //     first: "Adam",
+    //     last: "Lovelace",
+    //     born: 1815
+    // })
+    // .then(function(docRef) {
+    //     console.log("Document written with ID: ", docRef.id);
+    // })
+    // .catch(function(error) {
+    //     console.error("Error adding document: ", error);
+    // });
+
+  }
+
+  
+  upload = async(data) => {
+    var ind;
+    const _ = this;
+    data['room'].forEach(function(item,index){
+      if(item.id == _.props.roomId){
+        ind = index
+      }
+    });   
     
+    if(this.state.socket.id === data['room'][ind].host)
+    {
+      var room =  data['room'][ind]
+      console.log("Firebase: ",room)
+            
+      if(!this.doc_id)
+      {
+        firestore.collection("rooms").add({
+          id: room.id,
+          host: room.host,
+          occupants: room.occupants
+        })
+        .then(function(docRef) {
+          _.doc_id = docRef.id
+          console.log("Firebase: Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+            console.error("Firebase: Error adding document: ", error);
+        });
+        this.setState({host:true});
+      }
+      else{
+          firestore.collection("rooms").doc(this.doc_id).update({
+            occupants: room.occupants
+          })
+          .then(function() {
+            console.log("Firebase: Document written in same ID: ");
+          })
+          .catch(function(error) {
+              console.error("Firebase: Error adding document: ", error);
+          });
+        } 
+      
+
+
+      
+    }
+    else{
+      console.log('Firebase: Not host',this.state.socket.id,data['room'][ind].host);
+    }
+    }
+  componentDidMount() {
     const component = this;
     // this.setState({ socket });
     const { roomId } = this.props.roomId;
@@ -70,6 +154,7 @@ class Video extends React.Component {
 
     });
 
+
     this.state.socket.on('init', (data) => {
 
       console.log("socket.on init", data)
@@ -78,7 +163,12 @@ class Video extends React.Component {
       this.state.socket.emit('ready', { room: this.props.roomId, user:userId });
     });
 
+    this.state.socket.on("data",(room) => {
+      this.upload(room);
+    })
+
     this.state.socket.on("users", ({ initiator, users }) => {
+      console.log("socket.on  initiator", initiator)
       console.log("socket.on  users", users)
       
       Object.keys(users.sockets)
@@ -240,12 +330,13 @@ mesage:"asd"
 
     return (
       <>
-       <Scene           micstate={this.state.micState}
-                        camstate={this.state.camstate}
-                        data={this.images} 
-                        image={this.state.current_image}
-                        changeImage={this.changeImage.bind(this)}
-                    />
+       <Scene           
+        micstate={this.state.micState}
+        camstate={this.state.camstate}
+        data={this.images} 
+        image={this.state.current_image}
+        changeImage={this.changeImage.bind(this)}
+      />
       <div className='video-wrapper'>
         <div className='local-video-wrapper'>
           <video
@@ -280,8 +371,8 @@ micaction={() => {
 videoaction={() => {
   this.setVideoLocal();
 }}
-
 camstate={this.state.camState}
+host={this.state.host}
 />
 
       </div>

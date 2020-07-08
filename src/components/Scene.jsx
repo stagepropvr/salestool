@@ -43,9 +43,6 @@ class Scene extends React.Component {
 
    }
 
-
-
-
   change(str){
     this.props.data.map((value,index) => {
       if(value.name === str)
