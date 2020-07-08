@@ -5,6 +5,13 @@ import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
 import "../assets/css/Custom.css";
 
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
+import "../assets/css/owl.carousel.css";
+import "../assets/css/owl.theme.default.css";
+import OwlCarousel from 'react-owl-carousel';
+
+
 
 import BottomSlider from "./BottomSlider";
 
@@ -13,11 +20,12 @@ class SceneControls extends React.Component {
   constructor(props){
     super(props);
   }
+
+
   render() {
-    console.log('Host: ',this.props.host);
 return (
   
-<div id="bottom" className="container">
+<div id="bottom" className="container" >
         <div style={{height: '72px', flexWrap: 'nowrap'}} className="row">
           <div className="content_padding dropup">
             <button id="menu_bar" type="button" className="menu_option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -140,8 +148,11 @@ return (
             </button>
             <span className="content_separate" />
           </div>
-          
-          {this.props.host && <BottomSlider/>}          
+          {/* <OwlCarousel responsiveClass={true} autoWidth={true}   margin={10} navText={nav} dots={false} responsive={res} nav={true} id="MultiCarousel" className="MultiCarousel owl-carousel">
+            {this.rooms}
+        </OwlCarousel> */}
+        {this.props.host && <BottomSlider changeImage = {this.props.changeImage}/>}
+ 
         </div>
       </div>
 )}

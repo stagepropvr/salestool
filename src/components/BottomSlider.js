@@ -19,7 +19,7 @@ loadRooms = () => {
     this.rooms = this.images.map((value,index) => {
         return(
             <div class="MultiCarousel-inner">  
-                <div class="item">
+                <div class="item" onClick={() => this.props.changeImage(value)}>
                   <div class="pad15">
                       <p class="slider_name">{value.name}</p>
                   </div>

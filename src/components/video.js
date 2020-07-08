@@ -10,6 +10,8 @@ import VideoItem from "./videoItem"
 import SceneControls from "./SceneControls.js";
 import Scene from "./Scene"
 import {firestore} from "../firebase/firebase.utils"
+// import BottomSlider from "./BottomSlider"
+
 let userId = null
 
 class Video extends React.Component {
@@ -26,31 +28,8 @@ class Video extends React.Component {
       micState: true,
       camState: true,
       peers: {},
-      streams: {}, current_image: {
-        "info" : {
-            "About Innov8" : {
-                "Description" : "Innov8 Coworking offers beautifully crafted workspaces where people can create, connect, and grow their businesses at prime locations in multiple cities pan-India. Innov8 hosts people from diverse backgrounds such as digital nomads, entrepreneurs, freelancers, corporates employees and startup enthusiasts.",
-                "buyurl" : "",
-                "info3diosurl" : "",
-                "info3durl" : "",
-                "infoimgurl" : "",
-                "knowurl" : "",
-                "position" : "-0.8980867539712181 0.00034748211845683774 0.4203239232941025",
-                "vidurl" : "https://www.youtube.com/embed/0UA80LzjJh0"
-                }
-        },
-        "links" : {
-            "theatere" : {
-            "name" : "Theatre",
-            "dest-image" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2F1579863181062-20200124_161208_885.jpg?alt=media&token=dc168d99-2e45-4758-b0fb-c41b356eb675",
-            "dest-thumb" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2Fthumbs%2F1579863191216-20200124_161208_885.jpg?alt=media&token=bbffb628-3d4e-4369-8571-a0af07abb52b",
-            "position" : "0.8826060510846503 -0.08739164477592737 -0.48291200668298667"
-        }
-    },
-        "name" : "Entrance",
-        "thumbnail" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2Fthumbs%2F1579863216723-20200124_161250_786.jpg?alt=media&token=95e7d027-8490-4cf5-9679-0d5b7404ce14",
-        "url" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2F1579863210017-20200124_161250_786.jpg?alt=media&token=3311ca91-4238-4b73-b75a-dfc37fdc6d24"
-        },
+      streams: {}, 
+      current_image: Object.values(Data.images)[0],
       socket:io.connect("localhost:5000"),
       host:false
     };
@@ -62,38 +41,6 @@ class Video extends React.Component {
   }
   videoCall = new VideoCall();
 
-
-  get = async(data) => {
-    if(data){
-      console.log("Async",data);
-    }
-    // const ref = firestore.collection('test').doc('cdJnGkoY9ahOXXyCjfpA');
-    // const doc = await ref.get();
-    // if (!doc.exists) {
-    //   console.log('No such document!');
-    // } else {
-    //   console.log('Document data:', doc.data());
-    // }
-
-    // occupants.forEach(function(item,index){
-    //   if(socket.id == item.id){ind = index}
-    // });   
-
-    // firestore.collection("users").add({
-    //     first: "Adam",
-    //     last: "Lovelace",
-    //     born: 1815
-    // })
-    // .then(function(docRef) {
-    //     console.log("Document written with ID: ", docRef.id);
-    // })
-    // .catch(function(error) {
-    //     console.error("Error adding document: ", error);
-    // });
-
-  }
-
-  
   upload = async(data) => {
     var ind;
     const _ = this;
@@ -321,21 +268,28 @@ mesage:"asd"
       })
     });
   }
-  changeImage(str){
-    // console.log(str);
+  
+  changeImage = (str) => {
+    console.log(str);
     this.setState({current_image:str})
- 
+}
+
+change = (str) => {
+  this.images.map((value,index) => {
+    if(value.name === str)
+    {this.changeImage(value)}
+  });
 }
   render() {
+    console.log("Daata:",this.images[0])
 
     return (
       <>
-       <Scene           
-        micstate={this.state.micState}
-        camstate={this.state.camstate}
+      <Scene           
         data={this.images} 
         image={this.state.current_image}
-        changeImage={this.changeImage.bind(this)}
+        change={this.change}
+        host={this.state.host}
       />
       <div className='video-wrapper'>
         <div className='local-video-wrapper'>
@@ -355,10 +309,9 @@ mesage:"asd"
             })
           }
         </div>
-
-
        
 <SceneControls 
+changeImage={this.changeImage}
 micstate={this.state.micState}
 screenaction={() => {
   this.getDisplay();
