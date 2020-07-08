@@ -52,7 +52,7 @@ class Video extends React.Component {
         "url" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2F1579863210017-20200124_161250_786.jpg?alt=media&token=3311ca91-4238-4b73-b75a-dfc37fdc6d24"
         },
       socket:io.connect("localhost:5000"),
-      host:true
+      host:false
     };
  
     this.doc_id = null;
@@ -360,8 +360,6 @@ mesage:"asd"
        
 <SceneControls 
 micstate={this.state.micState}
-images={this.images} 
-   changeImage={this.changeImage.bind(this)} images = {this.images}
 screenaction={() => {
   this.getDisplay();
 }} 
