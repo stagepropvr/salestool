@@ -182,7 +182,10 @@ class Video extends React.Component {
       const peer = this.state.peers[userId];
       console.log(this.state.peers);
       console.log(this.state.peers[userId]);
-      peer.signal(signal)
+      if(peer)
+      {
+        peer.signal(signal)
+      }     
     })
     this.state.socket.on('chat message', ({ message, user }) => {
      console.log("fsdsadasdasdsadsad");
@@ -195,6 +198,7 @@ class Video extends React.Component {
     this.state.socket.on('location', (location) => {
       if(!this.state.host){
         console.log("pew:",location);
+        this.change(location.location)
       }
     });
 
