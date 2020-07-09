@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as  Redirect, Route, Link } from "react-router-dom";
+import { Redirect, Route, Link } from "react-router-dom";
 import Fire from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
@@ -7,15 +7,135 @@ class Login extends React.Component {
   constructor(props){
     super(props);
     this.state={
-        redirect:false
+        redirect:false,
+        email:'',
+        password:'',
+        exception:'',
+        modal:false,
+        forget_email:''
     }
-  }
+    this.handlechange=this.handlechange.bind(this);
+    this.handlelogin=this.handlelogin.bind(this);
+    this.closemodal = this.closemodal.bind(this);
+    this.openmodal = this.openmodal.bind(this);
+    this.forgetpass = this.forgetpass.bind(this);
+}
   
-async comonentDidMount(){
+componentDidMount(){
     
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
+    Fire.auth().onAuthStateChanged((user) => {
+        if (user) {
+           this.setState({
+              redirect: true
+           });
+        } else {
+           this.setState({
+              redirect: false
+           })
+        }
+     });
   }
-  
+
+  forgetpass(event){
+      if(this.state.forget_email!=''){
+        var email=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if(this.state.forget_email.match(email)){
+            Fire.auth().sendPasswordResetEmail(this.state.forget_email).then(()=>{
+                document.getElementById('other_exception').childNodes[0].classList.remove('input_error_hide'); 
+                document.getElementById('other_exception').childNodes[0].style.color='#3366ff !important';
+                this.setState({
+                    exception:'Password reset email has been sent.'
+                })
+              }).catch(error=>{
+                document.getElementById('other_exception').childNodes[0].classList.remove('input_error_hide');
+                this.setState({
+                    exception:error.message
+                })
+                });
+        }else{
+            document.getElementById('forget_email').classList.add('input_error_border');
+            document.getElementById('other_exception').childNodes[0].classList.remove('input_error_hide');
+            this.setState({
+                exception:'Invalid email address'
+            })
+        }
+      }else{
+        document.getElementById('forget_email').classList.add('input_error_border');
+        document.getElementById('forget_email').childNodes[0].classList.remove('input_error_hide');
+      }
+  }
+  openmodal(event){
+    this.setState({
+        modal:true
+    })
+  }
+
+  closemodal(event){
+      this.setState({
+          modal:false
+      })
+  }
+  handlelogin(event){
+      event.preventDefault();
+      if(this.state.email!='' && this.state.password!=''){
+            if(this.state.email!=''){
+                    if(this.state.password!=''){
+                        document.getElementById('submit').style.display='none';
+                        document.getElementById('loader').style.display='inline-block';
+                        Fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then( result => {
+                            var user = Fire.auth().currentUser;
+                            localStorage.setItem("id", user.uid);
+                            localStorage.setItem("email", user.email);    
+                            this.setState({
+                                redirect:true
+                            }) 
+                        }).catch(err=>{
+                            document.getElementById('exception').style.display='block';
+                            document.getElementById('exception').childNodes[0].classList.remove('input_error_hide');
+                            this.setState({
+                                exception:err.message
+                            })
+                            document.getElementById('submit').style.display='inline-block';
+                            document.getElementById('loader').style.display='none';
+                        }); 
+                    }else{
+                        document.getElementById('exception').style.display='block';
+                        document.getElementById('exception').childNodes[0].classList.remove('input_error_hide');
+                        this.setState({
+                            exception:'Invalid Password'
+                        })
+                        document.getElementById('password').classList.add('input_error_border');
+
+                    }
+            }else{
+                document.getElementById('exception').style.display='block';
+                document.getElementById('exception').childNodes[0].classList.remove('input_error_hide');
+                this.setState({
+                    exception:'Invalid Email address'
+                })
+                document.getElementById('email').classList.add('input_error_border');
+            }
+      }else{
+        document.getElementById('exception').style.display='block';
+        document.getElementById('exception').childNodes[0].classList.remove('input_error_hide');
+        this.setState({
+            exception:'Invalid Email address and Password'
+        })
+        document.getElementById('email').classList.add('input_error_border');
+        document.getElementById('password').classList.add('input_error_border');
+
+      }
+  }
+  handlechange(event){
+    this.setState({
+		exception: ""
+    })
+   
+		const { name, value } = event.target;
+        this.setState({ [name]: value });
+        document.getElementById(name).classList.remove('input_error_border');
+}
 
 
 
@@ -24,16 +144,17 @@ async comonentDidMount(){
 
   render() {
     if(this.state.redirect){
-
-    }
+        return <Redirect to="/dashboard" />
+        }
     else{
         return( 
-        <div style={{width:"100%"}} class="page-header header-filter">
-		<div  class="login_container container">
-			<div  class="login_container row">
-				<div style={{padding:"0"}} class="col-sm-4">
-                    <div class="login_card card card-signup">
-                        <a class="login_logo">
+            <>
+        <div style={{width:"100%"}} className="page-header header-filter">
+		<div  className="login_container container">
+			<div  className="login_container row">
+				<div style={{padding:"0"}} className="col-sm-4">
+                    <div className="login_card card card-signup">
+                        <a className="login_logo">
                             <svg width="72" height="39" viewBox="0 0 72 39" fill="none">
                                 <rect width="72" height="39" fill="url(#pattern0)"/>
                                 <defs>
@@ -45,56 +166,114 @@ async comonentDidMount(){
                                 </svg>
                             <span>prop vr</span>                
                         </a>
-                        <h2 style={{paddingTop: "25px"}} class="Welcome-to-Prop-VR">Hello! Welcome back!</h2>
-                            <p class="Have-an-account-alre">New to Prop VR?   <Link style={{paddingLeft: "10px"}} to="/signup" class="login_span">Sign up</Link></p>
-						<form class="form" style={{paddingTop: "12px"}}>
-							<div class="card-content">							
-									<div class="form-group">
-                                        <label class="input_Label">
+                        <h2 style={{paddingTop: "25px"}} className="Welcome-to-Prop-VR">Hello! Welcome back!</h2>
+                            <p className="Have-an-account-alre">New to Prop VR?   <Link style={{paddingLeft: "10px"}} to="/signup" className="login_span">Sign up</Link></p>
+						<form onSubmit={this.handlelogin} className="form" style={{paddingTop: "12px"}}>
+							<div className="card-content">							
+									<div className="form-group">
+                                        <label className="input_Label">
                                             User name
                                         </label>
-                                        <input type="text" class="input_box form-control" placeholder="Username or Email address"/>
-                                        {/* <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> --> */}
+                                        <input onChange={this.handlechange} id="email" name="email" type="email" className="input_box form-control" placeholder="Enter your email address"/>
                                     </div>
 			
-                                    <div class="form-group">
-                                        <label class="input_Label">
+                                    <div className="form-group">
+                                        <label className="input_Label">
                                             Password
                                         </label>
-                                        <input type="password" class="input_box form-control" placeholder="Enter your password" />
+                                        <input onChange={this.handlechange} id="password" name="password" type="password" className="input_box form-control" placeholder="Enter your password" />
                                     </div>
 
-                                    <div class="form-group">
-                                        <span class="login_span">
+                                    <div onClick={this.openmodal} className="form-group">
+                                        <span className="login_span">
                                             Forgot password?
                                         </span>
                                     </div>
 
-                                    <div class="form-group">
-                                        <span class="input_error input_error_hide">
-                                            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>   Invalid username or password
+                                    <div id="exception" className="form-group">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>  
+                                            {this.state.exception}
                                         </span>
                                     </div>
 
-                                    <div style={{textAlign: "center"}} class="form-group">
-                                    <button type="submit" class="btn input_button">Login</button>
+                                    <div style={{textAlign: "center"}} className="form-group">
+                                    <button id="submit" type="submit" className="btn input_button">Login</button>
+                                    <button style={{cursor: "progress",display:'none'}} id="loader" type="button" className="btn input_button" disabled>
+                                    <i id="loginloader" className="fa fa-circle-o-notch fa-spin" style={{ fontSize: "1rem", color: "white", paddingRight: 2, paddingLeft: 2 }}></i>
+                                    </button>
                                     </div>
 							</div>
                         </form>
                         
-                        <div class="join_now">
+                        <div className="join_now">
                         <span>or join with other accounts</span>
                         </div>
                         <div style={{textAlign: "center"}}>
-                            <button class="btn google_button">
-                                <i class="fa fa-google" aria-hidden="true"></i> Sign up with Google
+                            <button className="btn google_button">
+                                <i className="fa fa-google" aria-hidden="true"></i> Sign up with Google
                               </button>
                         </div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>)
+	</div>
+
+    <div className="modal" style={{display: this.state.modal==true? 'block':'none'}} id="forget_modal" tabIndex="-1" role="dialog">
+    <div className="modal-dialog" role="document">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 style={{color: "#222b45"}} className="modal-title">Password Reset Email</h5>
+          <button onClick={this.closemodal} type="button" className="close" data-dismiss="modal" aria-label="Close">
+            
+            
+            <span aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24">
+                <defs>
+                    <path id="prefix__close" d="M7.414 6l4.293-4.293c.391-.391.391-1.023 0-1.414-.39-.391-1.023-.391-1.414 0L6 4.586 1.707.293C1.317-.098.684-.098.293.293c-.39.391-.39 1.023 0 1.414L4.586 6 .293 10.293c-.39.391-.39 1.023 0 1.414.195.195.451.293.707.293.256 0 .512-.098.707-.293L6 7.414l4.293 4.293c.195.195.451.293.707.293.256 0 .512-.098.707-.293.391-.391.391-1.023 0-1.414L7.414 6z"></path>
+                </defs>
+                <g fill="none" fillRule="evenodd" transform="translate(6 6)">
+                    <use fill="#222B45" href="#prefix__close"></use>
+                </g>
+            </svg></span>
+          </button>
+
+        </div>
+        <div className="modal-body">          
+        <hr style={{marginTop: "-4px"}}></hr>
+                    <div className="form-group">
+                                    <label className="input_Label">Registered Email Address
+                                    </label>
+                                    <input onChange={this.handlechange} name="forget_email" id="forget_email" type="email" className="input_box form-control" placeholder="Enter your email address" />
+                                    <small id="email_exception" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            Email is <sup>*</sup> required
+                                        </span>
+                                        
+                                        </small>
+                                        <small id="other_exception" className="form-text text-muted">
+                                            <span className="input_error input_error_hide">
+                                                <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                               
+                                            </span>
+                                            
+                                            </small>
+                                </div>
+        </div>
+        <div style={{display: 'block',marginTop: '-20px'}} className="modal-footer">
+            <hr></hr>
+                <center className="modal_button_div">
+                <button onClick={this.forgetpass} style={{marginLeft: "20px"}} type="button" className="btn proceed">Send request</button>
+                </center>
+        </div>
+      </div>
+    </div>
+    </div>
+    </>
+    )
+    
     }
 }
 }

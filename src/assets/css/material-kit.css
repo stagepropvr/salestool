@@ -19493,9 +19493,9 @@ height: 40px;
   padding: 10px;
   background-color: #f9f9f9;
   opacity: 1;
-  text-align: center;
+  text-align: left;
   border-radius: 4px;
-  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0), 0 4px 25px 0 rgba(0, 0, 0, 0.08), 0 8px 10px -5px rgba(0,0,0,.2);
+  /* box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0), 0 4px 25px 0 rgba(0, 0, 0, 0.08), 0 8px 10px -5px rgba(0,0,0,.2); */
 }
 .project_name>span{
   font-size: 18px;
@@ -19511,17 +19511,19 @@ height: 40px;
   width: 100%;
     height: 230px;
     border-radius: 4px;
-  box-shadow: 12px 0 7px -4px rgba(0, 0, 0, 0.2), -12px 0 7px -4px rgba(12, 12, 12, 0.2);
+    object-fit: cover;
+  /* box-shadow: 12px 0 7px -4px rgba(0, 0, 0, 0.2), -12px 0 7px -4px rgba(12, 12, 12, 0.2); */
 }
 
 .project_card{
   padding-bottom: 35px;
-  cursor: pointer;
-  width: 344px;
+    cursor: pointer;
+    width: 344px;
     height: 230px;
     border-radius: 4px;
     margin-left: 20px;
     margin-bottom: 80px;
+    outline: 1px auto #e4e9f2;
 }
 /* -----Projects end----- */
 

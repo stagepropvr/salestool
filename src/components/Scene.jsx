@@ -27,9 +27,9 @@ class Scene extends React.Component {
 
     AFRAME.registerComponent('rotation-reader', {
       tick: function () {
-        var x,y;
-        x = this.el.object3D.rotation.x;
-        y = this.el.object3D.rotation.y
+        
+        // var x = this.el.object3D.rotation.x;
+        // var y = this.el.object3D.rotation.y
         // console.log(this.el.getAttribute('rotation').x);
         // console.log(this.el.getAttribute('rotation').y);
        }

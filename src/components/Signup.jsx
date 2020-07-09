@@ -7,7 +7,7 @@ class Signup extends React.Component {
   constructor(props){
     super(props);
     this.state={
-        redirect:true,
+        redirect:false,
         name:'',
         cname:'',
         password:'',
@@ -28,7 +28,7 @@ class Signup extends React.Component {
            });
         } else {
            this.setState({
-              redirect: true
+              redirect: false
            })
         }
      });
@@ -47,6 +47,8 @@ handleregister(event){
             if(this.state.email.match(email)){
                 var phoneno = /^\d{10}$/;
                 if(this.state.number.match(phoneno)){
+                    document.getElementById('submit').style.display='none';
+                    document.getElementById('loader').style.display='inline-block';
                     Fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(result=> {
                         var user = Fire.auth().currentUser;
                         var appnd = user.uid;
@@ -62,16 +64,19 @@ handleregister(event){
                                         })
                                     });
                     }).catch(err=>{
-                        document.getElementById('other_exception ').style.display='block';
-                        document.getElementById('other_exception ').childNodes[0].classList.remove('input_error_hide');
+                        document.getElementById('other_exception').style.display='block';
+                        document.getElementById('other_exception').childNodes[0].classList.remove('input_error_hide');
+                        document.getElementById('submit').style.display='inline-block';
+                        document.getElementById('loader').style.display='none';
                         this.setState({
-                            exception:err
+                            exception:err.message
                         })
                     })
                 }
                 else{
                     document.getElementById('number').classList.add('input_error_border');
-                    document.getElementById('other_exception ').style.display='block';
+                    document.getElementById('other_exception').style.display='block';
+                    document.getElementById('other_exception').childNodes[0].classList.remove('input_error_hide');
                     this.setState({
                         exception:'Contains only Numbers[0-9] and length is upto 10'
                     })
@@ -79,7 +84,8 @@ handleregister(event){
             }
             else{
                 document.getElementById('email').classList.add('input_error_border');
-                document.getElementById('other_exception ').style.display='block';
+                document.getElementById('other_exception').style.display='block';
+                document.getElementById('other_exception').childNodes[0].classList.remove('input_error_hide');
                 this.setState({
                     exception:'Email Address invalid format'
                 })
@@ -87,7 +93,8 @@ handleregister(event){
         }
         else{
             document.getElementById('name').classList.add('input_error_border');
-            document.getElementById('other_exception ').style.display='block';
+            document.getElementById('other_exception').style.display='block';
+            document.getElementById('other_exception').childNodes[0].classList.remove('input_error_hide');
                 this.setState({
                     exception:'Contains only alphabets[A-Z]'
                 })
@@ -127,7 +134,8 @@ handleregister(event){
         }
     }
 }
-  handlechange(event){
+
+handlechange(event){
     this.setState({
 		exception: ""
 	})
@@ -246,7 +254,11 @@ handleregister(event){
                                     </div>
 
                                     <div style={{textAlign: "center"}} className="form-group">
-                                    <button type="submit" className="btn input_button">Sign up</button>
+                                    <button id="submit" type="submit" className="btn input_button">Sign up</button>
+                                    <button style={{cursor: "progress",display:'none'}} id="loader" type="button" className="btn input_button" disabled>
+                                    <i id="loginloader" className="fa fa-circle-o-notch fa-spin" style={{ fontSize: "1rem", color: "white", paddingRight: 2, paddingLeft: 2 }}></i>
+                                    </button>
+
                                     </div>
 							</div>
                         </form>
@@ -262,7 +274,7 @@ handleregister(event){
 				</div>
 			</div>
 		</div>
-	</div> )
+    </div> )
     }
 }
 }
