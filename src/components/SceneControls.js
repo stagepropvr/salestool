@@ -2,43 +2,30 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import "../assets/css/material-kit.css?v=2.0.7" ;
-
-
-import OwlCarousel from 'react-owl-carousel';
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel/dist/assets/owl.theme.default.css';
-
 import "../assets/demo/demo.css";
 import "../assets/css/Custom.css";
 
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
 import "../assets/css/owl.carousel.css";
 import "../assets/css/owl.theme.default.css";
+import OwlCarousel from 'react-owl-carousel';
+
+
+
+import BottomSlider from "./BottomSlider";
+
+
 class SceneControls extends React.Component { 
   constructor(props){
     super(props);
-
   }
+
+
   render() {
-  
-    const res = {
-        0:{
-            items:1,
-        },
-        700:{
-            items:2
-        },
-        1000:{
-            items:4
-        },
-        1200:{
-            items:5
-        }
-    
-    }
-    const nav=['<svg id="left_light_mode" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24"><defs><path id="prefix__left" d="M5.829 14c-.292 0-.582-.127-.78-.373l-4.828-6c-.298-.371-.294-.901.01-1.267l5-6c.354-.424.985-.481 1.41-.128.424.353.48.984.127 1.408L2.293 7.011l4.315 5.362c.346.43.278 1.06-.153 1.406-.184.149-.406.221-.626.221"/></defs><g fill="none" fill-rule="evenodd" transform="translate(8 5)"><use fill="#FFF" xlink:href="#prefix__left"/></g></svg><svg id="left_dark_mode" style="display:none;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24"><defs><path id="prefix__pre_dark" d="M5.829 14c-.292 0-.582-.127-.78-.373l-4.828-6c-.298-.371-.294-.901.01-1.267l5-6c.354-.424.985-.481 1.41-.128.424.353.48.984.127 1.408L2.293 7.011l4.315 5.362c.346.43.278 1.06-.153 1.406-.184.149-.406.221-.626.221"/></defs><g fill="none" fill-rule="evenodd" transform="translate(8 5)"><use fill="#222B45" xlink:href="#prefix__pre_dark"/></g></svg>','<svg id="right_light_mode" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24"><defs><path id="prefix__right" d="M1 14c-.227 0-.454-.076-.64-.232-.424-.353-.481-.984-.128-1.408l4.476-5.371L.391 1.627C.047 1.197.115.567.545.221c.431-.346 1.06-.278 1.407.152l4.828 6c.298.371.295.901-.01 1.267l-5 6c-.198.237-.482.36-.77.36"/></defs><g fill="none" fill-rule="evenodd" transform="translate(9 5)"><use fill="#FFF" xlink:href="#prefix__right"/></g></svg><svg id="right_dark_mode" style="display:none;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24"><defs><path id="prefix__nxt_dark" d="M1 14c-.227 0-.454-.076-.64-.232-.424-.353-.481-.984-.128-1.408l4.476-5.371L.391 1.627C.047 1.197.115.567.545.221c.431-.346 1.06-.278 1.407.152l4.828 6c.298.371.295.901-.01 1.267l-5 6c-.198.237-.482.36-.77.36"/></defs><g fill="none" fill-rule="evenodd" transform="translate(9 5)"><use fill="#222B45" xlink:href="#prefix__nxt_dark"/></g></svg>']
 return (
   
-<div id="bottom" className="container">
+<div id="bottom" className="container" >
         <div style={{height: '72px', flexWrap: 'nowrap'}} className="row">
           <div className="content_padding dropup">
             <button id="menu_bar" type="button" className="menu_option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -127,7 +114,8 @@ return (
             </div>
             <span className="content_separate" />
           </div>
-          <div className="content_padding">
+
+          <div id="video-controls" className="content_padding">
             <button className="menu_option" onClick={this.props.micaction} style={{background: '#fff'}}>
               <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
                 <path fill="#222B45" fillRule="evenodd" d="M13 17.92V20h2.105c.493 0 .895.402.895.895v.21c0 .493-.402.895-.895.895h-6.21C8.402 22 8 21.598 8 21.106v-.211c0-.493.402-.895.895-.895H11v-2.08c-3.387-.488-6-3.4-6-6.92 0-.552.447-1 1-1 .553 0 1 .448 1 1 0 2.757 2.243 5 5 5s5-2.243 5-5c0-.552.447-1 1-1 .553 0 1 .448 1 1 0 3.52-2.613 6.432-6 6.92zM10 6c0-1.103.897-2 2-2s2 .897 2 2v5c0 1.103-.897 2-2 2s-2-.897-2-2V6zm2 9c2.206 0 4-1.794 4-4V6c0-2.205-1.794-4-4-4S8 3.795 8 6v5c0 2.206 1.794 4 4 4z" />
@@ -160,87 +148,11 @@ return (
             </button>
             <span className="content_separate" />
           </div>
-          
-          <OwlCarousel responsiveClass={true} autoWidth={true}   margin={10} navText={nav} dots={false} responsive={res} nav={true} id="MultiCarousel" className="MultiCarousel owl-carousel">
-          <div class="MultiCarousel-inner">  
-                            <div class="item item_active">
-                            <div class="pad15">
-                                <p class="slider_name">Living room</p>
-                            </div>
-                        </div> 
-                        </div>
-                        <div class="MultiCarousel-inner">  
-                            <div class="item">
-                            <div class="pad15">
-                                <p class="slider_name">Kitchen</p>
-                            </div>
-                        </div> 
-                        </div>
-                        <div class="MultiCarousel-inner">  
-                            <div class="item">
-                            <div class="pad15">
-                                <p class="slider_name">Master bedroom</p>
-                            </div>
-                        </div>
-                     </div>
-                        <div class="MultiCarousel-inner"> 
-                            <div class="item">
-                            <div class="pad15">
-                                <p class="slider_name">Kids bedroom</p>
-                            </div>
-                        </div> 
-                    </div>
-                        <div class="MultiCarousel-inner">  
-                            <div class="item">
-                            <div class="pad15">
-                                <p class="slider_name">Work room</p>
-                            </div>
-                        </div>
-                    </div>
-                        <div class="MultiCarousel-inner">  
-                            <div class="item">
-                            <div class="pad15">
-                                <p class="slider_name">Guest room</p>
-                            </div>
-                        </div>
-                     </div>
-                        <div class="MultiCarousel-inner"> 
-                             <div class="item">
-                            <div class="pad15">
-                                <p class="slider_name">Guest room</p>
-                            </div>
-                        </div> 
-                    </div>
-                    <div class="MultiCarousel-inner">  
-                        <div class="item">
-                        <div class="pad15">
-                            <p class="slider_name">Guest room1</p>
-                        </div>
-                    </div> 
-                    </div> 
-                    <div class="MultiCarousel-inner">  
-                        <div class="item">
-                        <div class="pad15">
-                            <p class="slider_name">Guest room1</p>
-                        </div>
-                    </div> 
-                    </div> 
-                    <div class="MultiCarousel-inner">  
-                        <div class="item">
-                        <div class="pad15">
-                            <p class="slider_name">Guest room1</p>
-                        </div>
-                    </div> 
-                    </div> 
-                    <div class="MultiCarousel-inner">  
-                        <div class="item">
-                        <div class="pad15">
-                            <p class="slider_name">Guest room1</p>
-                        </div>
-                    </div> 
-                    </div>
-          </OwlCarousel>
-          
+          {/* <OwlCarousel responsiveClass={true} autoWidth={true}   margin={10} navText={nav} dots={false} responsive={res} nav={true} id="MultiCarousel" className="MultiCarousel owl-carousel">
+            {this.rooms}
+        </OwlCarousel> */}
+        {this.props.host && <BottomSlider changeImage = {this.props.changeImage}/>}
+ 
         </div>
       </div>
 )}

@@ -17,7 +17,7 @@ class Scene extends React.Component {
         VRMode:false
     };
        
-    this.change = this.change.bind(this);
+    // this.change = this.change.bind(this);
     this.loadLinks = this.loadLinks.bind(this);  
 
    }
@@ -44,15 +44,6 @@ class Scene extends React.Component {
    }
 
 
-
-
-  change(str){
-    this.props.data.map((value,index) => {
-      if(value.name === str)
-      {this.props.changeImage(value)}
-    });
-  }
-
   loadLinks()
   {
     this.links = Object.values(this.props.image.links).map(item => 
@@ -68,7 +59,7 @@ class Scene extends React.Component {
           position={x+" -8 "+z} scale="10 10"
           class="hotspot"
           look-at='#cam1' 
-          onClick={(e) => this.change(e.target.id)}
+          onClick={(e) => this.props.change(e.target.id)}
           raycaster-listen
          >
         </a-image>
@@ -78,10 +69,11 @@ class Scene extends React.Component {
   }
   
   render()
-    { 
-    this.loadLinks();
+    {
+    if(this.props.host){this.loadLinks();} 
+    
     return (
-    <div style={{"position":"absolute"}}>
+      <div style={{"position":"absolute"}}>
         <a-scene loading-screen="dotsColor: transparent; backgroundColor: transparent" >
             {/* Loads Assets a*/}
             <AssestsLoader data = {this.props.data}/>
@@ -96,7 +88,10 @@ class Scene extends React.Component {
            
 
         </a-scene>
+        <div>
+          Ghiri
         </div>
+      </div>
     );
     }
 }
