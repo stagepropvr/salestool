@@ -91,6 +91,7 @@ class Video extends React.Component {
       console.log('Firebase: Not host',this.state.socket.id,data['room'][ind].host);
     }
     }
+  
   componentDidMount() {
     const component = this;
     // this.setState({ socket });
@@ -129,8 +130,8 @@ class Video extends React.Component {
               iceServers: [
                 {
                   urls: 'turn:52.15.126.155:3478',
-    credential: 'revsmart123',
-    username: 'propvr'
+                  credential: 'revsmart123',
+                  username: 'propvr'
                                       }
               ]
             },
@@ -190,6 +191,13 @@ class Video extends React.Component {
       console.log(disuser);
       component.setState({ initiator: true });
     });
+
+    this.state.socket.on('location', (location) => {
+      if(!this.state.host){
+        console.log("pew:",location);
+      }
+    });
+
    
   }
 
@@ -270,7 +278,7 @@ mesage:"asd"
   }
   
   changeImage = (str) => {
-    console.log(str);
+    // console.log(str);
     this.setState({current_image:str})
 }
 
@@ -281,7 +289,13 @@ change = (str) => {
   });
 }
   render() {
-    console.log("Daata:",this.images[0])
+    if(this.state.host)
+    {
+      this.state.socket.emit('location', 
+      { location:this.state.current_image.name,
+        room:this.props.roomId
+      });
+    }
 
     return (
       <>
@@ -325,8 +339,7 @@ videoaction={() => {
 camstate={this.state.camState}
 host={this.state.host}
 />
-
-      </div>
+</div>
    </> );
   }
 }
