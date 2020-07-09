@@ -9,11 +9,14 @@ import Peer from 'simple-peer'
 import VideoItem from "./videoItem"
 import SceneControls from "./SceneControls.js";
 import Scene from "./Scene"
+import {firestore} from "../firebase/firebase.utils"
+// import BottomSlider from "./BottomSlider"
+
 let userId = null
 
 class Video extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       localStream: {},
       remoteStreamUrl: '',
@@ -25,42 +28,71 @@ class Video extends React.Component {
       micState: true,
       camState: true,
       peers: {},
-      streams: {}, current_image: {
-        "info" : {
-            "About Innov8" : {
-                "Description" : "Innov8 Coworking offers beautifully crafted workspaces where people can create, connect, and grow their businesses at prime locations in multiple cities pan-India. Innov8 hosts people from diverse backgrounds such as digital nomads, entrepreneurs, freelancers, corporates employees and startup enthusiasts.",
-                "buyurl" : "",
-                "info3diosurl" : "",
-                "info3durl" : "",
-                "infoimgurl" : "",
-                "knowurl" : "",
-                "position" : "-0.8980867539712181 0.00034748211845683774 0.4203239232941025",
-                "vidurl" : "https://www.youtube.com/embed/0UA80LzjJh0"
-                }
-        },
-        "links" : {
-            "theatere" : {
-            "name" : "Theatre",
-            "dest-image" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2F1579863181062-20200124_161208_885.jpg?alt=media&token=dc168d99-2e45-4758-b0fb-c41b356eb675",
-            "dest-thumb" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2Fthumbs%2F1579863191216-20200124_161208_885.jpg?alt=media&token=bbffb628-3d4e-4369-8571-a0af07abb52b",
-            "position" : "0.8826060510846503 -0.08739164477592737 -0.48291200668298667"
-        }
-    },
-        "name" : "Entrance",
-        "thumbnail" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2Fthumbs%2F1579863216723-20200124_161250_786.jpg?alt=media&token=95e7d027-8490-4cf5-9679-0d5b7404ce14",
-        "url" : "https://firebasestorage.googleapis.com/v0/b/realvr-eb62c.appspot.com/o/iHwPWJvWDQYW6ilIAfNfgupytcb2%2FInnov8%2F1579863210017-20200124_161250_786.jpg?alt=media&token=3311ca91-4238-4b73-b75a-dfc37fdc6d24"
-        },
-      socket:io.connect("localhost:5000")
+      streams: {}, 
+      current_image: Object.values(Data.images)[0],
+      socket:io.connect("localhost:5000"),
+      host:false
     };
  
+    this.doc_id = null;
     this.images = Object.values(Data.images);   
    
    
   }
   videoCall = new VideoCall();
 
-  componentDidMount() {
+  upload = async(data) => {
+    var ind;
+    const _ = this;
+    data['room'].forEach(function(item,index){
+      if(item.id == _.props.roomId){
+        ind = index
+      }
+    });   
     
+    if(this.state.socket.id === data['room'][ind].host)
+    {
+      var room =  data['room'][ind]
+      console.log("Firebase: ",room)
+            
+      if(!this.doc_id)
+      {
+        firestore.collection("rooms").add({
+          id: room.id,
+          host: room.host,
+          occupants: room.occupants
+        })
+        .then(function(docRef) {
+          _.doc_id = docRef.id
+          console.log("Firebase: Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+            console.error("Firebase: Error adding document: ", error);
+        });
+        this.setState({host:true});
+      }
+      else{
+          firestore.collection("rooms").doc(this.doc_id).update({
+            occupants: room.occupants
+          })
+          .then(function() {
+            console.log("Firebase: Document written in same ID: ");
+          })
+          .catch(function(error) {
+              console.error("Firebase: Error adding document: ", error);
+          });
+        } 
+      
+
+
+      
+    }
+    else{
+      console.log('Firebase: Not host',this.state.socket.id,data['room'][ind].host);
+    }
+    }
+  
+  componentDidMount() {
     const component = this;
     // this.setState({ socket });
     const { roomId } = this.props.roomId;
@@ -70,6 +102,7 @@ class Video extends React.Component {
 
     });
 
+
     this.state.socket.on('init', (data) => {
 
       console.log("socket.on init", data)
@@ -78,7 +111,12 @@ class Video extends React.Component {
       this.state.socket.emit('ready', { room: this.props.roomId, user:userId });
     });
 
+    this.state.socket.on("data",(room) => {
+      this.upload(room);
+    })
+
     this.state.socket.on("users", ({ initiator, users }) => {
+      console.log("socket.on  initiator", initiator)
       console.log("socket.on  users", users)
       
       Object.keys(users.sockets)
@@ -92,8 +130,8 @@ class Video extends React.Component {
               iceServers: [
                 {
                   urls: 'turn:52.15.126.155:3478',
-    credential: 'revsmart123',
-    username: 'propvr'
+                  credential: 'revsmart123',
+                  username: 'propvr'
                                       }
               ]
             },
@@ -153,6 +191,13 @@ class Video extends React.Component {
       console.log(disuser);
       component.setState({ initiator: true });
     });
+
+    this.state.socket.on('location', (location) => {
+      if(!this.state.host){
+        console.log("pew:",location);
+      }
+    });
+
    
   }
 
@@ -231,21 +276,35 @@ mesage:"asd"
       })
     });
   }
-  changeImage(str){
+  
+  changeImage = (str) => {
     // console.log(str);
     this.setState({current_image:str})
- 
+}
+
+change = (str) => {
+  this.images.map((value,index) => {
+    if(value.name === str)
+    {this.changeImage(value)}
+  });
 }
   render() {
+    if(this.state.host)
+    {
+      this.state.socket.emit('location', 
+      { location:this.state.current_image.name,
+        room:this.props.roomId
+      });
+    }
 
     return (
       <>
-       <Scene           micstate={this.state.micState}
-                        camstate={this.state.camstate}
-                        data={this.images} 
-                        image={this.state.current_image}
-                        changeImage={this.changeImage.bind(this)}
-                    />
+      <Scene           
+        data={this.images} 
+        image={this.state.current_image}
+        change={this.change}
+        host={this.state.host}
+      />
       <div className='video-wrapper'>
         <div className='local-video-wrapper'>
           <video
@@ -264,13 +323,10 @@ mesage:"asd"
             })
           }
         </div>
-
-
        
 <SceneControls 
+changeImage={this.changeImage}
 micstate={this.state.micState}
-images={this.images} 
-   changeImage={this.changeImage.bind(this)} images = {this.images}
 screenaction={() => {
   this.getDisplay();
 }} 
@@ -280,11 +336,10 @@ micaction={() => {
 videoaction={() => {
   this.setVideoLocal();
 }}
-
 camstate={this.state.camState}
+host={this.state.host}
 />
-
-      </div>
+</div>
    </> );
   }
 }

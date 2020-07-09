@@ -11,8 +11,19 @@ class Header extends React.Component {
     }
   }
   
-async comonentDidMount(){
-    
+componentDidMount(){
+  var elems = document.querySelectorAll(".active");
+
+[].forEach.call(elems, function(el) {
+    el.classList.remove("active");
+});
+if(this.props.current_tag==0)
+    document.getElementById('dashboard').classList.add('active');
+else if(this.props.current_tag==1)
+    document.getElementById('project').classList.add('active');
+else if(this.props.current_tag==2)
+    document.getElementById('tool').classList.add('active')
+
     window.scrollTo(0, 0)
   }
   
@@ -23,10 +34,10 @@ async comonentDidMount(){
 
 
   render() {
-   return( <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
-   <div class="container">
-     <div  class="navbar-translate">
-       <a class="navbar-brand">
+   return( <nav className="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
+   <div className="container">
+     <div  className="navbar-translate">
+       <a className="navbar-brand">
            <svg width="72" height="39" viewBox="0 0 72 39" fill="none">
                <rect width="72" height="39" fill="url(#pattern0)"/>
                <defs>
@@ -38,38 +49,38 @@ async comonentDidMount(){
                </svg>
            <span>prop vr</span>                
        </a>
-       <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="sr-only">Toggle navigation</span>
-         <span class="navbar-toggler-icon"></span>
-         <span class="navbar-toggler-icon"></span>
-         <span class="navbar-toggler-icon"></span>
+       <button className="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+         <span className="sr-only">Toggle navigation</span>
+         <span className="navbar-toggler-icon"></span>
+         <span className="navbar-toggler-icon"></span>
+         <span className="navbar-toggler-icon"></span>
        </button>
      </div>
-     <div class="collapse navbar-collapse" id="navbarText">
-       <ul class="navbar-nav mr-auto">
-         <li class="nav-item active">
-           <a class="nav-link" href="javascript:;">Dashboard<span class="sr-only">(current)</span></a>
+     <div className="collapse navbar-collapse" id="navbarText">
+       <ul className="navbar-nav mr-auto">
+         <li id="dashboard" className="nav-item active">
+           <a className="nav-link" href="javascript:;">Dashboard</a>
          </li>
-         <li class="nav-item">
-           <a class="nav-link" href="javascript:;">My projects</a>
+         <li id="project" className="nav-item">
+           <a className="nav-link" href="javascript:;">My projects</a>
          </li>
-         <li class="nav-item">
-           <a class="nav-link" href="javascript:;">Tools</a>
+         <li id="tool" className="nav-item">
+           <a className="nav-link" href="javascript:;">Tools</a>
          </li>
        </ul>
      </div>
-     <ul id="profile_img_div" class="navbar-nav mr-auto">
-       <li class="nav-item" >
-          <button class="upgrade">Upgrade now</button> 
+     <ul id="profile_img_div" className="navbar-nav mr-auto">
+       <li className="nav-item" >
+          <button className="upgrade">Upgrade now</button> 
        </li>
-       <li style={{paddingLeft: "10px"}} class="dropdown nav-item">
-         <a href="javascript:;" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
-           <img src="https://s3.amazonaws.com/creativetim_bucket/new_logo.png" alt="Circle Image" class="rounded-circle img-fluid" />
-           <span class="username">John Doe</span>
-           <b class="caret"></b>
+       <li style={{paddingLeft: "10px"}} className="dropdown nav-item">
+         <a href="javascript:;" className="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+           <img src="https://s3.amazonaws.com/creativetim_bucket/new_logo.png" alt="Circle Image" className="rounded-circle img-fluid" />
+           <span className="username">John Doe</span>
+           <b className="caret"></b>
          </a>
-         <div class="dropdown-menu dropdown-menu-right">
-           <a href="javascript:;" class="dropdown-item">Sign out</a>
+         <div className="dropdown-menu dropdown-menu-right">
+           <a href="javascript:;" className="dropdown-item">Sign out</a>
          </div>
        </li>
    </ul>

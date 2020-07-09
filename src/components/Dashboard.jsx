@@ -29,7 +29,8 @@ async comonentDidMount(){
 
     }
     else{
-        return(<Header></Header> )
+      const current_tag = 0;
+        return(<Header current_tag={current_tag} ></Header> )
     }
 }
 }

@@ -6,12 +6,16 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";
 import Projects from "./components/Projects";
+import Createroom from "./components/Createroom";
+import Joinroom from "./components/Joinroom";
 
 import { goToRoomInput } from './components/goToRoomInput';
 class App extends Component {
   render() {
     return (
       
+       
+        <div style={{width:"100%",background:'#fff'}}>
       <Router >
        <Switch> 
         <Route  path='/login' component={Login} />
@@ -22,13 +26,18 @@ class App extends Component {
          <Route  path='/dashboard' component={Dashboard} />
 
          <Route  path='/projects' component={Projects} />
+
+         <Route  path='/joinroom/:uid/:pid/:rid' component={Joinroom} />
+
+         <Route path='/createroom/:pid' component={Createroom} />
+        
          </Switch>
-     
+         </Router>
+   </div>
  
-
-       
-
-        </Router>
+      
+     
+      
     )
   }
 }
