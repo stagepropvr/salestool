@@ -30,10 +30,11 @@ class Video extends React.Component {
       peers: {},
       streams: {},
       current_image: "",
-      socket: io.connect("localhost:5000"),
+      socket: io.connect("mysterious-dusk-60271.herokuapp.com"),
       host: true,
       apiload: true,
-      images:""
+      images:"",
+      camera:"user"
     };
 
     this.doc_id = null;
@@ -176,7 +177,7 @@ class Video extends React.Component {
       const peer = this.state.peers[userId];
       console.log(this.state.peers);
       console.log(this.state.peers[userId]);
-      if (peer != undefined) {
+      if (peer) {
         peer.signal(signal)
       }
     })
@@ -209,8 +210,8 @@ class Video extends React.Component {
       const op = {
         video: {
           width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 }
-        },
+          height: { min: 120, ideal: 360, max: 720 },
+      facingMode:this.state.camera  },
         audio: true
       };
       navigator.getUserMedia(
@@ -255,8 +256,18 @@ class Video extends React.Component {
   }
 
   getDisplay() {
-    getDisplayStream().then(stream => {
-      stream.oninactive = () => {
+    if(this.state.camera==="user"){
+      this.setState({
+        camera:"environment"
+      })
+    }
+    else{
+      this.setState({
+        camera:"user"
+      })
+    }
+    this.getUserMedia().then(stream => {
+     
         Object.keys(this.state.peers).forEach((key) => {
           this.state.peers[key].removeStream(this.state.localStream);
         })
@@ -265,7 +276,7 @@ class Video extends React.Component {
             this.state.peers[key].addStream(this.state.localStream);
           })
         });
-      };
+    
       this.setState({ streamUrl: stream, localStream: stream });
       this.localVideo.srcObject = stream;
       Object.keys(this.state.peers).forEach((key) => {
