@@ -5,7 +5,7 @@ import Video from '../components/video'
 class Salespage extends Component {
   render() {
     return (
-     <Video roomId={this.props.match.params.roomid}/>
+     <Video pid={this.props.match.params.pid} roomId={this.props.match.params.roomid}/>
     
     )
   }

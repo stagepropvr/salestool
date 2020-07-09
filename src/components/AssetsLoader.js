@@ -1,12 +1,21 @@
 import React from 'react';
 
 function AssetsLoader(props){
-  
-    // Load Assets        
-    let assets = props.data.map((value,index) => {
+    // Load Assets  
+    let render=[];    
+    for (var key in props.data){
+render.push({
+    url:props.data[key].url,
+    index:key,
+    name:props.data[key].name
+})
+    }  
+    let assets =render.map((value) => {
+        
     return(
-        <img crossOrigin="anonymous" id={value.name} src={value.url} alt={value.name} key={index}/>
+        <img crossOrigin="anonymous" id={value.index} src={value.url} alt={value.name} key={value.index}/>
     )});
+
     
     // Load Hotspot Icon
     let hotspotIcon = <img 

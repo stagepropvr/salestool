@@ -16,7 +16,7 @@ class Scene extends React.Component {
         loaded:false,
         VRMode:false
     };
-       
+       console.log(this.props)
     // this.change = this.change.bind(this);
     this.loadLinks = this.loadLinks.bind(this);  
 
@@ -46,20 +46,20 @@ class Scene extends React.Component {
 
   loadLinks()
   {
-    this.links = Object.values(this.props.image.links).map(item => 
+    this.links = Object.values(this.props.data[this.props.image].links).map((item,key) => 
     {
       var splitrot=item.position.split(" ");
       var x= parseFloat(splitrot[0]*120);
       // var y= parseFloat(splitrot[1]*80);
       var z= parseFloat(splitrot[2]*120);
-      
+      console.log(item["dest-image"]);
       return(
         <a-image
           id={item.name} key={item.name} src="#hotspot"
           position={x+" -8 "+z} scale="10 10"
           class="hotspot"
           look-at='#cam1' 
-          onClick={(e) => this.props.change(e.target.id)}
+          onClick={(e) => this.props.change(item["dest-image"])}
           raycaster-listen
          >
         </a-image>
@@ -78,7 +78,7 @@ class Scene extends React.Component {
             {/* Loads Assets a*/}
             <AssestsLoader data = {this.props.data}/>
             
-            <a-sky src= {'#'+this.props.image.name} /> 
+            <a-sky src= {'#'+this.props.image} /> 
             
             {/* Loads Hotspots */}
             {this.links}

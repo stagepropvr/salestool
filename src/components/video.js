@@ -4,12 +4,12 @@ import '../App.css';
 import '../styles/video.css'
 import io from 'socket.io-client';
 import { getDisplayStream } from '../helpers/media-access';
-import Data from "../Data/data.json"
 import Peer from 'simple-peer'
+import Data from "../Data/data.json"
 import VideoItem from "./videoItem"
 import SceneControls from "./SceneControls.js";
 import Scene from "./Scene"
-import {firestore} from "../firebase/firebase.utils"
+import Firebase from "../config/Firebase"
 // import BottomSlider from "./BottomSlider"
 
 let userId = null
@@ -28,76 +28,70 @@ class Video extends React.Component {
       micState: true,
       camState: true,
       peers: {},
-      streams: {}, 
-      current_image: Object.values(Data.images)[0],
-      socket:io.connect("localhost:5000"),
-      host:false
+      streams: {},
+      current_image: "",
+      socket: io.connect("localhost:5000"),
+      host: true,
+      apiload: true,
+      images:""
     };
- 
+
     this.doc_id = null;
-    this.images = Object.values(Data.images);   
-   
-   
+
+    console.log(this.props.roomId);
   }
   videoCall = new VideoCall();
 
-  upload = async(data) => {
-    var ind;
-    const _ = this;
-    data['room'].forEach(function(item,index){
-      if(item.id == _.props.roomId){
-        ind = index
-      }
-    });   
-    
-    if(this.state.socket.id === data['room'][ind].host)
-    {
-      var room =  data['room'][ind]
-      console.log("Firebase: ",room)
-            
-      if(!this.doc_id)
-      {
-        firestore.collection("rooms").add({
-          id: room.id,
-          host: room.host,
-          occupants: room.occupants
-        })
-        .then(function(docRef) {
-          _.doc_id = docRef.id
-          console.log("Firebase: Document written with ID: ", docRef.id);
-        })
-        .catch(function(error) {
-            console.error("Firebase: Error adding document: ", error);
-        });
-        this.setState({host:true});
-      }
-      else{
-          firestore.collection("rooms").doc(this.doc_id).update({
-            occupants: room.occupants
-          })
-          .then(function() {
-            console.log("Firebase: Document written in same ID: ");
-          })
-          .catch(function(error) {
-              console.error("Firebase: Error adding document: ", error);
-          });
-        } 
-      
 
 
-      
-    }
-    else{
-      console.log('Firebase: Not host',this.state.socket.id,data['room'][ind].host);
-    }
-    }
-  
   componentDidMount() {
+
+    Firebase.auth().onAuthStateChanged((user) => {
+
+      if (user) {
+        Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
+          console.log(node.val().images);
+          
+          if (node.hasChild("images")) {
+            console.log("dsf")
+            for (var x in node.val().images){
+              console.log(x,node.val().images[x]);
+              this.setState({
+                current_image:x,
+                images: node.val().images
+              });
+            break;
+            }
+            this.setState({
+              host: true,
+              
+              apiload: false
+            });
+            this.Videoinit();
+          }
+          else {
+            this.setState({
+              host: false
+            });
+          }
+        });
+
+
+
+      } else {
+        this.setState({
+          host: false
+        })
+      }
+    });
+  }
+  Videoinit(){
+
     const component = this;
     // this.setState({ socket });
-    const { roomId } = this.props.roomId;
+    const roomId = this.props.roomId;
     this.getUserMedia().then(() => {
-      this.state.socket.emit('join', { room:this.props.roomId});
+      this.state.socket.emit('join', { room: this.props.roomId });
       console.log("socket.on join", roomId)
 
     });
@@ -108,17 +102,17 @@ class Video extends React.Component {
       console.log("socket.on init", data)
 
       userId = data.userId;
-      this.state.socket.emit('ready', { room: this.props.roomId, user:userId });
+      this.state.socket.emit('ready', { room: this.props.roomId, user: userId });
     });
 
-    this.state.socket.on("data",(room) => {
+    this.state.socket.on("data", (room) => {
       this.upload(room);
     })
 
     this.state.socket.on("users", ({ initiator, users }) => {
       console.log("socket.on  initiator", initiator)
       console.log("socket.on  users", users)
-      
+
       Object.keys(users.sockets)
         .filter(
           sid =>
@@ -132,7 +126,7 @@ class Video extends React.Component {
                   urls: 'turn:52.15.126.155:3478',
                   credential: 'revsmart123',
                   username: 'propvr'
-                                      }
+                }
               ]
             },
             // Allow the peer to receive video, even if it's not sending stream:
@@ -153,7 +147,7 @@ class Video extends React.Component {
             const signal = {
               userId: sid,
               signal: data,
-              room:this.props.roomId
+              room: this.props.roomId
             };
             console.log(data);
             this.state.socket.emit('signal', signal);
@@ -172,23 +166,22 @@ class Video extends React.Component {
             console.log(err);
           });
 
-         
+
         })
     })
-  
+
     this.state.socket.on('signal', ({ userId, signal }) => {
       console.log("socket.on  signal userId", userId, "signal", signal)
 
       const peer = this.state.peers[userId];
       console.log(this.state.peers);
       console.log(this.state.peers[userId]);
-      if(peer)
-      {
+      if (peer != undefined) {
         peer.signal(signal)
-      }     
+      }
     })
     this.state.socket.on('chat message', ({ message, user }) => {
-     console.log("fsdsadasdasdsadsad");
+      console.log("fsdsadasdasdsadsad");
     });
     this.state.socket.on('disconnect', (disuser) => {
       console.log(disuser);
@@ -196,22 +189,22 @@ class Video extends React.Component {
     });
 
     this.state.socket.on('location', (location) => {
-      if(!this.state.host){
-        console.log("pew:",location);
+      if (!this.state.host) {
+        console.log("pew:", location);
         this.change(location.location)
       }
     });
 
-   
-  }
 
+  }
+  
 
   getUserMedia(cb) {
-    
+
     return new Promise((resolve, reject) => {
       navigator.mediaDevices.getUserMedia = navigator.getUserMedia =
         navigator.getUserMedia ||
-        navigator.webkitGetUserMedia || 
+        navigator.webkitGetUserMedia ||
         navigator.mozGetUserMedia;
       const op = {
         video: {
@@ -234,10 +227,10 @@ class Video extends React.Component {
 
   setAudioLocal() {
     console.log(this.state.socket.id)
-    const message={
-      room:this.props.roomId,
-      user:this.state.socket.id,
-mesage:"asd"
+    const message = {
+      room: this.props.roomId,
+      user: this.state.socket.id,
+      mesage: "asd"
     };
     this.state.socket.emit('chat message', message);
     if (this.state.localStream.getAudioTracks().length > 0) {
@@ -264,87 +257,96 @@ mesage:"asd"
   getDisplay() {
     getDisplayStream().then(stream => {
       stream.oninactive = () => {
-        Object.keys(this.state.peers).forEach((key)=>{
+        Object.keys(this.state.peers).forEach((key) => {
           this.state.peers[key].removeStream(this.state.localStream);
         })
         this.getUserMedia().then(() => {
-          Object.keys(this.state.peers).forEach((key)=>{
+          Object.keys(this.state.peers).forEach((key) => {
             this.state.peers[key].addStream(this.state.localStream);
           })
         });
       };
       this.setState({ streamUrl: stream, localStream: stream });
       this.localVideo.srcObject = stream;
-      Object.keys(this.state.peers).forEach((key)=>{
+      Object.keys(this.state.peers).forEach((key) => {
         this.state.peers[key].addStream(this.state.localStream);
       })
     });
   }
-  
+
   changeImage = (str) => {
     // console.log(str);
-    this.setState({current_image:str})
-}
+    this.setState({ current_image: str })
+  }
 
-change = (str) => {
-  this.images.map((value,index) => {
-    if(value.name === str)
-    {this.changeImage(value)}
-  });
-}
+  change = (str) => {
+    for (var key in this.state.images){
+      console.log(str,this.state.images[key].url);
+      if (this.state.images[key].url === str) { 
+       
+        this.changeImage(key) }
+    }
+  }
   render() {
-    if(this.state.host)
-    {
-      this.state.socket.emit('location', 
-      { location:this.state.current_image.name,
-        room:this.props.roomId
-      });
+    if (this.state.apiload) {
+      return (<></>)
+
     }
 
-    return (
-      <>
-      <Scene           
-        data={this.images} 
-        image={this.state.current_image}
-        change={this.change}
-        host={this.state.host}
-      />
-      <div className='video-wrapper'>
-        <div className='local-video-wrapper'>
-          <video
-            autoPlay
-            id='localVideo' className="user-video"
-            muted
-            ref={video => (this.localVideo = video)}
-          />
+    else {
+      if (this.state.host) {
+        this.state.socket.emit('location',
           {
-            Object.keys(this.state.streams).map((key, id) => {
-              return <VideoItem
-                key={key}
-                userId={key}
-                stream={this.state.streams[key]}
+            location: this.state.current_image.name,
+            room: this.props.roomId
+          });
+      }
+
+      return (
+        <>
+          <Scene
+            data={this.state.images}
+            image={this.state.current_image}
+            change={this.change}
+            host={this.state.host}
+          />
+          <div className='video-wrapper'>
+            <div className='local-video-wrapper'>
+              <video
+                autoPlay
+                id='localVideo' className="user-video"
+                muted
+                ref={video => (this.localVideo = video)}
               />
-            })
-          }
-        </div>
-       
-<SceneControls 
-changeImage={this.changeImage}
-micstate={this.state.micState}
-screenaction={() => {
-  this.getDisplay();
-}} 
-micaction={() => {
-  this.setAudioLocal();
-}} 
-videoaction={() => {
-  this.setVideoLocal();
-}}
-camstate={this.state.camState}
-host={this.state.host}
-/>
-</div>
-   </> );
+              {
+                Object.keys(this.state.streams).map((key, id) => {
+                  return <VideoItem
+                    key={key}
+                    userId={key}
+                    stream={this.state.streams[key]}
+                  />
+                })
+              }
+            </div>
+
+            <SceneControls
+              changeImage={this.changeImage}
+              micstate={this.state.micState}
+              screenaction={() => {
+                this.getDisplay();
+              }}
+              micaction={() => {
+                this.setAudioLocal();
+              }}
+              videoaction={() => {
+                this.setVideoLocal();
+              }}
+              camstate={this.state.camState}
+              host={this.state.host}
+            />
+          </div>
+        </>);
+    }
   }
 }
 

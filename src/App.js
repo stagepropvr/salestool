@@ -16,10 +16,11 @@ class App extends Component {
       
        
         <div style={{width:"100%",background:'#fff'}}>
+          
       <Router >
        <Switch> 
         <Route  path='/login' component={Login} />
-         
+       
 
          <Route path='/signup' component={Signup} />
 
@@ -30,9 +31,10 @@ class App extends Component {
          <Route  path='/joinroom/:uid/:pid/:rid' component={Joinroom} />
 
          <Route path='/createroom/:pid' component={Createroom} />
-        
+         <Route path='/room/:pid/:roomid' component={Salespage} />
          </Switch>
          </Router>
+         
    </div>
  
       

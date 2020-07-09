@@ -20,11 +20,15 @@ class Createroom extends React.Component {
         name:'',
         img:'',
         username:'',
-        modal:false
+        modal:false,
+        room:""
+        
     }
 
     this.handlechange=this.handlechange.bind(this);
     this.handlesubmit=this.handlesubmit.bind(this);
+    this.room=this.room.bind(this);
+
   }
   
 componentDidMount(){
@@ -109,13 +113,26 @@ componentDidMount(){
         this.setState({ [name]: value });
 }
 
+room(){
+ Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.match.params.pid+"/rooms").push({
+  val:"dummy"
+}).then((res)=>{
+  
+  console.log(res.key);
+  this.setState({
+  room:res.key
+});
+});
+//console.log(roomid);
 
+}
 
 
 
   render() {
     if(this.state.redirect){
         const current_tag = 1;
+        if(this.state.room==""){
         return(
             <>
              <Header current_tag={current_tag}/>
@@ -201,7 +218,7 @@ componentDidMount(){
 
     <div  className="col-md-5" style={{paddingLeft: "10px",paddingTop: "20px"}}>
             <Link to={"/projects"}><button type="submit" className="btn create_session_back">Back</button></Link>
-            <button style={{marginLeft:'4px'}} type="submit" className="btn create_session">Create session</button>    
+            <button onClick={this.room} style={{marginLeft:'4px'}} type="submit" className="btn create_session">Create session</button>    
     </div>
     </div>
   </div>
@@ -225,8 +242,13 @@ componentDidMount(){
       </div>
     </div>
     </div>
+    
             </>
-        )
+           
+        )}
+        else{
+return(<Redirect to={"/room/"+this.props.match.params.pid+"/"+this.state.room}/>)
+        }
     }
     else{
         return <Redirect to="/login"></Redirect>
