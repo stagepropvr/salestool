@@ -33,7 +33,8 @@ class Video extends React.Component {
       socket: io.connect("localhost:5000"),
       host: true,
       apiload: true,
-      images:""
+      images:"",
+      data:''
     };
 
     this.doc_id = null;
@@ -50,10 +51,8 @@ class Video extends React.Component {
 
       if (user) {
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
-          console.log(node.val().images);
-          
+          this.state.data = node.val();
           if (node.hasChild("images")) {
-            console.log("dsf")
             for (var x in node.val().images){
               console.log(x,node.val().images[x]);
               this.setState({
@@ -275,8 +274,16 @@ class Video extends React.Component {
   }
 
   changeImage = (str) => {
-    // console.log(str);
     this.setState({ current_image: str })
+    if(document.getElementById(str+"_thumb")){
+      var a = document.querySelectorAll('.item_active');
+      console.log(a);
+      [].forEach.call(a, function(el) {
+        console.log(el);
+                el.classList.remove("item_active");
+      });
+      document.getElementById(str+"_thumb").classList.add('item_active');
+    }
   }
 
   change = (str) => {
@@ -330,6 +337,7 @@ class Video extends React.Component {
             </div>
 
             <SceneControls
+              data={this.state.data}
               changeImage={this.changeImage}
               micstate={this.state.micState}
               screenaction={() => {

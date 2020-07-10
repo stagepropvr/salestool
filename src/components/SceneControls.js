@@ -10,9 +10,6 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 import "../assets/css/owl.carousel.css";
 import "../assets/css/owl.theme.default.css";
 import OwlCarousel from 'react-owl-carousel';
-
-
-
 import BottomSlider from "./BottomSlider";
 
 
@@ -151,7 +148,7 @@ return (
           {/* <OwlCarousel responsiveClass={true} autoWidth={true}   margin={10} navText={nav} dots={false} responsive={res} nav={true} id="MultiCarousel" className="MultiCarousel owl-carousel">
             {this.rooms}
         </OwlCarousel> */}
-        {this.props.host && <BottomSlider changeImage = {this.props.changeImage}/>}
+        <BottomSlider data={this.props.data} changeImage = {this.props.changeImage}/>
  
         </div>
       </div>

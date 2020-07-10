@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as  Redirect, Route, Link } from "react-router-dom";
+import { Redirect, Route, Link } from "react-router-dom";
 import Fire from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
@@ -17,11 +17,11 @@ componentDidMount(){
 [].forEach.call(elems, function(el) {
     el.classList.remove("active");
 });
-if(this.props.current_tag==0)
+if(this.props.current_tag===0)
     document.getElementById('dashboard').classList.add('active');
-else if(this.props.current_tag==1)
+else if(this.props.current_tag===1)
     document.getElementById('project').classList.add('active');
-else if(this.props.current_tag==2)
+else if(this.props.current_tag===2)
     document.getElementById('tool').classList.add('active')
 
     window.scrollTo(0, 0)
@@ -37,7 +37,7 @@ else if(this.props.current_tag==2)
    return( <nav className="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
    <div className="container">
      <div  className="navbar-translate">
-       <a className="navbar-brand">
+       <a href="/" className="navbar-brand">
            <svg width="72" height="39" viewBox="0 0 72 39" fill="none">
                <rect width="72" height="39" fill="url(#pattern0)"/>
                <defs>
@@ -59,13 +59,13 @@ else if(this.props.current_tag==2)
      <div className="collapse navbar-collapse" id="navbarText">
        <ul className="navbar-nav mr-auto">
          <li id="dashboard" className="nav-item active">
-           <a className="nav-link" href="javascript:;">Dashboard</a>
+           <Link to={"/dashboard"} className="nav-link">Dashboard</Link>
          </li>
          <li id="project" className="nav-item">
-           <a className="nav-link" href="javascript:;">My projects</a>
+           <Link to={"/projects"} className="nav-link">My projects</Link>
          </li>
          <li id="tool" className="nav-item">
-           <a className="nav-link" href="javascript:;">Tools</a>
+           <Link to={"/tools"} className="nav-link">Tools</Link>
          </li>
        </ul>
      </div>
@@ -75,7 +75,7 @@ else if(this.props.current_tag==2)
        </li>
        <li style={{paddingLeft: "10px"}} className="dropdown nav-item">
          <a href="javascript:;" className="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
-           <img src="https://s3.amazonaws.com/creativetim_bucket/new_logo.png" alt="Circle Image" className="rounded-circle img-fluid" />
+           <img src="https://s3.amazonaws.com/creativetim_bucket/new_logo.png" alt="username" className="rounded-circle img-fluid" />
            <span className="username">John Doe</span>
            <b className="caret"></b>
          </a>
