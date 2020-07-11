@@ -30,16 +30,25 @@ class Video extends React.Component {
       peers: {},
       streams: {},
       current_image: "",
-      socket: io.connect("mysterious-dusk-60271.herokuapp.com"),
+      socket: io.connect("localhost:5000"),
       host: true,
       apiload: true,
       images:"",
-      camera:"user"
+      camera:"user",
+      data:'',
+      messages:[],
+      messagetext:""
+      
+
     };
+    this.Sidenav = React.createRef();
+    this.bottom = React.createRef();
 
     this.doc_id = null;
-
-    console.log(this.props.roomId);
+this.sendmessage=this.sendmessage.bind(this);
+this.updatetyping=this.updatetyping.bind(this);
+this.togglenav=this.togglenav.bind(this);    
+console.log(this.props.roomId);
   }
   videoCall = new VideoCall();
 
@@ -51,10 +60,8 @@ class Video extends React.Component {
 
       if (user) {
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
-          console.log(node.val().images);
-          
+          this.state.data = node.val();
           if (node.hasChild("images")) {
-            console.log("dsf")
             for (var x in node.val().images){
               console.log(x,node.val().images[x]);
               this.setState({
@@ -182,7 +189,11 @@ class Video extends React.Component {
       }
     })
     this.state.socket.on('chat message', ({ message, user }) => {
-      console.log("fsdsadasdasdsadsad");
+     
+      this.setState(ele => ({
+        messages: [...ele.messages, {user: user,content:message}]
+      }))
+      console.log(this.state.messages);
     });
     this.state.socket.on('disconnect', (disuser) => {
       console.log(disuser);
@@ -226,6 +237,24 @@ class Video extends React.Component {
     });
   }
 
+togglenav()
+{
+  console.log(this.Sidenav.current.style.width);
+  
+  if(this.Sidenav.current.style.width==="300px"){
+    this.Sidenav.current.style.width="0px";
+        console.log(this.bottom.current.offsetWidth);
+        this.bottom.current.style.width=this.bottom.current.offsetWidth+300+"px";
+
+  }
+  else{
+    this.Sidenav.current.style.width="300px";
+    console.log(this.bottom.current.offsetWidth);
+    this.bottom.current.style.width=this.bottom.current.offsetWidth-300+"px";
+  }
+}
+
+
   setAudioLocal() {
     console.log(this.state.socket.id)
     const message = {
@@ -233,7 +262,7 @@ class Video extends React.Component {
       user: this.state.socket.id,
       mesage: "asd"
     };
-    this.state.socket.emit('chat message', message);
+   
     if (this.state.localStream.getAudioTracks().length > 0) {
       this.state.localStream.getAudioTracks().forEach(track => {
         track.enabled = !track.enabled;
@@ -256,38 +285,48 @@ class Video extends React.Component {
   }
 
   getDisplay() {
-    if(this.state.camera==="user"){
-      this.setState({
-        camera:"environment"
-      })
-    }
-    else{
-      this.setState({
-        camera:"user"
-      })
-    }
-    this.getUserMedia().then(stream => {
-     
-        Object.keys(this.state.peers).forEach((key) => {
-          this.state.peers[key].removeStream(this.state.localStream);
-        })
-        this.getUserMedia().then(() => {
-          Object.keys(this.state.peers).forEach((key) => {
-            this.state.peers[key].addStream(this.state.localStream);
+    const op = {
+      video: {
+        width: { min: 160, ideal: 640, max: 1280 },
+        height: { min: 120, ideal: 360, max: 125 },
+    facingMode:this.state.camera  },
+      audio: false
+    };
+    navigator.getUserMedia(
+      op,
+      stream => {
+        stream.oninactive = () => {
+          Object.keys(this.state.peers).forEach((key)=>{
+            this.state.peers[key].removeStream(this.state.localStream);
           })
-        });
-    
-      this.setState({ streamUrl: stream, localStream: stream });
-      this.localVideo.srcObject = stream;
-      Object.keys(this.state.peers).forEach((key) => {
-        this.state.peers[key].addStream(this.state.localStream);
-      })
-    });
+          this.getUserMedia().then(() => {
+            Object.keys(this.state.peers).forEach((key)=>{
+              this.state.peers[key].addStream(this.state.localStream);
+            })
+          });
+        };
+        this.setState({ streamUrl: stream, localStream: stream });
+        this.localVideo.srcObject = stream;
+        Object.keys(this.state.peers).forEach((key)=>{
+          this.state.peers[key].addStream(this.state.localStream);
+        })
+      },
+      () => { }
+    );
+      
+   
   }
-
   changeImage = (str) => {
-    // console.log(str);
     this.setState({ current_image: str })
+    if(document.getElementById(str+"_thumb")){
+      var a = document.querySelectorAll('.item_active');
+      console.log(a);
+      [].forEach.call(a, function(el) {
+        console.log(el);
+                el.classList.remove("item_active");
+      });
+      document.getElementById(str+"_thumb").classList.add('item_active');
+    }
   }
 
   change = (str) => {
@@ -298,6 +337,29 @@ class Video extends React.Component {
         this.changeImage(key) }
     }
   }
+
+  sendmessage(e){
+    e.preventDefault();
+    const message = {
+      room: this.props.roomId,
+      user: this.state.socket.id,
+      message: this.state.messagetext
+    };
+    console.log(message);
+    this.state.socket.emit('chat message', message);
+    this.setState({
+      messagetext:""
+    });
+  }
+  updatetyping(e){
+console.log(e.target.value);
+this.setState({
+  messagetext:e.target.value
+});
+  }
+
+
+
   render() {
     if (this.state.apiload) {
       return (<></>)
@@ -313,6 +375,7 @@ class Video extends React.Component {
           });
       }
 
+      
       return (
         <>
           <Scene
@@ -323,24 +386,95 @@ class Video extends React.Component {
           />
           <div className='video-wrapper'>
             <div className='local-video-wrapper'>
-              <video
+             
+              
+            </div>
+              
+
+            <button onClick={this.togglenav} className="menu_option" style={{background: '#fff', float: 'right', position: 'relative', marginRight: '16px', top: '10px'}}>
+  <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
+    <defs>
+      <path id="prefix__dot" d="M12 17c1.104 0 2 .896 2 2s-.896 2-2 2-2-.896-2-2 .896-2 2-2zm0-7c1.104 0 2 .896 2 2s-.896 2-2 2-2-.896-2-2 .896-2 2-2zm0-7c1.104 0 2 .896 2 2s-.896 2-2 2-2-.896-2-2 .896-2 2-2z" />
+    </defs>
+    <g fill="none" fillRule="evenodd">
+      <use fill="#222B45" xlinkHref="#prefix__dot" />
+    </g>
+  </svg>               
+</button>
+<div id="mySidenav" ref={this.Sidenav} className="sidenav" >
+  <a onClick={this.togglenav} className="closebtn" onclick="closeNav()">×</a>
+  <div style={{height: '100%'}}>
+    <div className="nav-tabs-navigation">
+      <div className="nav-tabs-wrapper">
+        <ul style={{padding: 0}} className="nav nav-tabs" data-tabs="tabs">
+          <li style={{marginLeft: 0}} className="nav-item">
+            <a className="nav-link active show" href="#members" data-toggle="tab">Members</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="#chat" data-toggle="tab">CHAT</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div style={{height: '100%'}} className="tab-content text-center">
+      <div style={{padding: '10px 50px'}} className="tab-pane active show" id="members">
+        <div>
+      <video
                 autoPlay
                 id='localVideo' className="user-video"
                 muted
                 ref={video => (this.localVideo = video)}
-              />
-              {
+              /></div>
+      {
                 Object.keys(this.state.streams).map((key, id) => {
-                  return <VideoItem
+                  return <div>
+                    <p> {key}</p><VideoItem
                     key={key}
                     userId={key}
                     stream={this.state.streams[key]}
-                  />
+                  /></div>
                 })
               }
-            </div>
+      </div>
+      <div style={{height: '100%'}} className="tab-pane" id="chat">
+        <ul className="chat_bar">
+        {this.state.messages.map((child)=>{
+            return(
+              <li className={this.state.socket.id===child.user?"self":"other"}>
+              <div className="chat_name">{child.user}</div>
+            <div className={this.state.socket.id===child.user?"self_msg":"other_msg"}>{child.content}</div>
+            </li>
+            )
+          })}
+         
+        </ul>
+        <form className="media_form" onSubmit={this.sendmessage}>
+          <span>
+            <input type="file" style={{display: 'none'}} />
+            <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
+              <defs>
+                <path id="prefix__file" d="M12 22c-3.309 0-6-2.557-6-5.698V6.132C6 3.854 7.944 2 10.333 2c2.39 0 4.334 1.854 4.334 4.132l-.006 10.177c0 1.414-1.197 2.565-2.667 2.565-1.47 0-2.666-1.151-2.666-2.566l.005-9.391c.001-.552.449-.999 1-.999h.001c.552 0 1 .448.999 1.001l-.005 9.39c0 .311.298.565.666.565.368 0 .667-.254.667-.566l.006-10.177C12.667 4.956 11.62 4 10.333 4 9.047 4 8 4.956 8 6.132v10.17C8 18.341 9.794 20 12 20s4-1.659 4-3.698V6.132c0-.553.448-1 1-1s1 .447 1 1v10.17C18 19.443 15.309 22 12 22" />
+              </defs>
+              <g fill="none" fillRule="evenodd">
+                <use fill="#222B45" xlinkHref="#prefix__file" />
+              </g>
+            </svg>
+          </span>
+          <input type="text" className="input_box" value={this.state.messagetext} onChange={this.updatetyping} placeholder="Type your message and press enter" />
+        </form>
+      </div>  
+    </div>
+  </div>
+</div>
 
+
+
+
+
+
+<div id="bottom" className="container" ref={this.bottom} >
             <SceneControls
+              data={this.state.data}
               changeImage={this.changeImage}
               micstate={this.state.micState}
               screenaction={() => {
@@ -355,6 +489,7 @@ class Video extends React.Component {
               camstate={this.state.camState}
               host={this.state.host}
             />
+            </div>
           </div>
         </>);
     }

@@ -4,6 +4,7 @@
   "private": true,
   "main": "src/index.js",
   "dependencies": {
+    "@ionic/react": "^5.2.3",
     "aframe": "^1.0.4",
     "aframe-look-at-component": "^1.0.0",
     "express": "^4.17.1",

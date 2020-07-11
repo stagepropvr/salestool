@@ -88,9 +88,7 @@ class Scene extends React.Component {
            
 
         </a-scene>
-        <div>
-          Ghiri
-        </div>
+       
       </div>
     );
     }
