@@ -1,28 +1,88 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
 import "../assets/css/Custom.css";
-
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel/dist/assets/owl.theme.default.css';
-import "../assets/css/owl.carousel.css";
-import "../assets/css/owl.theme.default.css";
-import OwlCarousel from 'react-owl-carousel';
 import BottomSlider from "./BottomSlider";
-
+import Share from "./ShareModal";
+import DocumentModal from "./DocumentModal";
 
 class SceneControls extends React.Component { 
   constructor(props){
     super(props);
+    this.state={
+      share:false,
+      document:false
+    }
+    //this.modal = this.modal.bind(this);
+   // this.open_close = this.open_close.bind(this);
   }
 
+// modal(event){
+//   const { name} = event.target;
+//   this.setState({ [name]: true });
+//   console.log(name)
+// }
 
+open_close = (name,flag) =>{
+  if(flag){
+    document.getElementById('left_light_mode').style.display='none';
+    document.getElementById('right_light_mode').style.display='none';
+    document.getElementById('left_dark_mode').style.display='block';
+    document.getElementById('right_dark_mode').style.display='block';
+    document.getElementById('menu_bar_down').style.display='none';
+    document.getElementById('menu_bar_up').style.display='block';
+    document.getElementById('menu_bar').classList.remove('menu_option_click');
+    document.getElementById('bottom').classList.add('bottom_modal_open');
+    var a = document.querySelectorAll('.pad15');
+    for(var i =0 ; i<a.length;i++){
+        console.log(a[i].childNodes[0]);
+        var classname = a[i].parentNode.className;
+        if(classname.includes('item_active')){
+            a[i].classList.add('pad15_modal_open_active');
+            a[i].childNodes[0].classList.add('slider_name_modal_open_active');
+        }
+        else{
+            a[i].classList.add('pad15_modal_open');
+            a[i].childNodes[0].classList.add('slider_name_modal_open');
+
+        }
+        
+    }
+  }else{
+    document.getElementById('left_dark_mode').style.display='none';
+    document.getElementById('right_dark_mode').style.display='none';
+    document.getElementById('left_light_mode').style.display='block';
+    document.getElementById('right_light_mode').style.display='block';
+
+    document.getElementById('bottom').classList.remove('bottom_modal_open');
+    var a = document.querySelectorAll('pad15_modal_open_active');
+    var a = document.querySelectorAll('.pad15');
+    for(var i =0 ; i<a.length;i++){
+        console.log(a[i].childNodes[1]);
+        var classname = a[i].parentNode.className;
+        if(classname.includes('item_active')){
+            a[i].classList.remove('pad15_modal_open_active');
+            a[i].childNodes[0].classList.remove('slider_name_modal_open_active');
+        }
+        else{
+            a[i].classList.remove('pad15_modal_open');
+            a[i].childNodes[0].classList.remove('slider_name_modal_open');
+
+        }
+        
+    }
+  }
+  this.setState({
+    [name]:flag
+  })
+}
   render() {
 return (
-  
-<div id="bottom" className="container" >
+  <>
+  <div id="bottom" className="container" >
         <div style={{height: '72px', flexWrap: 'nowrap'}} className="row">
           <div className="content_padding dropup">
             <button id="menu_bar" type="button" className="menu_option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -48,7 +108,8 @@ return (
               </span>
             </button>
             <div className="menudrop dropdown-menu" x-placement="top-start" style={{position: 'absolute', top: '8px', left: '15px', willChange: 'top, left'}}>
-              <a onclick="show_modal();" data-toggle="tooltip" data-placement="right" title className="menudrop_item dropdown-item" href="#" data-original-title="share">
+
+              <a onClick={()=> this.open_close('share',true)} name="share" data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-original-title="share">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__b" d="M16 16c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1M3 10c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1m13-8c.552 0 1 .448 1 1s-.448 1-1 1-1-.448-1-1 .448-1 1-1m0 10c-.817 0-1.557.33-2.099.861L5.966 9.335C5.979 9.224 6 9.114 6 9c0-.114-.021-.224-.034-.335l7.935-3.526C14.443 5.67 15.183 6 16 6c1.654 0 3-1.346 3-3s-1.346-3-3-3-3 1.346-3 3c0 .114.021.224.034.335L5.099 6.861C4.557 6.33 3.817 6 3 6 1.346 6 0 7.346 0 9s1.346 3 3 3c.817 0 1.557-.33 2.099-.861l7.935 3.526c-.013.111-.034.221-.034.335 0 1.654 1.346 3 3 3s3-1.346 3-3-1.346-3-3-3" />
@@ -58,7 +119,7 @@ return (
                   </g>
                 </svg>
               </a>
-              <a onclick="modal_open();document.getElementById('project_modal').style.display='block';" data-toggle="tooltip" data-placement="right" title className="menudrop_item dropdown-item" href="#" data-original-title="switch project">
+              <a onClick={()=> this.open_close('project',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-original-title="switch project">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__c" d="M4.4 9.2c.443-.33 1.069-.242 1.4.2.331.442.242 1.07-.2 1.4L4 12h13c.552 0 1 .447 1 1 0 .553-.448 1-1 1H3.918l1.558 1.21c.436.34.515.968.176 1.403-.197.254-.492.387-.79.387-.215 0-.431-.068-.613-.21l-3.862-3c-.247-.19-.389-.486-.387-.799.002-.31.15-.604.4-.79zM12.348.387c.339-.437.968-.516 1.403-.177l3.862 3c.247.191.389.486.387.8-.002.31-.15.603-.4.79l-4 3c-.18.135-.391.2-.599.2-.304 0-.605-.138-.801-.4-.331-.442-.242-1.069.2-1.4L14 5H1c-.552 0-1-.447-1-1 0-.553.448-1 1-1h13.082l-1.558-1.21c-.436-.339-.515-.968-.176-1.403z" />
@@ -68,7 +129,7 @@ return (
                   </g>
                 </svg>
               </a>
-              <a onclick="modal_open();document.getElementById('document_modal').style.display='block';" data-toggle="tooltip" data-placement="right" title className="menudrop_item dropdown-item" href="#" data-original-title="brochure">
+              <a onClick={()=> this.open_close('document',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-original-title="brochure">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__d" d="M11 14c.553 0 1 .448 1 1s-.447 1-1 1H5c-.552 0-1-.448-1-1s.448-1 1-1zm-3-4c.552 0 1 .448 1 1s-.448 1-1 1H5c-.552 0-1-.448-1-1s.448-1 1-1zm5.444 8H2.555C2.25 18 2 17.776 2 17.5v-15c0-.276.25-.5.555-.5H8v3.15C8 6.722 9.217 8 10.714 8H14v9.5c0 .276-.249.5-.556.5zM10 2.978L12.742 6h-2.028C10.32 6 10 5.619 10 5.15V2.978zm5.74 3.35l-5.444-6C10.106.119 9.838 0 9.556 0h-7C1.145 0 0 1.122 0 2.5v15C0 18.878 1.146 20 2.555 20h10.89C14.852 20 16 18.878 16 17.5V7c0-.249-.093-.488-.26-.672z" />
@@ -78,7 +139,7 @@ return (
                   </g>
                 </svg>
               </a>
-              <a data-toggle="tooltip" data-placement="right" title className="menudrop_item dropdown-item" href="#" data-original-title>
+              <a data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-original-title>
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__e" d="M15.69 12.963L10 15.607V8.89l6-2.787v6.435c0 .174-.118.336-.31.424zm-13.387 0c-.189-.087-.305-.25-.303-.431V6.104L8 8.89v6.718l-5.697-2.645zm6.404-10.9C8.798 2.022 8.9 2 9 2c.1 0 .201.02.292.064l5.33 2.474L9 7.15 3.378 4.538l5.33-2.474zm8.95 2.196c-.004-.008-.003-.017-.007-.025-.003-.008-.01-.013-.016-.021-.046-.076-.102-.143-.155-.213-.03-.034-.056-.072-.09-.101-.235-.276-.512-.52-.856-.678l-6.4-2.973-.002-.001c-.719-.332-1.544-.331-2.265 0L1.47 3.22c-.344.159-.622.4-.857.677-.037.03-.064.073-.097.11-.052.067-.105.132-.149.204-.005.009-.013.015-.017.023-.004.009-.003.018-.007.027C.132 4.623 0 5.03 0 5.458v7.067c-.008.95.564 1.834 1.458 2.252l6.4 2.972c.361.169.75.253 1.138.253.388 0 .776-.084 1.137-.252l6.397-2.972c.892-.412 1.47-1.29 1.47-2.238V5.457c0-.428-.132-.835-.344-1.198z" />
@@ -88,7 +149,7 @@ return (
                   </g>
                 </svg>
               </a>
-              <a data-toggle="tooltip" data-placement="right" title className="menudrop_item dropdown-item" href="#" data-original-title="Floor Plan">
+              <a data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-original-title="Floor Plan">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__f" d="M16 13.454l-2-.898V2.546l2 .898v10.01zm-6-10.01l2-.898v10.01l-2 .898V3.444zm-4-.898l2 .898v10.01l-2-.898V2.546zm-4 .898l2-.898v10.01l-2 .898V3.444zm15.41-1.558l-4-1.798c-.015-.007-.031-.008-.046-.014-.041-.016-.082-.027-.124-.038-.039-.01-.078-.019-.118-.023-.039-.005-.078-.006-.118-.006-.044 0-.087.001-.131.006-.037.004-.072.013-.108.022-.044.011-.087.023-.13.04-.014.005-.031.006-.045.013L9 1.701 5.41.088C5.395.081 5.379.08 5.364.074 5.323.058 5.282.047 5.24.036c-.039-.01-.078-.019-.118-.023-.039-.005-.078-.006-.118-.006-.044 0-.087.001-.131.006-.037.004-.072.013-.108.022-.044.011-.087.023-.13.04-.014.005-.031.006-.045.013l-4 1.798c-.359.161-.59.518-.59.912V15c0 .34.172.655.457.84.164.106.353.16.543.16.139 0 .279-.029.41-.088L5 14.3l3.59 1.613c.015.007.031.004.047.01.117.047.238.078.363.078s.246-.03.363-.078c.015-.006.033-.003.047-.01L13 14.3l3.59 1.613c.131.06.271.088.41.088.19 0 .379-.054.543-.16.285-.185.457-.5.457-.84V2.798c0-.394-.231-.75-.59-.912z" />
@@ -98,7 +159,7 @@ return (
                   </g>
                 </svg>
               </a>
-              <a onclick="modal_open();document.getElementById('setting_modal').style.display='block';" data-toggle="tooltip" data-placement="right" title className="menudrop_item dropdown-item" href="#" data-original-title="Settings">
+              <a onClick={()=> this.open_close('setting',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-original-title="Settings">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__g" d="M2.403 9.622c1.116.383 2.005 1.317 2.377 2.501l.04.12c.426 1.256.253 2.608-.461 3.622-.13.184-.101.404.036.508l2.072 1.574c.073.055.144.055.188.05.05-.008.123-.035.182-.119l.23-.328c.69-.977 1.8-1.58 2.972-1.614 1.316-.027 2.498.576 3.234 1.64l.118.17c.059.084.13.112.182.12.044.01.116.006.188-.05l2.06-1.555c.145-.108.177-.339.07-.494l-.26-.375c-.67-.968-.87-2.224-.532-3.359.366-1.236 1.297-2.214 2.492-2.614l.2-.068c.162-.053.249-.253.192-.437l-.787-2.52c-.037-.119-.113-.172-.155-.194-.06-.03-.125-.036-.187-.015l-.34.113c-1.163.387-2.446.177-3.431-.564l-.108-.08c-.936-.705-1.493-1.84-1.49-3.036l.003-.28c0-.133-.063-.216-.101-.254-.036-.037-.097-.08-.183-.08L8.657 2c-.156 0-.283.15-.284.333l-.001.242C8.367 3.79 7.798 4.946 6.85 5.67l-.13.098c-1.042.793-2.402 1.017-3.634.597-.047-.016-.091-.013-.133.01-.032.015-.09.056-.118.147l-.817 2.596c-.06.19.038.386.22.45l.165.055zM6.613 20c-.485 0-.957-.158-1.355-.46l-2.072-1.574c-.99-.75-1.21-2.193-.49-3.216.375-.53.452-1.21.232-1.857l-.055-.168c-.183-.582-.601-1.034-1.118-1.21h-.001l-.163-.058C.373 11.04-.277 9.75.11 8.517l.816-2.595c.185-.587.584-1.06 1.124-1.334.528-.266 1.125-.307 1.683-.116.599.204 1.264.093 1.777-.297l.129-.098c.456-.348.73-.913.733-1.51v-.24C6.379 1.041 7.403 0 8.657 0h.004l2.547.003c.602.001 1.17.24 1.598.67.443.445.685 1.04.683 1.675l-.002.28c-.002.565.257 1.1.694 1.428l.107.081c.459.345 1.057.444 1.594.264l.339-.113c.577-.192 1.19-.145 1.732.132.555.284.965.773 1.153 1.378l.787 2.521c.38 1.218-.278 2.532-1.465 2.93l-.201.066c-.576.194-1.03.674-1.21 1.286-.166.561-.07 1.178.259 1.652l.26.375c.714 1.032.486 2.48-.508 3.23l-2.061 1.555c-.495.374-1.102.525-1.711.428-.614-.099-1.15-.439-1.51-.957l-.117-.172c-.35-.504-.91-.81-1.497-.777-.588.016-1.096.295-1.428.767l-.231.328c-.362.513-.9.848-1.51.944-.117.018-.233.026-.348.026zM10 8.5c-.827 0-1.5.673-1.5 1.5s.673 1.5 1.5 1.5 1.5-.673 1.5-1.5-.673-1.5-1.5-1.5m0 5c-1.93 0-3.5-1.57-3.5-3.5S8.07 6.5 10 6.5s3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5" />
@@ -118,7 +179,7 @@ return (
                 <path fill="#222B45" fillRule="evenodd" d="M13 17.92V20h2.105c.493 0 .895.402.895.895v.21c0 .493-.402.895-.895.895h-6.21C8.402 22 8 21.598 8 21.106v-.211c0-.493.402-.895.895-.895H11v-2.08c-3.387-.488-6-3.4-6-6.92 0-.552.447-1 1-1 .553 0 1 .448 1 1 0 2.757 2.243 5 5 5s5-2.243 5-5c0-.552.447-1 1-1 .553 0 1 .448 1 1 0 3.52-2.613 6.432-6 6.92zM10 6c0-1.103.897-2 2-2s2 .897 2 2v5c0 1.103-.897 2-2 2s-2-.897-2-2V6zm2 9c2.206 0 4-1.794 4-4V6c0-2.205-1.794-4-4-4S8 3.795 8 6v5c0 2.206 1.794 4 4 4z" />
               </svg>                
             </button>
-            <button onclick="offvideo(this);"  onClick={this.props.videoaction}  className={this.props.camstate?"menu_option video_on":"menu_option video_off"}>
+            <button   onClick={this.props.videoaction}  className={this.props.camstate?"menu_option video_on":"menu_option video_off"}>
               
             {this.props.camstate?<svg id="video_on" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                <defs>
@@ -133,7 +194,7 @@ return (
             
               
             </button>
-            <button onclick="close_session();" onClick={this.props.screenaction} className="menu_option" style={{background: '#fff'}}>
+            <button  onClick={this.props.screenaction} className="menu_option" style={{background: '#fff'}}>
               <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                 <defs>
                   <path id="prefix__q" d="M12.15 12.146c.243-.234.588-.326.916-.253l5.964 1.369c.336.077.608.32.72.647.082.235.145.48.186.73.041.248.064.503.064.762C20 17.937 17.936 20 15.4 20c-3.566 0-6.844-1.23-9.457-3.271l1.428-1.427C9.61 16.988 12.386 18 15.4 18 16.834 18 18 16.834 18 15.4c0-.111-.006-.22-.021-.327l-4.62-1.061-.286.545c-.455.87-.782 1.502-1.627 1.163-1.053-.37-2.032-.91-2.934-1.561l1.43-1.43c.447.304.918.574 1.412.799.65-1.243.654-1.245.796-1.382zm4.332-9.885c.348-.348.91-.348 1.257 0 .348.347.348.909 0 1.257L3.517 17.74c-.347.347-.91.347-1.257 0-.173-.173-.26-.401-.26-.628 0-.228.087-.455.26-.63zM4.6 0c.261 0 .517.023.766.066.243.039.49.1.727.183.325.112.57.385.646.72l1.37 5.965c.074.328-.02.673-.254.916-.136.142-.14.145-1.38.795.227.494.497.964.8 1.41l-1.43 1.429c-.658-.908-1.203-1.9-1.579-2.97-.322-.803.307-1.132 1.178-1.587l.545-.285-1.06-4.62C4.817 2.007 4.708 2 4.598 2 3.166 2 2 3.166 2 4.6c0 3.013 1.012 5.789 2.698 8.03l-1.427 1.427C1.23 11.443.001 8.166.001 4.6 0 2.064 2.062 0 4.598 0z" />
@@ -152,6 +213,12 @@ return (
  
         </div>
       </div>
+  
+    <Share open_close={this.open_close} share={this.state.share} pid={this.props.pid} roomId={this.props.roomId} user_id={this.props.user_id}></Share>
+    <DocumentModal data={this.props.data} open_close={this.open_close} document={this.state.document}></DocumentModal>
+
+  </>
+
 )}
 }
 export default SceneControls;

@@ -19889,6 +19889,7 @@ height: 40px;
 }
 
 .share_link{
+  overflow-wrap: break-word;
   font-family: 'propvr';
   font-size: 15px;
   font-weight: normal;
@@ -20253,5 +20254,10 @@ select{
   height: 40px;
   border-radius: 4px;
   background-color: #edf1f7;
+}
+
+.form-check .form-check-input:hover + .circle .check{
+  color:#3366ff;
+  transform: scale3d(0.65, 0.65, 1);
 }
 /*# sourceMappingURL=kit-free.css.map */

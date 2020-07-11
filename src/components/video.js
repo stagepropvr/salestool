@@ -34,7 +34,8 @@ class Video extends React.Component {
       host: true,
       apiload: true,
       images:"",
-      data:''
+      data:'',
+      user_id:''
     };
 
     this.doc_id = null;
@@ -50,6 +51,9 @@ class Video extends React.Component {
     Firebase.auth().onAuthStateChanged((user) => {
 
       if (user) {
+        this.setState({
+          user_id:user.uid
+        })
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
           this.state.data = node.val();
           if (node.hasChild("images")) {
@@ -337,6 +341,9 @@ class Video extends React.Component {
             </div>
 
             <SceneControls
+              pid={this.props.pid}
+              roomId={this.props.roomId}
+              user_id={this.state.user_id}
               data={this.state.data}
               changeImage={this.changeImage}
               micstate={this.state.micState}
