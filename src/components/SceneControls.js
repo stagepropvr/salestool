@@ -13,12 +13,13 @@ class SceneControls extends React.Component {
   constructor(props){
     super(props);
     this.state={
+
       share:false,
-      document:false
-    }
-    //this.modal = this.modal.bind(this);
-   // this.open_close = this.open_close.bind(this);
-  }
+      document:false,
+      data:this.props.data
+      
+          }
+      }
 
 // modal(event){
 //   const { name} = event.target;
@@ -81,8 +82,10 @@ open_close = (name,flag) =>{
 }
   render() {
 return (
+
   <>
   <div id="bottom" className="container" >
+
         <div style={{height: '72px', flexWrap: 'nowrap'}} className="row">
           <div className="content_padding dropup">
             <button id="menu_bar" type="button" className="menu_option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -209,15 +212,18 @@ return (
           {/* <OwlCarousel responsiveClass={true} autoWidth={true}   margin={10} navText={nav} dots={false} responsive={res} nav={true} id="MultiCarousel" className="MultiCarousel owl-carousel">
             {this.rooms}
         </OwlCarousel> */}
-        <BottomSlider data={this.props.data} changeImage = {this.props.changeImage}/>
+   
+        <BottomSlider data={this.state.data} changeImage = {this.props.changeImage}/>
  
         </div>
+
       </div>
   
     <Share open_close={this.open_close} share={this.state.share} pid={this.props.pid} roomId={this.props.roomId} user_id={this.props.user_id}></Share>
     <DocumentModal data={this.props.data} open_close={this.open_close} document={this.state.document}></DocumentModal>
 
   </>
+
 
 )}
 }
