@@ -34,11 +34,13 @@ class Video extends React.Component {
       host: true,
       apiload: true,
       images:"",
+
+      user_id:'',
+
       camera:"user",
       data:'',
       messages:[],
       messagetext:""
-      
 
     };
     this.Sidenav = React.createRef();
@@ -59,6 +61,9 @@ console.log(this.props.roomId);
     Firebase.auth().onAuthStateChanged((user) => {
 
       if (user) {
+        this.setState({
+          user_id:user.uid
+        })
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
           this.state.data = node.val();
           if (node.hasChild("images")) {
@@ -474,6 +479,9 @@ this.setState({
 
 <div id="bottom" className="container" ref={this.bottom} >
             <SceneControls
+              pid={this.props.pid}
+              roomId={this.props.roomId}
+              user_id={this.state.user_id}
               data={this.state.data}
               changeImage={this.changeImage}
               micstate={this.state.micState}

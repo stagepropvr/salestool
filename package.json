@@ -7,6 +7,7 @@
     "@ionic/react": "^5.2.3",
     "aframe": "^1.0.4",
     "aframe-look-at-component": "^1.0.0",
+    "flip-book": "^1.9.8",
     "express": "^4.17.1",
     "express-favicon": "^2.0.1",
     "firebase": "^7.16.0",
