@@ -3,7 +3,7 @@ import { Redirect, Route, Link } from "react-router-dom";
 import Fire from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
-import Pdfviewer from "./Pdfviewer";
+// import Pdfviewer from "./Pdfviewer";
 
 class DocumentModal extends React.Component {
   constructor(props){
@@ -111,7 +111,7 @@ componentDidMount(){
             <div className="modal-body">
               <p className="share_content">Select the document you would like to share</p>
               <div className="switch_project_list">
-                  {Object.keys(this.props.data.brochure).map((value,index)=>{
+                  {/* {Object.keys(this.props.data.brochure).map((value,index)=>{
                         return( <>
                         <div onClick={()=> this.open_close_pdf('pdf_modal',true,this.props.data.brochure[value]['url'])} className="form-check form-check-radio">
                         <label className="switch_project_label form-check-label">
@@ -124,7 +124,7 @@ componentDidMount(){
                     </div>
                     <hr/> 
                         </> )
-                  })}
+                  })} */}
                             
            </div>
             </div>
@@ -137,7 +137,7 @@ componentDidMount(){
           </div>
         </div>
         </div>
-        <Pdfviewer pdf={this.state.pdf_modal} data={this.state.data}></Pdfviewer>
+        {/* <Pdfviewer pdf={this.state.pdf_modal} data={this.state.data}></Pdfviewer> */}
           </>
         
       )

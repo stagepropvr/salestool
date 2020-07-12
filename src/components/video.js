@@ -1,16 +1,14 @@
 import React from 'react';
 import VideoCall from '../helpers/simple-peer';
-import '../App.css';
-import '../styles/video.css'
+import '../styles/video.css';
 import io from 'socket.io-client';
 import { getDisplayStream } from '../helpers/media-access';
 import Peer from 'simple-peer'
-import Data from "../Data/data.json"
-import VideoItem from "./videoItem"
+import VideoItem from "./videoItem";
+import Scene from "./Scene";
+import Firebase from "../config/Firebase";
 import SceneControls from "./SceneControls.js";
-import Scene from "./Scene"
-import Firebase from "../config/Firebase"
-// import BottomSlider from "./BottomSlider"
+
 
 let userId = null
 
@@ -34,96 +32,68 @@ class Video extends React.Component {
       host: true,
       apiload: true,
       images:"",
-
       user_id:'',
-
       camera:"user",
       data:'',
       messages:[],
       messagetext:""
-
     };
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
-
-    this.doc_id = null;
-this.sendmessage=this.sendmessage.bind(this);
-this.updatetyping=this.updatetyping.bind(this);
-this.togglenav=this.togglenav.bind(this);    
-console.log(this.props.roomId);
+    this.togglenav=this.togglenav.bind(this); 
   }
   videoCall = new VideoCall();
-
-
 
   componentDidMount() {
 
     Firebase.auth().onAuthStateChanged((user) => {
-
+console.log(user.uid);
       if (user) {
-        this.setState({
-          user_id:user.uid
-        })
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
           this.state.data = node.val();
-          if (node.hasChild("images")) {
+       
             for (var x in node.val().images){
               console.log(x,node.val().images[x]);
+              
               this.setState({
                 current_image:x,
-                images: node.val().images
+                images: node.val().images,
+                data:node.val(),
+                apiload:false
               });
             break;
             }
-            this.setState({
-              host: true,
-              
-              apiload: false
-            });
-            this.Videoinit();
-          }
-          else {
-            this.setState({
-              host: false
-            });
-          }
         });
+      }
+      else{
 
-
-
-      } else {
-        this.setState({
-          host: false
-        })
       }
     });
-  }
-  Videoinit(){
 
+
+
+
+
+
+    // const socket = io.connect("localhost:5000");
     const component = this;
     // this.setState({ socket });
-    const roomId = this.props.roomId;
+    const { roomId } = this.props;
     this.getUserMedia().then(() => {
-      this.state.socket.emit('join', { room: this.props.roomId });
+      this.state.socket.emit('join', { roomId });
       console.log("socket.on join", roomId)
 
     });
-
 
     this.state.socket.on('init', (data) => {
 
       console.log("socket.on init", data)
 
       userId = data.userId;
-      this.state.socket.emit('ready', { room: this.props.roomId, user: userId });
+      this.state.socket.emit('ready', { room: roomId, userId });
     });
 
-    this.state.socket.on("data", (room) => {
-      this.upload(room);
-    })
-
     this.state.socket.on("users", ({ initiator, users }) => {
-      console.log("socket.on  initiator", initiator)
       console.log("socket.on  users", users)
 
       Object.keys(users.sockets)
@@ -136,10 +106,10 @@ console.log(this.props.roomId);
             config: {
               iceServers: [
                 {
-                  urls: 'turn:52.15.126.155:3478',
-                  credential: 'revsmart123',
-                  username: 'propvr'
-                }
+                  urls: "turn:turnserver.example.org",
+                        username: "webrtc",
+                        credential: "turnpassword" 
+                                      }
               ]
             },
             // Allow the peer to receive video, even if it's not sending stream:
@@ -150,19 +120,15 @@ console.log(this.props.roomId);
             },
             stream: this.state.localStream,
           })
-          const peersTemp = { ...this.state.peers }
-          peersTemp[sid] = peer
 
-          this.setState({ peers: peersTemp })
           peer.on('signal', data => {
             console.log("peer.on  signal", users)
 
             const signal = {
               userId: sid,
-              signal: data,
-              room: this.props.roomId
+              signal: data
             };
-            console.log(data);
+
             this.state.socket.emit('signal', signal);
           });
           peer.on('stream', stream => {
@@ -179,55 +145,37 @@ console.log(this.props.roomId);
             console.log(err);
           });
 
+          const peersTemp = { ...this.state.peers }
+          peersTemp[sid] = peer
 
+          this.setState({ peers: peersTemp })
         })
     })
 
     this.state.socket.on('signal', ({ userId, signal }) => {
       console.log("socket.on  signal userId", userId, "signal", signal)
 
-      const peer = this.state.peers[userId];
-      console.log(this.state.peers);
-      console.log(this.state.peers[userId]);
-      if (peer) {
-        peer.signal(signal)
-      }
+      const peer = this.state.peers[userId]
+      peer.signal(signal)
     })
-    this.state.socket.on('chat message', ({ message, user }) => {
-     
-      this.setState(ele => ({
-        messages: [...ele.messages, {user: user,content:message}]
-      }))
-      console.log(this.state.messages);
-    });
-    this.state.socket.on('disconnect', (disuser) => {
-      console.log(disuser);
+
+    this.state.socket.on('disconnected', () => {
       component.setState({ initiator: true });
     });
-
-    this.state.socket.on('location', (location) => {
-      if (!this.state.host) {
-        console.log("pew:", location);
-        this.change(location.location)
-      }
-    });
-
-
   }
-  
+
 
   getUserMedia(cb) {
-
     return new Promise((resolve, reject) => {
-      navigator.mediaDevices.getUserMedia = navigator.getUserMedia =
+      navigator.getUserMedia = navigator.getUserMedia =
         navigator.getUserMedia ||
         navigator.webkitGetUserMedia ||
         navigator.mozGetUserMedia;
       const op = {
         video: {
           width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 },
-      facingMode:this.state.camera  },
+          height: { min: 120, ideal: 360, max: 720 }
+        },
         audio: true
       };
       navigator.getUserMedia(
@@ -242,32 +190,7 @@ console.log(this.props.roomId);
     });
   }
 
-togglenav()
-{
-  console.log(this.Sidenav.current.style.width);
-  
-  if(this.Sidenav.current.style.width==="300px"){
-    this.Sidenav.current.style.width="0px";
-        console.log(this.bottom.current.offsetWidth);
-        this.bottom.current.style.width=this.bottom.current.offsetWidth+300+"px";
-
-  }
-  else{
-    this.Sidenav.current.style.width="300px";
-    console.log(this.bottom.current.offsetWidth);
-    this.bottom.current.style.width=this.bottom.current.offsetWidth-300+"px";
-  }
-}
-
-
   setAudioLocal() {
-    console.log(this.state.socket.id)
-    const message = {
-      room: this.props.roomId,
-      user: this.state.socket.id,
-      mesage: "asd"
-    };
-   
     if (this.state.localStream.getAudioTracks().length > 0) {
       this.state.localStream.getAudioTracks().forEach(track => {
         track.enabled = !track.enabled;
@@ -290,37 +213,26 @@ togglenav()
   }
 
   getDisplay() {
-    const op = {
-      video: {
-        width: { min: 160, ideal: 640, max: 1280 },
-        height: { min: 120, ideal: 360, max: 125 },
-    facingMode:this.state.camera  },
-      audio: false
-    };
-    navigator.getUserMedia(
-      op,
-      stream => {
-        stream.oninactive = () => {
-          Object.keys(this.state.peers).forEach((key)=>{
-            this.state.peers[key].removeStream(this.state.localStream);
-          })
-          this.getUserMedia().then(() => {
-            Object.keys(this.state.peers).forEach((key)=>{
-              this.state.peers[key].addStream(this.state.localStream);
-            })
-          });
-        };
-        this.setState({ streamUrl: stream, localStream: stream });
-        this.localVideo.srcObject = stream;
+    getDisplayStream().then(stream => {
+      stream.oninactive = () => {
         Object.keys(this.state.peers).forEach((key)=>{
-          this.state.peers[key].addStream(this.state.localStream);
+          this.state.peers[key].removeStream(this.state.localStream);
         })
-      },
-      () => { }
-    );
-      
-   
+        this.getUserMedia().then(() => {
+          Object.keys(this.state.peers).forEach((key)=>{
+            this.state.peers[key].addStream(this.state.localStream);
+          })
+        });
+      };
+      this.setState({ streamUrl: stream, localStream: stream });
+      this.localVideo.srcObject = stream;
+      Object.keys(this.state.peers).forEach((key)=>{
+        this.state.peers[key].addStream(this.state.localStream);
+      })
+    });
   }
+
+
   changeImage = (str) => {
     this.setState({ current_image: str })
     if(document.getElementById(str+"_thumb")){
@@ -343,60 +255,72 @@ togglenav()
     }
   }
 
-  sendmessage(e){
-    e.preventDefault();
-    const message = {
-      room: this.props.roomId,
-      user: this.state.socket.id,
-      message: this.state.messagetext
-    };
-    console.log(message);
-    this.state.socket.emit('chat message', message);
-    this.setState({
-      messagetext:""
-    });
+  togglenav()
+  {
+    console.log(this.Sidenav.current.style.width);
+    
+    if(this.Sidenav.current.style.width==="300px"){
+      this.Sidenav.current.style.width="0px";
+          console.log(this.bottom.current.offsetWidth);
+          this.bottom.current.style.width=this.bottom.current.offsetWidth+300+"px";
+  
+    }
+    else{
+      this.Sidenav.current.style.width="300px";
+      console.log(this.bottom.current.offsetWidth);
+      this.bottom.current.style.width=this.bottom.current.offsetWidth-300+"px";
+    }
   }
-  updatetyping(e){
-console.log(e.target.value);
-this.setState({
-  messagetext:e.target.value
-});
-  }
-
-
 
   render() {
-    if (this.state.apiload) {
-      return (<></>)
 
-    }
-
-    else {
-      if (this.state.host) {
-        this.state.socket.emit('location',
-          {
-            location: this.state.current_image.name,
-            room: this.props.roomId
-          });
-      }
-
-      
-      return (
-        <>
-          <Scene
+    return (<>
+    {this.state.apiload?<></>: <><Scene
             data={this.state.images}
             image={this.state.current_image}
             change={this.change}
             host={this.state.host}
           />
-          <div className='video-wrapper'>
-            <div className='local-video-wrapper'>
-             
-              
+          <div id="bottom" className="container" ref={this.bottom} >
+            <SceneControls
+              pid={this.props.pid}
+              roomId={this.props.roomId}
+              user_id={this.state.user_id}
+              data={this.state.data}
+              changeImage={this.changeImage}
+              micstate={this.state.micState}
+              screenaction={() => {
+                this.getDisplay();
+              }}
+              micaction={() => {
+                this.setAudioLocal();
+              }}
+              videoaction={() => {
+                this.setVideoLocal();
+              }}
+              camstate={this.state.camState}
+              host={this.state.host}
+            />
             </div>
-              
+          </>}
+     
+    
 
-            <button onClick={this.togglenav} className="menu_option" style={{background: '#fff', float: 'right', position: 'relative', marginRight: '16px', top: '10px'}}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <button onClick={this.togglenav} className="menu_option" style={{background: '#fff', float: 'right', position: 'relative', marginRight: '16px', top: '10px'}}>
   <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
     <defs>
       <path id="prefix__dot" d="M12 17c1.104 0 2 .896 2 2s-.896 2-2 2-2-.896-2-2 .896-2 2-2zm0-7c1.104 0 2 .896 2 2s-.896 2-2 2-2-.896-2-2 .896-2 2-2zm0-7c1.104 0 2 .896 2 2s-.896 2-2 2-2-.896-2-2 .896-2 2-2z" />
@@ -477,31 +401,27 @@ this.setState({
 
 
 
-<div id="bottom" className="container" ref={this.bottom} >
-            <SceneControls
-              pid={this.props.pid}
-              roomId={this.props.roomId}
-              user_id={this.state.user_id}
-              data={this.state.data}
-              changeImage={this.changeImage}
-              micstate={this.state.micState}
-              screenaction={() => {
-                this.getDisplay();
-              }}
-              micaction={() => {
-                this.setAudioLocal();
-              }}
-              videoaction={() => {
-                this.setVideoLocal();
-              }}
-              camstate={this.state.camState}
-              host={this.state.host}
-            />
-            </div>
-          </div>
-        </>);
-    }
+
+
+
+
+
+
+
+
+
+      </>
+    );
   }
+
+
+
+
+
+
+
+
+ 
 }
 
 export default Video;

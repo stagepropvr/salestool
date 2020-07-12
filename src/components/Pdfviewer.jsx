@@ -5,10 +5,8 @@ import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
 import $ from 'jquery';
 import FlipBook from "flip-book";
+import  THREE from 'three';
 
-window.PDFJS_LOCALE = {
-    pdfJsWorker: '../../node_modules/flip-book/js/pdf.worker.js'
-  };
 class Pdfviewer extends React.Component {
   constructor(props){
     super(props);

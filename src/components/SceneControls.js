@@ -212,8 +212,8 @@ return (
           {/* <OwlCarousel responsiveClass={true} autoWidth={true}   margin={10} navText={nav} dots={false} responsive={res} nav={true} id="MultiCarousel" className="MultiCarousel owl-carousel">
             {this.rooms}
         </OwlCarousel> */}
-   
-        <BottomSlider data={this.state.data} changeImage = {this.props.changeImage}/>
+   {this.props.host?<BottomSlider data={this.state.data} changeImage = {this.props.changeImage}/>:<></>}
+        
  
         </div>
 
