@@ -16986,9 +16986,10 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   content: "";
 }
 
-.header-filter::before {
+/* .header-filter::before {
   background: rgba(0, 0, 0, 0.5);
-}
+} */
+
 
 .header-filter .container {
   z-index: 2;
@@ -20098,6 +20099,7 @@ select{
   .sidenav a {font-size: 18px;}
 }
 
+
 .chat_name{
   font-family: 'propvr';
   font-size: 12px;
@@ -20116,6 +20118,113 @@ select{
   float: left;
   max-width: 100%;
 }
+
+.form-check .form-check-input:hover + .circle .check{
+  color:#3366ff;
+  transform: scale3d(0.65, 0.65, 1);
+}
+
+.__react_component_tooltip{
+  width:147px;
+  font-size: 12px !important;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    text-align: center;
+    color: rgb(255, 255, 255) !important;
+    border-radius: 4px !important;
+    background-color: rgb(16, 20, 38) !important;
+}
+.__react_component_tooltip:before{
+  border-right-color: #101426 !important;
+}
+
+.__react_component_tooltip:after{
+  border-right-color: #101426 !important;
+}
+
+.floorplan_div{
+  position: absolute;
+  top: 16px;
+  left: 6px;
+  width: 308px;
+  height: 263px;
+  border-radius: 6px;
+  box-shadow: 0 -10px 24px 0 rgba(52, 52, 52, 0.5);
+  background-color: #ffffff;
+}
+.select_map{
+  flex: auto;
+  margin-left: 12px;
+  margin-top: 8px;
+}
+
+
+.map_div{
+  width: 281px;
+    height: 196px;
+    margin-left: -8px;
+}
+.map {
+  margin:10px;
+  position: inherit;
+  display: inline-block;
+}
+
+.box {
+  width:8%;
+  height:8%;
+  background-image:   url(http://www.clker.com/cliparts/W/0/g/a/W/E/map-pin-red.svg);
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  cursor: pointer;
+}
+      
+    
+      .bounce {
+    -webkit-animation: bounce 2s infinite;
+    animation: bounce 2s infinite;
+}
+
+/* Scroll down indicator (bouncing) */
+@-webkit-keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    -webkit-transform: translateY(0); }
+  40% {
+    -webkit-transform: translateY(-30px); }
+  60% {
+    -webkit-transform: translateY(-15px); } }
+@-moz-keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    -moz-transform: translateY(0); }
+  40% {
+    -moz-transform: translateY(-30px); }
+  60% {
+    -moz-transform: translateY(-15px); } }
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+    transform: translateY(0); }
+  40% {
+    -webkit-transform: translateY(-30px);
+    -moz-transform: translateY(-30px);
+    -ms-transform: translateY(-30px);
+    -o-transform: translateY(-30px);
+    transform: translateY(-30px); }
+  60% {
+    -webkit-transform: translateY(-15px);
+    -moz-transform: translateY(-15px);
+    -ms-transform: translateY(-15px);
+    -o-transform: translateY(-15px);
+    transform: translateY(-15px); } }
+
 
 .other>.chat_name{
   text-align: left;
@@ -20396,8 +20505,5 @@ ul.chat_bar::-webkit-scrollbar-thumb {
   background-color: #edf1f7;
 }
 
-.form-check .form-check-input:hover + .circle .check{
-  color:#3366ff;
-  transform: scale3d(0.65, 0.65, 1);
-}
+
 /*# sourceMappingURL=kit-free.css.map */
