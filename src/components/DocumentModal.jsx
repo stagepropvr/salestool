@@ -10,7 +10,8 @@ class DocumentModal extends React.Component {
     super(props);
     this.state={
       pdf_modal:false,
-      pdf_data:''
+      pdf_data:'',
+      pdf_list:[]
     }
  
 }
@@ -18,6 +19,23 @@ class DocumentModal extends React.Component {
 componentDidMount(){
     
     window.scrollTo(0, 0);
+
+    if(this.props.data.hasOwnProperty('brochure')){
+      var key = Object.keys(this.props.data.brochure);
+      var list = Object.values(this.props.data.brochure);
+      var temp=[];
+      for(var i =0; i<key.length ; i++){
+        temp.push({
+          id:key[i],
+          name:list[i].name,
+          url:list[i].url
+        })
+      }
+
+      this.setState({
+        pdf_list:temp
+      })
+    }
 
   }
 
@@ -111,12 +129,12 @@ componentDidMount(){
             <div className="modal-body">
               <p className="share_content">Select the document you would like to share</p>
               <div className="switch_project_list">
-                  {Object.keys(this.props.data.brochure).map((value,index)=>{
+                  {this.state.pdf_list.map((value,index)=>{
                         return( <>
-                        <div onClick={()=> this.open_close_pdf('pdf_modal',true,this.props.data.brochure[value]['url'])} className="form-check form-check-radio">
+                        <div key={index} onClick={()=> this.open_close_pdf('pdf_modal',true,value.url)} className="form-check form-check-radio">
                         <label className="switch_project_label form-check-label">
-                            <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" />
-                            {this.props.data.brochure[value]['name']}
+                            <input className="form-check-input" type="radio" name="exampleRadios" id={value.id} value="option1" />
+                            {value.name}
                             <span className="circle">
                                 <span className="check"></span>
                             </span>

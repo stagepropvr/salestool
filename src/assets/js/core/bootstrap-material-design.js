@@ -1,3 +1,5 @@
+import jQuery from 'jquery';
+import Popper from './popper';
 ! function (t, e) {
 	"object" == typeof exports && "undefined" != typeof module ? e(require("jquery"), require("popper.js")) : "function" == typeof define && define.amd ? define(["jquery", "popper.js"], e) : e(t.jQuery, t.Popper)
 }(this, function (t, e) {
@@ -11,7 +13,7 @@
 	}
 
 	function i(t, e, i) {
-		return e && n(t.prototype, e), i && n(t, i), t
+		return (e && n(t.prototype, e), i && n(t, i), t)
 	}
 
 	function r() {

@@ -4,11 +4,8 @@ import Fire from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
 import $ from 'jquery';
-import FlipBook from "flip-book";
 
-window.PDFJS_LOCALE = {
-    pdfJsWorker: '../../node_modules/flip-book/js/pdf.worker.js'
-  };
+
 class Pdfviewer extends React.Component {
   constructor(props){
     super(props);
@@ -23,31 +20,7 @@ componentDidMount(){
     
     window.scrollTo(0, 0);
     var data = this.props.data;
-    $('#df_manual_book').FlipBook({
-        pdf: data,
-        template: {
-          html: 'node_modules/flip-book/templates/default-book-view.html',
-          links: [
-            {
-              rel: 'stylesheet',
-              href: 'node_modules/flip-book/css/font-awesome.min.css'
-            }
-          ],
-          styles: [
-            'node_modules/flip-book/css/short-white-book-view.css'
-          ],
-          links: [{
-            rel: 'stylesheet',
-            href: 'node_modules/flip-book/css/font-awesome.min.css'
-          }],
-          script: 'node_modules/flip-book/js/default-book-view.js',
-          sounds: {
-            startFlip: 'node_modules/flip-book/sounds/start-flip.mp3',
-            endFlip: 'node_modules/flip-book/sounds/end-flip.mp3'
-          }
-        }
-      });
-      
+  
     //document.getElementById('pdf_viewer').style.display='block'; 
 
   }

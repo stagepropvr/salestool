@@ -13,8 +13,9 @@
 
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
- */
-
+ */ 
+import $ from 'jquery';
+import 'bootstrap-material-design';
 var big_image;
 
 $(document).ready(function() {
@@ -23,12 +24,12 @@ $(document).ready(function() {
   // Init Material scripts for buttons ripples, inputs animations etc, more info on the next link https://github.com/FezVrasta/bootstrap-material-design#materialjs
   $('body').bootstrapMaterialDesign();
 
-  window_width = $(window).width();
+  this.window_width = $(window).width();
 
-  $navbar = $('.navbar[color-on-scroll]');
-  scroll_distance = $navbar.attr('color-on-scroll') || 500;
+ this.$navbar = $('.navbar[color-on-scroll]');
+  this.scroll_distance = this.$navbar.attr('color-on-scroll') || 500;
 
-  $navbar_collapse = $('.navbar').find('.navbar-collapse');
+  this.$navbar_collapse = $('.navbar').find('.navbar-collapse');
 
   //  Activate the Tooltips
   $('[data-toggle="tooltip"], [rel="tooltip"]').tooltip();
@@ -37,15 +38,15 @@ $(document).ready(function() {
   $('[data-toggle="popover"]').popover();
 
   if ($('.navbar-color-on-scroll').length != 0) {
-    $(window).on('scroll', materialKit.checkScrollForTransparentNavbar);
+    $(window).on('scroll', this.materialKit.checkScrollForTransparentNavbar);
   }
 
-  materialKit.checkScrollForTransparentNavbar();
+  this.materialKit.checkScrollForTransparentNavbar();
 
-  if (window_width >= 768) {
+  if (this.window_width >= 768) {
     big_image = $('.page-header[data-parallax="true"]');
     if (big_image.length != 0) {
-      $(window).on('scroll', materialKit.checkScrollForParallax);
+      $(window).on('scroll', this.materialKit.checkScrollForParallax);
     }
 
   }
@@ -54,11 +55,11 @@ $(document).ready(function() {
 });
 
 $(document).on('click', '.navbar-toggler', function() {
-  $toggle = $(this);
+  var $toggle = $(this);
 
-  if (materialKit.misc.navbar_menu_visible == 1) {
+  if (this.materialKit.misc.navbar_menu_visible == 1) {
     $('html').removeClass('nav-open');
-    materialKit.misc.navbar_menu_visible = 0;
+    this.materialKit.misc.navbar_menu_visible = 0;
     $('#bodyClick').remove();
     setTimeout(function() {
       $toggle.removeClass('toggled');
@@ -71,14 +72,14 @@ $(document).on('click', '.navbar-toggler', function() {
     }, 580);
 
 
-    div = '<div id="bodyClick"></div>';
+    var div = '<div id="bodyClick"></div>';
     $(div).appendTo("body").click(function() {
       $('html').removeClass('nav-open');
 
       if ($('nav').hasClass('navbar-absolute')) {
         $('html').removeClass('nav-open-absolute');
       }
-      materialKit.misc.navbar_menu_visible = 0;
+      this.materialKit.misc.navbar_menu_visible = 0;
       $('#bodyClick').remove();
       setTimeout(function() {
         $toggle.removeClass('toggled');
@@ -90,11 +91,11 @@ $(document).on('click', '.navbar-toggler', function() {
     }
 
     $('html').addClass('nav-open');
-    materialKit.misc.navbar_menu_visible = 1;
+    this.materialKit.misc.navbar_menu_visible = 1;
   }
 });
 
-materialKit = {
+var materialKit = {
   misc: {
     navbar_menu_visible: 0,
     window_width: 0,
@@ -124,7 +125,7 @@ materialKit = {
     // Sliders for demo purpose
     var slider = document.getElementById('sliderRegular');
 
-    noUiSlider.create(slider, {
+    this.noUiSlider.create(slider, {
       start: 40,
       connect: [true, false],
       range: {
@@ -135,7 +136,7 @@ materialKit = {
 
     var slider2 = document.getElementById('sliderDouble');
 
-    noUiSlider.create(slider2, {
+    this.noUiSlider.create(slider2, {
       start: [20, 60],
       connect: true,
       range: {
@@ -146,24 +147,24 @@ materialKit = {
   },
 
   checkScrollForParallax: function() {
-    oVal = ($(window).scrollTop() / 3);
+    this.oVal = ($(window).scrollTop() / 3);
     big_image.css({
-      'transform': 'translate3d(0,' + oVal + 'px,0)',
-      '-webkit-transform': 'translate3d(0,' + oVal + 'px,0)',
-      '-ms-transform': 'translate3d(0,' + oVal + 'px,0)',
-      '-o-transform': 'translate3d(0,' + oVal + 'px,0)'
+      'transform': 'translate3d(0,' + this.oVal + 'px,0)',
+      '-webkit-transform': 'translate3d(0,' + this.oVal + 'px,0)',
+      '-ms-transform': 'translate3d(0,' + this.oVal + 'px,0)',
+      '-o-transform': 'translate3d(0,' + this.oVal + 'px,0)'
     });
   },
 
   checkScrollForTransparentNavbar: debounce(function() {
-    if ($(document).scrollTop() > scroll_distance) {
-      if (materialKit.misc.transparent) {
-        materialKit.misc.transparent = false;
+    if ($(document).scrollTop() > this.scroll_distance) {
+      if (this.materialKit.misc.transparent) {
+        this.materialKit.misc.transparent = false;
         $('.navbar-color-on-scroll').removeClass('navbar-transparent');
       }
     } else {
-      if (!materialKit.misc.transparent) {
-        materialKit.misc.transparent = true;
+      if (!this.materialKit.misc.transparent) {
+        this.materialKit.misc.transparent = true;
         $('.navbar-color-on-scroll').addClass('navbar-transparent');
       }
     }

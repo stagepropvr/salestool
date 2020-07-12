@@ -35,7 +35,8 @@ class Video extends React.Component {
       apiload: true,
       images:"",
       data:'',
-      user_id:''
+      user_id:'',
+      pid:this.props.pid
     };
 
     this.doc_id = null;
@@ -276,9 +277,34 @@ class Video extends React.Component {
       })
     });
   }
-
+changeProject = (user_id,pid) =>{
+  Firebase.database().ref("users/" + user_id + "/Projects/" + pid).once("value", (node) => {
+    this.setState({
+      data:node.val(),
+      pid:pid
+    })
+    if (node.hasChild("images")) {
+      for (var x in node.val().images){
+        this.setState({
+          current_image:x,
+          images: node.val().images
+        });
+      break;
+      }
+    }
+  });
+}
   changeImage = (str) => {
     this.setState({ current_image: str })
+
+    var a = document.querySelectorAll('.bounce');
+    [].forEach.call(a, function(el) {
+        el.classList.remove('bounce');
+    });
+
+    if(document.getElementById(str)){
+      document.getElementById(document.getElementById(str).src).classList.add('bounce');
+    }
     if(document.getElementById(str+"_thumb")){
       var a = document.querySelectorAll('.item_active');
       console.log(a);
@@ -341,11 +367,12 @@ class Video extends React.Component {
             </div>
 
             <SceneControls
-              pid={this.props.pid}
+              pid={this.state.pid}
               roomId={this.props.roomId}
               user_id={this.state.user_id}
               data={this.state.data}
               changeImage={this.changeImage}
+              changeProject={this.changeProject}
               micstate={this.state.micState}
               screenaction={() => {
                 this.getDisplay();
