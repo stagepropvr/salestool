@@ -40,7 +40,7 @@ componentDidMount(){
             ref1.once('value',snap=>{
                 this.setState({
                     bed:snap.val().beds,
-                    bath:snap.val().bath,
+                    bath:snap.val().baths,
                     sqft:snap.val().sqft,
                     info_details:true
                 })
