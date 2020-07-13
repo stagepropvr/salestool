@@ -9,8 +9,10 @@ class Switchproject extends React.Component {
     super(props);
     this.state={
         project_list:[],
+        project_value:this.props.pid
     }
- 
+    this.handleregister=this.handleregister.bind(this);
+
 }
   
 componentDidMount(){
@@ -32,11 +34,18 @@ componentDidMount(){
     this.setState({
         project_list:temp
     })
+  }
 
+  handleregister(event){
+      event.preventDefault();
+      if(this.props.pid!==this.state.project_value){
+        this.props.changeProject(this.props.user_id,this.state.project_value);
+      }
   }
   handleChange = (event) => {
-   console.log(event.target.id);
-   this.props.changeProject(this.props.user_id,event.target.id);
+    this.setState({
+        project_value:event.target.id
+    })
   };
 
   render() {
@@ -59,6 +68,7 @@ componentDidMount(){
             </svg></span>
           </button>
         </div>
+        <form onSubmit={this.handleregister}>
         <div className="modal-body">
           <p className="share_content">Select the project you want to switch the session.</p>
           <div className="switch_project_list">
@@ -66,7 +76,7 @@ componentDidMount(){
                return( <>
                  <div key={index} className="form-check form-check-radio">
               <label className="switch_project_label form-check-label">
-                  <input onChange={this.handleChange} className="form-check-input" type="radio" name="projects" id={value.id} value="option1" checked={this.props.pid==value.id?true:false} />
+                  <input onChange={this.handleChange} className="form-check-input" type="radio" name="projects" id={value.id} value="option1" checked={this.state.project_value===value.id?true:false} />
                         {value.id}
                   <span className="circle">
                       <span className="check"></span>
@@ -77,16 +87,16 @@ componentDidMount(){
                </>)
              
           })}
-                 
           </div>
         </div>
         <div style={{display: "block"}} className="modal-footer">
             <center className="modal_button_div">
                 <button onClick={() => this.props.open_close('project',false)} type="button" className="btn cancel">Cancel</button>
-                <button style={{marginLeft: "20px"}} type="button" className="btn proceed">Switch project</button>
+                <button style={{marginLeft: "20px"}} type="submit" className="btn proceed">Switch project</button>
             </center>
            
         </div>
+        </form>
       </div>
     </div>
     </div>

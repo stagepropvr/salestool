@@ -8,6 +8,7 @@ import DocumentModal from "./DocumentModal";
 import ReactTooltip from "react-tooltip";
 import Switchproject from "./Switchproject";
 import Floorplan from './Floorplan';
+import CloseModal from './CloseModal';
 class SceneControls extends React.Component { 
   constructor(props){
     super(props);
@@ -20,7 +21,8 @@ class SceneControls extends React.Component {
       project:false,
       floorplan:false,
       data:this.props.data,
-      pid:this.props.pid
+      pid:this.props.pid,
+      close:false
     }
   }
 
@@ -29,6 +31,7 @@ class SceneControls extends React.Component {
 
     window.scrollTo(0, 0);
     this.menu.addEventListener("click", this.menu_bar_open);
+    console.log(this.props.pid);
     
   }
 
@@ -104,7 +107,6 @@ open_close = (name,flag) =>{
 return (
 
   <>
-  <div id="bottom" className="container" >
 
         <div style={{height: '72px', flexWrap: 'nowrap'}} className="row">
           <div className="content_padding dropup">
@@ -229,7 +231,8 @@ return (
             
               
             </button>
-            <button  onClick={this.props.screenaction} className="menu_option" style={{background: '#fff'}}>
+            {/* {onClick={this.props.screenaction}} */}
+            <button  onClick={()=> this.open_close('close',true)} className="menu_option" style={{background: '#fff'}}>
               <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                 <defs>
                   <path id="prefix__q" d="M12.15 12.146c.243-.234.588-.326.916-.253l5.964 1.369c.336.077.608.32.72.647.082.235.145.48.186.73.041.248.064.503.064.762C20 17.937 17.936 20 15.4 20c-3.566 0-6.844-1.23-9.457-3.271l1.428-1.427C9.61 16.988 12.386 18 15.4 18 16.834 18 18 16.834 18 15.4c0-.111-.006-.22-.021-.327l-4.62-1.061-.286.545c-.455.87-.782 1.502-1.627 1.163-1.053-.37-2.032-.91-2.934-1.561l1.43-1.43c.447.304.918.574 1.412.799.65-1.243.654-1.245.796-1.382zm4.332-9.885c.348-.348.91-.348 1.257 0 .348.347.348.909 0 1.257L3.517 17.74c-.347.347-.91.347-1.257 0-.173-.173-.26-.401-.26-.628 0-.228.087-.455.26-.63zM4.6 0c.261 0 .517.023.766.066.243.039.49.1.727.183.325.112.57.385.646.72l1.37 5.965c.074.328-.02.673-.254.916-.136.142-.14.145-1.38.795.227.494.497.964.8 1.41l-1.43 1.429c-.658-.908-1.203-1.9-1.579-2.97-.322-.803.307-1.132 1.178-1.587l.545-.285-1.06-4.62C4.817 2.007 4.708 2 4.598 2 3.166 2 2 3.166 2 4.6c0 3.013 1.012 5.789 2.698 8.03l-1.427 1.427C1.23 11.443.001 8.166.001 4.6 0 2.064 2.062 0 4.598 0z" />
@@ -249,12 +252,14 @@ return (
  
         </div>
 
-      </div>
+     
   
     <Share open_close={this.open_close} share={this.state.share} pid={this.state.pid} roomId={this.props.roomId} user_id={this.props.user_id}></Share>
     <DocumentModal data={this.props.data} open_close={this.open_close} document={this.state.document}></DocumentModal>
     <Switchproject changeProject={this.props.changeProject} data={this.state.data} open_close={this.open_close} project={this.state.project} pid={this.state.pid} user_id={this.props.user_id}></Switchproject>
     <Floorplan  changeImage = {this.props.changeImage} data={this.state.data} open_close={this.open_close} floorplan={this.state.floorplan}></Floorplan>
+    <CloseModal  close={this.state.close} open_close={this.open_close} ></CloseModal>
+
   </>
 
 

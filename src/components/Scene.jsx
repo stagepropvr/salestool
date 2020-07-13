@@ -16,7 +16,7 @@ class Scene extends React.Component {
         loaded:false,
         VRMode:false
     };
-       console.log(this.props)
+      //  console.log(this.props)
     // this.change = this.change.bind(this);
 
    }
@@ -64,7 +64,7 @@ class Scene extends React.Component {
       var x= parseFloat(splitrot[0]*120);
       // var y= parseFloat(splitrot[1]*80);
       var z= parseFloat(splitrot[2]*120);
-      console.log(item["dest-image"]);
+      // console.log(item["dest-image"]);
       return(
         <a-image
           id={item.name} key={item.name} src="#hotspot"
