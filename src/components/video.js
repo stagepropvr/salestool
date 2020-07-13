@@ -437,24 +437,26 @@ loader(){
       </div>
     </div>
     <div style={{height: '100%'}} className="tab-content text-center">
-      <div style={{padding: '10px 50px'}} className="tab-pane active show" id="members">
-        <div>
+      <div style={{height: '100%'}} className="tab-pane active show" id="members">
+      <ul class="chat_bar" style={{padding:'0px',height:'90%'}}>
+      <li><div>
       <video
                 autoPlay
                 id='localVideo' className="user-video"
                 muted
                 ref={video => (this.localVideo = video)}
-              /></div>
+              /></div></li>
       {
                 Object.keys(this.state.streams).map((key, id) => {
-                  return <div>
+                  return <li><div>
                     <p> {key}</p><VideoItem
                     key={key}
                     userId={key}
                     stream={this.state.streams[key]}
-                  /></div>
+                  /></div></li>
                 })
               }
+              </ul>
       </div>
       <div style={{height: '100%'}} className="tab-pane" id="chat">
         <ul className="chat_bar">
