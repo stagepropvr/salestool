@@ -9,7 +9,7 @@ import Scene from "./Scene";
 import Firebase from "../config/Firebase";
 import SceneControls from "./SceneControls.js";
 import { useEffect } from 'react';
-
+import Switchprojectloader from './Switchprojectloader';
 
 let userId = null
 
@@ -29,7 +29,7 @@ class Video extends React.Component {
       peers: {},
       streams: {},
       current_image: "",
-      socket: io.connect("localhost:5000"),
+      socket: io.connect("mysterious-dusk-60271.herokuapp.com"),
       host: true,
       apiload: true,
       images:"",
