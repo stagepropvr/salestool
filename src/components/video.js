@@ -8,6 +8,7 @@ import VideoItem from "./videoItem";
 import Scene from "./Scene";
 import Firebase from "../config/Firebase";
 import SceneControls from "./SceneControls.js";
+import { useEffect } from 'react';
 
 
 let userId = null
@@ -36,37 +37,59 @@ class Video extends React.Component {
       camera:"user",
       data:'',
       messages:[],
-      messagetext:""
+      messagetext:"",
+      init:true,
+      clientimage:"",
+      loader:true
     };
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
     this.togglenav=this.togglenav.bind(this); 
+    this.sendmessage=this.sendmessage.bind(this);
+    this.loader=this.loader.bind(this);
+
+    this.messagearea=React.createRef();
   }
   videoCall = new VideoCall();
 
   componentDidMount() {
 
     Firebase.auth().onAuthStateChanged((user) => {
-console.log(user.uid);
+//console.log(user.uid);
       if (user) {
+        
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
           this.state.data = node.val();
        
             for (var x in node.val().images){
               console.log(x,node.val().images[x]);
-              
+              Firebase.database().ref("roomsession/"+this.props.roomId).set({
+                currentimage:node.val().images[x].url
+              })
               this.setState({
                 current_image:x,
                 images: node.val().images,
                 data:node.val(),
-                apiload:false
+                apiload:false,
+                user_id:user.uid,
+                init:false
               });
             break;
             }
         });
       }
       else{
-
+        console.log("fsfsf");
+        Firebase.database().ref("roomsession/"+this.props.roomId).on("value",(snap)=>{
+          console.log(snap.val());
+          this.setState({
+            clientimage:snap.val().currentimage,
+            apiload:false,
+            init:false,
+            host:false,
+            loader:true
+          });
+        });
       }
     });
 
@@ -151,10 +174,18 @@ console.log(user.uid);
           this.setState({ peers: peersTemp })
         })
     })
+    this.state.socket.on('chat message', ({ message, user }) => {
+     
+      this.setState(ele => ({
+        messages: [...ele.messages, {user: user,content:message}]
+      }))
+      console.log(this.state.messages);
+    });
+    this.state.socket.on('signal', ({ userId, signal,image }) => {
+     // console.log("socket.on  signal userId", userId, "signal", signal);
+   
 
-    this.state.socket.on('signal', ({ userId, signal }) => {
-      console.log("socket.on  signal userId", userId, "signal", signal)
-
+      
       const peer = this.state.peers[userId]
       peer.signal(signal)
     })
@@ -162,8 +193,11 @@ console.log(user.uid);
     this.state.socket.on('disconnected', () => {
       component.setState({ initiator: true });
     });
+    
+this.state.socket.on("switchimage",(url)=>{
+console.log(url);
+});
   }
-
 
   getUserMedia(cb) {
     return new Promise((resolve, reject) => {
@@ -234,6 +268,9 @@ console.log(user.uid);
 
 
   changeImage = (str) => {
+    Firebase.database().ref("roomsession/"+this.props.roomId).set({
+      currentimage:this.state.images[str].url
+    })
     this.setState({ current_image: str })
     if(document.getElementById(str+"_thumb")){
       var a = document.querySelectorAll('.item_active');
@@ -254,7 +291,31 @@ console.log(user.uid);
         this.changeImage(key) }
     }
   }
-
+  changeProject = (user_id,pid) =>{
+    this.setState({
+      loader:true,
+      apiload:true
+    })
+    Firebase.database().ref("users/" + user_id + "/Projects/" + pid).once("value", (node) => {
+      this.setState({
+        data:node.val(),
+        pid:pid,
+        apiload:false
+      })
+      if (node.hasChild("images")) {
+        for (var x in node.val().images){
+          this.setState({
+            current_image:x,
+            images: node.val().images
+          });
+          Firebase.database().ref("roomsession/"+this.props.roomId).set({
+            currentimage:node.val().images[x].url
+          })
+        break;
+        }
+      }
+    });
+  }
   togglenav()
   {
     console.log(this.Sidenav.current.style.width);
@@ -271,23 +332,49 @@ console.log(user.uid);
       this.bottom.current.style.width=this.bottom.current.offsetWidth-300+"px";
     }
   }
+  sendmessage(e){
+    e.preventDefault();
+    const message = {
+      room: this.props.roomId,
+      user: this.state.socket.id,
+      message: this.messagearea.current.value
+    };
+    console.log(message);
+    this.state.socket.emit('chat message', message);
+    this.messagearea.current.value="";
+  }
+loader(){
+  this.setState({
+    loader:false
+  })
+}
+
+
 
   render() {
 
     return (<>
-    {this.state.apiload?<></>: <><Scene
+
+
+    {!this.state.init?<Scene
             data={this.state.images}
             image={this.state.current_image}
             change={this.change}
             host={this.state.host}
-          />
+            loader={this.loader}
+            clientimage={this.state.clientimage}
+          />:<></>}
+    {this.state.apiload ?<></>: <>
+  
+    
           <div id="bottom" className="container" ref={this.bottom} >
-            <SceneControls
-              pid={this.props.pid}
+          <SceneControls
+              pid={this.state.pid}
               roomId={this.props.roomId}
               user_id={this.state.user_id}
               data={this.state.data}
               changeImage={this.changeImage}
+              changeProject={this.changeProject}
               micstate={this.state.micState}
               screenaction={() => {
                 this.getDisplay();
@@ -300,7 +387,7 @@ console.log(user.uid);
               }}
               camstate={this.state.camState}
               host={this.state.host}
-            />
+            />  
             </div>
           </>}
      
@@ -389,9 +476,26 @@ console.log(user.uid);
               </g>
             </svg>
           </span>
-          <input type="text" className="input_box" value={this.state.messagetext} onChange={this.updatetyping} placeholder="Type your message and press enter" />
+          <input type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message and press enter" />
         </form>
       </div>  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
     </div>
   </div>
 </div>
@@ -399,11 +503,8 @@ console.log(user.uid);
 
 
 
-
-
-
-
-
+{this.state.loader?
+<div className="asceneloader"></div>:<></>}
 
 
 

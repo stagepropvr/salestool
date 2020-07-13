@@ -18,7 +18,6 @@ class Scene extends React.Component {
     };
        console.log(this.props)
     // this.change = this.change.bind(this);
-    this.loadLinks = this.loadLinks.bind(this);  
 
    }
 
@@ -44,9 +43,22 @@ class Scene extends React.Component {
    }
 
 
-  loadLinks()
-  {
-    this.links = Object.values(this.props.data[this.props.image].links).map((item,key) => 
+
+  
+  render()
+    {
+    if(this.props.host){
+    
+    return (
+      <div style={{"position":"absolute"}}>
+        <a-scene loading-screen="dotsColor: transparent; backgroundColor: transparent" >
+            {/* Loads Assets a*/}
+            <AssestsLoader sceneloader={this.props.loader} data = {this.props.data}/>
+            
+            <a-sky src= {'#'+this.props.image} /> 
+            
+           
+            {this.links = Object.values(this.props.data[this.props.image].links).map((item,key) => 
     {
       var splitrot=item.position.split(" ");
       var x= parseFloat(splitrot[0]*120);
@@ -64,24 +76,7 @@ class Scene extends React.Component {
          >
         </a-image>
       ) 
-    })
-    // console.log(this.links);
-  }
-  
-  render()
-    {
-    if(this.props.host){this.loadLinks();} 
-    
-    return (
-      <div style={{"position":"absolute"}}>
-        <a-scene loading-screen="dotsColor: transparent; backgroundColor: transparent" >
-            {/* Loads Assets a*/}
-            <AssestsLoader data = {this.props.data}/>
-            
-            <a-sky src= {'#'+this.props.image} /> 
-            
-            {/* Loads Hotspots */}
-            {this.links}
+    })}
             
             {/* Loads Mouse */}
             <a-camera id="cam1" rotation="0 0 0" rotation-reader cursor="rayOrigin: mouse; fuse: false;"></a-camera>
@@ -90,7 +85,28 @@ class Scene extends React.Component {
         </a-scene>
        
       </div>
-    );
+    );}
+    else{
+      return(<div style={{"position":"absolute"}}>
+      <a-scene loading-screen="dotsColor: transparent; backgroundColor: transparent" >
+      {/* Loads Assets a*/}
+      
+      {/* <a-assets>
+
+
+      <img crossOrigin="anonymous" id="cl"  onLoad={props.sceneloader} src={value.url} alt={value.name} key={value.index}/>
+  
+      </a-assets> */}
+      <a-sky src= {this.props.clientimage} /> 
+      
+ 
+      
+      {/* Loads Mouse */}
+      <a-camera id="cam1" rotation="0 0 0" rotation-reader cursor="rayOrigin: mouse; fuse: false;"></a-camera>
+     
+
+  </a-scene></div>
+        );  }
     }
 }
 

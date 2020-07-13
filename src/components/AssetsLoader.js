@@ -13,7 +13,7 @@ render.push({
     let assets =render.map((value) => {
         
     return(
-        <img crossOrigin="anonymous" id={value.index} src={value.url} alt={value.name} key={value.index}/>
+        <img crossOrigin="anonymous" id={value.index}  onLoad={props.sceneloader} src={value.url} alt={value.name} key={value.index}/>
     )});
 
     

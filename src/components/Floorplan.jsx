@@ -157,11 +157,11 @@ componentDidMount(){
                     return(
                         <div className="map_div" key={index} id={value.id} style={{display:(value.index==0 ? 'block':'none')}}>
                         <div className="map">
-                        <img  src={value.url} style={{width: "281px",height: "196px",marginLeft: "12px"}}/>
+                        <img  src={value.url} style={{width: "100%"}}/>
                         </div>
                         {value.pins.map((sub)=>{
                             return(
-                                <div onClick={this.changesky} id={sub.dest}  style={{top:(sub.y)+'%',left:(sub.x)+'%'}} className="box"> 
+                                <div onClick={this.changesky} id={sub.dest}  style={{top:(sub.y+8.5)+'%',left:(sub.x)+'%'}} className="box"> 
                             </div>
                             )
                             
