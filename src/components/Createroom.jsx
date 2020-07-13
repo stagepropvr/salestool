@@ -67,14 +67,14 @@ componentDidMount(){
                         })
                     }
 
-                    if(snap.val().baths=='' || snap.val().beds=='' || snap.val().sqft==''){
+                    if(snap.val().bath=='' || snap.val()=='' || snap.val()==''){
                         this.setState({
                           info_details:false
                         })
                     }else{
                       this.setState({
                         bed:snap.val().beds,
-                        bath:snap.val().baths,
+                        bath:snap.val().bath,
                         sqft:snap.val().sqft,
                         info_details:true
                       })
