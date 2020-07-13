@@ -15972,7 +15972,7 @@ h2.title {
   transform: scale(0);
   transform-origin: 0 0;
   will-change: transform, opacity;
-  /* transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1); */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
 
@@ -15988,8 +15988,6 @@ h2.title {
   display: block;
   opacity: 1;
   transform: scale(1);
-  top:-16px !important;
-  left:-2px !important;
 }
 
 .dropdown-menu.hiding {
@@ -19642,10 +19640,10 @@ height: 40px;
     bottom: 0;
     width: 100%;
     height:72px;
-    left: 0;
+    right: 0;
     box-shadow: 0 -10px 24px 0 rgba(52, 52, 52, 0.5);
-    transition: all 0.5s ease-in-out;
-    background: rgba(0, 0, 0, 0.35);
+    background-image: linear-gradient(to bottom, #ffffff -318%, #0000005c);
+    transition:all 0.5s ease-in-out;
 }
 .content_padding{
   padding: 10px;
@@ -20065,7 +20063,7 @@ select{
   background-color: #fff;
   right: -40px;
   transition: all 0.5s ease-in-out;
-  padding-top: 15px;
+  padding-top: 60px;
 }
 
 .sidenav a {
@@ -20139,11 +20137,11 @@ select{
 }
 
 
-/* .map_div{
-  width: 281px;
+.map_div{
+  /* width: 281px;
     height: 196px;
-    margin-left: -8px; 
-} */
+    margin-left: -8px; */
+}
 .map {
   margin:auto;
   position: inherit;
@@ -20339,48 +20337,6 @@ select{
         color: #ffffff;
         padding-left: 10px;
     }
-
-
-.switch_project_info{
-  font-family: 'propvr';
-  font-size: 15px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.33;
-  letter-spacing: normal;
-  text-align: center;
-  color: #8f9bb3;
-}
-
-.switch_project_loader{
-  text-align: center;
-    font-size: 15px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    letter-spacing: normal;
-    color: #3366ff;
-    line-height: 5;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-
-.switch_project_svg{
-  animation-name: spin;
-  animation-duration: 2000ms;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 /* Scene.html End  */
 
 /* End Session */
