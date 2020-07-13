@@ -54,9 +54,11 @@ class Video extends React.Component {
 
   componentDidMount() {
 
+
     this.setState({
       pid:this.props.pid
     })
+
 
     Firebase.auth().onAuthStateChanged((user) => {
 //console.log(user.uid);
@@ -437,23 +439,26 @@ loader(){
       </div>
     </div>
     <div style={{height: '100%'}} className="tab-content text-center">
-      <div style={{height: '100%'}} className="tab-pane active show" id="members">
+v style={{height: '100%'}} className="tab-pane active show" id="members">
       <ul class="chat_bar" style={{padding:'0px',height:'90%'}}>
       <li><div>
+
       <video
                 autoPlay
                 id='localVideo' className="user-video"
                 muted
                 ref={video => (this.localVideo = video)}
+
               /></div></li>
+
       {
                 Object.keys(this.state.streams).map((key, id) => {
-                  return <li><div>
+                  return <div>
                     <p> {key}</p><VideoItem
                     key={key}
                     userId={key}
                     stream={this.state.streams[key]}
-                  /></div></li>
+                  /></div>
                 })
               }
               </ul>
@@ -509,7 +514,8 @@ loader(){
 
 
 
-<Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host}></Switchprojectloader>
+{this.state.loader?
+<div className="asceneloader"></div>:<></>}
 
 
 
