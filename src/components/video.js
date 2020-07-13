@@ -9,7 +9,7 @@ import Scene from "./Scene";
 import Firebase from "../config/Firebase";
 import SceneControls from "./SceneControls.js";
 import { useEffect } from 'react';
-import Switchprojectloader from './Switchprojectloader';
+
 
 let userId = null
 
@@ -57,6 +57,7 @@ class Video extends React.Component {
     this.setState({
       pid:this.props.pid
     })
+
     Firebase.auth().onAuthStateChanged((user) => {
 //console.log(user.uid);
       if (user) {
@@ -275,12 +276,6 @@ console.log(url);
       currentimage:this.state.images[str].url
     })
     this.setState({ current_image: str })
-    var a = document.querySelectorAll('.bounce');
-    [].forEach.call(a, function(el) {
-      console.log(el);
-              el.classList.remove("bounce");
-    });
-
     if(document.getElementById(str+"_thumb")){
       var a = document.querySelectorAll('.item_active');
       console.log(a);
@@ -332,13 +327,13 @@ console.log(url);
     if(this.Sidenav.current.style.width==="300px"){
       this.Sidenav.current.style.width="0px";
           console.log(this.bottom.current.offsetWidth);
-          this.bottom.current.style.width=this.bottom.current.offsetWidth+260+"px";
+          this.bottom.current.style.width=this.bottom.current.offsetWidth+300+"px";
   
     }
     else{
       this.Sidenav.current.style.width="300px";
       console.log(this.bottom.current.offsetWidth);
-      this.bottom.current.style.width=this.bottom.current.offsetWidth-260+"px";
+      this.bottom.current.style.width=this.bottom.current.offsetWidth-300+"px";
     }
   }
   sendmessage(e){
@@ -442,26 +437,22 @@ loader(){
       </div>
     </div>
     <div style={{height: '100%'}} className="tab-content text-center">
-      <div style={{height: '100%'}} className="tab-pane active show" id="members">
-        <ul class="chat_bar" style={{padding:'0px',height:'90%'}}>
-          <li>
-          <div>
-        <video
+      <div style={{padding: '10px 50px'}} className="tab-pane active show" id="members">
+        <div>
+      <video
                 autoPlay
                 id='localVideo' className="user-video"
                 muted
                 ref={video => (this.localVideo = video)}
               /></div>
-          </li>
-        </ul>
       {
                 Object.keys(this.state.streams).map((key, id) => {
-                  return <li><div>
+                  return <div>
                     <p> {key}</p><VideoItem
                     key={key}
                     userId={key}
                     stream={this.state.streams[key]}
-                  /></div></li>
+                  /></div>
                 })
               }
       </div>
@@ -517,6 +508,7 @@ loader(){
 
 
 <Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host}></Switchprojectloader>
+
 
 
 
