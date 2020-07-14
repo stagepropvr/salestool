@@ -204,6 +204,7 @@ console.log(localStorage.getItem(this.props.roomId));
 this.state.socket.on("switchimage",(url)=>{
 console.log(url);
 });
+    
   }
 
   getUserMedia(cb) {
