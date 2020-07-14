@@ -9,6 +9,7 @@ import ReactTooltip from "react-tooltip";
 import Switchproject from "./Switchproject";
 import Floorplan from './Floorplan';
 import CloseModal from './CloseModal';
+import FloorplanClient from "./FloorplanClient"
 class SceneControls extends React.Component { 
   constructor(props){
     super(props);
@@ -22,7 +23,8 @@ class SceneControls extends React.Component {
       floorplan:false,
       data:this.props.data,
       pid:this.props.pid,
-      close:false
+      close:false,
+      floorplandata:"false"
     }
   }
 
@@ -32,7 +34,14 @@ class SceneControls extends React.Component {
     window.scrollTo(0, 0);
     this.menu.addEventListener("click", this.menu_bar_open);
     console.log(this.props.pid);
-    
+    if(!this.props.host)
+    {this.props.socket.on("floorplan",(data)=>{
+     
+      console.log(data);
+      this.setState({
+        floorplandata:data
+      })
+      });}
   }
 
 menu_bar_open = (event) => {
@@ -97,7 +106,10 @@ open_close = (name,flag) =>{
           
       }
     }
-  }
+  }else{
+    if(!flag){
+    this.props.socket.emit('floorplan',{ roomid:this.props.roomId,data:false});
+  }}
   
   this.setState({
     [name]:flag
@@ -145,7 +157,7 @@ return (
                 </svg>
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
-
+             {this.props.host?<>
               <a onClick={()=> this.open_close('project',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="switch project">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
@@ -157,7 +169,7 @@ return (
                 </svg>
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
-
+              </>:<></>}{this.props.host?<>
               <a onClick={()=> this.open_close('document',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="brochure">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
@@ -169,7 +181,7 @@ return (
                 </svg>
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
-
+              </>:<></>}{this.props.host?<>
               <a data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="fdh">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
@@ -181,7 +193,7 @@ return (
                 </svg>
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
-
+              </>:<></>}{this.props.host?<>
               <a onClick={()=> this.open_close('floorplan',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Floor Plan">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
@@ -193,7 +205,7 @@ return (
                 </svg>
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
-
+              </>:<></>}
               <a onClick={()=> this.open_close('setting',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Settings">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
@@ -257,8 +269,18 @@ return (
     <Share open_close={this.open_close} share={this.state.share} pid={this.state.pid} roomId={this.props.roomId} user_id={this.props.user_id}></Share>
     <DocumentModal data={this.props.data} open_close={this.open_close} document={this.state.document}></DocumentModal>
     <Switchproject changeProject={this.props.changeProject} data={this.state.data} open_close={this.open_close} project={this.state.project} pid={this.state.pid} user_id={this.props.user_id}></Switchproject>
-    <Floorplan  changeImage = {this.props.changeImage} data={this.state.data} open_close={this.open_close} floorplan={this.state.floorplan}></Floorplan>
+  {this.state.floorplan?
+    <Floorplan  socket={this.props.socket} room={this.props.roomId} changeImage = {this.props.changeImage} data={this.state.data} open_close={this.open_close} floorplan={this.state.floorplan}></Floorplan>
+    :<></>}
     <CloseModal  close={this.state.close} open_close={this.open_close} ></CloseModal>
+
+
+
+{this.state.floorplandata!="false" && !this.props.host?<FloorplanClient data={this.state.floorplandata}/>:<></>}
+
+
+
+
 
   </>
 

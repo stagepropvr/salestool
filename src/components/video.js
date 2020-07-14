@@ -332,13 +332,13 @@ console.log(url);
     if(this.Sidenav.current.style.width==="300px"){
       this.Sidenav.current.style.width="0px";
           console.log(this.bottom.current.offsetWidth);
-          this.bottom.current.style.width=this.bottom.current.offsetWidth+300+"px";
+          this.bottom.current.style.width=this.bottom.current.offsetWidth+259+"px";
   
     }
     else{
       this.Sidenav.current.style.width="300px";
       console.log(this.bottom.current.offsetWidth);
-      this.bottom.current.style.width=this.bottom.current.offsetWidth-300+"px";
+      this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
     }
   }
   sendmessage(e){
@@ -380,6 +380,7 @@ loader(){
           <div id="bottom" className="container" ref={this.bottom} >
           <SceneControls
               pid={this.state.pid}
+              socket={this.state.socket}
               roomId={this.props.roomId}
               user_id={this.state.user_id}
               data={this.state.data}
@@ -516,7 +517,6 @@ loader(){
 
 {/* 
 <Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host}></Switchprojectloader> */}
-
 
 
 
