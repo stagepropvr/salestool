@@ -24,6 +24,7 @@ render.push({
         src="https://cdn.glitch.com/a04a26d3-92af-4a88-9d49-8fcc2c5344a5%2Fhotspots.png?v=1562761623319"
         alt="Hotspot"/>
     
+    console.log('Hoste:',assets)
     return(
         <a-assets>
             {assets}

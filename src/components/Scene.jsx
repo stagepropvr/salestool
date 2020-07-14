@@ -16,6 +16,8 @@ class Scene extends React.Component {
         loaded:false,
         VRMode:false
     };
+    this.assets = [];
+    this.clientAssets = [];
       //  console.log(this.props)
     // this.change = this.change.bind(this);
 
@@ -39,16 +41,37 @@ class Scene extends React.Component {
        this.el.setAttribute('rotation', {x: 0, y: 90, z: 30});
        }
     });
-
    }
 
+   loadAssets = () => {
+    //  console.log("Not Host : Load Assets Called", this.props.clientimageid,this.props.clientimage)
+    if(!this.assets.includes(this.props.clientimageid))
+    {
+      this.assets.push(this.props.clientimageid)
 
+      this.clientAssets.push(
+        <img 
+          crossOrigin="anonymous" 
+          id={this.props.clientimageid}  
+          src={this.props.clientimage} 
+          alt={this.props.clientimageid} 
+          key={this.props.clientimageid}
+        />
+        )
+
+    }
+
+    // console.log(this.clientAssets)
+
+    
+    }
 
   
   render()
     {
+      // console.log('Host: ',this.props.host);
     if(this.props.host){
-    
+      
     return (
       <div style={{"position":"absolute"}}>
         <a-scene loading-screen="dotsColor: transparent; backgroundColor: transparent" >
@@ -79,32 +102,31 @@ class Scene extends React.Component {
     })}
             
             {/* Loads Mouse */}
-            <a-camera id="cam1" rotation="0 0 0" rotation-reader cursor="rayOrigin: mouse; fuse: false;"></a-camera>
-           
-
+            <a-camera id="cam1" rotation="0 0 0" rotation-reader cursor="rayOrigin: mouse; fuse: false;"></a-camera>           
+            
         </a-scene>
        
       </div>
     );}
     else{
-      return(<div style={{"position":"absolute"}}>
+      this.loadAssets()      
+      return(
+      <div style={{"position":"absolute"}}>
       <a-scene loading-screen="dotsColor: transparent; backgroundColor: transparent" >
+      
       {/* Loads Assets a*/}
-      
-      {/* <a-assets>
 
+      <a-assets>
+        {this.clientAssets}
+      </a-assets>
 
-      <img crossOrigin="anonymous" id="cl"  onLoad={props.sceneloader} src={value.url} alt={value.name} key={value.index}/>
-  
-      </a-assets> */}
-      <a-sky src= {this.props.clientimage} /> 
+      <a-sky src= {'#'+this.props.clientimageid} /> 
+
       
- 
-      
+    
       {/* Loads Mouse */}
       <a-camera id="cam1" rotation="0 0 0" rotation-reader cursor="rayOrigin: mouse; fuse: false;"></a-camera>
      
-
   </a-scene></div>
         );  }
     }
