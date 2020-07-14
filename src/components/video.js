@@ -29,7 +29,7 @@ class Video extends React.Component {
       peers: {},
       streams: {},
       current_image: "",
-      socket: io.connect("mysterious-dusk-60271.herokuapp.com"),
+      socket: io.connect("localhost:5000"),
       host: true,
       apiload: true,
       images:"",
@@ -40,7 +40,8 @@ class Video extends React.Component {
       messagetext:"",
       init:true,
       clientimage:"",
-      loader:true
+      loader:true,
+      clientimageid:""
     };
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
@@ -59,15 +60,16 @@ class Video extends React.Component {
     })
 
     Firebase.auth().onAuthStateChanged((user) => {
-//console.log(user.uid);
-      if (user) {
+console.log(localStorage.getItem(this.props.roomId));
+      if (user &&  localStorage.getItem(this.props.roomId)!==undefined) {
         
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
           this.state.data = node.val();
        
             for (var x in node.val().images){
               Firebase.database().ref("roomsession/"+this.props.roomId).set({
-                currentimage:node.val().images[x].url
+                currentimage:node.val().images[x].url,
+                imageid:x
               })
               this.setState({
                 current_image:x,
@@ -85,6 +87,7 @@ class Video extends React.Component {
         Firebase.database().ref("roomsession/"+this.props.roomId).on("value",(snap)=>{
           this.setState({
             clientimage:snap.val().currentimage,
+            clientimageid:snap.val().imageid,
             apiload:false,
             init:false,
             host:false,
@@ -198,6 +201,7 @@ class Video extends React.Component {
 this.state.socket.on("switchimage",(url)=>{
 console.log(url);
 });
+    
   }
 
   getUserMedia(cb) {
@@ -270,7 +274,8 @@ console.log(url);
 
   changeImage = (str) => {
     Firebase.database().ref("roomsession/"+this.props.roomId).set({
-      currentimage:this.state.images[str].url
+      currentimage:this.state.images[str].url,
+      imageid:str
     })
     this.setState({ current_image: str })
     if(document.getElementById(str+"_thumb")){
@@ -307,7 +312,8 @@ console.log(url);
             images: node.val().images
           });
           Firebase.database().ref("roomsession/"+this.props.roomId).set({
-            currentimage:node.val().images[x].url
+            currentimage:node.val().images[x].url,
+            imageid:x
           })
         break;
         }
@@ -321,13 +327,13 @@ console.log(url);
     if(this.Sidenav.current.style.width==="300px"){
       this.Sidenav.current.style.width="0px";
           console.log(this.bottom.current.offsetWidth);
-          this.bottom.current.style.width=this.bottom.current.offsetWidth+300+"px";
+          this.bottom.current.style.width=this.bottom.current.offsetWidth+259+"px";
   
     }
     else{
       this.Sidenav.current.style.width="300px";
       console.log(this.bottom.current.offsetWidth);
-      this.bottom.current.style.width=this.bottom.current.offsetWidth-300+"px";
+      this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
     }
   }
   sendmessage(e){
@@ -361,6 +367,7 @@ loader(){
             host={this.state.host}
             loader={this.loader}
             clientimage={this.state.clientimage}
+            clientimageid={this.state.clientimageid}
           />:<></>}
     {this.state.apiload ?<></>: <>
   
@@ -368,6 +375,7 @@ loader(){
           <div id="bottom" className="container" ref={this.bottom} >
           <SceneControls
               pid={this.state.pid}
+              socket={this.state.socket}
               roomId={this.props.roomId}
               user_id={this.state.user_id}
               data={this.state.data}
@@ -502,9 +510,8 @@ loader(){
 
 
 
-
-<Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host}></Switchprojectloader>
-
+{/* 
+<Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host}></Switchprojectloader> */}
 
 
 

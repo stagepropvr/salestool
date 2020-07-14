@@ -23,8 +23,9 @@ handleChange = selectedOption => {
         el.style.display='none';
     });
 
-  
+    this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data.plans[selectedOption.value]});
     this.setState({ selectedOption });
+    console.log(this.state.data.plans[selectedOption.value]);
     document.getElementById(selectedOption.value).style.display='block';
     console.log(`Option selected:`, selectedOption);
   };
@@ -62,7 +63,11 @@ componentDidMount(){
                 ];
                this.setState({
                    selectedOption:a
-               })
+               });
+
+console.log(obj[i]);
+
+this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data.plans[obj[i]]});
             }
             temp.push({
                 value:obj[i],
