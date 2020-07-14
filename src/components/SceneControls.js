@@ -38,6 +38,15 @@ class SceneControls extends React.Component {
     console.log(this.props.pid);
 
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
+    this.props.socket.on("floorplan",(data)=>{
+      this.setState({
+        floorplandata:"false"
+      })
+      console.log(data);
+      this.setState({
+        floorplandata:data
+      })
+      });
   }
 
   handleOutsideClick(e) {
@@ -58,14 +67,8 @@ class SceneControls extends React.Component {
       document.getElementById('menu_bar').classList.add('menu_option_click');
     }
 
-    if(!this.props.host)
-    {this.props.socket.on("floorplan",(data)=>{
-     
-      console.log(data);
-      this.setState({
-        floorplandata:data
-      })
-      });}
+   
+    
 
   }
 

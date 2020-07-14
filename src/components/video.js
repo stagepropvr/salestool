@@ -60,7 +60,7 @@ class Video extends React.Component {
     })
 
     Firebase.auth().onAuthStateChanged((user) => {
-console.log(localStorage.getItem(this.props.roomId));
+////console.log(localStorage.getItem(this.props.roomId));
       if (user &&  localStorage.getItem(this.props.roomId)!==undefined) {
         
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
@@ -108,20 +108,20 @@ console.log(localStorage.getItem(this.props.roomId));
     const { roomId } = this.props;
     this.getUserMedia().then(() => {
       this.state.socket.emit('join', { roomId });
-      console.log("socket.on join", roomId)
+      ////console.log("socket.on join", roomId)
 
     });
 
     this.state.socket.on('init', (data) => {
 
-      console.log("socket.on init", data)
+      ////console.log("socket.on init", data)
 
       userId = data.userId;
       this.state.socket.emit('ready', { room: roomId, userId });
     });
 
     this.state.socket.on("users", ({ initiator, users }) => {
-      console.log("socket.on  users", users)
+      ////console.log("socket.on  users", users)
 
       Object.keys(users.sockets)
         .filter(
@@ -149,7 +149,7 @@ console.log(localStorage.getItem(this.props.roomId));
           })
 
           peer.on('signal', data => {
-            console.log("peer.on  signal", users)
+            //console.log("peer.on  signal", users)
 
             const signal = {
               userId: sid,
@@ -159,7 +159,7 @@ console.log(localStorage.getItem(this.props.roomId));
             this.state.socket.emit('signal', signal);
           });
           peer.on('stream', stream => {
-            console.log("peer.on  stream", stream)
+            //console.log("peer.on  stream", stream)
 
             const streamsTemp = { ...this.state.streams }
             streamsTemp[sid] = stream
@@ -167,9 +167,9 @@ console.log(localStorage.getItem(this.props.roomId));
             this.setState({ streams: streamsTemp })
           });
           peer.on('error', function (err) {
-            console.log("peer.on  error", err)
+            //console.log("peer.on  error", err)
 
-            console.log(err);
+            //console.log(err);
           });
 
           const peersTemp = { ...this.state.peers }
@@ -183,10 +183,10 @@ console.log(localStorage.getItem(this.props.roomId));
       this.setState(ele => ({
         messages: [...ele.messages, {user: user,content:message}]
       }))
-      console.log(this.state.messages);
+      //console.log(this.state.messages);
     });
     this.state.socket.on('signal', ({ userId, signal,image }) => {
-     // console.log("socket.on  signal userId", userId, "signal", signal);
+     // //console.log("socket.on  signal userId", userId, "signal", signal);
    
 
       
@@ -199,7 +199,7 @@ console.log(localStorage.getItem(this.props.roomId));
     });
     
 this.state.socket.on("switchimage",(url)=>{
-console.log(url);
+//console.log(url);
 });
     
   }
@@ -322,17 +322,17 @@ console.log(url);
   }
   togglenav()
   {
-    console.log(this.Sidenav.current.style.width);
+    //console.log(this.Sidenav.current.style.width);
     
     if(this.Sidenav.current.style.width==="300px"){
       this.Sidenav.current.style.width="0px";
-          console.log(this.bottom.current.offsetWidth);
+          //console.log(this.bottom.current.offsetWidth);
           this.bottom.current.style.width=this.bottom.current.offsetWidth+259+"px";
   
     }
     else{
       this.Sidenav.current.style.width="300px";
-      console.log(this.bottom.current.offsetWidth);
+      //console.log(this.bottom.current.offsetWidth);
       this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
     }
   }
@@ -343,7 +343,7 @@ console.log(url);
       user: this.state.socket.id,
       message: this.messagearea.current.value
     };
-    console.log(message);
+    //console.log(message);
     this.state.socket.emit('chat message', message);
     this.messagearea.current.value="";
   }
