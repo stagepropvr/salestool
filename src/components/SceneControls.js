@@ -35,14 +35,14 @@ class SceneControls extends React.Component {
 
     window.scrollTo(0, 0);
     this.menu.addEventListener("click", this.menu_bar_open);
-    console.log(this.props.pid);
+    //console.log(this.props.pid);
 
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
     this.props.socket.on("floorplan",(data)=>{
       this.setState({
         floorplandata:"false"
       })
-      console.log(data);
+      //console.log(data);
       this.setState({
         floorplandata:data
       })

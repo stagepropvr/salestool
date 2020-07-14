@@ -119,7 +119,7 @@ room(){
   val:"dummy"
 }).then((res)=>{
   localStorage.setItem(res.key,true);
-  console.log(res.key);
+  //console.log(res.key);
   this.setState({
   room:res.key
 });

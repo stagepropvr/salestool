@@ -25,9 +25,9 @@ handleChange = selectedOption => {
 
     this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data.plans[selectedOption.value]});
     this.setState({ selectedOption });
-    console.log(this.state.data.plans[selectedOption.value]);
+    //console.log(this.state.data.plans[selectedOption.value]);
     document.getElementById(selectedOption.value).style.display='block';
-    console.log(`Option selected:`, selectedOption);
+    //console.log(`Option selected:`, selectedOption);
   };
 
 
@@ -48,7 +48,7 @@ componentDidMount(){
     window.scrollTo(0, 0);
     var temp=[];
     var temp_floor=[];
-    console.log(this.state.data);
+    //console.log(this.state.data);
     if(this.state.data.hasOwnProperty('plans')){
         var obj = Object.keys(this.state.data.plans);
         var list = Object.values(this.state.data.plans);
@@ -65,7 +65,7 @@ componentDidMount(){
                    selectedOption:a
                });
 
-console.log(obj[i]);
+//console.log(obj[i]);
 
 this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data.plans[obj[i]]});
             }
@@ -93,7 +93,7 @@ this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data
             })
         }
     }
-    console.log(temp_floor);
+    //console.log(temp_floor);
     this.setState({
         floorplan_list:temp_floor,
         floorplan_name:temp

@@ -28,9 +28,9 @@ class Joinroom extends React.Component {
   
 componentDidMount(){
     
-    console.log(this.props.match.params.uid);
-    console.log(this.props.match.params.pid);
-    console.log(this.props.match.params.rid);
+    ////console.log(this.props.match.params.uid);
+    //console.log(this.props.match.params.pid);
+    //console.log(this.props.match.params.rid);
     var ref = Fire.database().ref("users/"+this.props.match.params.uid+'/Projects/'+this.props.match.params.pid);
     ref.once('value',child=>{
         this.setState({
