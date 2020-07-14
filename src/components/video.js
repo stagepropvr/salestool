@@ -133,9 +133,9 @@ class Video extends React.Component {
             config: {
               iceServers: [
                 {
-                  urls: "turn:turnserver.example.org",
-                        username: "webrtc",
-                        credential: "turnpassword" 
+                  urls: 'turn:52.15.126.155:3478',
+                  credential: 'revsmart123',
+                  username: 'propvr' 
                                       }
               ]
             },
