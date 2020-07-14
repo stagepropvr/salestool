@@ -13,7 +13,7 @@ render.push({
     let assets =render.map((value) => {
         
     return(
-        <img crossOrigin="anonymous" id={value.index} src={value.url} alt={value.name} key={value.index}/>
+        <img crossOrigin="anonymous" id={value.index}  onLoad={props.sceneloader} src={value.url} alt={value.name} key={value.index}/>
     )});
 
     
@@ -24,6 +24,7 @@ render.push({
         src="https://cdn.glitch.com/a04a26d3-92af-4a88-9d49-8fcc2c5344a5%2Fhotspots.png?v=1562761623319"
         alt="Hotspot"/>
     
+    console.log('Hoste:',assets)
     return(
         <a-assets>
             {assets}

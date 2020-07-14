@@ -8,7 +8,8 @@ import VideoItem from "./videoItem";
 import Scene from "./Scene";
 import Firebase from "../config/Firebase";
 import SceneControls from "./SceneControls.js";
-
+import { useEffect } from 'react';
+import Switchprojectloader from './Switchprojectloader';
 
 let userId = null
 
@@ -36,37 +37,63 @@ class Video extends React.Component {
       camera:"user",
       data:'',
       messages:[],
-      messagetext:""
+      messagetext:"",
+      init:true,
+      clientimage:"",
+      loader:true,
+      clientimageid:""
     };
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
     this.togglenav=this.togglenav.bind(this); 
+    this.sendmessage=this.sendmessage.bind(this);
+    this.loader=this.loader.bind(this);
+
+    this.messagearea=React.createRef();
   }
   videoCall = new VideoCall();
 
   componentDidMount() {
 
+    this.setState({
+      pid:this.props.pid
+    })
+
     Firebase.auth().onAuthStateChanged((user) => {
-console.log(user.uid);
-      if (user) {
+////console.log(localStorage.getItem(this.props.roomId));
+      if (user &&  localStorage.getItem(this.props.roomId)!==undefined) {
+        
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
           this.state.data = node.val();
        
             for (var x in node.val().images){
-              console.log(x,node.val().images[x]);
-              
+              Firebase.database().ref("roomsession/"+this.props.roomId).set({
+                currentimage:node.val().images[x].url,
+                imageid:x
+              })
               this.setState({
                 current_image:x,
                 images: node.val().images,
                 data:node.val(),
-                apiload:false
+                apiload:false,
+                user_id:user.uid,
+                init:false
               });
             break;
             }
         });
       }
       else{
-
+        Firebase.database().ref("roomsession/"+this.props.roomId).on("value",(snap)=>{
+          this.setState({
+            clientimage:snap.val().currentimage,
+            clientimageid:snap.val().imageid,
+            apiload:false,
+            init:false,
+            host:false,
+            loader:true
+          });
+        });
       }
     });
 
@@ -81,20 +108,20 @@ console.log(user.uid);
     const { roomId } = this.props;
     this.getUserMedia().then(() => {
       this.state.socket.emit('join', { roomId });
-      console.log("socket.on join", roomId)
+      ////console.log("socket.on join", roomId)
 
     });
 
     this.state.socket.on('init', (data) => {
 
-      console.log("socket.on init", data)
+      ////console.log("socket.on init", data)
 
       userId = data.userId;
       this.state.socket.emit('ready', { room: roomId, userId });
     });
 
     this.state.socket.on("users", ({ initiator, users }) => {
-      console.log("socket.on  users", users)
+      ////console.log("socket.on  users", users)
 
       Object.keys(users.sockets)
         .filter(
@@ -122,7 +149,7 @@ console.log(user.uid);
           })
 
           peer.on('signal', data => {
-            console.log("peer.on  signal", users)
+            //console.log("peer.on  signal", users)
 
             const signal = {
               userId: sid,
@@ -132,7 +159,7 @@ console.log(user.uid);
             this.state.socket.emit('signal', signal);
           });
           peer.on('stream', stream => {
-            console.log("peer.on  stream", stream)
+            //console.log("peer.on  stream", stream)
 
             const streamsTemp = { ...this.state.streams }
             streamsTemp[sid] = stream
@@ -140,9 +167,9 @@ console.log(user.uid);
             this.setState({ streams: streamsTemp })
           });
           peer.on('error', function (err) {
-            console.log("peer.on  error", err)
+            //console.log("peer.on  error", err)
 
-            console.log(err);
+            //console.log(err);
           });
 
           const peersTemp = { ...this.state.peers }
@@ -151,10 +178,18 @@ console.log(user.uid);
           this.setState({ peers: peersTemp })
         })
     })
+    this.state.socket.on('chat message', ({ message, user }) => {
+     
+      this.setState(ele => ({
+        messages: [...ele.messages, {user: user,content:message}]
+      }))
+      //console.log(this.state.messages);
+    });
+    this.state.socket.on('signal', ({ userId, signal,image }) => {
+     // //console.log("socket.on  signal userId", userId, "signal", signal);
+   
 
-    this.state.socket.on('signal', ({ userId, signal }) => {
-      console.log("socket.on  signal userId", userId, "signal", signal)
-
+      
       const peer = this.state.peers[userId]
       peer.signal(signal)
     })
@@ -162,8 +197,12 @@ console.log(user.uid);
     this.state.socket.on('disconnected', () => {
       component.setState({ initiator: true });
     });
+    
+this.state.socket.on("switchimage",(url)=>{
+//console.log(url);
+});
+    
   }
-
 
   getUserMedia(cb) {
     return new Promise((resolve, reject) => {
@@ -234,12 +273,14 @@ console.log(user.uid);
 
 
   changeImage = (str) => {
+    Firebase.database().ref("roomsession/"+this.props.roomId).set({
+      currentimage:this.state.images[str].url,
+      imageid:str
+    })
     this.setState({ current_image: str })
     if(document.getElementById(str+"_thumb")){
       var a = document.querySelectorAll('.item_active');
-      console.log(a);
       [].forEach.call(a, function(el) {
-        console.log(el);
                 el.classList.remove("item_active");
       });
       document.getElementById(str+"_thumb").classList.add('item_active');
@@ -248,46 +289,98 @@ console.log(user.uid);
 
   change = (str) => {
     for (var key in this.state.images){
-      console.log(str,this.state.images[key].url);
       if (this.state.images[key].url === str) { 
        
         this.changeImage(key) }
     }
   }
-
+  changeProject = (user_id,pid) =>{
+    this.setState({
+      loader:true,
+      apiload:true
+    })
+    Firebase.database().ref("users/" + user_id + "/Projects/" + pid).once("value", (node) => {
+      this.setState({
+        data:node.val(),
+        pid:pid,
+        apiload:false
+      })
+      if (node.hasChild("images")) {
+        for (var x in node.val().images){
+          this.setState({
+            current_image:x,
+            images: node.val().images
+          });
+          Firebase.database().ref("roomsession/"+this.props.roomId).set({
+            currentimage:node.val().images[x].url,
+            imageid:x
+          })
+        break;
+        }
+      }
+    });
+  }
   togglenav()
   {
-    console.log(this.Sidenav.current.style.width);
+    //console.log(this.Sidenav.current.style.width);
     
     if(this.Sidenav.current.style.width==="300px"){
       this.Sidenav.current.style.width="0px";
-          console.log(this.bottom.current.offsetWidth);
-          this.bottom.current.style.width=this.bottom.current.offsetWidth+300+"px";
+          //console.log(this.bottom.current.offsetWidth);
+          this.bottom.current.style.width=this.bottom.current.offsetWidth+259+"px";
   
     }
     else{
       this.Sidenav.current.style.width="300px";
-      console.log(this.bottom.current.offsetWidth);
-      this.bottom.current.style.width=this.bottom.current.offsetWidth-300+"px";
+      //console.log(this.bottom.current.offsetWidth);
+      this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
     }
   }
+  sendmessage(e){
+    e.preventDefault();
+    const message = {
+      room: this.props.roomId,
+      user: this.state.socket.id,
+      message: this.messagearea.current.value
+    };
+    //console.log(message);
+    this.state.socket.emit('chat message', message);
+    this.messagearea.current.value="";
+  }
+loader(){
+  this.setState({
+    loader:false
+  })
+}
+
+
 
   render() {
 
     return (<>
-    {this.state.apiload?<></>: <><Scene
+
+
+    {!this.state.init?<Scene
             data={this.state.images}
             image={this.state.current_image}
             change={this.change}
             host={this.state.host}
-          />
+            loader={this.loader}
+            clientimage={this.state.clientimage}
+            clientimageid={this.state.clientimageid}
+          />:<></>}
+    {this.state.apiload ?<></>: <>
+  
+    
           <div id="bottom" className="container" ref={this.bottom} >
-            <SceneControls
-              pid={this.props.pid}
+          <SceneControls
+              pid={this.state.pid}
+              socket={this.state.socket}
               roomId={this.props.roomId}
               user_id={this.state.user_id}
               data={this.state.data}
               changeImage={this.changeImage}
+              changeProject={this.changeProject}
               micstate={this.state.micState}
               screenaction={() => {
                 this.getDisplay();
@@ -300,7 +393,7 @@ console.log(user.uid);
               }}
               camstate={this.state.camState}
               host={this.state.host}
-            />
+            />  
             </div>
           </>}
      
@@ -346,24 +439,26 @@ console.log(user.uid);
       </div>
     </div>
     <div style={{height: '100%'}} className="tab-content text-center">
-      <div style={{padding: '10px 50px'}} className="tab-pane active show" id="members">
-        <div>
+      <div style={{height: '100%'}} className="tab-pane active show" id="members">
+      <ul class="chat_bar" style={{padding:'0px',height:'90%'}}>
+      <li><div>
       <video
                 autoPlay
                 id='localVideo' className="user-video"
                 muted
                 ref={video => (this.localVideo = video)}
-              /></div>
+              /></div></li>
       {
                 Object.keys(this.state.streams).map((key, id) => {
-                  return <div>
+                  return <li><div>
                     <p> {key}</p><VideoItem
                     key={key}
                     userId={key}
                     stream={this.state.streams[key]}
-                  /></div>
+                  /></div></li>
                 })
               }
+              </ul>
       </div>
       <div style={{height: '100%'}} className="tab-pane" id="chat">
         <ul className="chat_bar">
@@ -389,21 +484,34 @@ console.log(user.uid);
               </g>
             </svg>
           </span>
-          <input type="text" className="input_box" value={this.state.messagetext} onChange={this.updatetyping} placeholder="Type your message and press enter" />
+          <input type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message and press enter" />
         </form>
       </div>  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
     </div>
   </div>
 </div>
 
 
 
-
-
-
-
-
-
+{/* 
+<Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host}></Switchprojectloader> */}
 
 
 

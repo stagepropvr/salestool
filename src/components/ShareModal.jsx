@@ -3,16 +3,26 @@ import { Redirect, Route, Link } from "react-router-dom";
 import Fire from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
+import 'jquery';
+import ReactTooltip from "react-tooltip";
+
 class Share extends React.Component {
   constructor(props){
     super(props);
     this.state={
-        url:''
+        url:'',
+        tooltip:false
     }
-   // this.handlechange=this.handlechange.bind(this);
+   this.handlecopy=this.handlecopy.bind(this);
  
 }
   
+handlecopy(event){
+  navigator.clipboard.writeText(this.state.url);
+  this.setState({
+    tooltip:true
+  })
+}
 componentDidMount(){
     
     window.scrollTo(0, 0);
@@ -71,7 +81,8 @@ componentDidMount(){
               </svg>
               
             </span>
-            <span data-toggle="tooltip" data-placement="right" title="Joining link copied" className="clipboard">Copy joining link</span>
+            <span onClick={this.handlecopy} data-toggle="tooltip" data-placement="right" data-tip="Joining link copied"  className="clipboard">Copy joining link</span>
+            <ReactTooltip style={{display:this.state.tooltip?'block':'none'}} aria-haspopup='true'  place="right" type="light" effect="solid"/>
           </div>
         </div>
       </div>
