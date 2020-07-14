@@ -118,7 +118,7 @@ room(){
  Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.match.params.pid+"/rooms").push({
   val:"dummy"
 }).then((res)=>{
-  
+  localStorage.setItem(res.key,true);
   console.log(res.key);
   this.setState({
   room:res.key

@@ -19,7 +19,8 @@ class Joinroom extends React.Component {
         bed:'',
         bath:'',
         sqft:'',
-        img:''
+        img:'',
+        redirect:false
     }
     this.handlechange=this.handlechange.bind(this);
     this.handlejoin=this.handlejoin.bind(this);
@@ -78,6 +79,10 @@ componentDidMount(){
                      email:this.state.email   
                     });
                     localStorage.setItem("guestkey",ref.key);
+                    localStorage.setItem(this.props.match.params.rid,false);
+                    this.setState({
+                        redirect:true
+                    })
                 }
                 else{
                     document.getElementById('number').classList.add('input_error_border');
@@ -133,7 +138,6 @@ componentDidMount(){
             document.getElementById('email').classList.add('input_error_border');
             document.getElementById('email_error').childNodes[0].classList.remove('input_error_hide');
 
-
         }
     }
   }
@@ -153,7 +157,13 @@ handlechange(event){
 
 
   render() {
-    return(  <div className="header-filter">
+if(this.state.redirect){
+    return(
+    <Redirect to={"/room/"+this.props.match.params.pid+"/"+this.props.match.params.rid}/>
+    )
+}else{
+    return( 
+         <div className="header-filter">
     <div  className="login_container container">
         <div style={{background: "#eeeeee"}} className="login_container row">
             <div style={{padding:"0"}} className="col-sm-5">
@@ -322,7 +332,7 @@ handlechange(event){
             </div>
         </div>
     </div>
-</div>)
+</div>)}
   }
 }
 export default Joinroom;
