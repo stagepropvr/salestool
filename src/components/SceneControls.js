@@ -9,6 +9,8 @@ import ReactTooltip from "react-tooltip";
 import Switchproject from "./Switchproject";
 import Floorplan from './Floorplan';
 import CloseModal from './CloseModal';
+import Map from './Map';
+
 class SceneControls extends React.Component { 
   constructor(props){
     super(props);
@@ -22,7 +24,8 @@ class SceneControls extends React.Component {
       floorplan:false,
       data:this.props.data,
       pid:this.props.pid,
-      close:false
+      close:false,
+      map:false
     }
   }
 
@@ -32,7 +35,26 @@ class SceneControls extends React.Component {
     window.scrollTo(0, 0);
     this.menu.addEventListener("click", this.menu_bar_open);
     console.log(this.props.pid);
-    
+    this.handleOutsideClick = this.handleOutsideClick.bind(this);
+  }
+
+  handleOutsideClick(e) {
+    // ignore clicks on the component itself
+    if(this.state.menu_bar){
+      this.setState({
+        menu_bar:false
+      })
+      document.getElementById('menu_bar').classList.remove('menu_option_click');
+      document.removeEventListener('click', this.handleOutsideClick, false);
+
+    }else{
+      document.addEventListener('click', this.handleOutsideClick, false);
+
+      this.setState({
+        menu_bar:true
+      })
+      document.getElementById('menu_bar').classList.add('menu_option_click');
+    }
   }
 
 menu_bar_open = (event) => {
@@ -41,7 +63,11 @@ menu_bar_open = (event) => {
       menu_bar:false
     })
     document.getElementById('menu_bar').classList.remove('menu_option_click');
+    document.removeEventListener('click', this.handleOutsideClick, false);
+
   }else{
+    document.addEventListener('click', this.handleOutsideClick, false);
+
     this.setState({
       menu_bar:true
     })
@@ -170,7 +196,7 @@ return (
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
 
-              <a data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="fdh">
+              <a onClick={()=> this.open_close('floorplan',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Floor Plan">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__e" d="M15.69 12.963L10 15.607V8.89l6-2.787v6.435c0 .174-.118.336-.31.424zm-13.387 0c-.189-.087-.305-.25-.303-.431V6.104L8 8.89v6.718l-5.697-2.645zm6.404-10.9C8.798 2.022 8.9 2 9 2c.1 0 .201.02.292.064l5.33 2.474L9 7.15 3.378 4.538l5.33-2.474zm8.95 2.196c-.004-.008-.003-.017-.007-.025-.003-.008-.01-.013-.016-.021-.046-.076-.102-.143-.155-.213-.03-.034-.056-.072-.09-.101-.235-.276-.512-.52-.856-.678l-6.4-2.973-.002-.001c-.719-.332-1.544-.331-2.265 0L1.47 3.22c-.344.159-.622.4-.857.677-.037.03-.064.073-.097.11-.052.067-.105.132-.149.204-.005.009-.013.015-.017.023-.004.009-.003.018-.007.027C.132 4.623 0 5.03 0 5.458v7.067c-.008.95.564 1.834 1.458 2.252l6.4 2.972c.361.169.75.253 1.138.253.388 0 .776-.084 1.137-.252l6.397-2.972c.892-.412 1.47-1.29 1.47-2.238V5.457c0-.428-.132-.835-.344-1.198z" />
@@ -182,7 +208,7 @@ return (
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
 
-              <a onClick={()=> this.open_close('floorplan',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Floor Plan">
+              <a  onClick={()=> this.open_close('map',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Near By">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__f" d="M16 13.454l-2-.898V2.546l2 .898v10.01zm-6-10.01l2-.898v10.01l-2 .898V3.444zm-4-.898l2 .898v10.01l-2-.898V2.546zm-4 .898l2-.898v10.01l-2 .898V3.444zm15.41-1.558l-4-1.798c-.015-.007-.031-.008-.046-.014-.041-.016-.082-.027-.124-.038-.039-.01-.078-.019-.118-.023-.039-.005-.078-.006-.118-.006-.044 0-.087.001-.131.006-.037.004-.072.013-.108.022-.044.011-.087.023-.13.04-.014.005-.031.006-.045.013L9 1.701 5.41.088C5.395.081 5.379.08 5.364.074 5.323.058 5.282.047 5.24.036c-.039-.01-.078-.019-.118-.023-.039-.005-.078-.006-.118-.006-.044 0-.087.001-.131.006-.037.004-.072.013-.108.022-.044.011-.087.023-.13.04-.014.005-.031.006-.045.013l-4 1.798c-.359.161-.59.518-.59.912V15c0 .34.172.655.457.84.164.106.353.16.543.16.139 0 .279-.029.41-.088L5 14.3l3.59 1.613c.015.007.031.004.047.01.117.047.238.078.363.078s.246-.03.363-.078c.015-.006.033-.003.047-.01L13 14.3l3.59 1.613c.131.06.271.088.41.088.19 0 .379-.054.543-.16.285-.185.457-.5.457-.84V2.798c0-.394-.231-.75-.59-.912z" />
@@ -259,6 +285,7 @@ return (
     <Switchproject changeProject={this.props.changeProject} data={this.state.data} open_close={this.open_close} project={this.state.project} pid={this.state.pid} user_id={this.props.user_id}></Switchproject>
     <Floorplan  changeImage = {this.props.changeImage} data={this.state.data} open_close={this.open_close} floorplan={this.state.floorplan}></Floorplan>
     <CloseModal  close={this.state.close} open_close={this.open_close} ></CloseModal>
+    <Map pid={this.state.pid} user_id={this.props.user_id} open_close={this.open_close} map={this.state.map}></Map>
 
   </>
 

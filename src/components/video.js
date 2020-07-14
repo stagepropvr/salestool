@@ -66,7 +66,6 @@ class Video extends React.Component {
           this.state.data = node.val();
        
             for (var x in node.val().images){
-              console.log(x,node.val().images[x]);
               Firebase.database().ref("roomsession/"+this.props.roomId).set({
                 currentimage:node.val().images[x].url
               })
@@ -83,9 +82,7 @@ class Video extends React.Component {
         });
       }
       else{
-        console.log("fsfsf");
         Firebase.database().ref("roomsession/"+this.props.roomId).on("value",(snap)=>{
-          console.log(snap.val());
           this.setState({
             clientimage:snap.val().currentimage,
             apiload:false,
@@ -278,9 +275,7 @@ console.log(url);
     this.setState({ current_image: str })
     if(document.getElementById(str+"_thumb")){
       var a = document.querySelectorAll('.item_active');
-      console.log(a);
       [].forEach.call(a, function(el) {
-        console.log(el);
                 el.classList.remove("item_active");
       });
       document.getElementById(str+"_thumb").classList.add('item_active');
@@ -289,7 +284,6 @@ console.log(url);
 
   change = (str) => {
     for (var key in this.state.images){
-      console.log(str,this.state.images[key].url);
       if (this.state.images[key].url === str) { 
        
         this.changeImage(key) }
