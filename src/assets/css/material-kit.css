@@ -16068,7 +16068,7 @@ h2.title {
   -ms-transition: all 150ms linear;
   transition: all 150ms linear;
   min-width: 7rem;
-  padding: 0.625rem 1.25rem;
+  padding: 1rem 1.25rem;
   overflow: hidden;
   line-height: 1.428571;
   text-overflow: ellipsis;
@@ -16081,7 +16081,7 @@ h2.title {
   .dropdown-menu .dropdown-item,
   .dropdown-menu li>a {
     padding-right: 1.5rem;
-    padding-left: 1.5rem;
+    padding-left: 1.4rem;
   }
 }
 
@@ -20444,6 +20444,45 @@ select{
   to {
     transform: rotate(360deg);
   }
+}
+
+.guest_video_mute{
+  position: absolute;
+  z-index: 1;
+  top: 160px;
+  left: 35px;
+  height: 32px;
+  width: 32px;
+}
+
+.guest_video_name{
+  position: relative;
+  z-index: 1;
+  top: 90px;
+  right: 50px;
+    font-size: 12px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    text-align: right;
+    color: #ffffff;
+}
+
+.host_video_name{
+    position: relative;
+    z-index: 1;
+    top: -11px;
+    left: 190px;
+    font-size: 12px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    text-align: right;
+    color: #ffffff;
 }
 /* Scene.html End  */
 
