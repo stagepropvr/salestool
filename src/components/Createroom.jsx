@@ -165,7 +165,7 @@ room(){
                       </svg>        
                    </span>
                    <span id="room" className="createroom_icon_span">
-                    {this.state.bed}
+                    {this.state.bed} BHK
                    </span> 
                 </div>
               <div style={{paddingLeft: "15px"}}>
@@ -183,7 +183,7 @@ room(){
                     
                 </span>
                 <span id="bath" className="createroom_icon_span">
-                {this.state.bath}
+                {this.state.bath} Bath
                  </span> 
               </div>
                
@@ -196,7 +196,7 @@ room(){
                     </svg>                    
                 </span>
                 <span id="sqft" className="createroom_icon_span">
-                  {this.state.sqft}
+                  {this.state.sqft} sq.ft
                  </span> 
                </div>
                 

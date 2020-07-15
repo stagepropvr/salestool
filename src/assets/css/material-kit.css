@@ -5400,6 +5400,10 @@ width: 65px;
 }
 
 .progress {
+  width: 265px;
+    height: 16px;
+    border-radius: 20px !important;
+    margin-top: 8px;
   display: flex;
   height: 1rem;
   overflow: hidden;
@@ -5415,7 +5419,7 @@ width: 65px;
   justify-content: center;
   color: #fff;
   text-align: center;
-  background-color: #9c27b0;
+  background-color: #ff3d71;
   transition: width 0.6s ease;
 }
 
@@ -6684,7 +6688,8 @@ button.bg-dark:focus {
 .rounded-circle {
   border-radius: 50% !important;
   width: 40px;
-  height: 40px
+  border: 1px solid #e4e9f2;
+  height: 40px;
 }
 
 .rounded-0 {
@@ -15988,6 +15993,9 @@ h2.title {
   display: block;
   opacity: 1;
   transform: scale(1);
+}
+
+.menudrop.dropdown-menu.show{
   top:-16px !important;
   left:-2px !important;
 }
@@ -16725,11 +16733,8 @@ h2.title {
 }
 
 .progress {
-  height: 4px;
-  border-radius: 0;
   box-shadow: none;
-  background: #DDDDDD;
-  margin-bottom: 20px;
+    background: #f9f9f9;
 }
 
 .progress .progress-bar {
@@ -19228,15 +19233,74 @@ display:none;
 }
 .username{
   font-family: 'propvr';
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.85;
+    letter-spacing: normal;
+    color: #222b45;
+    padding-left: 12px;
+}
+.header_dropdown{
+    text-transform: capitalize !important;
+    border-bottom: 2px solid #f9f9f9;
+    padding: 8px !important;
+    height: 48px;
+    align-items: flex-start !important;
+    font-family: 'propvr';
+    font-size: 15px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 2.3 !important;
+    letter-spacing: normal;
+    color: #222b45;
+}
+.header_dropdown_email{
+  text-transform: none !important;
+}
+.header_dropdown:hover .header_dropdown_subtext{
+  color:#fff;
+}
+.header_dropdown_subtext{
+  font-family: 'propvr';
+  font-size: 12px;
+  font-weight: normal;
   font-stretch: normal;
   font-style: normal;
-  line-height: 1.85;
+  line-height: 1.33;
   letter-spacing: normal;
-  color: #222b45;
+  color: #8f9bb3;
 }
+
+/* Tools */
+.product{
+  max-width: 344px;
+border-radius: 20px;
+display: block;
+margin: 35px;
+box-shadow: 0px 10px 17px 1px #00000057;
+border-width: 3px;
+}
+.product:hover{
+transform: translateY(-15px);
+transition: ease-in-out 0.2s;
+}
+.product img{
+border-radius:20px !important;
+height: auto !important;
+}
+#products{
+display: flex;
+position: absolute;
+justify-content: center;
+top: 50%;
+transform: translate(0, -50%);
+}
+
+/* TOOLS END  */
 
 
 /* Sign and Login Page CSS */
@@ -19520,10 +19584,10 @@ height: 40px;
 .project_card{
   padding-bottom: 35px;
     cursor: pointer;
-    width: 344px;
+    max-width: 344px;
     height: 230px;
     border-radius: 4px;
-    margin-left: 20px;
+    margin-left: 0px;
     margin-bottom: 80px;
     outline: 1px auto #e4e9f2;
 }

@@ -50,8 +50,10 @@ class SceneControls extends React.Component {
   }
 
   handleOutsideClick(e) {
+
+
     // ignore clicks on the component itself
-    if(this.state.menu_bar){
+    if(this.state.menu_bar && e.target.id!='menu_bar_up_icon'){
       this.setState({
         menu_bar:false
       })
@@ -73,6 +75,7 @@ class SceneControls extends React.Component {
   }
 
 menu_bar_open = (event) => {
+ 
   if(this.state.menu_bar){
     this.setState({
       menu_bar:false
@@ -80,12 +83,12 @@ menu_bar_open = (event) => {
     document.getElementById('menu_bar').classList.remove('menu_option_click');
     document.removeEventListener('click', this.handleOutsideClick, false);
 
-  }else{
-    document.addEventListener('click', this.handleOutsideClick, false);
-
+  }
+  else{
     this.setState({
       menu_bar:true
     })
+    document.addEventListener('click', this.handleOutsideClick, false);
     document.getElementById('menu_bar').classList.add('menu_option_click');
   }
 }
@@ -156,7 +159,7 @@ return (
           <div className="content_padding dropup">
             <button ref={elem => this.menu = elem}  id="menu_bar" type="button" className="menu_option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span id="menu_bar_up" style={{display:this.state.menu_bar==false?'block':'none'}}>
-                <svg style={{transform: 'translateY(2px)'}} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
+                <svg id="menu_bar_up_icon" style={{transform: 'translateY(2px)'}} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__a" d="M6.373 7.22c.371-.298.901-.294 1.267.012l6 5c.424.354.481.984.128 1.408-.198.238-.482.36-.769.36-.225 0-.452-.076-.639-.232L6.99 9.293l-5.363 4.314c-.43.347-1.059.279-1.406-.152-.347-.43-.278-1.06.152-1.406zm0-7c.371-.298.901-.295 1.267.012l6 5c.425.353.482.983.128 1.408-.198.237-.482.36-.768.36-.226 0-.453-.077-.64-.232L6.989 2.292 1.627 6.607c-.43.346-1.059.278-1.406-.152-.346-.43-.278-1.06.152-1.407z" />
                   </defs>
@@ -166,7 +169,7 @@ return (
                 </svg>
               </span>
               <span style={{display:this.state.menu_bar==true?'block':'none', transform: 'translateY(2px)'}} id="menu_bar_down">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
+                <svg id="menu_bar_down_icon" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__down" d="M.232 7.36c.353-.424.983-.482 1.408-.128l5.371 4.476 5.362-4.315c.43-.345 1.061-.277 1.406.152.346.43.278 1.06-.152 1.407l-6 4.828c-.183.147-.405.22-.627.22-.228 0-.455-.077-.64-.232l-6-5c-.425-.353-.482-.983-.128-1.408zm0-7c.354-.425.983-.48 1.408-.128l5.37 4.475L12.374.393c.43-.346 1.06-.278 1.406.152.347.43.278 1.06-.152 1.406l-6 4.828C7.444 6.926 7.222 7 7 7c-.227 0-.455-.077-.64-.232l-6-5C-.064 1.414-.121.784.232.36z" />
                   </defs>
@@ -263,10 +266,21 @@ return (
           </div>
 
           <div id="video-controls" className="content_padding">
-            <button className="menu_option" onClick={this.props.micaction} style={{background: '#fff'}}>
-              <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
+            <button className={this.props.micstate?"menu_option video_on":"menu_option video_off"}  onClick={this.props.micaction}>
+              {this.props.micstate?<svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
                 <path fill="#222B45" fillRule="evenodd" d="M13 17.92V20h2.105c.493 0 .895.402.895.895v.21c0 .493-.402.895-.895.895h-6.21C8.402 22 8 21.598 8 21.106v-.211c0-.493.402-.895.895-.895H11v-2.08c-3.387-.488-6-3.4-6-6.92 0-.552.447-1 1-1 .553 0 1 .448 1 1 0 2.757 2.243 5 5 5s5-2.243 5-5c0-.552.447-1 1-1 .553 0 1 .448 1 1 0 3.52-2.613 6.432-6 6.92zM10 6c0-1.103.897-2 2-2s2 .897 2 2v5c0 1.103-.897 2-2 2s-2-.897-2-2V6zm2 9c2.206 0 4-1.794 4-4V6c0-2.205-1.794-4-4-4S8 3.795 8 6v5c0 2.206 1.794 4 4 4z" />
-              </svg>                
+              </svg>:<svg width={24} height={24} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <g data-name="Layer 2">
+                  <g data-name="mic-off">
+                  <rect width="24" height="24" opacity="0"/>
+                  <path fill="#fff" d="M10 6a2 2 0 0 1 4 0v5a1 1 0 0 1 0 .16l1.6 1.59A4 4 0 0 0 16 11V6a4 4 0 0 0-7.92-.75L10 7.17z"/>
+                  <path fill="#fff" d="M19 11a1 1 0 0 0-2 0 4.86 4.86 0 0 1-.69 2.48L17.78 15A7 7 0 0 0 19 11z"/>
+                  <path fill="#fff" d="M12 15h.16L8 10.83V11a4 4 0 0 0 4 4z"/>
+                  <path fill="#fff" d="M20.71 19.29l-16-16a1 1 0 0 0-1.42 1.42l16 16a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"/>
+                  <path fill="#fff" d="M15 20h-2v-2.08a7 7 0 0 0 1.65-.44l-1.6-1.6A4.57 4.57 0 0 1 12 16a5 5 0 0 1-5-5 1 1 0 0 0-2 0 7 7 0 0 0 6 6.92V20H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2z"/>
+                  </g>
+                  </g>
+                  </svg>  }            
             </button>
             <button   onClick={this.props.videoaction}  className={this.props.camstate?"menu_option video_on":"menu_option video_off"}>
               
@@ -277,9 +291,9 @@ return (
                 <g fill="none" fillRule="evenodd" transform="translate(2 5)">
                   <use fill="#222B45" xlinkHref="#prefix__z" />
                 </g>
-              </svg>:<div><svg id="video_off" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
+              </svg>:<svg id="video_off" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
                 <path fill="#fff" fillRule="evenodd" d="M20 9.4L17.191 12 20 14.6V9.4zm2-.77v6.74c0 .65-.379 1.218-.988 1.484-.224.098-.459.146-.693.146-.206 0-.409-.038-.601-.11L15 12.17v-4.17c0-.553-.448-1-1-1H9.828l-2-2H14c1.654 0 3 1.344 3 3v1.45l2.161-2c.499-.46 1.225-.578 1.851-.306.609.266.988.835.988 1.484zM14 17H5c-.552 0-1-.449-1-1V8c0-.32.161-.593.396-.777L2.974 5.801C2.379 6.351 2 7.13 2 8.001v8c0 1.653 1.346 3 3 3h9c.616 0 1.188-.189 1.665-.508l-1.522-1.523c-.049.008-.092.03-.143.03zm6.707 2.293c.391.39.391 1.023 0 1.414-.195.195-.451.293-.707.293-.256 0-.512-.098-.707-.293L16.386 17.8l-1.455-1.455L5.586 7l-1.76-1.76-.533-.533c-.391-.39-.391-1.024 0-1.414.391-.39 1.023-.39 1.414 0L6.414 5l2 2L15 13.586l2 2 3.707 3.707z" />
-              </svg></div>} 
+              </svg>} 
             
               
             </button>

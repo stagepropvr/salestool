@@ -5,12 +5,11 @@ import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
 import Header from "../Layouts/Header";
 
-class Projects extends React.Component {
+class Tools extends React.Component {
   constructor(props){
     super(props);
     this.state={
         redirect:true,
-        project_list:[]
     }
   }
   
@@ -19,21 +18,6 @@ componentDidMount(){
     window.scrollTo(0, 0);
    Fire.auth().onAuthStateChanged((user) => {
       if (user) {
-        var temp_list=[];
-        var ref = Fire.database().ref("users/"+user.uid+"/Projects");
-        ref.once('value',child=>{
-          child.forEach(snap=>{
-            if(snap.val().Publish){
-              temp_list.push({
-                img:snap.val().thumb,
-                id:snap.key
-            })
-            }
-          })
-          this.setState({
-            project_list:temp_list
-          })
-        })
          this.setState({
             redirect: true
          });
@@ -53,7 +37,7 @@ componentDidMount(){
 
   render() {
     if(this.state.redirect){
-      const current_tag = 1;
+      const current_tag = 2;
       return(
         <>
     <Header current_tag={current_tag}/>
@@ -61,24 +45,17 @@ componentDidMount(){
 
         <div className="cd-section">
             <div className="banner">
-               <span>My projects</span>
+               <span>Tools</span>
             </div>
             <div className="project_list">
                    <div className="container">
                        <div style={{padding: "20px"}} className="row">
-                       {this.state.project_list.map((node) =>{
-                         return(
-                          <Link style={{paddingLeft:'16px'}} key={node.id} to={"/createroom/" + node.id}>
-                          <div  className="project_card">
-                          <img src={node.img} />
-                          <div className="project_name">
-                           <span>{node.id}</span>
-                          </div>
-                        </div>
-                        </Link>
-                         )
-                         
-                       })}   
+                       <a href="#" className="product" id="creator">
+                           <img src="https://cdn.glitch.com/d919fddc-bed5-4101-a53e-3764014fe3bb%2F5.png?v=1585560094420" /></a>
+                      <Link to={"/projects"} className="product" id="sales">
+                          <img src="https://cdn.glitch.com/d919fddc-bed5-4101-a53e-3764014fe3bb%2F6.png?v=1585560098012" /></Link>
+                       <a href="#" className="product" id="strtview">
+                           <img src="https://cdn.glitch.com/d919fddc-bed5-4101-a53e-3764014fe3bb%2F4.png?v=1585560090774" /></a>  
                        </div>
                    </div>
             </div>
@@ -90,4 +67,4 @@ componentDidMount(){
     }
 }
 }
-export default Projects;
+export default Tools;
