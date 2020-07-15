@@ -443,8 +443,13 @@ loader(){
     </div>
     <div style={{height: '100%'}} className="tab-content text-center">
       <div style={{height: '100%'}} className="tab-pane active show" id="members">
-      <ul class="chat_bar" style={{padding:'0px',height:'90%'}}>
-      <li><div>
+        <div className="mute_all_div">
+          <input type="checkbox"/>
+          <label className="mute_all">Mute all</label>
+          </div>
+      <ul style={{padding:'0px',height:'90%',overflow: "auto", listStyle:"none",width:'85%',paddingLeft:'8px'}}>
+      <li>
+        <div>
       <span className="guest_video_name">value</span>
       <button className="menu_option video_on guest_video_mute">
                       <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24">

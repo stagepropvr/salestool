@@ -20153,6 +20153,7 @@ select{
     background: #fff;
     padding: 10px;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 @media screen and (max-height: 450px) {
@@ -20164,10 +20165,9 @@ select{
   color:#3366ff;
   transform: scale3d(0.65, 0.65, 1);
 }
-
 .__react_component_tooltip{
   width:147px;
-  font-size: 12px !important;
+   font-size: 12px !important;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
@@ -20184,6 +20184,50 @@ select{
 
 .__react_component_tooltip:after{
   border-right-color: #101426 !important;
+}
+.share_tooltip{
+  width: 147px;
+  height: 28px;
+  font-size: 12px !important;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 2.33;
+  letter-spacing: normal;
+  text-align: center;
+  color: rgb(255, 255, 255) !important;
+  border-radius: 4px !important;
+  background-color: rgb(16, 20, 38) !important;
+  transition: all 0.2s ease-out;
+}
+/* .share_tooltip:before{
+  border-right-color: #101426 !important;
+  border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    left: -8px;
+    top: 50%;
+    margin-top: -5px;
+    border-right: 8px solid transparent;
+} */
+
+.share_tooltip::after {
+  content: "";
+  width: 0;
+  height: 0;
+  position: relative;
+}
+
+.share_tooltip:after{
+  border-right-color: #101426 !important;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    left: -6px;
+    float: left;
+    top: 15px;
+    margin-top: -7px;
+    border-right-color: #fff;
+    border-right-style: solid;
+    border-right-width: 6px;
 }
 
 .floorplan_div{
@@ -20447,19 +20491,35 @@ select{
 }
 
 .guest_video_mute{
-  position: absolute;
+  position: relative;
   z-index: 1;
-  top: 160px;
-  left: 35px;
+  top: 106px;
+    left: -112px;
   height: 32px;
   width: 32px;
 }
-
+.mute_all_div{
+  padding-top: 12px;
+    width: 75%;
+    text-align: end;
+}
+.mute_all{
+  position: relative;
+    top: -2px;
+    left: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.85;
+    letter-spacing: normal;
+    color: #222b45;
+}
 .guest_video_name{
   position: relative;
   z-index: 1;
-  top: 90px;
-  right: 50px;
+  top: 108px;
+    left: 95px;
     font-size: 12px;
     font-weight: bold;
     font-stretch: normal;
