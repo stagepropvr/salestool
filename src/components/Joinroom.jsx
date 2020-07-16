@@ -28,9 +28,9 @@ class Joinroom extends React.Component {
   
 componentDidMount(){
     
-    console.log(this.props.match.params.uid);
-    console.log(this.props.match.params.pid);
-    console.log(this.props.match.params.rid);
+    ////console.log(this.props.match.params.uid);
+    //console.log(this.props.match.params.pid);
+    //console.log(this.props.match.params.rid);
     var ref = Fire.database().ref("users/"+this.props.match.params.uid+'/Projects/'+this.props.match.params.pid);
     ref.once('value',child=>{
         this.setState({
@@ -202,7 +202,7 @@ if(this.state.redirect){
                                       </svg>        
                                    </span>
                                    <span id="room" className="createroom_icon_span">
-                                    2 BHK
+                                    {this.state.bed} BHK
                                    </span> 
                                 </div>
                               <div style={{paddingLeft: "15px"}}>
@@ -220,7 +220,7 @@ if(this.state.redirect){
                                     
                                 </span>
                                 <span id="bath" className="createroom_icon_span">
-                                  2 Bath
+                                  {this.state.bath} Bath
                                  </span> 
                               </div>
                                
@@ -233,7 +233,7 @@ if(this.state.redirect){
                                     </svg>                    
                                 </span>
                                 <span id="sqft" className="createroom_icon_span">
-                                  782 sq ft
+                                    {this.state.sqft} sq.ft
                                  </span> 
                                </div>
                                                            
