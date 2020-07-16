@@ -10,12 +10,19 @@ class Share extends React.Component {
   constructor(props){
     super(props);
     this.state={
-        url:''
+        url:'',
+        tooltip:false
     }
-   // this.handlechange=this.handlechange.bind(this);
+   this.handlecopy=this.handlecopy.bind(this);
  
 }
   
+handlecopy(event){
+  navigator.clipboard.writeText(this.state.url);
+  this.setState({
+    tooltip:true
+  })
+}
 componentDidMount(){
     
     window.scrollTo(0, 0);
@@ -74,8 +81,9 @@ componentDidMount(){
               </svg>
               
             </span>
-            <span data-toggle="tooltip" data-placement="right" data-tip="Joining link copied"  className="clipboard">Copy joining link</span>
-            <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
+            <span onClick={this.handlecopy} data-toggle="tooltip" data-placement="right" data-tip="Joining link copied"  className="clipboard">Copy joining link</span>
+            <div style={{display:this.state.tooltip?'block':'none'}} className="share_tooltip">Joining link copied</div>
+            {/* <ReactTooltip style={{display:this.state.tooltip?'block':'none'}} aria-haspopup='true'  place="right" type="light" effect="solid"/> */}
           </div>
         </div>
       </div>

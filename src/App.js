@@ -11,6 +11,8 @@ import Createroom from "./components/Createroom";
 import Joinroom from "./components/Joinroom";
 // import MapModal from "./components/Mapmodal"
 
+import Tools from './components/Tools';
+
 
 import { goToRoomInput } from './components/goToRoomInput';
 class App extends Component {
@@ -41,6 +43,8 @@ class App extends Component {
          <Route  path='/dashboard' component={Dashboard} />
 
          <Route  path='/projects' component={Projects} />
+
+         <Route  path='/tools' component={Tools} />
 
          <Route  path='/joinroom/:uid/:pid/:rid' component={Joinroom} />
 
