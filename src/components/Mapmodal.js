@@ -53,8 +53,8 @@ export class MapModal extends React.Component {
                     <div className="group">
                         <Row><label className="bold">Tumkur road, Bangalore</label></Row>
                         <Row>
-                            <Button className="btn" variant="outline-primary">Maps</Button>
-                            <Button className="btn" variant="outline-secondary">Satellite</Button>
+                            <Button className="btn" variant="out-primary">Maps</Button>
+                            <Button className="btn" variant="out-secondary">Satellite</Button>
                         </Row>
                     </div>
 
@@ -239,7 +239,7 @@ export class MapModal extends React.Component {
                         </Row>
                     </div>
                 </Col>
-                <Col >
+                <Col className="map-col">
                 <div className="map">
                     {/* <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyDH_UFxLxEo1w5RuI8R3QHoVkWY2r6Xc0M' }}
