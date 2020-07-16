@@ -41,6 +41,8 @@ class Video extends React.Component {
       init:true,
       clientimage:"",
       loader:true,
+      videoinput:"user",
+      audioinput:"default",
       clientimageid:""
     };
     this.Sidenav = React.createRef();
@@ -48,7 +50,7 @@ class Video extends React.Component {
     this.togglenav=this.togglenav.bind(this); 
     this.sendmessage=this.sendmessage.bind(this);
     this.loader=this.loader.bind(this);
-
+this.changedevice=this.changedevice.bind(this);
     this.messagearea=React.createRef();
   }
   videoCall = new VideoCall();
@@ -213,9 +215,12 @@ this.state.socket.on("switchimage",(url)=>{
       const op = {
         video: {
           width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 }
+          height: { min: 120, ideal: 360, max: 720 },
+          facingMode: {exact: this.state.videoinput}
+          
         },
-        audio: true
+        audio:{echoCancellation: true,
+          deviceId: this.state.audioinput} 
       };
       navigator.getUserMedia(
         op,
@@ -224,7 +229,9 @@ this.state.socket.on("switchimage",(url)=>{
           this.localVideo.srcObject = stream;
           resolve();
         },
-        () => { }
+        (err) => {
+          console.log(err);
+         }
       );
     });
   }
@@ -251,25 +258,74 @@ this.state.socket.on("switchimage",(url)=>{
     })
   }
 
-  getDisplay() {
-    getDisplayStream().then(stream => {
-      stream.oninactive = () => {
-        Object.keys(this.state.peers).forEach((key)=>{
-          this.state.peers[key].removeStream(this.state.localStream);
-        })
-        this.getUserMedia().then(() => {
-          Object.keys(this.state.peers).forEach((key)=>{
-            this.state.peers[key].addStream(this.state.localStream);
-          })
-        });
+    changedevice(videoinput,audioinput) {
+  this.setState({
+  videoinput:videoinput,
+  audioinput:audioinput
+  });
+
+  console.log(this.state.videoinput,this.state.audioinput);
+      var op = {
+        video: false,
+        audio:{echoCancellation: true,
+          deviceId: this.state.audioinput} 
       };
-      this.setState({ streamUrl: stream, localStream: stream });
-      this.localVideo.srcObject = stream;
-      Object.keys(this.state.peers).forEach((key)=>{
-        this.state.peers[key].addStream(this.state.localStream);
-      })
-    });
-  }
+      navigator.getUserMedia(
+        op,
+        stream => {
+      
+          stream.oninactive = () => {
+            alert(this.state.videoinput);
+
+          
+           
+          };
+          Object.keys(this.state.peers).forEach((key)=>{
+            this.state.peers[key].removeStream(this.state.localStream);
+          })
+          this.setState({ streamUrl: stream, localStream: stream });
+          this.localVideo.srcObject = stream;
+            Object.keys(this.state.peers).forEach((key)=>{
+              this.state.peers[key].addStream(this.state.localStream);
+            })
+        
+        },
+        () => { }
+      );
+      op = {
+        video: {
+          width: 200,
+          height: 500,
+          facingMode: {exact: this.state.videoinput}
+          
+        },
+        audio:{echoCancellation: true,
+          deviceId: this.state.audioinput} 
+      };
+      navigator.getUserMedia(
+        op,
+        stream => {
+      alert(this.state.videoinput);
+          stream.oninactive = () => {
+            alert(this.state.videoinput);
+
+          
+           
+          };
+          Object.keys(this.state.peers).forEach((key)=>{
+            this.state.peers[key].removeStream(this.state.localStream);
+          })
+          this.setState({ streamUrl: stream, localStream: stream });
+          this.localVideo.srcObject = stream;
+            Object.keys(this.state.peers).forEach((key)=>{
+              this.state.peers[key].addStream(this.state.localStream);
+            })
+        
+        },
+        () => { }
+      );
+    
+    }
 
 
   changeImage = (str) => {
@@ -382,9 +438,7 @@ loader(){
               changeImage={this.changeImage}
               changeProject={this.changeProject}
               micstate={this.state.micState}
-              screenaction={() => {
-                this.getDisplay();
-              }}
+              changedevice={this.changedevice}
               micaction={() => {
                 this.setAudioLocal();
               }}
@@ -393,6 +447,8 @@ loader(){
               }}
               camstate={this.state.camState}
               host={this.state.host}
+              videoinput={this.state.videoinput}
+              audioinput={this.state.audioinput}
             />  
             </div>
           </>}
