@@ -5400,6 +5400,10 @@ width: 65px;
 }
 
 .progress {
+  width: 265px;
+    height: 16px;
+    border-radius: 20px !important;
+    margin-top: 8px;
   display: flex;
   height: 1rem;
   overflow: hidden;
@@ -5415,7 +5419,7 @@ width: 65px;
   justify-content: center;
   color: #fff;
   text-align: center;
-  background-color: #9c27b0;
+  background-color: #ff3d71;
   transition: width 0.6s ease;
 }
 
@@ -6684,7 +6688,8 @@ button.bg-dark:focus {
 .rounded-circle {
   border-radius: 50% !important;
   width: 40px;
-  height: 40px
+  border: 1px solid #e4e9f2;
+  height: 40px;
 }
 
 .rounded-0 {
@@ -15988,6 +15993,9 @@ h2.title {
   display: block;
   opacity: 1;
   transform: scale(1);
+}
+
+.menudrop.dropdown-menu.show{
   top:-16px !important;
   left:-2px !important;
 }
@@ -16060,7 +16068,7 @@ h2.title {
   -ms-transition: all 150ms linear;
   transition: all 150ms linear;
   min-width: 7rem;
-  padding: 0.625rem 1.25rem;
+  padding: 1rem 1.25rem;
   overflow: hidden;
   line-height: 1.428571;
   text-overflow: ellipsis;
@@ -16073,7 +16081,7 @@ h2.title {
   .dropdown-menu .dropdown-item,
   .dropdown-menu li>a {
     padding-right: 1.5rem;
-    padding-left: 1.5rem;
+    padding-left: 1.4rem;
   }
 }
 
@@ -16725,11 +16733,8 @@ h2.title {
 }
 
 .progress {
-  height: 4px;
-  border-radius: 0;
   box-shadow: none;
-  background: #DDDDDD;
-  margin-bottom: 20px;
+    background: #f9f9f9;
 }
 
 .progress .progress-bar {
@@ -19228,15 +19233,74 @@ display:none;
 }
 .username{
   font-family: 'propvr';
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.85;
+    letter-spacing: normal;
+    color: #222b45;
+    padding-left: 12px;
+}
+.header_dropdown{
+    text-transform: capitalize !important;
+    border-bottom: 2px solid #f9f9f9;
+    padding: 8px !important;
+    height: 48px;
+    align-items: flex-start !important;
+    font-family: 'propvr';
+    font-size: 15px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 2.3 !important;
+    letter-spacing: normal;
+    color: #222b45;
+}
+.header_dropdown_email{
+  text-transform: none !important;
+}
+.header_dropdown:hover .header_dropdown_subtext{
+  color:#fff;
+}
+.header_dropdown_subtext{
+  font-family: 'propvr';
+  font-size: 12px;
+  font-weight: normal;
   font-stretch: normal;
   font-style: normal;
-  line-height: 1.85;
+  line-height: 1.33;
   letter-spacing: normal;
-  color: #222b45;
+  color: #8f9bb3;
 }
+
+/* Tools */
+.product{
+  max-width: 344px;
+border-radius: 20px;
+display: block;
+margin: 35px;
+box-shadow: 0px 10px 17px 1px #00000057;
+border-width: 3px;
+}
+.product:hover{
+transform: translateY(-15px);
+transition: ease-in-out 0.2s;
+}
+.product img{
+border-radius:20px !important;
+height: auto !important;
+}
+#products{
+display: flex;
+position: absolute;
+justify-content: center;
+top: 50%;
+transform: translate(0, -50%);
+}
+
+/* TOOLS END  */
 
 
 /* Sign and Login Page CSS */
@@ -19520,10 +19584,10 @@ height: 40px;
 .project_card{
   padding-bottom: 35px;
     cursor: pointer;
-    width: 344px;
+    max-width: 344px;
     height: 230px;
     border-radius: 4px;
-    margin-left: 20px;
+    margin-left: 0px;
     margin-bottom: 80px;
     outline: 1px auto #e4e9f2;
 }
@@ -20089,6 +20153,7 @@ select{
     background: #fff;
     padding: 10px;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 @media screen and (max-height: 450px) {
@@ -20100,10 +20165,9 @@ select{
   color:#3366ff;
   transform: scale3d(0.65, 0.65, 1);
 }
-
 .__react_component_tooltip{
   width:147px;
-  font-size: 12px !important;
+   font-size: 12px !important;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
@@ -20120,6 +20184,50 @@ select{
 
 .__react_component_tooltip:after{
   border-right-color: #101426 !important;
+}
+.share_tooltip{
+  width: 147px;
+  height: 28px;
+  font-size: 12px !important;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 2.33;
+  letter-spacing: normal;
+  text-align: center;
+  color: rgb(255, 255, 255) !important;
+  border-radius: 4px !important;
+  background-color: rgb(16, 20, 38) !important;
+  transition: all 0.2s ease-out;
+}
+/* .share_tooltip:before{
+  border-right-color: #101426 !important;
+  border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    left: -8px;
+    top: 50%;
+    margin-top: -5px;
+    border-right: 8px solid transparent;
+} */
+
+.share_tooltip::after {
+  content: "";
+  width: 0;
+  height: 0;
+  position: relative;
+}
+
+.share_tooltip:after{
+  border-right-color: #101426 !important;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    left: -6px;
+    float: left;
+    top: 15px;
+    margin-top: -7px;
+    border-right-color: #fff;
+    border-right-style: solid;
+    border-right-width: 6px;
 }
 
 .floorplan_div{
@@ -20380,6 +20488,61 @@ select{
   to {
     transform: rotate(360deg);
   }
+}
+
+.guest_video_mute{
+  position: relative;
+  z-index: 1;
+  top: 106px;
+    left: -112px;
+  height: 32px;
+  width: 32px;
+}
+.mute_all_div{
+  padding-top: 12px;
+    width: 75%;
+    text-align: end;
+}
+.mute_all{
+  position: relative;
+    top: -2px;
+    left: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.85;
+    letter-spacing: normal;
+    color: #222b45;
+}
+.guest_video_name{
+  position: relative;
+  z-index: 1;
+  top: 108px;
+    left: 95px;
+    font-size: 12px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    text-align: right;
+    color: #ffffff;
+}
+
+.host_video_name{
+    position: relative;
+    z-index: 1;
+    top: -11px;
+    left: 190px;
+    font-size: 12px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    text-align: right;
+    color: #ffffff;
 }
 /* Scene.html End  */
 

@@ -7,11 +7,25 @@ class Header extends React.Component {
   constructor(props){
     super(props);
     this.state={
-        redirect:false
+        redirect:false,
+        email:''
     }
+
+    this.signout = this.signout.bind(this);
   }
   
 componentDidMount(){
+
+  Fire.auth().onAuthStateChanged((user) => {
+    if (user) {
+      var ref = Fire.database().ref("users/"+user.uid);
+      ref.once('value',child=>{
+        this.setState({
+          email:child.val().email
+        })
+      })
+    }
+  });
   var elems = document.querySelectorAll(".active");
 
 [].forEach.call(elems, function(el) {
@@ -25,15 +39,27 @@ else if(this.props.current_tag===2)
     document.getElementById('tool').classList.add('active')
 
     window.scrollTo(0, 0)
-  }
+}
   
-
+signout(event){
+  Fire.auth().signOut().then(e=> {
+    this.setState({
+       redirect:true
+    })
+  }).catch(function (error) {
+    alert(error.message);
+  });
+}
 
 
 
 
 
   render() {
+
+    if(this.state.redirect){
+      return <Redirect to="/login"></Redirect>
+    }else{
    return( <nav className="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
    <div className="container">
      <div  className="navbar-translate">
@@ -74,18 +100,29 @@ else if(this.props.current_tag===2)
           <button className="upgrade">Upgrade now</button> 
        </li>
        <li style={{paddingLeft: "10px"}} className="dropdown nav-item">
-         <a href="javascript:;" className="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+         <a href="/" className="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
            <img src="https://s3.amazonaws.com/creativetim_bucket/new_logo.png" alt="username" className="rounded-circle img-fluid" />
            <span className="username">John Doe</span>
            <b className="caret"></b>
          </a>
          <div className="dropdown-menu dropdown-menu-right">
-           <a href="javascript:;" className="dropdown-item">Sign out</a>
+           <a href="#javascript" style={{color:'#8f9bb3'}} className="header_dropdown header_dropdown_email dropdown-item">{this.state.email}</a>
+           <a href="#javascript" style={{flexDirection: "column",height: "90px"}} className="header_dropdown dropdown-item">
+           <span>Enterprise plan</span>
+           <span className="header_dropdown_subtext">794 MB of 10000 MB used</span>
+         <div className="progress">
+         <div className="progress-bar" role="progressbar" style={{width: "25%"}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+         </div>
+         </a>
+           <a href="#javascript" className="header_dropdown dropdown-item">Downloads</a>
+           <a target="_blank" href="https://www.touchwizardtechnologies.com/#comp-jqhpwkc6" className="header_dropdown dropdown-item">Contact us</a>
+           <a href="#" style={{border:'none'}} onClick={this.signout} className="header_dropdown dropdown-item">Sign out</a>
          </div>
        </li>
    </ul>
    </div>
  </nav>)
+    }
 }
 }
 export default Header;

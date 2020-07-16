@@ -82,7 +82,8 @@ componentDidMount(){
               
             </span>
             <span onClick={this.handlecopy} data-toggle="tooltip" data-placement="right" data-tip="Joining link copied"  className="clipboard">Copy joining link</span>
-            <ReactTooltip style={{display:this.state.tooltip?'block':'none'}} aria-haspopup='true'  place="right" type="light" effect="solid"/>
+            <div style={{display:this.state.tooltip?'block':'none'}} className="share_tooltip">Joining link copied</div>
+            {/* <ReactTooltip style={{display:this.state.tooltip?'block':'none'}} aria-haspopup='true'  place="right" type="light" effect="solid"/> */}
           </div>
         </div>
       </div>
