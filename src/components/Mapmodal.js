@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal,Row,Col, Button,ButtonGroup} from 'react-bootstrap'
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 
-import "./mapmodal.css"
+import "../styles/mapmodal.css"
 
 export class MapModal extends React.Component {
     constructor()

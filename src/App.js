@@ -33,9 +33,8 @@ class App extends Component {
          <Route path='/createroom/:pid' component={Createroom} />
          <Route path='/room/:pid/:roomid' component={Salespage} />
          </Switch>
-         </Router>
-         
-   </div>
+         </Router>         
+  </div>
  
       
      
