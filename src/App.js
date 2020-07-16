@@ -9,28 +9,28 @@ import Dashboard from "./components/Dashboard";
 import Projects from "./components/Projects";
 import Createroom from "./components/Createroom";
 import Joinroom from "./components/Joinroom";
-import MapModal from "./components/Mapmodal"
+// import MapModal from "./components/Mapmodal"
 
 
 import { goToRoomInput } from './components/goToRoomInput';
 class App extends Component {
 
   
-constructor(){
-  super();
-  this.state = {show:true}
-}
+// constructor(){
+//   super();
+//   this.state = {show:true}
+// }
 
-  toggleModal = () => {
-    this.setState(prevState => ({ show: !prevState.show }));
-  }
+  // toggleModal = () => {
+  //   this.setState(prevState => ({ show: !prevState.show }));
+  // }
   
   render() {
     return (
       
        
         <div style={{width:"100%",background:'#fff'}}>
-{/*           
+          
       <Router >
        <Switch> 
         <Route  path='/login' component={Login} />
@@ -47,12 +47,12 @@ constructor(){
          <Route path='/createroom/:pid' component={Createroom} />
          <Route path='/room/:pid/:roomid' component={Salespage} />
          </Switch>
-         </Router>          */}
+         </Router>         
 
-         <MapModal
+         {/* <MapModal
         show={this.state.show}
         onHide={() => this.toggleModal()}
-      />
+      /> */}
   </div>
  
       
