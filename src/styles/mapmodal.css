@@ -10,12 +10,13 @@
 }
 
 .modal-body{
-  padding-top: 0px;
-  padding-bottom: 0px;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  padding-right: 0px !important;
 }
 
 .group{
-  margin: 10px;
+  margin: 15px 0px 0px 0px !important;
 }
 .col{
   padding-left: 10px;
@@ -34,17 +35,26 @@ svg {
   margin-left: 0.5em;
 }
 
+.map-col{
+  padding-left: 0px;
+  padding-right: 0px; 
+
+}
+
 .map{
   background-color: black;
   width: 100%; /* or any custom size */
   height: 100%; 
   object-fit: contain;
+  /* padding-left: 0px;*/
+  /* padding-right: -10px;  */
 }
 
 .label{
   text-align: start;
 }
 .bold{
+  color: black;
   font-weight: bold;
 }
 
@@ -150,3 +160,25 @@ outline: 1px solid slategrey;
   border-bottom-left-radius: 0.25rem;
   border-bottom-right-radius: 0.25rem;
 }
+
+.btn-out-primary{
+  border: 1px solid #007bff;
+  background-color: transparent;
+  color: #007bff;
+  border-color: #007bff;
+}
+
+
+.btn-out-secondary{
+  border: 1px solid #8f9bb3;
+  background-color: transparent;
+  color: #8f9bb3;
+  border-color: #8f9bb3;
+}
+
+.btn-out-secondary:hover{
+  background-color: #8f9bb3;
+  color: white;
+
+}
+
