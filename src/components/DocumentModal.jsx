@@ -42,7 +42,12 @@ componentDidMount(){
 
   open_close_pdf = (name,flag) =>{
     if(flag==true){
-      this.props.open_close('document',false)
+      this.props.open_close('document',false);
+
+    }
+    else{
+      this.props.socket.emit('pdf',{ roomid:this.props.room,data:"false"});
+
     }
     this.setState({
       [name]:flag
@@ -58,7 +63,8 @@ componentDidMount(){
  
   handleregister(event){
     event.preventDefault();
-    this.open_close_pdf('pdf_modal',true)
+    this.open_close_pdf('pdf_modal',true);
+    this.props.socket.emit('pdf',{ roomid:this.props.room,data:this.state.pdf_data});
 }
 
   render() {
