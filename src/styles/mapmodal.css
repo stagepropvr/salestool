@@ -39,6 +39,54 @@
     width: 100%;
     height: 100%;
 }
+
+.map-modal-dialog{
+  max-width: 60%;
+}
+
+.group{
+  padding-top: 10px;
+
+}
+
+.map-menu_option{
+  position: absolute;
+  margin: 7px 0px 0px 15px;
+  border-radius: 4px;
+  background-color: #3366ff;
+  border:none;
+  height: 42px;
+  cursor: pointer;
+  width: 46px;
+}
+
+.map-closebtn {
+  position: absolute;
+    right: 15px;
+    font-size: 1px;
+    background: #fff;
+    padding: 3px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.sidenavg {
+  height: 100%;
+  width: 0;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  background-color: white;
+  transition: all 0.5s ease-in-out;
+}
+
+.sub-header{
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #3366ff;
+  padding-bottom: 0px;
+  margin-bottom: 0px;  
+}
+
 .map-modal{
   font-size: 1rem;
 text-align: left;
@@ -64,8 +112,28 @@ overflow-y: auto;
 display: block;
 }
 
+.out-primary{
+  border: 1px solid #007bff;
+  background-color: transparent;
+  color: #007bff;
+  border-color: #007bff;
+}
 
+.out-primary:hover{
+  background-color: #3366ff;
+  color: white;
+}
 
+.out-secondary{
+  border: 1px solid #8f9bb3;
+  background-color: transparent;
+  color: #8f9bb3;
+  border-color: #8f9bb3;
+}
+.out-secondary:hover{
+  background-color: #3366ff;
+  color: white;
+}
 
 .map-body{
   font-size: 1rem;
@@ -113,7 +181,9 @@ max-width: 100%;
 padding: 8px;
 }
 
-
+.plus{
+  text-align: end;
+}
 .map-row{
   font-size: 1rem;
 text-align: left;
@@ -151,8 +221,57 @@ border-radius: 4px;
   background-color: #3366ff;
   border: none;
   margin-left: 5px;
-  margin-top: 8px;
-  height: 42px;
+  margin-top: 15px;
   cursor: pointer;
-  width: 46px;
+  width: 30px;
+  height: 30px;
+}
+
+.contentg {
+  margin-right: 5px;
+  width: 100%;
+  /* padding: 0rem .75rem; */
+  overflow: hidden;
+  background-color: #edf1f7;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.content-button2{
+  cursor: context-menu;
+  text-align: center;
+  color: #3366ff;
+  border-top: 1px solid #c5cee0;
+  padding: .375rem .75rem;
+}
+
+
+.stick-right{
+  text-align: end;
+}
+
+.stick-left{
+  margin-left: 0.70rem;
+}
+
+
+.location-label{
+  font-weight: bold;
+  color: black;
+}
+
+.label{
+  cursor: context-menu;
+}
+
+.map-menu{
+  padding-left: 15px;
+}
+
+.group-body{
+  margin: 15px 0px 0px 0px ;
+}
+
+.map-close-btn{
+  font-size: 30px;
 }
