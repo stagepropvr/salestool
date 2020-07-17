@@ -41,7 +41,7 @@ class Video extends React.Component {
       init:true,
       clientimage:"",
       loader:true,
-      videoinput:"user",
+      videoinput:"default",
       audioinput:"default",
       clientimageid:""
     };
@@ -216,7 +216,7 @@ this.state.socket.on("switchimage",(url)=>{
         video: {
           width: { min: 160, ideal: 640, max: 1280 },
           height: { min: 120, ideal: 360, max: 720 },
-          facingMode: {exact: this.state.videoinput}
+          deviceId:this.state.videoinput
           
         },
         audio:{echoCancellation: true,
@@ -273,7 +273,10 @@ this.state.socket.on("switchimage",(url)=>{
       navigator.getUserMedia(
         op,
         stream => {
-      
+          var streamremove=this.localVideo.srcObject;
+          streamremove.getTracks().forEach((track)=>{
+track.stop();
+      });
           stream.oninactive = () => {
             alert(this.state.videoinput);
 
@@ -296,7 +299,7 @@ this.state.socket.on("switchimage",(url)=>{
         video: {
           width: 200,
           height: 500,
-          facingMode: {exact: this.state.videoinput}
+          deviceId: this.state.videoinput
           
         },
         audio:{echoCancellation: true,
@@ -306,12 +309,11 @@ this.state.socket.on("switchimage",(url)=>{
         op,
         stream => {
       alert(this.state.videoinput);
-          stream.oninactive = () => {
-            alert(this.state.videoinput);
-
+      var streamremove=this.localVideo.srcObject;
+      streamremove.getTracks().forEach((track)=>{
+track.stop();
+  });
           
-           
-          };
           Object.keys(this.state.peers).forEach((key)=>{
             this.state.peers[key].removeStream(this.state.localStream);
           })
@@ -612,8 +614,8 @@ loader(){
 
 
 
-{/* 
-<Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host}></Switchprojectloader> */}
+
+<Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host}></Switchprojectloader>
 
 
 

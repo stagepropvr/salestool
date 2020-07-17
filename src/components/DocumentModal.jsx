@@ -3,17 +3,18 @@ import { Redirect, Route, Link } from "react-router-dom";
 import Fire from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
-// import Pdfviewer from "./Pdfviewer";
+import Pdfviewer from "./Pdfviewer";
 
 class DocumentModal extends React.Component {
   constructor(props){
     super(props);
     this.state={
       pdf_modal:false,
-      pdf_data:'',
+      pdf_data:'https://arxiv.org/pdf/quant-ph/0410100.pdf',
       pdf_list:[]
     }
- 
+    this.handleregister=this.handleregister.bind(this);
+
 }
   
 componentDidMount(){
@@ -39,57 +40,9 @@ componentDidMount(){
 
   }
 
-  open_close_pdf = (name,flag,data) =>{
-      this.setState({
-          pdf_data:data
-      })
-    if(flag){
-      document.getElementById('left_light_mode').style.display='none';
-      document.getElementById('right_light_mode').style.display='none';
-      document.getElementById('left_dark_mode').style.display='block';
-      document.getElementById('right_dark_mode').style.display='block';
-      document.getElementById('menu_bar_down').style.display='none';
-      document.getElementById('menu_bar_up').style.display='block';
-      document.getElementById('menu_bar').classList.remove('menu_option_click');
-      document.getElementById('bottom').classList.add('bottom_modal_open');
-      var a = document.querySelectorAll('.pad15');
-      for(var i =0 ; i<a.length;i++){
-          console.log(a[i].childNodes[0]);
-          var classname = a[i].parentNode.className;
-          if(classname.includes('item_active')){
-              a[i].classList.add('pad15_modal_open_active');
-              a[i].childNodes[0].classList.add('slider_name_modal_open_active');
-          }
-          else{
-              a[i].classList.add('pad15_modal_open');
-              a[i].childNodes[0].classList.add('slider_name_modal_open');
-  
-          }
-          
-      }
-    }else{
-      document.getElementById('left_dark_mode').style.display='none';
-      document.getElementById('right_dark_mode').style.display='none';
-      document.getElementById('left_light_mode').style.display='block';
-      document.getElementById('right_light_mode').style.display='block';
-  
-      document.getElementById('bottom').classList.remove('bottom_modal_open');
-      var a = document.querySelectorAll('pad15_modal_open_active');
-      var a = document.querySelectorAll('.pad15');
-      for(var i =0 ; i<a.length;i++){
-          console.log(a[i].childNodes[1]);
-          var classname = a[i].parentNode.className;
-          if(classname.includes('item_active')){
-              a[i].classList.remove('pad15_modal_open_active');
-              a[i].childNodes[0].classList.remove('slider_name_modal_open_active');
-          }
-          else{
-              a[i].classList.remove('pad15_modal_open');
-              a[i].childNodes[0].classList.remove('slider_name_modal_open');
-  
-          }
-          
-      }
+  open_close_pdf = (name,flag) =>{
+    if(flag==true){
+      this.props.open_close('document',false)
     }
     this.setState({
       [name]:flag
@@ -97,14 +50,16 @@ componentDidMount(){
   }
  
 
-  
+  handleChange = (event) => {
+    this.setState({
+        pdf_data:event.target.value
+    })
+  };
  
- 
-
-
-
-
-
+  handleregister(event){
+    event.preventDefault();
+    this.open_close_pdf('pdf_modal',true)
+}
 
   render() {
       return( 
@@ -126,6 +81,7 @@ componentDidMount(){
                 </svg></span>
               </button>
             </div>
+            <form onSubmit={this.handleregister}>
             <div className="modal-body">
               <p className="share_content">Select the document you would like to share</p>
               <div className="switch_project_list">
@@ -133,9 +89,9 @@ componentDidMount(){
                   {this.state.pdf_list.map((value,index)=>{
 
                         return( <>
-                        <div key={index} onClick={()=> this.open_close_pdf('pdf_modal',true,value.url)} className="form-check form-check-radio">
+                        <div key={index} className="form-check form-check-radio">
                         <label className="switch_project_label form-check-label">
-                            <input className="form-check-input" type="radio" name="exampleRadios" id={value.id} value="option1" />
+                            <input onChange={this.handleChange} className="form-check-input" type="radio" name="exampleRadios" id={value.id} value={value.url} />
                             <svg style={{transform:'translateY(1px)'}} width={24} height={24} xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" viewBox="0 0 100 100">
                             <path fill="#d80505" d="M40 65h2.5c4.136 0 7.5-3.364 7.5-7.5S46.636 50 42.5 50H35v20h5v-5zm0-10h2.5c1.379 0 2.5 1.122 2.5 2.5S43.879 60 42.5 60H40v-5zM75 65h7.5v-5H75v-5h10v-5H70v20h5zM67.5 62.5v-5c0-4.136-3.364-7.5-7.5-7.5h-7.5v20H60c4.136 0 7.5-3.364 7.5-7.5zm-10-7.5H60c1.379 0 2.5 1.122 2.5 2.5v5c0 1.378-1.121 2.5-2.5 2.5h-2.5V55z"/>
                             <path fill="#d80505" d="M77.5 30l-25-25h-35c-5.523 0-10 4.477-10 10v70c0 5.523 4.477 10 10 10h50c5.523 0 10-4.477 10-10v-5H95V40H77.5V30zM50 13.107L69.393 32.5H50V13.107zM90 45v30H30V45h60z"/>
@@ -152,16 +108,18 @@ componentDidMount(){
                             
            </div>
             </div>
+           
             <div style={{display: "block"}} className="modal-footer">
                 <center className="modal_button_div">
                     <button onClick={() => this.props.open_close('document',false)} type="button" className="btn cancel">Cancel</button>
-                    <button style={{marginLeft: "20px"}} type="button" className="btn proceed">View  document</button>
+                    <button style={{marginLeft: "20px"}} type="submit " className="btn proceed">View  document</button>
                 </center>
             </div>
+            </form>
           </div>
         </div>
         </div>
-        {/* <Pdfviewer pdf={this.state.pdf_modal} data={this.state.data}></Pdfviewer> */}
+        <Pdfviewer host={this.props.host} open_close_pdf={this.open_close_pdf} pdf={this.state.pdf_modal} data={this.state.pdf_data}></Pdfviewer>
           </>
         
       )

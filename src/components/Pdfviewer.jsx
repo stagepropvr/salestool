@@ -4,8 +4,7 @@ import Fire from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
 import $ from 'jquery';
-
-
+import PDFViewer from 'mgr-pdf-viewer-react'
 
 class Pdfviewer extends React.Component {
   constructor(props){
@@ -13,7 +12,7 @@ class Pdfviewer extends React.Component {
     this.state={
       
     }
-   // this.handlechange=this.handlechange.bind(this);
+   this. ExamplePDFViewer = this. ExamplePDFViewer.bind(this);
  
 }
   
@@ -27,7 +26,27 @@ componentDidMount(){
   }
 
  
- 
+  ExamplePDFViewer(){
+    // const style={
+    //   height:'300px'
+    // }
+
+    return (
+        <PDFViewer
+            document={{
+                url: this.props.data,
+            }}
+            css="pdf_height"
+            navigation={{
+              css: {
+                previousPageBtn: (this.props.host?'pdf_navigation_host':'pdf_navigation_guest'),  
+                nextPageBtn: (this.props.host?'pdf_navigation_host':'pdf_navigation_guest'), 
+            }
+               
+            }}
+        />
+    )
+}
 
   
  
@@ -42,8 +61,9 @@ componentDidMount(){
       return( 
         <div style={{display:this.props.pdf==true?'block':'none'}} className="modal" id="pdf_modal" tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
-          <div className="modal-content">
-          <button  onClick={() => this.props.open_close_pdf('pdf',false)} type="button" className="close" data-dismiss="modal" aria-label="Close">
+          <div style={{height:'fit-content'}} className="modal-content">   
+              <div id="df_manual_book">
+              <button  onClick={() => this.props.open_close_pdf('pdf_modal',false)} type="button" className="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
                     <defs>
@@ -53,8 +73,9 @@ componentDidMount(){
                         <use fill="#222B45" href="#prefix__close"/>
                     </g>
                 </svg></span>
-              </button>   
-              <div id="df_manual_book">
+              </button>
+              {this.ExamplePDFViewer()}
+              {/* <ExamplePDFViewer></ExamplePDFViewer> */}
 	        </div>  
           </div>
         </div>

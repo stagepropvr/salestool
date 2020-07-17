@@ -20544,6 +20544,41 @@ select{
     text-align: right;
     color: #ffffff;
 }
+.pdf_navigation_guest{
+  display:none;
+}
+
+.pdf_navigation_host{
+  display:inline-block;
+  margin-left: 20px;
+  cursor: pointer;
+}
+.mgrpdf-navigation{
+  background-color: #3366ff !important;
+    color: rgb(255, 255, 255);
+    user-select: none;
+    font-family: 'propvr';
+    font-size: 17px;
+    font-weight: bold;
+    line-height: 1.6;
+}
+.mgrpdf-navigation__controls--pages{
+  margin-left:20px;
+}
+.pdf_height canvas{
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.sidenav1 {
+  height: 100%;
+  width: 0;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  background-color: #000;
+  transition: all 0.5s ease-in-out;
+}
 /* Scene.html End  */
 
 /* End Session */

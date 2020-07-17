@@ -105,15 +105,15 @@ render()
                   Camera
                 </label>
                 <div className="dropdown bootstrap-select minimal"><select  name="currentvideoinput" value={this.state.currentvideoinput}  onChange={this.change} className="btn dropdown-toggle btn-light" tabIndex={-98}>
-                <option value="environment" >Back</option>
-                <option value="user" >Back</option>
-                {/* {this.state.videoinput.map((device) =>{
+                {/* <option value="environment" >Back</option>
+                <option value="user" >Back</option> */}
+                {this.state.videoinput.map((device) =>{
                         
                               return(
                                 <option value={device["value"].deviceId} >{device["value"].label}</option>
                                 )
                                
-                                      })} */}
+                                      })}
                   </select></div>
                     </div>
               {/* <div style={{display: 'flex', flexFlow: 'column'}} className="form-group">
