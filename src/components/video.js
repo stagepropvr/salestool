@@ -86,18 +86,21 @@ this.changedevice=this.changedevice.bind(this);
         });
       }
       else{
+        this.setState({
+          host:false
+        })
         Firebase.database().ref("roomsession/"+this.props.roomId).on("value",(snap)=>{
           this.setState({
             clientimage:snap.val().currentimage,
             clientimageid:snap.val().imageid,
             apiload:false,
             init:false,
-            host:false,
+           
             loader:true
           });
         });
       }
-    });
+    
 
 
 
@@ -203,7 +206,7 @@ this.changedevice=this.changedevice.bind(this);
 this.state.socket.on("switchimage",(url)=>{
 //console.log(url);
 });
-    
+});
   }
 
   getUserMedia(cb) {
@@ -258,31 +261,28 @@ this.state.socket.on("switchimage",(url)=>{
     })
   }
 
-    changedevice(videoinput,audioinput) {
+  async changedevice(videoinput,audioinput) {
   this.setState({
   videoinput:videoinput,
   audioinput:audioinput
   });
-
-  console.log(this.state.videoinput,this.state.audioinput);
+console.log('1');
+ console.log(this.state.videoinput,this.state.audioinput);
       var op = {
         video: false,
         audio:{echoCancellation: true,
-          deviceId: this.state.audioinput} 
+          deviceId:audioinput} 
       };
-      navigator.getUserMedia(
+      await navigator.getUserMedia(
         op,
         stream => {
+          console.log('2')
           var streamremove=this.localVideo.srcObject;
           streamremove.getTracks().forEach((track)=>{
 track.stop();
       });
-          stream.oninactive = () => {
-            alert(this.state.videoinput);
-
           
-           
-          };
+          console.log('4')
           Object.keys(this.state.peers).forEach((key)=>{
             this.state.peers[key].removeStream(this.state.localStream);
           })
@@ -291,29 +291,32 @@ track.stop();
             Object.keys(this.state.peers).forEach((key)=>{
               this.state.peers[key].addStream(this.state.localStream);
             })
-        
+            console.log('5')
         },
         () => { }
       );
-      op = {
+      console.log('6')
+      var op = {
         video: {
-          width: 200,
-          height: 500,
-          deviceId: this.state.videoinput
+          width: { min: 160, ideal: 640, max: 1280 },
+          height: { min: 120, ideal: 360, max: 720 },
+          deviceId: videoinput
           
         },
         audio:{echoCancellation: true,
           deviceId: this.state.audioinput} 
       };
-      navigator.getUserMedia(
+      console.log('7')
+     navigator.getUserMedia(
         op,
         stream => {
-      alert(this.state.videoinput);
+          console.log('8')
       var streamremove=this.localVideo.srcObject;
+      //this.localVideo.srcObject=null;
       streamremove.getTracks().forEach((track)=>{
 track.stop();
   });
-          
+  console.log('9')   
           Object.keys(this.state.peers).forEach((key)=>{
             this.state.peers[key].removeStream(this.state.localStream);
           })
@@ -322,11 +325,11 @@ track.stop();
             Object.keys(this.state.peers).forEach((key)=>{
               this.state.peers[key].addStream(this.state.localStream);
             })
-        
+            console.log('10')
         },
         () => { }
       );
-    
+      console.log('11')
     }
 
 
@@ -427,12 +430,17 @@ loader(){
             clientimage={this.state.clientimage}
             clientimageid={this.state.clientimageid}
           />:<></>}
+            <div style={{position: "absolute",bottom: "80px",right: "16px"}}>
+      <span className="host_video_name">you(Host)</span>
+        {this.state.host?<video style={{width: "206px",height: "103px",background: "#000"}}  autoPlay
+                id='localVideo' className="user-video"
+                muted
+                ref={video => (this.localVideo = video)}></video>:<></>}
+        
+     </div>
     {this.state.apiload ?<></>: <>
   
-      <div style={{position: "absolute",bottom: "80px",right: "16px"}}>
-        <span className="host_video_name">you(Host)</span>
-        <video style={{width: "206px",height: "103px",background: "#000"}}></video>
-     </div>
+    
           <div id="bottom" className="container" ref={this.bottom} >
           <SceneControls
               pid={this.state.pid}
@@ -506,7 +514,8 @@ loader(){
           <label className="mute_all">Mute all</label>
           </div>
       <ul style={{padding:'0px',height:'90%',overflow: "auto", listStyle:"none",width:'85%',paddingLeft:'8px'}}>
-      <li>
+     
+   {!this.state.host?   <li>
         <div>
       <span className="guest_video_name">value</span>
       <button className="menu_option video_on guest_video_mute">
@@ -526,13 +535,12 @@ loader(){
                         </g>
                         </g>
                       </svg>
-                    </button>
-      <video
+                    </button> <video
                 autoPlay
                 id='localVideo' className="user-video"
                 muted
                 ref={video => (this.localVideo = video)}
-              /></div></li>
+              /></div></li>:<></>}
       {
                 Object.keys(this.state.streams).map((key, id) => {
                   return <li><div>
@@ -614,10 +622,10 @@ loader(){
 
 
 
-
+{/* 
 <Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host}></Switchprojectloader>
 
-
+ */}
 
 
 

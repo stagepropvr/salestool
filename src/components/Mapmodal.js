@@ -295,10 +295,12 @@ export class MapModal extends React.Component {
                     defaultZoom={this.zoom}
                     >
                     </GoogleMapReact> */}
+
                     <button draggable="false" onClick={() => this.props.open_close('map',false)} type="button" className="map-close-btn" style={{background: 'none rgb(255, 255, 255)', border: '0px', margin: '10px', padding: '0px', position: 'absolute', cursor: 'pointer', userSelect: 'none', borderRadius: '2px', height: '40px', width: '40px', boxShadow: 'rgba(0, 0, 0, 0.3) 0px 1px 4px -1px', overflow: 'hidden', top: '8px', zIndex:"20", right: '55px'}}>
                         {/* {this.close} */}
                         &times;
                     </button>
+
 
 
                      <Map google={this.props.google} zoom={14}>
