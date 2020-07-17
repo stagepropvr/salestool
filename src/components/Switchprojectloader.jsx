@@ -88,7 +88,7 @@ componentDidMount(){
                                
                                     <div style={{margin:"20px 0px 0px",padding:"0",width:'300px'}} className="card project_det_background">
                                         <div style={{padding: "0px"}} className="card-body d-flex flex-row">
-                                          <img src={this.state.img} width="81px" alt="avatar" />
+                                          
                                           <div style={{width: "300px"}}>
                                  <h4 style={{paddingLeft: "25px"}} className="card-title project_heading">{this.props.pid}</h4>
                                             <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">
