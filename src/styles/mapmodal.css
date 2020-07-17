@@ -142,3 +142,17 @@ border-radius: 4px;
   letter-spacing: normal;
   color: #222b45;
 }
+
+.map_option_div_close{
+  display:none;
+  font-size: 20px;
+  color: #fff;
+  border-radius: 4px;
+  background-color: #3366ff;
+  border: none;
+  margin-left: 5px;
+  margin-top: 8px;
+  height: 42px;
+  cursor: pointer;
+  width: 46px;
+}

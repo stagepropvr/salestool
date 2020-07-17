@@ -6,12 +6,18 @@ export class MapModal extends React.Component {
     constructor(props)
     {
         super(props);
+        this.state={
+            toogle_div:false
+        }
+        this.Sidenav1 = React.createRef();
+        this.togglenav=this.togglenav.bind(this); 
+
         this.center = {lat: 59.95,lng: 30.33}
         this.zoom = 11
         this.state = {show:true,tab:null}
     this.plus = 
     <svg aria-hidden="true" focusable="false" viewBox="0 0 10 10">
-        <rect class="vert" height="8" width="2" y="1" x="4"/>
+        <rect className="vert" height="8" width="2" y="1" x="4"/>
         <rect height="2" width="8" y="4" x="1"/>
     </svg>
 
@@ -34,14 +40,50 @@ export class MapModal extends React.Component {
         }
     }
 
+    togglenav()
+  {
+    //console.log(this.Sidenav.current.style.width);
+    
+    if(this.Sidenav1.current.style.width==="300px"){
+      this.Sidenav1.current.style.width="0px";
+      this.setState({
+        toogle_div:false
+    })
+          //console.log(this.bottom.current.offsetWidth);
+         // this.bottom.current.style.width=this.bottom.current.offsetWidth+259+"px";
+  
+    }
+    else{
+      this.Sidenav1.current.style.width="300px";
+      this.setState({
+          toogle_div:true
+      })
+      //console.log(this.bottom.current.offsetWidth);
+     // this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
+    }
+  }
+
     render(){
     return (
       <div className="modal" style={{display:"block"}}
       >
         <div className="modal-dialog" >
-            <div className="modal-content">
-            <div className="map-row">
-                <div className="map-col"  >
+            <div style={{height:'100%'}} className="modal-content">
+            <div style={{height:'100%'}} className="map-row">
+            <button onClick={this.togglenav} className="menu_option" style={{background: '#3366ff',float: 'left',color: '#fff',position: 'absolute',top: '8px',zIndex: '1',display:this.state.toogle_div?'none':'block'}}>
+                    <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                        <defs>
+                            <path id="prefix__dot" d="M12 17c1.104 0 2 .896 2 2s-.896 2-2 2-2-.896-2-2 .896-2 2-2zm0-7c1.104 0 2 .896 2 2s-.896 2-2 2-2-.896-2-2 .896-2 2-2zm0-7c1.104 0 2 .896 2 2s-.896 2-2 2-2-.896-2-2 .896-2 2-2z"/>
+                        </defs>
+                        <g fill="none" fillRule="evenodd">
+                            <use fill="#fff" href="#prefix__dot"/>
+                        </g>
+                    </svg>               
+                </button>
+                <div ref={this.Sidenav1} id="mySidenav1" className="sidenav1">
+                    <button style={{display:this.state.toogle_div?'block':'none'}} id="close_option_map" className="closebtn map_option_div_close" onClick={this.togglenav} >&times;</button >
+                    <div style={{height: "90%",overflow:'auto'}}>
+                    <div className="map-col"  >
                     <div className="group">
                         <div className="map-row"><label className="bold">Tumkur road, Bangalore</label></div>
                         <div className="map-row">
@@ -54,7 +96,7 @@ export class MapModal extends React.Component {
                         <div className="map-row"><label className="sub-header">Commute</label>
                         </div>
                         <div className="map-row">
-                            <div class='collapsible' block onClick={(e) => {this.collapse('Railway')}}>
+                            <div className='collapsible' block onClick={(e) => {this.collapse('Railway')}}>
                                 <div className="map-row">
                                     <div className="map-col" className="label">Railway</div>
                                     <div className="map-col" className="plus">
@@ -64,7 +106,7 @@ export class MapModal extends React.Component {
                             </div>
                             
                             {this.state.show && this.state.tab === "Railway" &&
-                                <div class="content">
+                                <div className="content">
                                 <div className="map-row" className="content-button1">
                                     <div className="map-col" sm={9} >Railway 1</div>
                                     <div className="map-col" sm={3} >2Kms</div>
@@ -78,7 +120,7 @@ export class MapModal extends React.Component {
                             }
 
 
-                            <div class='collapsible' block onClick={(e) => {this.collapse('Bus')}}>
+                            <div className='collapsible' block onClick={(e) => {this.collapse('Bus')}}>
                                 <div className="map-row">
                                     <div className="map-col" className="label">Bus</div>
                                     <div className="map-col" className="plus">
@@ -89,7 +131,7 @@ export class MapModal extends React.Component {
                             </div>
                             
                             {this.state.show && this.state.tab === "Bus" &&
-                                 <div class="content">
+                                 <div className="content"> 
                                  <div className="map-row" className="content-button1">
                                      <div className="map-col" sm={9} >Bus 1</div>
                                      <div className="map-col" sm={3} >2Kms</div>
@@ -102,7 +144,7 @@ export class MapModal extends React.Component {
                              </div>
                             }
                             
-                            <div class='collapsible' block onClick={(e) => {this.collapse('Airport')}}>
+                            <div className='collapsible' block onClick={(e) => {this.collapse('Airport')}}>
                                 <div className="map-row">
                                     <div className="map-col" className="label">Airport</div>
                                     <div className="map-col" className="plus">
@@ -113,7 +155,7 @@ export class MapModal extends React.Component {
                             </div>
                             
                             {this.state.show && this.state.tab === "Airport" &&
-                                <div class="content">
+                                <div className="content">
                                     <div className="map-row" className="content-button1">
                                         <div className="map-col" sm={9} >Airport 1</div>
                                         <div className="map-col" sm={3} >2Kms</div>
@@ -134,7 +176,7 @@ export class MapModal extends React.Component {
                     <div className="group">
                         <div className="map-row"><label className="sub-header">Amenities</label></div>
                         <div className="map-row">
-                        <div class='collapsible' block onClick={(e) => {this.collapse('Banks/ATMs')}}>
+                        <div className='collapsible' block onClick={(e) => {this.collapse('Banks/ATMs')}}>
                                 <div className="map-row">
                                     <div className="map-col" className="label">Banks/ATMs</div>
                                     <div className="map-col" className="plus">
@@ -144,7 +186,7 @@ export class MapModal extends React.Component {
                             </div>
                             
                             {this.state.show && this.state.tab === "Banks/ATMs" &&
-                                <div class="content">
+                                <div className="content">
                                     <div className="map-row" className="content-button1">
                                         <div className="map-col" sm={9} >Bank 1</div>
                                         <div className="map-col" sm={3} >2Kms</div>
@@ -157,7 +199,7 @@ export class MapModal extends React.Component {
                                 </div>
                             }
                           
-                          <div class='collapsible' block onClick={(e) => {this.collapse('Hospitals')}}>
+                          <div className='collapsible' block onClick={(e) => {this.collapse('Hospitals')}}>
                                 <div className="map-row">
                                     <div className="map-col" className="label">Hospitals</div>
                                     <div className="map-col" className="plus">
@@ -168,7 +210,7 @@ export class MapModal extends React.Component {
                             </div>
                             
                             {this.state.show && this.state.tab === "Hospitals" &&
-                                <div class="content">
+                                <div className="content">
                                     <div className="map-row" className="content-button1">
                                         <div className="map-col" sm={9} >Hospitals 1</div>
                                         <div className="map-col" sm={3} >2Kms</div>
@@ -181,7 +223,7 @@ export class MapModal extends React.Component {
                                 </div>
                             }
                             
-                            <div class='collapsible' block onClick={(e) => {this.collapse('Schools')}}>
+                            <div className='collapsible' block onClick={(e) => {this.collapse('Schools')}}>
                                 <div className="map-row">
                                     <div className="map-col" className="label">Schools</div>
                                     <div className="map-col" className="plus">
@@ -192,7 +234,7 @@ export class MapModal extends React.Component {
                             </div>
                             
                             {this.state.show && this.state.tab === "Schools" &&
-                                <div class="content">
+                                <div className="content">
                                     <div className="map-row" className="content-button1">
                                         <div className="map-col" sm={9} >Schools 1</div>
                                         <div className="map-col" sm={3} >2Kms</div>
@@ -205,7 +247,7 @@ export class MapModal extends React.Component {
                                 </div>
                             }
                             
-                            <div class='collapsible' block onClick={(e) => {this.collapse('Groceries')}}>
+                            <div className='collapsible' block onClick={(e) => {this.collapse('Groceries')}}>
                                 <div className="map-row">
                                     <div className="map-col" className="label">Groceries</div>
                                     <div className="map-col" className="plus">
@@ -215,7 +257,7 @@ export class MapModal extends React.Component {
                             </div>
                             
                             {this.state.show && this.state.tab === "Groceries" &&
-                                <div class="content">
+                                <div className="content">
                                     <div className="map-row" className="content-button1">
                                         <div className="map-col" sm={9} >Groceries 1</div>
                                         <div className="map-col" sm={3} >2Kms</div>
@@ -230,6 +272,8 @@ export class MapModal extends React.Component {
                             
                         </div>
                     </div>
+                </div>
+                  </div>
                 </div>
                 <div className="map-col" className="map-col">
                 <div className="map">
