@@ -357,6 +357,7 @@ return (
 
 {this.state.map?<MapModal
         open_close={this.open_close}
+        data={this.props.data}
       />:<></>}
 
 

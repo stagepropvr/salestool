@@ -10,7 +10,7 @@ import Projects from "./components/Projects";
 import Createroom from "./components/Createroom";
 import Joinroom from "./components/Joinroom";
 
-import MapModal from "./components/MAPFP"
+// import MapModal from "./components/MAPFP"
 import Tools from './components/Tools';
 
 
@@ -27,7 +27,7 @@ class App extends Component {
       <Router >
        <Switch> 
         <Route  path='/login' component={Login} />
-        <Route  path='/' exact component={MapModal} />
+        {/* <Route  path='/' exa ct component={MapModal} /> */}
 
          <Route path='/signup' component={Signup} />
 

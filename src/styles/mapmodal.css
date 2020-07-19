@@ -39,7 +39,16 @@
     width: 100%;
     height: 100%;
 }
-
+.map_button_active{
+  background-color: #3366ff !important;
+  color: white !important;
+  border:none !important
+}
+@media only screen and (max-width:599px){
+  .map-modal-dialog{
+    max-width: 100%;
+  }
+}
 .map-modal-dialog{
   max-width: 60%;
 }
