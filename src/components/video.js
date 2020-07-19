@@ -29,7 +29,7 @@ class Video extends React.Component {
       peers: {},
       streams: {},
       current_image: "",
-      socket: io.connect("mysterious-dusk-60271.herokuapp.com"),
+      socket: io.connect("localhost:5000"),
       host: true,
       apiload: true,
       images:"",
@@ -43,7 +43,9 @@ class Video extends React.Component {
       loader:true,
       videoinput:"default",
       audioinput:"default",
-      clientimageid:""
+      clientimageid:"",
+      members:[],
+      hostaudioctrl:false
     };
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
@@ -51,7 +53,9 @@ class Video extends React.Component {
     this.sendmessage=this.sendmessage.bind(this);
     this.loader=this.loader.bind(this);
 this.changedevice=this.changedevice.bind(this);
+this.audioallctrl=this.audioallctrl.bind(this);
     this.messagearea=React.createRef();
+    this.audioctrl=React.createRef();
   }
   videoCall = new VideoCall();
 
@@ -128,20 +132,26 @@ this.changedevice=this.changedevice.bind(this);
 
     this.state.socket.on('init', (data) => {
 
-      ////console.log("socket.on init", data)
+    console.log("socket.on init", data)
 
       userId = data.userId;
-      this.state.socket.emit('ready', { room: roomId, userId });
+      this.state.socket.emit('ready', ({ room: roomId, userId:userId, name:"karthik" }));
     });
 
-    this.state.socket.on("users", ({ initiator, users }) => {
-      ////console.log("socket.on  users", users)
-
+    this.state.socket.on("users", ({ initiator, users,name,usersocketid }) => {
+    console.log("socket.on  users", users.sockets,usersocketid)
+var members=this.state.members;
+members[usersocketid]=name
+this.setState({
+  members:members
+})
+console.log(this.state.members);
       Object.keys(users.sockets)
         .filter(
           sid =>
             !this.state.peers[sid] && sid !== userId)
         .forEach(sid => {
+          console.log(sid);
           const peer = new Peer({
             initiator: userId === initiator,
             config: {
@@ -173,8 +183,8 @@ this.changedevice=this.changedevice.bind(this);
 
             this.state.socket.emit('signal', signal);
           });
-          peer.on('stream', (stream,name)=> {
-            console.log("peer.on  stream", stream,name)
+          peer.on('stream', (stream)=> {
+            console.log("peer.on  stream", stream)
 
             const streamsTemp = { ...this.state.streams }
             streamsTemp[sid] = stream
@@ -198,7 +208,7 @@ this.changedevice=this.changedevice.bind(this);
       this.setState(ele => ({
         messages: [...ele.messages, {user: user,content:message}]
       }))
-      //console.log(this.state.messages);
+      console.log(this.state.messages);
     });
     this.state.socket.on('signal', ({ userId, signal,image }) => {
      // //console.log("socket.on  signal userId", userId, "signal", signal);
@@ -216,6 +226,35 @@ this.changedevice=this.changedevice.bind(this);
 this.state.socket.on("switchimage",(url)=>{
 //console.log(url);
 });
+
+if(!this.state.host){
+  this.state.socket.on("audioctrl",(audioctrl)=>{
+    if(audioctrl){
+      if (this.state.localStream.getAudioTracks().length > 0) {
+        this.state.localStream.getAudioTracks().forEach(track => {
+          track.enabled =false;
+        });
+      }
+      this.setState({
+        micState: false,
+        hostaudioctrl:true
+      })
+    }
+    else{
+      if (this.state.localStream.getAudioTracks().length > 0) {
+        this.state.localStream.getAudioTracks().forEach(track => {
+          track.enabled =true;
+        });
+      }
+      this.setState({
+        micState: true,
+        hostaudioctrl:true
+      })
+    }
+    });
+}
+
+
 });
   }
 
@@ -254,6 +293,7 @@ this.state.socket.on("switchimage",(url)=>{
   }
 
   setAudioLocal() {
+    if(!this.state.hostaudioctrl){
     if (this.state.localStream.getAudioTracks().length > 0) {
       this.state.localStream.getAudioTracks().forEach(track => {
         track.enabled = !track.enabled;
@@ -263,7 +303,7 @@ this.state.socket.on("switchimage",(url)=>{
       micState: !this.state.micState
     })
   }
-
+  }
   setVideoLocal() {
     if (this.state.localStream.getVideoTracks().length > 0) {
       this.state.localStream.getVideoTracks().forEach(track => {
@@ -427,7 +467,14 @@ loader(){
     loader:false
   })
 }
-
+audioallctrl(e){
+  const data = {
+    id: this.props.roomId,
+    ctrl: this.audioctrl.current.checked
+  };
+  console.log(data);
+  this.state.socket.emit('audioctrl', data);
+}
 
 
   render() {
@@ -445,7 +492,7 @@ loader(){
             clientimageid={this.state.clientimageid}
           />:<></>}
             <div style={{position: "absolute",bottom: "80px",right: "16px"}}>
-      <span className="host_video_name">Host</span>
+    <span className="host_video_name">{this.state.members[this.state.hostref]}</span>
         {this.state.host?<video style={{width: "206px",height: "103px",background: "#000"}}  autoPlay
                 id='localVideo' className="user-video"
                 muted
@@ -529,7 +576,7 @@ loader(){
     <div style={{height: '100%'}} className="tab-content text-center">
       <div style={{height: '100%'}} className="tab-pane active show" id="members">
         <div className="mute_all_div">
-          <input type="checkbox"/>
+          <input ref={this.audioctrl} onChange={this.audioallctrl} type="checkbox"/>
           <label className="mute_all">Mute all</label>
           </div>
       <ul style={{padding:'0px',height:'90%',overflow: "auto", listStyle:"none",width:'85%',paddingLeft:'8px'}}>
@@ -558,7 +605,7 @@ loader(){
                         </g>
                         </svg>
                      </button>
-        <span className="guest_video_name video_name_option">value</span>
+   <span className="guest_video_name video_name_option">You</span>
      
    </div>
    <video
@@ -596,7 +643,7 @@ loader(){
                         </g>
                         </svg>
                      </button>
-                       <span className="guest_video_name video_name_option">{key}</span>
+                       <span className="guest_video_name video_name_option">{this.state.members[key]}</span>
                      
                   </div>
                   <VideoItem
@@ -626,7 +673,7 @@ loader(){
         {this.state.messages.map((child)=>{
             return(
               <li className={this.state.socket.id===child.user?"self":"other"}>
-              <div className="chat_name">{child.user}</div>
+              <div className="chat_name">{this.state.members[child.user]}</div>
             <div className={this.state.socket.id===child.user?"self_msg":"other_msg"}>{child.content}</div>
             </li>
             )
