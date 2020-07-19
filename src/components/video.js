@@ -69,9 +69,12 @@ this.changedevice=this.changedevice.bind(this);
           this.state.data = node.val();
        
             for (var x in node.val().images){
+              console.log(this.state.socket.id);
               Firebase.database().ref("roomsession/"+this.props.roomId).set({
-                currentimage:node.val().images[x].url,
-                imageid:x
+                currentimage:{currentimage:node.val().images[x].url,
+                imageid:x},
+                hostid:{
+                hostid:this.state.socket.id}
               })
               this.setState({
                 current_image:x,
@@ -89,7 +92,12 @@ this.changedevice=this.changedevice.bind(this);
         this.setState({
           host:false
         })
-        Firebase.database().ref("roomsession/"+this.props.roomId).on("value",(snap)=>{
+        Firebase.database().ref("roomsession/"+this.props.roomId+"/hostid").on("value",(snap)=>{
+          this.setState({
+            hostref:snap.val().hostid
+          })
+        });
+        Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage").on("value",(snap)=>{
           this.setState({
             clientimage:snap.val().currentimage,
             clientimageid:snap.val().imageid,
@@ -112,6 +120,7 @@ this.changedevice=this.changedevice.bind(this);
     // this.setState({ socket });
     const { roomId } = this.props;
     this.getUserMedia().then(() => {
+      console.log(this.state.localStream);
       this.state.socket.emit('join', { roomId });
       ////console.log("socket.on join", roomId)
 
@@ -151,6 +160,7 @@ this.changedevice=this.changedevice.bind(this);
               offerToReceiveVideo: true,
             },
             stream: this.state.localStream,
+            
           })
 
           peer.on('signal', data => {
@@ -163,8 +173,8 @@ this.changedevice=this.changedevice.bind(this);
 
             this.state.socket.emit('signal', signal);
           });
-          peer.on('stream', stream => {
-            //console.log("peer.on  stream", stream)
+          peer.on('stream', (stream,name)=> {
+            console.log("peer.on  stream", stream,name)
 
             const streamsTemp = { ...this.state.streams }
             streamsTemp[sid] = stream
@@ -210,6 +220,7 @@ this.state.socket.on("switchimage",(url)=>{
   }
 
   getUserMedia(cb) {
+    
     return new Promise((resolve, reject) => {
       navigator.getUserMedia = navigator.getUserMedia =
         navigator.getUserMedia ||
@@ -228,7 +239,10 @@ this.state.socket.on("switchimage",(url)=>{
       navigator.getUserMedia(
         op,
         stream => {
+          stream["name"]="karthik";
+          
           this.setState({ streamUrl: stream, localStream: stream });
+          
           this.localVideo.srcObject = stream;
           resolve();
         },
@@ -334,7 +348,7 @@ track.stop();
 
 
   changeImage = (str) => {
-    Firebase.database().ref("roomsession/"+this.props.roomId).set({
+    Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage").set({
       currentimage:this.state.images[str].url,
       imageid:str
     })
@@ -372,7 +386,7 @@ track.stop();
             current_image:x,
             images: node.val().images
           });
-          Firebase.database().ref("roomsession/"+this.props.roomId).set({
+          Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage").set({
             currentimage:node.val().images[x].url,
             imageid:x
           })
@@ -431,11 +445,16 @@ loader(){
             clientimageid={this.state.clientimageid}
           />:<></>}
             <div style={{position: "absolute",bottom: "80px",right: "16px"}}>
-      <span className="host_video_name">you(Host)</span>
+      <span className="host_video_name">Host</span>
         {this.state.host?<video style={{width: "206px",height: "103px",background: "#000"}}  autoPlay
                 id='localVideo' className="user-video"
                 muted
-                ref={video => (this.localVideo = video)}></video>:<></>}
+                ref={video => (this.localVideo = video)}></video>:
+                <VideoItem
+                    key={this.state.hostref}
+                    userId={this.state.hostref}
+                    stream={this.state.streams[this.state.hostref]}
+                  />}
         
      </div>
     {this.state.apiload ?<></>: <>
@@ -515,60 +534,90 @@ loader(){
           </div>
       <ul style={{padding:'0px',height:'90%',overflow: "auto", listStyle:"none",width:'85%',paddingLeft:'8px'}}>
      
-   {!this.state.host?   <li>
-        <div>
-      <span className="guest_video_name">value</span>
-      <button className="menu_option video_on guest_video_mute">
-                      <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24">
-                        <path fill="#222B45" fill-rule="evenodd" d="M13 17.92V20h2.105c.493 0 .895.402.895.895v.21c0 .493-.402.895-.895.895h-6.21C8.402 22 8 21.598 8 21.106v-.211c0-.493.402-.895.895-.895H11v-2.08c-3.387-.488-6-3.4-6-6.92 0-.552.447-1 1-1 .553 0 1 .448 1 1 0 2.757 2.243 5 5 5s5-2.243 5-5c0-.552.447-1 1-1 .553 0 1 .448 1 1 0 3.52-2.613 6.432-6 6.92zM10 6c0-1.103.897-2 2-2s2 .897 2 2v5c0 1.103-.897 2-2 2s-2-.897-2-2V6zm2 9c2.206 0 4-1.794 4-4V6c0-2.205-1.794-4-4-4S8 3.795 8 6v5c0 2.206 1.794 4 4 4z">
-                          </path>
-                      </svg>
-                      <svg  style={{display:'none'}} width={18} height={18} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                          <g data-name="Layer 2">
-                          <g data-name="mic-off">
-                          <rect width="24" height="24" opacity="0"/>
-                          <path fill="#fff" d="M10 6a2 2 0 0 1 4 0v5a1 1 0 0 1 0 .16l1.6 1.59A4 4 0 0 0 16 11V6a4 4 0 0 0-7.92-.75L10 7.17z"/>
-                          <path fill="#fff" d="M19 11a1 1 0 0 0-2 0 4.86 4.86 0 0 1-.69 2.48L17.78 15A7 7 0 0 0 19 11z"/>
-                          <path fill="#fff" d="M12 15h.16L8 10.83V11a4 4 0 0 0 4 4z"/>
-                          <path fill="#fff" d="M20.71 19.29l-16-16a1 1 0 0 0-1.42 1.42l16 16a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"/>
-                          <path fill="#fff" d="M15 20h-2v-2.08a7 7 0 0 0 1.65-.44l-1.6-1.6A4.57 4.57 0 0 1 12 16a5 5 0 0 1-5-5 1 1 0 0 0-2 0 7 7 0 0 0 6 6.92V20H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2z"/>
+   {!this.state.host?   
+              
+              
+              
+              <li>
+   <div>
+      <div className="videotools">
+        <button className="menu_option video_on guest_video_mute video_mute_option">
+                        <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24">
+                           <path fill="#222B45" fillRule="evenodd" d="M13 17.92V20h2.105c.493 0 .895.402.895.895v.21c0 .493-.402.895-.895.895h-6.21C8.402 22 8 21.598 8 21.106v-.211c0-.493.402-.895.895-.895H11v-2.08c-3.387-.488-6-3.4-6-6.92 0-.552.447-1 1-1 .553 0 1 .448 1 1 0 2.757 2.243 5 5 5s5-2.243 5-5c0-.552.447-1 1-1 .553 0 1 .448 1 1 0 3.52-2.613 6.432-6 6.92zM10 6c0-1.103.897-2 2-2s2 .897 2 2v5c0 1.103-.897 2-2 2s-2-.897-2-2V6zm2 9c2.206 0 4-1.794 4-4V6c0-2.205-1.794-4-4-4S8 3.795 8 6v5c0 2.206 1.794 4 4 4z" />
+                        </svg>
+                        <svg width={18} height={18} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style={{display: 'none'}}>
+                        <g data-name="Layer 2">
+                           <g data-name="mic-off">
+                              <rect width={24} height={24} opacity={0} />
+                              <path fill="#fff" d="M10 6a2 2 0 0 1 4 0v5a1 1 0 0 1 0 .16l1.6 1.59A4 4 0 0 0 16 11V6a4 4 0 0 0-7.92-.75L10 7.17z" />
+                              <path fill="#fff" d="M19 11a1 1 0 0 0-2 0 4.86 4.86 0 0 1-.69 2.48L17.78 15A7 7 0 0 0 19 11z" />
+                              <path fill="#fff" d="M12 15h.16L8 10.83V11a4 4 0 0 0 4 4z" />
+                              <path fill="#fff" d="M20.71 19.29l-16-16a1 1 0 0 0-1.42 1.42l16 16a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z" />
+                              <path fill="#fff" d="M15 20h-2v-2.08a7 7 0 0 0 1.65-.44l-1.6-1.6A4.57 4.57 0 0 1 12 16a5 5 0 0 1-5-5 1 1 0 0 0-2 0 7 7 0 0 0 6 6.92V20H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2z" />
+                           </g>
                         </g>
-                        </g>
-                      </svg>
-                    </button> <video
+                        </svg>
+                     </button>
+        <span className="guest_video_name video_name_option">value</span>
+     
+   </div>
+   <video
                 autoPlay
                 id='localVideo' className="user-video"
                 muted
                 ref={video => (this.localVideo = video)}
-              /></div></li>:<></>}
+              />
+   </div>
+</li>
+              
+              
+              
+              : <></>}
       {
                 Object.keys(this.state.streams).map((key, id) => {
-                  return <li><div>
-                    <span className="guest_video_name">{key}</span>
-                    <button className="menu_option video_on guest_video_mute">
-                      <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24">
-                        <path fill="#222B45" fill-rule="evenodd" d="M13 17.92V20h2.105c.493 0 .895.402.895.895v.21c0 .493-.402.895-.895.895h-6.21C8.402 22 8 21.598 8 21.106v-.211c0-.493.402-.895.895-.895H11v-2.08c-3.387-.488-6-3.4-6-6.92 0-.552.447-1 1-1 .553 0 1 .448 1 1 0 2.757 2.243 5 5 5s5-2.243 5-5c0-.552.447-1 1-1 .553 0 1 .448 1 1 0 3.52-2.613 6.432-6 6.92zM10 6c0-1.103.897-2 2-2s2 .897 2 2v5c0 1.103-.897 2-2 2s-2-.897-2-2V6zm2 9c2.206 0 4-1.794 4-4V6c0-2.205-1.794-4-4-4S8 3.795 8 6v5c0 2.206 1.794 4 4 4z">
-                          </path>
-                      </svg>
-                      <svg id="mute" style={{display:'none'}} width={18} height={18} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                          <g data-name="Layer 2">
-                          <g data-name="mic-off">
-                          <rect width="24" height="24" opacity="0"/>
-                          <path fill="#fff" d="M10 6a2 2 0 0 1 4 0v5a1 1 0 0 1 0 .16l1.6 1.59A4 4 0 0 0 16 11V6a4 4 0 0 0-7.92-.75L10 7.17z"/>
-                          <path fill="#fff" d="M19 11a1 1 0 0 0-2 0 4.86 4.86 0 0 1-.69 2.48L17.78 15A7 7 0 0 0 19 11z"/>
-                          <path fill="#fff" d="M12 15h.16L8 10.83V11a4 4 0 0 0 4 4z"/>
-                          <path fill="#fff" d="M20.71 19.29l-16-16a1 1 0 0 0-1.42 1.42l16 16a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"/>
-                          <path fill="#fff" d="M15 20h-2v-2.08a7 7 0 0 0 1.65-.44l-1.6-1.6A4.57 4.57 0 0 1 12 16a5 5 0 0 1-5-5 1 1 0 0 0-2 0 7 7 0 0 0 6 6.92V20H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2z"/>
+                  if(this.state.streams[key].active && this.state.hostref!==key ){
+                  return    <li>
+                  <div>
+                     <div className="videotools">
+                       <button className="menu_option video_on guest_video_mute video_mute_option">
+                        <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24">
+                           <path fill="#222B45" fillRule="evenodd" d="M13 17.92V20h2.105c.493 0 .895.402.895.895v.21c0 .493-.402.895-.895.895h-6.21C8.402 22 8 21.598 8 21.106v-.211c0-.493.402-.895.895-.895H11v-2.08c-3.387-.488-6-3.4-6-6.92 0-.552.447-1 1-1 .553 0 1 .448 1 1 0 2.757 2.243 5 5 5s5-2.243 5-5c0-.552.447-1 1-1 .553 0 1 .448 1 1 0 3.52-2.613 6.432-6 6.92zM10 6c0-1.103.897-2 2-2s2 .897 2 2v5c0 1.103-.897 2-2 2s-2-.897-2-2V6zm2 9c2.206 0 4-1.794 4-4V6c0-2.205-1.794-4-4-4S8 3.795 8 6v5c0 2.206 1.794 4 4 4z" />
+                        </svg>
+                        <svg width={18} height={18} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style={{display: 'none'}}>
+                        <g data-name="Layer 2">
+                           <g data-name="mic-off">
+                              <rect width={24} height={24} opacity={0} />
+                              <path fill="#fff" d="M10 6a2 2 0 0 1 4 0v5a1 1 0 0 1 0 .16l1.6 1.59A4 4 0 0 0 16 11V6a4 4 0 0 0-7.92-.75L10 7.17z" />
+                              <path fill="#fff" d="M19 11a1 1 0 0 0-2 0 4.86 4.86 0 0 1-.69 2.48L17.78 15A7 7 0 0 0 19 11z" />
+                              <path fill="#fff" d="M12 15h.16L8 10.83V11a4 4 0 0 0 4 4z" />
+                              <path fill="#fff" d="M20.71 19.29l-16-16a1 1 0 0 0-1.42 1.42l16 16a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z" />
+                              <path fill="#fff" d="M15 20h-2v-2.08a7 7 0 0 0 1.65-.44l-1.6-1.6A4.57 4.57 0 0 1 12 16a5 5 0 0 1-5-5 1 1 0 0 0-2 0 7 7 0 0 0 6 6.92V20H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2z" />
+                           </g>
                         </g>
-                        </g>
-                      </svg>
-                    </button>
-                    <VideoItem
+                        </svg>
+                     </button>
+                       <span className="guest_video_name video_name_option">{key}</span>
+                     
+                  </div>
+                  <VideoItem
                     key={key}
                     userId={key}
                     stream={this.state.streams[key]}
-                  /></div></li>
-                })
+                  />
+                  </div>
+               </li>
+
+
+
+
+
+
+                   } 
+                  else{
+                    return(
+                      <></>
+                    )
+                  }  })
               }
               </ul>
       </div>
@@ -622,10 +671,10 @@ loader(){
 
 
 
-{/* 
+{this.state.loader && this.state.host?
 <Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host}></Switchprojectloader>
+:<></>}
 
- */}
 
 
 
