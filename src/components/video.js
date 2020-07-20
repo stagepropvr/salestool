@@ -136,7 +136,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
     console.log("socket.on init", data)
 
       userId = data.userId;
-      this.state.socket.emit('ready', ({ room: roomId, userId:userId, name:"karthik" }));
+      this.state.socket.emit('ready', ({ room: roomId, userId:userId, name:this.state.name }));
     });
 
     this.state.socket.on("users", ({ initiator, users,name,usersocketid }) => {
