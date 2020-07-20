@@ -67,7 +67,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
     })
 
     Firebase.auth().onAuthStateChanged((user) => {
-////console.log(localStorage.getItem(this.props.roomId));
+
       if (user &&  localStorage.getItem(this.props.roomId)!==undefined) {
         
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
@@ -137,15 +137,17 @@ this.audioallctrl=this.audioallctrl.bind(this);
 
       userId = data.userId;
       this.state.socket.emit('ready', ({ room: roomId, userId:userId, name:(!this.state.host?this.state.name:"host") }));
+      Firebase.database().ref("roomsession/"+this.props.roomId+"/members").update({
+      df:(!this.state.host?this.state.name:"host")
+      })
+      Firebase.database().ref("roomsession/"+this.props.roomId+"/members").on("value",(members)=>{
+          console.log(members.val())
+      });
     });
 
     this.state.socket.on("users", ({ initiator, users,name,usersocketid }) => {
-    console.log("socket.on  users", users.sockets,usersocketid)
-var members=this.state.members;
-members[usersocketid]=name
-this.setState({
-  members:members
-})
+
+
 console.log(this.state.members);
       Object.keys(users.sockets)
         .filter(
@@ -493,7 +495,7 @@ audioallctrl(e){
             clientimageid={this.state.clientimageid}
           />:<></>}
             <div style={{position: "absolute",bottom: "80px",right: "16px"}}>
-    <span className="host_video_name">{this.state.members[this.state.hostref]}</span>
+    <span className="host_video_name">You</span>
     <video
                 autoPlay
                 id='localVideo' className="user-video"

@@ -20323,10 +20323,12 @@ select{
     .self{
       float: right;
       max-width: 100%;
+      width:100%
     }
     .other{
       float: left;
       max-width: 100%;
+      width:100%;
     }
     
     .other>.chat_name{
