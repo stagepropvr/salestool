@@ -31,7 +31,8 @@ class SceneControls extends React.Component {
       map:false,
       floorplandata:"false",
       pdfdata:"false",
-      settings:false
+      settings:false,
+      mapdata:""
     }
   }
 
@@ -61,6 +62,15 @@ class SceneControls extends React.Component {
           pdfdata:data.data
         })
         });
+        this.props.socket.on("map",(data)=>{
+          this.setState({
+            mapdata:"false"
+          })
+          console.log(data);
+          this.setState({
+            mapdata:data.latlng
+          })
+          });
   }
 
   handleOutsideClick(e) {
@@ -111,6 +121,14 @@ open_close = (name,flag) =>{
     [name]:flag
   })
   if(this.props.host){
+    if(name=='map'){
+      if(flag){
+        this.props.socket.emit('map',{ roomid:this.props.roomId,latlng:this.props.data["latlng"]});
+      }
+      else{
+        this.props.socket.emit('map',{ roomid:this.props.roomId,latlng:false});
+      }
+    }
   if(name!='floorplan'){
     if(flag){
       document.getElementById('left_light_mode').style.display='none';
@@ -355,9 +373,9 @@ return (
 {this.state.pdfdata!="false" && !this.props.host?<PDFclient data={this.state.pdfdata}/>:<></>}
 
 
-{this.state.map?<MapModal
+{this.state.mapdata?<MapModal
         open_close={this.open_close}
-        data={this.props.data}
+        data={this.state.mapdata}
       />:<></>}
 
 

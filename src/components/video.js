@@ -29,7 +29,7 @@ class Video extends React.Component {
       peers: {},
       streams: {},
       current_image: "",
-      socket: io.connect("mysterious-dusk-60271.herokuapp.com/"),
+      socket: io.connect("localhost:5000"),
       host: true,
       apiload: true,
       images:"",
@@ -225,10 +225,10 @@ console.log(this.state.members);
           this.setState({ peers: peersTemp })
         })
     })
-    this.state.socket.on('chat message', ({ message, user }) => {
-     
+    this.state.socket.on('chat message',  msg  => {
+     console.log(msg);
       this.setState(ele => ({
-        messages: [...ele.messages, {user: user,content:message}]
+        messages: [...ele.messages, msg]
       }))
       console.log(this.state.messages);
     });
@@ -478,7 +478,8 @@ track.stop();
     const message = {
       room: this.props.roomId,
       user: this.state.socket.id,
-      message: this.messagearea.current.value
+      message: this.messagearea.current.value,
+      type:"message"
     };
     //console.log(message);
     this.state.socket.emit('chat message', message);
@@ -509,6 +510,17 @@ fileupload = (event)=>{
   reader.onloadend = () => {
     console.log(file.name);
     console.log(reader.result);
+    const message = {
+      room: this.props.roomId,
+      user: this.state.socket.id,
+      message:"",
+      type:"file",
+      filename:file.name,
+      filedata:reader.result
+    };
+    //console.log(message);
+    this.state.socket.emit('chat message', message);
+    
   };
 }
 
@@ -607,10 +619,10 @@ fileupload = (event)=>{
     </div>
     <div style={{height: '100%'}} className="tab-content text-center">
       <div style={{height: '100%'}} className="tab-pane active show" id="members">
-        <div className="mute_all_div">
+       {this.state.host? <div className="mute_all_div">
           <input ref={this.audioctrl} onChange={this.audioallctrl} type="checkbox"/>
           <label className="mute_all">Mute all</label>
-          </div>
+          </div>:<></>}
       <ul style={{padding:'0px',height:'90%',overflow: "auto", listStyle:"none",width:'85%',paddingLeft:'8px'}}>
      
    
@@ -619,7 +631,7 @@ fileupload = (event)=>{
                   if(this.state.streams[key].active ){
                     console.log(this.state.members[key]);
                   return    <li>
-                  <div>
+                  <div style={{"background":"#000"}}>
                      <div className="videotools">
                        <button className="menu_option video_on guest_video_mute video_mute_option">
                         <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24">
@@ -666,12 +678,33 @@ fileupload = (event)=>{
       <div style={{height: '100%'}} className="tab-pane" id="chat">
         <ul className="chat_bar">
         {this.state.messages.map((child)=>{
+          if(child.type==="message"){
             return(
               <li className={this.state.socket.id===child.user?"self":"other"}>
               <div className="chat_name">{this.state.members[child.user]}</div>
-            <div className={this.state.socket.id===child.user?"self_msg":"other_msg"}>{child.content}</div>
+            <div className={this.state.socket.id===child.user?"self_msg":"other_msg"}>{child.message}</div>
             </li>
-            )
+            )}
+            else{
+              return(
+                <li className={this.state.socket.id===child.user?"self":"other"}>
+  <div className="chat_name">{this.state.members[child.user]}</div>
+  <div className= {this.state.socket.id===child.user?" media_msg self_msg":"media_msg  other_msg"}><span className="media_file_name">{child.filename}</span>
+    <span style={{paddingRight: '8px', cursor: 'pointer'}}>
+     <a target="_blank" href={child.filedata} download> <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
+        <defs>
+          <path id="prefix__download" d="M19 16c.55 0 1 .45 1 1v2c0 .51-.388.935-.884.993L19 20H5c-.55 0-1-.45-1-1v-2c0-.55.45-1 1-1s1 .45 1 1v1h12v-1c0-.55.45-1 1-1zM12 3c.553 0 1 .448 1 1v8l2.4-1.8c.442-.333 1.069-.242 1.4.2.332.442.242 1.069-.2 1.4l-4 3c-.177.133-.389.2-.6.2-.201 0-.402-.061-.575-.182l-4-2.814c-.452-.318-.561-.942-.243-1.393.318-.452.941-.561 1.393-.243l2.428 1.71L11 12V4c0-.552.447-1 1-1z" />
+        </defs>
+        <g fill="none" fillRule="evenodd">
+          <use fill="#fff" xlinkHref="#prefix__download" />
+        </g>
+      </svg></a>
+    </span>
+  </div>
+</li>
+
+              )
+            }
           })}
          
         </ul>
