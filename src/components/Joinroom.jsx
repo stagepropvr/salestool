@@ -79,6 +79,7 @@ componentDidMount(){
                      email:this.state.email   
                     });
                     localStorage.setItem("guestkey",ref.key);
+                    localStorage.setItem("name",this.state.name);
                     localStorage.setItem(this.props.match.params.rid,false);
                     this.setState({
                         redirect:true

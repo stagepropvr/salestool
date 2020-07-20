@@ -45,6 +45,7 @@ class Video extends React.Component {
       audioinput:"default",
       clientimageid:"",
       members:[],
+      name:localStorage.getItem("name"),
       hostaudioctrl:false
     };
     this.Sidenav = React.createRef();
