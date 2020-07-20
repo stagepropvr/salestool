@@ -9,6 +9,7 @@ import Dashboard from "./components/Dashboard";
 import Projects from "./components/Projects";
 import Createroom from "./components/Createroom";
 import Joinroom from "./components/Joinroom";
+import EndSession from "./components/EndSession"
 
 // import MapModal from "./components/MAPFP"
 import Tools from './components/Tools';
@@ -41,6 +42,8 @@ class App extends Component {
 
          <Route path='/createroom/:pid' component={Createroom} />
          <Route path='/room/:pid/:roomid' component={Salespage} />
+         <Route  path='/feedback' component={EndSession} />
+
          </Switch>
          </Router>         
 

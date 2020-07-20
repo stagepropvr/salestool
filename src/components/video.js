@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from "react-router-dom";
 import VideoCall from '../helpers/simple-peer';
 import '../styles/video.css';
 import io from 'socket.io-client';
@@ -45,7 +46,8 @@ class Video extends React.Component {
       audioinput:"default",
       clientimageid:"",
       members:[],
-      hostaudioctrl:false
+      hostaudioctrl:false,
+      closeRoom:false,
     };
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
@@ -91,6 +93,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
             break;
             }
         });
+        this.state.socket.emit('host',{room:this.props.roomId});
       }
       else{
         this.setState({
@@ -129,6 +132,14 @@ this.audioallctrl=this.audioallctrl.bind(this);
       ////console.log("socket.on join", roomId)
 
     });
+
+    
+    this.state.socket.on('closeRoom', () => {
+      console.log("Host Closed The Room")
+      this.state.socket.close()  
+      this.setState({closeRoom:true});    
+    });
+
 
     this.state.socket.on('init', (data) => {
 
@@ -479,8 +490,13 @@ audioallctrl(e){
 
   render() {
 
-    return (<>
+    if(this.state.closeRoom)
+    {
+      this.state.socket.close();
+      return <Redirect to="/feedback" />
+    }
 
+    return (<>
 
     {!this.state.init?<Scene
             data={this.state.images}

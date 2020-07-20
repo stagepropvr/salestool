@@ -28,25 +28,25 @@ imageloaded(){
     imageload:false
   })
 }
-   componentDidMount(){
-    const AFRAME = window.AFRAME
+  //  componentDidMount(){
+  //   const AFRAME = window.AFRAME
 
-    AFRAME.registerComponent('rotation-reader', {
-      tick: function () {
+  //   AFRAME.registerComponent('rotation-reader', {
+  //     tick: function () {
         
-        // var x = this.el.object3D.rotation.x;
-        // var y = this.el.object3D.rotation.y
-        // console.log(this.el.getAttribute('rotation').x);
-        // console.log(this.el.getAttribute('rotation').y);
-       }
-    });
+  //       var x = this.el.object3D.rotation.x;
+  //       var y = this.el.object3D.rotation.y
+  //       console.log(this.el.getAttribute('rotation').x);
+  //       console.log(this.el.getAttribute('rotation').y);
+  //      }
+  //   });
 
-    AFRAME.registerComponent('rotation-setter', {
-      tick: function () {
-       this.el.setAttribute('rotation', {x: 0, y: 90, z: 30});
-       }
-    });
-   }
+  //   AFRAME.registerComponent('rotation-setter', {
+  //     tick: function () {
+  //      this.el.setAttribute('rotation', {x: 0, y: 90, z: 30});
+  //      }
+  //   });
+  //  }
 
    loadAssets = () => {
     //  console.log("Not Host : Load Assets Called", this.props.clientimageid,this.props.clientimage)
