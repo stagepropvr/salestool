@@ -57,6 +57,10 @@ this.changedevice=this.changedevice.bind(this);
 this.audioallctrl=this.audioallctrl.bind(this);
     this.messagearea=React.createRef();
     this.audioctrl=React.createRef();
+
+    this.inputFileRef = React.createRef();
+    this.onBtnClick = this.handleBtnClick.bind(this)
+
   }
   videoCall = new VideoCall();
 
@@ -494,6 +498,19 @@ audioallctrl(e){
   this.state.socket.emit('audioctrl', data);
 }
 
+handleBtnClick() {
+  /*Collecting node-element and performing click*/
+  this.inputFileRef.current.click();
+}
+fileupload = (event)=>{
+  let file = event.target.files[0];
+  let reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onloadend = () => {
+    console.log(file.name);
+    console.log(reader.result);
+  };
+}
 
   render() {
 
@@ -659,8 +676,8 @@ audioallctrl(e){
          
         </ul>
         <form className="media_form" onSubmit={this.sendmessage}>
-          <span>
-            <input type="file" style={{display: 'none'}} />
+          <span style={{cursor:'pointer'}} onClick={this.onBtnClick}>
+            <input type="file" ref={this.inputFileRef} onChange={this.fileupload} style={{display: 'none'}} />
             <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
               <defs>
                 <path id="prefix__file" d="M12 22c-3.309 0-6-2.557-6-5.698V6.132C6 3.854 7.944 2 10.333 2c2.39 0 4.334 1.854 4.334 4.132l-.006 10.177c0 1.414-1.197 2.565-2.667 2.565-1.47 0-2.666-1.151-2.666-2.566l.005-9.391c.001-.552.449-.999 1-.999h.001c.552 0 1 .448.999 1.001l-.005 9.39c0 .311.298.565.666.565.368 0 .667-.254.667-.566l.006-10.177C12.667 4.956 11.62 4 10.333 4 9.047 4 8 4.956 8 6.132v10.17C8 18.341 9.794 20 12 20s4-1.659 4-3.698V6.132c0-.553.448-1 1-1s1 .447 1 1v10.17C18 19.443 15.309 22 12 22" />
