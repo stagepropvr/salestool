@@ -65,17 +65,17 @@ this.audioallctrl=this.audioallctrl.bind(this);
     this.setState({
       pid:this.props.pid
     })
-
+    var promise = new Promise( (resolve, reject) => {
     Firebase.auth().onAuthStateChanged((user) => {
 
       if (user &&  localStorage.getItem(this.props.roomId)!==undefined) {
-        
+       
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
           this.state.data = node.val();
        
             for (var x in node.val().images){
               console.log(this.state.socket.id);
-              Firebase.database().ref("roomsession/"+this.props.roomId).set({
+              Firebase.database().ref("roomsession/"+this.props.roomId).update({
                 currentimage:{currentimage:node.val().images[x].url,
                 imageid:x},
                 hostid:{
@@ -87,13 +87,18 @@ this.audioallctrl=this.audioallctrl.bind(this);
                 data:node.val(),
                 apiload:false,
                 user_id:user.uid,
-                init:false
+                init:false,
+                name:"host"
               });
             break;
             }
-        });
+        }).then((value)=>{
+          resolve("Promise resolved successfully");
+        })
+        
       }
       else{
+       
         this.setState({
           host:false
         })
@@ -101,7 +106,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
           this.setState({
             hostref:snap.val().hostid
           })
-        });
+        })
         Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage").on("value",(snap)=>{
           this.setState({
             clientimage:snap.val().currentimage,
@@ -111,13 +116,19 @@ this.audioallctrl=this.audioallctrl.bind(this);
            
             loader:true
           });
-        });
+        })
       }
+      
+        resolve("Promise resolved successfully");
+     
+ 
+    });
+  });
+
+
+    promise.then( result => {
     
-
-
-
-
+    
 
 
     // const socket = io.connect("localhost:5000");
@@ -128,20 +139,24 @@ this.audioallctrl=this.audioallctrl.bind(this);
       console.log(this.state.localStream);
       this.state.socket.emit('join', { roomId });
       ////console.log("socket.on join", roomId)
-
+      console.log(this.state.host);
+     
     });
 
     this.state.socket.on('init', (data) => {
-
+      Firebase.database().ref("roomsession/"+this.props.roomId+"/members").update({
+        [this.state.socket.id]:(this.state.host?"host":this.state.name)
+        })
     console.log("socket.on init", data)
 
       userId = data.userId;
       this.state.socket.emit('ready', ({ room: roomId, userId:userId, name:(!this.state.host?this.state.name:"host") }));
-      Firebase.database().ref("roomsession/"+this.props.roomId+"/members").update({
-      df:(!this.state.host?this.state.name:"host")
-      })
+     
       Firebase.database().ref("roomsession/"+this.props.roomId+"/members").on("value",(members)=>{
-          console.log(members.val())
+          console.log(members.val());
+          this.setState({
+            members:members.val()
+          })
       });
     });
 
@@ -585,6 +600,7 @@ audioallctrl(e){
       {
                 Object.keys(this.state.streams).map((key, id) => {
                   if(this.state.streams[key].active ){
+                    console.log(this.state.members[key]);
                   return    <li>
                   <div>
                      <div className="videotools">
