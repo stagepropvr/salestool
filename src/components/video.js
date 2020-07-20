@@ -670,7 +670,7 @@ audioallctrl(e){
               </g>
             </svg>
           </span>
-          <input type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message and press enter" />
+          <input type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message and press enter" required/>
         </form>
       </div>  
 

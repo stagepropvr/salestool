@@ -20348,6 +20348,7 @@ select{
       text-align: left;
       margin-top: 7px;
       padding: 10px 10px 7px 8px;
+      float:left;
     }
     
     .self>.chat_name{
@@ -20366,6 +20367,7 @@ select{
       text-align: left;
       margin-top: 7px;
       padding: 10px 10px 7px 8px;
+      float:right;
     }
     
     .chat_bar{
