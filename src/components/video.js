@@ -46,8 +46,10 @@ class Video extends React.Component {
       audioinput:"default",
       clientimageid:"",
       members:[],
-      hostaudioctrl:false,
       closeRoom:false,
+      name:localStorage.getItem("name"),
+      hostaudioctrl:false
+
     };
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
@@ -58,6 +60,10 @@ this.changedevice=this.changedevice.bind(this);
 this.audioallctrl=this.audioallctrl.bind(this);
     this.messagearea=React.createRef();
     this.audioctrl=React.createRef();
+
+    this.inputFileRef = React.createRef();
+    this.onBtnClick = this.handleBtnClick.bind(this)
+
   }
   videoCall = new VideoCall();
 
@@ -66,17 +72,17 @@ this.audioallctrl=this.audioallctrl.bind(this);
     this.setState({
       pid:this.props.pid
     })
-
+    var promise = new Promise( (resolve, reject) => {
     Firebase.auth().onAuthStateChanged((user) => {
-////console.log(localStorage.getItem(this.props.roomId));
+
       if (user &&  localStorage.getItem(this.props.roomId)!==undefined) {
-        
+       
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
           this.state.data = node.val();
        
             for (var x in node.val().images){
               console.log(this.state.socket.id);
-              Firebase.database().ref("roomsession/"+this.props.roomId).set({
+              Firebase.database().ref("roomsession/"+this.props.roomId).update({
                 currentimage:{currentimage:node.val().images[x].url,
                 imageid:x},
                 hostid:{
@@ -88,14 +94,20 @@ this.audioallctrl=this.audioallctrl.bind(this);
                 data:node.val(),
                 apiload:false,
                 user_id:user.uid,
-                init:false
+                init:false,
+                name:"host"
               });
             break;
             }
-        });
-        this.state.socket.emit('host',{room:this.props.roomId});
+
+        }).then((value)=>{
+          this.state.socket.emit('host',{room:this.props.roomId});
+          resolve("Promise resolved successfully");
+        })
+
       }
       else{
+       
         this.setState({
           host:false
         })
@@ -103,7 +115,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
           this.setState({
             hostref:snap.val().hostid
           })
-        });
+        })
         Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage").on("value",(snap)=>{
           this.setState({
             clientimage:snap.val().currentimage,
@@ -113,13 +125,19 @@ this.audioallctrl=this.audioallctrl.bind(this);
            
             loader:true
           });
-        });
+        })
       }
+      
+        resolve("Promise resolved successfully");
+     
+ 
+    });
+  });
+
+
+    promise.then( result => {
     
-
-
-
-
+    
 
 
     // const socket = io.connect("localhost:5000");
@@ -130,7 +148,8 @@ this.audioallctrl=this.audioallctrl.bind(this);
       console.log(this.state.localStream);
       this.state.socket.emit('join', { roomId });
       ////console.log("socket.on join", roomId)
-
+      console.log(this.state.host);
+     
     });
 
     
@@ -142,20 +161,25 @@ this.audioallctrl=this.audioallctrl.bind(this);
 
 
     this.state.socket.on('init', (data) => {
-
+      Firebase.database().ref("roomsession/"+this.props.roomId+"/members").update({
+        [this.state.socket.id]:(this.state.host?"host":this.state.name)
+        })
     console.log("socket.on init", data)
 
       userId = data.userId;
-      this.state.socket.emit('ready', ({ room: roomId, userId:userId, name:"karthik" }));
+      this.state.socket.emit('ready', ({ room: roomId, userId:userId, name:(!this.state.host?this.state.name:"host") }));
+     
+      Firebase.database().ref("roomsession/"+this.props.roomId+"/members").on("value",(members)=>{
+          console.log(members.val());
+          this.setState({
+            members:members.val()
+          })
+      });
     });
 
     this.state.socket.on("users", ({ initiator, users,name,usersocketid }) => {
-    console.log("socket.on  users", users.sockets,usersocketid)
-var members=this.state.members;
-members[usersocketid]=name
-this.setState({
-  members:members
-})
+
+
 console.log(this.state.members);
       Object.keys(users.sockets)
         .filter(
@@ -214,10 +238,10 @@ console.log(this.state.members);
           this.setState({ peers: peersTemp })
         })
     })
-    this.state.socket.on('chat message', ({ message, user }) => {
-     
+    this.state.socket.on('chat message',  msg  => {
+     console.log(msg);
       this.setState(ele => ({
-        messages: [...ele.messages, {user: user,content:message}]
+        messages: [...ele.messages, msg]
       }))
       console.log(this.state.messages);
     });
@@ -467,7 +491,8 @@ track.stop();
     const message = {
       room: this.props.roomId,
       user: this.state.socket.id,
-      message: this.messagearea.current.value
+      message: this.messagearea.current.value,
+      type:"message"
     };
     //console.log(message);
     this.state.socket.emit('chat message', message);
@@ -487,6 +512,30 @@ audioallctrl(e){
   this.state.socket.emit('audioctrl', data);
 }
 
+handleBtnClick() {
+  /*Collecting node-element and performing click*/
+  this.inputFileRef.current.click();
+}
+fileupload = (event)=>{
+  let file = event.target.files[0];
+  let reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onloadend = () => {
+    console.log(file.name);
+    console.log(reader.result);
+    const message = {
+      room: this.props.roomId,
+      user: this.state.socket.id,
+      message:"",
+      type:"file",
+      filename:file.name,
+      filedata:reader.result
+    };
+    //console.log(message);
+    this.state.socket.emit('chat message', message);
+    
+  };
+}
 
   render() {
 
@@ -508,7 +557,7 @@ audioallctrl(e){
             clientimageid={this.state.clientimageid}
           />:<></>}
             <div style={{position: "absolute",bottom: "80px",right: "16px"}}>
-    <span className="host_video_name">{this.state.members[this.state.hostref]}</span>
+    <span className="host_video_name">You</span>
     <video
                 autoPlay
                 id='localVideo' className="user-video"
@@ -588,18 +637,19 @@ audioallctrl(e){
     </div>
     <div style={{height: '100%'}} className="tab-content text-center">
       <div style={{height: '100%'}} className="tab-pane active show" id="members">
-        <div className="mute_all_div">
+       {this.state.host? <div className="mute_all_div">
           <input ref={this.audioctrl} onChange={this.audioallctrl} type="checkbox"/>
           <label className="mute_all">Mute all</label>
-          </div>
+          </div>:<></>}
       <ul style={{padding:'0px',height:'90%',overflow: "auto", listStyle:"none",width:'85%',paddingLeft:'8px'}}>
      
    
       {
                 Object.keys(this.state.streams).map((key, id) => {
                   if(this.state.streams[key].active ){
+                    console.log(this.state.members[key]);
                   return    <li>
-                  <div>
+                  <div style={{"background":"#000"}}>
                      <div className="videotools">
                        <button className="menu_option video_on guest_video_mute video_mute_option">
                         <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24">
@@ -646,18 +696,39 @@ audioallctrl(e){
       <div style={{height: '100%'}} className="tab-pane" id="chat">
         <ul className="chat_bar">
         {this.state.messages.map((child)=>{
+          if(child.type==="message"){
             return(
               <li className={this.state.socket.id===child.user?"self":"other"}>
               <div className="chat_name">{this.state.members[child.user]}</div>
-            <div className={this.state.socket.id===child.user?"self_msg":"other_msg"}>{child.content}</div>
+            <div className={this.state.socket.id===child.user?"self_msg":"other_msg"}>{child.message}</div>
             </li>
-            )
+            )}
+            else{
+              return(
+                <li className={this.state.socket.id===child.user?"self":"other"}>
+  <div className="chat_name">{this.state.members[child.user]}</div>
+  <div className= {this.state.socket.id===child.user?" media_msg self_msg":"media_msg  other_msg"}><span className="media_file_name">{child.filename}</span>
+    <span style={{paddingRight: '8px', cursor: 'pointer'}}>
+     <a target="_blank" href={child.filedata} download> <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
+        <defs>
+          <path id="prefix__download" d="M19 16c.55 0 1 .45 1 1v2c0 .51-.388.935-.884.993L19 20H5c-.55 0-1-.45-1-1v-2c0-.55.45-1 1-1s1 .45 1 1v1h12v-1c0-.55.45-1 1-1zM12 3c.553 0 1 .448 1 1v8l2.4-1.8c.442-.333 1.069-.242 1.4.2.332.442.242 1.069-.2 1.4l-4 3c-.177.133-.389.2-.6.2-.201 0-.402-.061-.575-.182l-4-2.814c-.452-.318-.561-.942-.243-1.393.318-.452.941-.561 1.393-.243l2.428 1.71L11 12V4c0-.552.447-1 1-1z" />
+        </defs>
+        <g fill="none" fillRule="evenodd">
+          <use fill="#fff" xlinkHref="#prefix__download" />
+        </g>
+      </svg></a>
+    </span>
+  </div>
+</li>
+
+              )
+            }
           })}
          
         </ul>
         <form className="media_form" onSubmit={this.sendmessage}>
-          <span>
-            <input type="file" style={{display: 'none'}} />
+          <span style={{cursor:'pointer'}} onClick={this.onBtnClick}>
+            <input type="file" ref={this.inputFileRef} onChange={this.fileupload} style={{display: 'none'}} />
             <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
               <defs>
                 <path id="prefix__file" d="M12 22c-3.309 0-6-2.557-6-5.698V6.132C6 3.854 7.944 2 10.333 2c2.39 0 4.334 1.854 4.334 4.132l-.006 10.177c0 1.414-1.197 2.565-2.667 2.565-1.47 0-2.666-1.151-2.666-2.566l.005-9.391c.001-.552.449-.999 1-.999h.001c.552 0 1 .448.999 1.001l-.005 9.39c0 .311.298.565.666.565.368 0 .667-.254.667-.566l.006-10.177C12.667 4.956 11.62 4 10.333 4 9.047 4 8 4.956 8 6.132v10.17C8 18.341 9.794 20 12 20s4-1.659 4-3.698V6.132c0-.553.448-1 1-1s1 .447 1 1v10.17C18 19.443 15.309 22 12 22" />
@@ -667,7 +738,7 @@ audioallctrl(e){
               </g>
             </svg>
           </span>
-          <input type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message and press enter" />
+          <input type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message and press enter" required/>
         </form>
       </div>  
 
