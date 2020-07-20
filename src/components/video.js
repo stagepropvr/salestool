@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from "react-router-dom";
 import VideoCall from '../helpers/simple-peer';
 import '../styles/video.css';
 import io from 'socket.io-client';
@@ -45,8 +46,10 @@ class Video extends React.Component {
       audioinput:"default",
       clientimageid:"",
       members:[],
+      closeRoom:false,
       name:localStorage.getItem("name"),
       hostaudioctrl:false
+
     };
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
@@ -96,10 +99,12 @@ this.audioallctrl=this.audioallctrl.bind(this);
               });
             break;
             }
+
         }).then((value)=>{
+          this.state.socket.emit('host',{room:this.props.roomId});
           resolve("Promise resolved successfully");
         })
-        
+
       }
       else{
        
@@ -146,6 +151,14 @@ this.audioallctrl=this.audioallctrl.bind(this);
       console.log(this.state.host);
      
     });
+
+    
+    this.state.socket.on('closeRoom', () => {
+      console.log("Host Closed The Room")
+      this.state.socket.close()  
+      this.setState({closeRoom:true});    
+    });
+
 
     this.state.socket.on('init', (data) => {
       Firebase.database().ref("roomsession/"+this.props.roomId+"/members").update({
@@ -526,8 +539,13 @@ fileupload = (event)=>{
 
   render() {
 
-    return (<>
+    if(this.state.closeRoom)
+    {
+      this.state.socket.close();
+      return <Redirect to="/feedback" />
+    }
 
+    return (<>
 
     {!this.state.init?<Scene
             data={this.state.images}

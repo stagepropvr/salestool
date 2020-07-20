@@ -357,13 +357,13 @@ return (
 
      
   
-    <Share open_close={this.open_close} share={this.state.share} pid={this.state.pid} roomId={this.props.roomId} user_id={this.props.user_id}></Share>
+    <Share open_close={this.open_close} share={this.state.share} pid={this.state.pid} roomId={this.props.roomId} user_id={this.props.user_id} ></Share>
     <DocumentModal  socket={this.props.socket} room={this.props.roomId} host={this.props.host} data={this.props.data} open_close={this.open_close} document={this.state.document}></DocumentModal>
     <Switchproject changeProject={this.props.changeProject} data={this.state.data} open_close={this.open_close} project={this.state.project} pid={this.state.pid} user_id={this.props.user_id}></Switchproject>
   {this.state.floorplan?
     <Floorplan  socket={this.props.socket} room={this.props.roomId} changeImage = {this.props.changeImage} data={this.state.data} open_close={this.open_close} floorplan={this.state.floorplan}></Floorplan>
     :<></>}
-    <CloseModal  close={this.state.close} open_close={this.open_close} ></CloseModal>
+    <CloseModal socket={this.props.socket} room={this.props.roomId} host={this.props.host} close={this.state.close} open_close={this.open_close} ></CloseModal>
     {/* <Map pid={this.state.pid} user_id={this.props.user_id} open_close={this.open_close} map={this.state.map}></Map> */}
 
     {this.state.settings?<Settings videoinput={this.props.videoinput}

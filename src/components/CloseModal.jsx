@@ -10,16 +10,23 @@ class CloseModal extends React.Component {
   constructor(props){
     super(props);
     this.state={
-        url:''
+        url:'',
+        redirect:false
     }
    // this.handlechange=this.handlechange.bind(this);
- 
 }
+
+  closeSocket = () => {
+    this.setState({redirect:true})    
+    if(this.props.host)
+    {
+      this.props.socket.emit('deleteRoom',{room:this.props.room});
+    }
+    this.props.socket.close();
+  }
   
 componentDidMount(){
-    
     window.scrollTo(0, 0);
-
     this.setState({
         url:'http://localhost:3000/joinroom/'+this.props.user_id+'/'+this.props.pid+'/'+this.props.roomId
     })
@@ -38,6 +45,14 @@ componentDidMount(){
 
 
   render() {
+    console.log("Pew ::: Host :::",this.props.host)
+    if(this.state.redirect && this.props.host){
+      return <Redirect to="/projects" />
+    }
+    else if(this.state.redirect){
+      return <Redirect to="/feedback" />
+    }
+    else{
       return( 
         <div style={{display:this.props.close==true?'block':'none'}} className="modal" id="close_modal" tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
@@ -64,13 +79,13 @@ componentDidMount(){
             <div style={{display: "block"}} className="modal-footer">
                 <center style={{display: "flex",justifyContent: "center"}}>
                     <button onClick={() => this.props.open_close('close',false)} type="button" className="btn cancel">Cancel</button>
-                    <button style={{marginLeft: "20px"}} type="button" className="btn proceed">Proceed</button>
+                    <button onClick={this.closeSocket}style={{marginLeft: "20px"}} type="button" className="btn proceed">Proceed</button>
                 </center>
                
             </div>
           </div>
         </div>
-        </div>)
+        </div>)}
   }
 }
 export default CloseModal;
