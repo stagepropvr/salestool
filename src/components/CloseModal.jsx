@@ -17,12 +17,17 @@ class CloseModal extends React.Component {
 }
 
   closeSocket = () => {
-    this.setState({redirect:true})    
+    //this.setState({redirect:true})   
+    this.props.socket.close(); 
     if(this.props.host)
     {
       this.props.socket.emit('deleteRoom',{room:this.props.room});
+window.location="/projects";
     }
-    this.props.socket.close();
+    else{
+      window.location="/feedback";
+    }
+    
   }
   
 componentDidMount(){
