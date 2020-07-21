@@ -84,9 +84,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
               console.log(this.state.socket.id);
               Firebase.database().ref("roomsession/"+this.props.roomId).update({
                 currentimage:{currentimage:node.val().images[x].url,
-                imageid:x},
-                hostid:{
-                hostid:this.state.socket.id}
+                imageid:x}
               })
               this.setState({
                 current_image:x,
@@ -164,6 +162,10 @@ this.audioallctrl=this.audioallctrl.bind(this);
       Firebase.database().ref("roomsession/"+this.props.roomId+"/members").update({
         [this.state.socket.id]:(this.state.host?"host":this.state.name)
         })
+        if(this.state.host){
+        Firebase.database().ref("roomsession/"+this.props.roomId+"/hostid").set({
+    hostid:this.state.socket.id
+        })}
     console.log("socket.on init", data)
 
       userId = data.userId;
