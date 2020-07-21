@@ -37,6 +37,7 @@ componentDidMount(){
   }
 
   handleregister(event){
+      this.props.switch()
       event.preventDefault();
       if(this.props.pid!==this.state.project_value){
         this.props.changeProject(this.props.user_id,this.state.project_value);
