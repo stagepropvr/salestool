@@ -7,6 +7,8 @@ import "../assets/demo/demo.css";
 class Switchprojectloader extends React.Component {
   constructor(props){
     super(props);
+    console.log("pew:::",this.props.host)
+   
     this.state={
         bath:'',
         bed:'',
@@ -47,17 +49,19 @@ componentDidMount(){
           })
     }
     if(this.props.host){
-        this.setState({
-            title:'You are switching project !'
-        })
+        if(this.props.Switchstatus)
+        {  
+          this.setState({title:'You are switching project !'})
+        }
+        else{
+          this.setState({title:'You are opening project !'})
+        }
     }else{
         this.setState({
             title:'Project is switched by the host'
         })
     }
-  
   }
-
 
   render() {
       return( 

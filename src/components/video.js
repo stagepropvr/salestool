@@ -48,8 +48,8 @@ class Video extends React.Component {
       members:[],
       closeRoom:false,
       name:localStorage.getItem("name"),
-      hostaudioctrl:false
-
+      hostaudioctrl:false,
+      Switchstatus:false
     };
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
@@ -66,6 +66,8 @@ this.audioallctrl=this.audioallctrl.bind(this);
 
   }
   videoCall = new VideoCall();
+
+  switch = () => {this.setState({Switchstatus:true})}
 
   componentDidMount() {
 
@@ -580,6 +582,7 @@ fileupload = (event)=>{
               changeProject={this.changeProject}
               micstate={this.state.micState}
               changedevice={this.changedevice}
+              switch={this.switch}
               micaction={() => {
                 this.setAudioLocal();
               }}
@@ -765,7 +768,7 @@ fileupload = (event)=>{
 
 
 {this.state.loader && this.state.host?
-<Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host}></Switchprojectloader>
+<Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host} Switchstatus={this.state.Switchstatus}></Switchprojectloader>
 :<></>}
 
       </>
