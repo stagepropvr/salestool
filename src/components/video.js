@@ -30,7 +30,7 @@ class Video extends React.Component {
       peers: {},
       streams: {},
       current_image: "",
-      socket: io.connect("mysterious-dusk-60271.herokuapp.com/"),
+      socket: io.connect("localhost:5000"),
       host: true,
       apiload: true,
       images:"",
@@ -101,7 +101,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
             }
 
         }).then((value)=>{
-          this.state.socket.emit('host',{room:this.props.roomId});
+          
           resolve("Promise resolved successfully");
         })
 
@@ -651,7 +651,7 @@ fileupload = (event)=>{
                   return    <li>
                   <div style={{"background":"#000"}}>
                      <div className="videotools">
-                       <button className="menu_option video_on guest_video_mute video_mute_option">
+                    {this.state.host?   <button className="menu_option video_on guest_video_mute video_mute_option">
                         <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24">
                            <path fill="#222B45" fillRule="evenodd" d="M13 17.92V20h2.105c.493 0 .895.402.895.895v.21c0 .493-.402.895-.895.895h-6.21C8.402 22 8 21.598 8 21.106v-.211c0-.493.402-.895.895-.895H11v-2.08c-3.387-.488-6-3.4-6-6.92 0-.552.447-1 1-1 .553 0 1 .448 1 1 0 2.757 2.243 5 5 5s5-2.243 5-5c0-.552.447-1 1-1 .553 0 1 .448 1 1 0 3.52-2.613 6.432-6 6.92zM10 6c0-1.103.897-2 2-2s2 .897 2 2v5c0 1.103-.897 2-2 2s-2-.897-2-2V6zm2 9c2.206 0 4-1.794 4-4V6c0-2.205-1.794-4-4-4S8 3.795 8 6v5c0 2.206 1.794 4 4 4z" />
                         </svg>
@@ -667,7 +667,7 @@ fileupload = (event)=>{
                            </g>
                         </g>
                         </svg>
-                     </button>
+                     </button>:<></>}
                        <span className="guest_video_name video_name_option">{this.state.members[key]}</span>
                      
                   </div>
@@ -768,10 +768,6 @@ fileupload = (event)=>{
 <Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host}></Switchprojectloader>
 :<></>}
 
-
-
-
-
       </>
     );
   }
@@ -783,7 +779,7 @@ fileupload = (event)=>{
 
 
 
- 
+
 }
 
 export default Video;

@@ -35,6 +35,7 @@ componentDidMount(){
         <PDFViewer
             document={{
                 url: this.props.data,
+                page:2
             }}
             css="pdf_height"
             navigation={{
