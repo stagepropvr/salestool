@@ -60,7 +60,7 @@ this.changedevice=this.changedevice.bind(this);
 this.audioallctrl=this.audioallctrl.bind(this);
     this.messagearea=React.createRef();
     this.audioctrl=React.createRef();
-
+    this.localvideo=React.createRef();
     this.inputFileRef = React.createRef();
     this.onBtnClick = this.handleBtnClick.bind(this)
 
@@ -481,12 +481,13 @@ track.stop();
     if(this.Sidenav.current.style.width==="300px"){
       this.Sidenav.current.style.width="0px";
           //console.log(this.bottom.current.offsetWidth);
-          this.bottom.current.style.width=this.bottom.current.offsetWidth+259+"px";
-  
+          this.bottom.current.style.width="100%";
+          this.localvideo.current.classList.add('relative-localvideo');
     }
     else{
       this.Sidenav.current.style.width="300px";
       //console.log(this.bottom.current.offsetWidth);
+      this.localvideo.current.classList.remove('relative-localvideo');
       this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
     }
   }
@@ -560,7 +561,7 @@ fileupload = (event)=>{
             clientimage={this.state.clientimage}
             clientimageid={this.state.clientimageid}
           />:<></>}
-            <div style={{position: "absolute",bottom: "80px",right: "16px"}}>
+            {/* <div style={{position: "absolute",bottom: "80px",right: "16px"}}>
     <span className="host_video_name">You</span>
     <video
                 autoPlay
@@ -569,7 +570,7 @@ fileupload = (event)=>{
                 ref={video => (this.localVideo = video)}
               />
         
-     </div>
+     </div> */}
     {this.state.apiload ?<></>: <>
   
     
@@ -647,7 +648,21 @@ fileupload = (event)=>{
           <label className="mute_all">Mute all</label>
           </div>:<></>}
       <ul style={{padding:'0px',height:'90%',overflow: "auto", listStyle:"none",width:'85%',paddingLeft:'8px'}}>
-     
+      <li>
+                  <div ref={this.localvideo} style={{"background":"#000"}} className="relative-localvideo">
+                     <div className="videotools">
+                   
+                       <span className="guest_video_name video_name_option">You</span>
+                     
+                  </div>
+                  <video
+                autoPlay
+                id='localVideo' className="user-video"
+                muted
+                ref={video => (this.localVideo = video)}
+              />
+                  </div>
+               </li>
    
       {
                 Object.keys(this.state.streams).map((key, id) => {

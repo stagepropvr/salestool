@@ -67,3 +67,13 @@ background:#fff;
     left: -7px;
     margin: 8px 10px 8px 15px;
     }
+
+.relative-localvideo{
+    background: rgb(0, 0, 0);
+    position: fixed;
+    right: 1.5vh;
+    bottom: 18vh;
+}
+.localvideo-list{
+    background: rgb(0, 0, 0);
+}
