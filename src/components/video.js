@@ -49,7 +49,8 @@ class Video extends React.Component {
       closeRoom:false,
       name:localStorage.getItem("name"),
       hostaudioctrl:false,
-      Switchstatus:false
+      Switchstatus:false,
+      messagescount:0
     };
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
@@ -251,6 +252,11 @@ console.log(this.state.members);
         })
     })
     this.state.socket.on('chat message',  msg  => {
+      if(!document.getElementById('chat_tab').getAttribute("class").includes("active show")){
+      this.setState({
+      messagescount:this.state.messagescount+1
+      })
+    }
      console.log(msg);
       this.setState(ele => ({
         messages: [...ele.messages, msg]
@@ -504,6 +510,9 @@ track.stop();
     }else if(e.target.getAttribute('datasrc')==="chat_icon"){
       document.getElementById('chat_tab').classList.add('active');
       document.getElementById('chat_tab').classList.add('show');
+      this.setState({
+        messagescount:0
+        })
       document.getElementById('chat').classList.add('active');
       document.getElementById('chat').classList.add('show');
     }else if(e.target.getAttribute('datasrc')==="close_icon"){
@@ -697,7 +706,7 @@ this.state.socket.emit('audioctrl', data);
                   </g>
               </g>
         </svg>  
-        <sup className="members_count">3</sup>             
+            <sup className="members_count">{Object.keys(this.state.streams).length}</sup>             
      </button>
     <span className="sidedrawer_icon_separate"></span>
     <button datasrc="chat_icon" onClick={this.togglenav} className="menu_option" style={{background: '#fff',display:'flex'}}>
@@ -712,7 +721,7 @@ this.state.socket.emit('audioctrl', data);
         </g>
         </g>
     </svg>     
-    <sup className="chat_count">3</sup>                     
+            <sup className="chat_count">{this.state.messagescount}</sup>                     
   </button>
 
   </div>

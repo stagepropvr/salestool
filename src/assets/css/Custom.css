@@ -85,6 +85,8 @@ background:#fff;
     position: fixed;
     right: 1.5vh;
     bottom: 10vh;
+    height: 113px;
+    width: 191px;
 }
 .relative-localvideo .videotools{
     top: 80px;
