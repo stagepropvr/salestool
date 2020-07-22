@@ -54,7 +54,7 @@ class SceneControls extends React.Component {
       this.setState({
         floorplandata:"false"
       })
-      //console.log(data);
+      console.log(data);
       this.setState({
         floorplandata:data
       })
@@ -185,7 +185,7 @@ open_close = (name,flag) =>{
     }
   }else{
     if(!flag){
-    this.props.socket.emit('floorplan',{ roomid:this.props.roomId,data:false});
+    this.props.socket.emit('floorplan',{ roomid:this.props.roomId,data:false,pin:null});
   }
   }
 }

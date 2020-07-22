@@ -19,11 +19,15 @@ componentDidMount()
 
 
   render() {
-  
+var position=[];
+  if(this.props.data.pin!==null){
+position=this.props.data.pin.split("-");
+console.log(position);
+  }
       return(          
         <div style={{display:this.props.data.data!=false?'block':'none'}} className="floorplan_div">
             <div className="container">
-                <div className="row">
+                <div style={{"height":"46px"}} className="row">
          
             </div>
             <div className="row">
@@ -33,14 +37,11 @@ componentDidMount()
                         <div className="map">
                         <img  src={this.props.data.data.planurl} style={{width: "100%"}}/>
                         </div>
-                        {/* {this.props.data.data.pins.forEach(element => {
-                           console.log(element);
-                           return(
-                           //     <div onClick={this.changesky} id={sub.dest}  style={{top:(sub.y+8.5)+'%',left:(sub.x)+'%'}} className="box"> 
-                           // </div>
-                           <></>
-                           ) 
-                        })} */}
+                       
+                             {this.props.data.pin!==null?   <div style={{top:position[0],left:position[1]}} className="box"> 
+                            </div>:<></>}
+                           
+                          
                             
                             
                    

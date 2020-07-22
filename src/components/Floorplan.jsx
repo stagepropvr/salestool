@@ -23,7 +23,7 @@ handleChange = selectedOption => {
         el.style.display='none';
     });
 
-    this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data.plans[selectedOption.value]});
+    this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data.plans[selectedOption.value],pin:null});
     this.setState({ selectedOption });
     //console.log(this.state.data.plans[selectedOption.value]);
     document.getElementById(selectedOption.value).style.display='block';
@@ -39,10 +39,11 @@ handleChange = selectedOption => {
     [].forEach.call(a, function(el) {
               el.classList.remove("bounce");
     });
-
-    var key = event.target.id.split("_pins");
-    console.log(event.target);
+     var key = event.target.id.split("_pins");
+    console.log(event.target.style.top,event.target.style.left);
     this.props.changeImage(key[0]);
+    this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data.plans[this.state.selectedOption[0].value],pin:event.target.style.top+"-"+event.target.style.left});
+   
     document.getElementById(event.target.id).classList.add('bounce');
     //   for(var i =0; i<key.length; i++){
     //     if(list[i].url === event.target.id){
@@ -76,7 +77,7 @@ componentDidMount(){
 
 //console.log(obj[i]);
 
-this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data.plans[obj[i]]});
+this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data.plans[obj[i]],pin:null});
             }
             temp.push({
                 value:obj[i],
