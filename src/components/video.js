@@ -475,10 +475,34 @@ track.stop();
       }
     });
   }
-  togglenav()
+  togglenav(e)
   {
+    var a = document.querySelectorAll('.nav-link.active');
+    [].forEach.call(a, function(el) {
+      el.classList.remove("active");
+      el.classList.remove("show");
+    });
+
+    var a = document.querySelectorAll('.tab-pane.active');
+    [].forEach.call(a, function(el) {
+      el.classList.remove("active");
+      el.classList.remove("show");
+    });
+
+    if(e.target.getAttribute('datasrc')==="user_icon"){
+      document.getElementById('members_tab').classList.add('active');
+      document.getElementById('members_tab').classList.add('show');
+      document.getElementById('members').classList.add('active');
+      document.getElementById('members').classList.add('show');
+    }else if(e.target.getAttribute('datasrc')==="chat_icon"){
+      document.getElementById('chat_tab').classList.add('active');
+      document.getElementById('chat_tab').classList.add('show');
+      document.getElementById('chat').classList.add('active');
+      document.getElementById('chat').classList.add('show');
+    }
     //console.log(this.Sidenav.current.style.width);
-    
+    console.log();
+
     if(this.Sidenav.current.style.width==="320px"){
       this.Sidenav.current.style.width="0px";
           //console.log(this.bottom.current.offsetWidth);
@@ -649,28 +673,50 @@ this.state.socket.emit('audioctrl', data);
 
 
 
+  <div className="sidedrawer_icon"> 
+    <button datasrc="user_icon" onClick={this.togglenav} className="menu_option" style={{background: '#fff',display:'flex'}}>
+      <svg style={{transform:'translateY(8px)'}} datasrc="user_icon" xmlns="http://www.w3.org/2000/svg" height={24}  width={24} viewBox="0 0 24 24">
+              <g datasrc="user_icon" data-name="Layer 2">
+                  <g datasrc="user_icon" fill="#3366ff" data-name="people">
+                      <rect datasrc="user_icon" width="24" height="24" opacity="0"/>
+                        <path datasrc="user_icon" d="M9 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0-6a2 2 0 1 1-2 2 2 2 0 0 1 2-2z"/>
+                        <path datasrc="user_icon" d="M17 13a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm0-4a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/>
+                        <path datasrc="user_icon" d="M17 14a5 5 0 0 0-3.06 1.05A7 7 0 0 0 2 20a1 1 0 0 0 2 0 5 5 0 0 1 10 0 1 1 0 0 0 2 0 6.9 6.9 0 0 0-.86-3.35A3 3 0 0 1 20 19a1 1 0 0 0 2 0 5 5 0 0 0-5-5z"/>
+                  </g>
+              </g>
+        </svg>  
+        <sup className="members_count">3</sup>             
+     </button>
+    <span className="sidedrawer_icon_separate"></span>
+    <button datasrc="chat_icon" onClick={this.togglenav} className="menu_option" style={{background: '#fff',display:'flex'}}>
+     <svg style={{transform:'translateY(8px) translateX(-1px)'}} datasrc="chat_icon" xmlns="http://www.w3.org/2000/svg" height={24}  width={24} viewBox="0 0 24 24">
+      <g datasrc="chat_icon" data-name="Layer 2">
+        <g datasrc="chat_icon" fill="#3366ff" dataName="message-square">
+          <rect datasrc="chat_icon" width="24" height="24" opacity="0"/>
+          <circle datasrc="chat_icon" cx="12" cy="11" r="1"/>
+          <circle datasrc="chat_icon" cx="16" cy="11" r="1"/>
+          <circle datasrc="chat_icon" cx="8" cy="11" r="1"/>
+          <path datasrc="chat_icon" d="M19 3H5a3 3 0 0 0-3 3v15a1 1 0 0 0 .51.87A1 1 0 0 0 3 22a1 1 0 0 0 .51-.14L8 19.14a1 1 0 0 1 .55-.14H19a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3zm1 13a1 1 0 0 1-1 1H8.55a3 3 0 0 0-1.55.43l-3 1.8V6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1z"/>
+        </g>
+        </g>
+    </svg>     
+    <sup className="chat_count">3</sup>                     
+  </button>
 
-          <button onClick={this.togglenav} className="menu_option" style={{background: '#fff', float: 'right', position: 'relative', marginRight: '16px', top: '10px'}}>
-  <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
-    <defs>
-      <path id="prefix__dot" d="M12 17c1.104 0 2 .896 2 2s-.896 2-2 2-2-.896-2-2 .896-2 2-2zm0-7c1.104 0 2 .896 2 2s-.896 2-2 2-2-.896-2-2 .896-2 2-2zm0-7c1.104 0 2 .896 2 2s-.896 2-2 2-2-.896-2-2 .896-2 2-2z" />
-    </defs>
-    <g fill="none" fillRule="evenodd">
-      <use fill="#222B45" xlinkHref="#prefix__dot" />
-    </g>
-  </svg>               
-</button>
+  </div>
+
+  
 <div id="mySidenav" ref={this.Sidenav} className="sidenav" >
-  <a onClick={this.togglenav} className="closebtn" onclick="closeNav()">×</a>
+  <a datasrc="close_icon" onClick={this.togglenav} className="closebtn">×</a>
   <div style={{height: '100%'}}>
     <div className="nav-tabs-navigation">
       <div className="nav-tabs-wrapper">
         <ul style={{padding: 0}} className="nav nav-tabs" data-tabs="tabs">
           <li style={{marginLeft: 0}} className="nav-item">
-            <a className="nav-link active show" href="#members" data-toggle="tab">Members</a>
+            <a id="members_tab" className="nav-link" href="#members" data-toggle="tab">Members</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#chat" data-toggle="tab">CHAT</a>
+            <a id="chat_tab" className="nav-link" href="#chat" data-toggle="tab">CHAT</a>
           </li>
         </ul>
       </div>

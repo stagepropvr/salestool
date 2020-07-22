@@ -20604,6 +20604,37 @@ select{
   background-color: #000;
   transition: all 0.5s ease-in-out;
 }
+
+.sidedrawer_icon{
+    position: relative;
+    float: right;
+    margin-right: 16px;
+    background: #fff;
+    top: 10px;
+    border-radius: 4px;
+    display: flex;
+}
+.sidedrawer_icon_separate{
+  border: 1px solid #3366ff;
+    margin-left: 0px;
+    font-size: 22px;
+    height: 30px;
+    transform: translateY(6px);
+}
+
+.members_count{
+  transform: translateY(16px) translateX(-2px);
+    color: #3366ff;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.chat_count{
+  transform: translateY(14px);
+    color: #3366ff;
+    font-weight: bold;
+    font-size: 15px;
+}
 /* Scene.html End  */
 
 /* End Session */
