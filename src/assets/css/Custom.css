@@ -66,14 +66,33 @@ background:#fff;
     flex: auto;
     left: -7px;
     margin: 8px 10px 8px 15px;
+    text-transform: capitalize;
     }
+@media only screen and (min-width:0px) and (max-width:650px){
+    .relative-localvideo{
+        bottom: 24vh !important;
+    }
+}
+
+@media only screen and (min-width:651px) and (max-width:1100px){
+    .relative-localvideo{
+        bottom: 15vh !important;
+    }
+}
 
 .relative-localvideo{
     background: rgb(0, 0, 0);
     position: fixed;
     right: 1.5vh;
-    bottom: 18vh;
+    bottom: 10vh;
 }
+.relative-localvideo .videotools{
+    top: 80px;
+}
+.relative-localvideo video{
+    height: 100px !important;
+}
+
 .localvideo-list{
     background: rgb(0, 0, 0);
 }

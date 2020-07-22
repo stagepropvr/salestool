@@ -22,7 +22,7 @@ class SceneControls extends React.Component {
       share:false,
       document:false,
 
-      menu_bar:false,
+      menu_bar:true,
       project:false,
       floorplan:false,
       data:this.props.data,
@@ -40,10 +40,16 @@ class SceneControls extends React.Component {
   componentDidMount(){   
 
     window.scrollTo(0, 0);
+    document.getElementById('menu_bar').click();
+    this.handleOutsideClick = this.handleOutsideClick.bind(this);
+    document.addEventListener('click', this.handleOutsideClick, false);
     this.menu.addEventListener("click", this.menu_bar_open);
+    //this.menu_bar_open();
+   
+    
     //console.log(this.props.pid);
 
-    this.handleOutsideClick = this.handleOutsideClick.bind(this);
+   
     this.props.socket.on("floorplan",(data)=>{
       this.setState({
         floorplandata:"false"
@@ -77,6 +83,7 @@ class SceneControls extends React.Component {
 
 
     // ignore clicks on the component itself
+
     if(this.state.menu_bar && e.target.id!='menu_bar_up_icon'){
       this.setState({
         menu_bar:false
@@ -194,7 +201,7 @@ return (
 
         <div style={{height: '72px', flexWrap: 'nowrap'}} className="row">
           <div className="content_padding dropup">
-            <button ref={elem => this.menu = elem}  id="menu_bar" type="button" className="menu_option dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button ref={elem => this.menu = elem}  id="menu_bar" type="button" className="menu_option dropdown-toggle menu_option_click" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
               <span id="menu_bar_up" style={{display:this.state.menu_bar==false?'block':'none'}}>
                 <svg id="menu_bar_up_icon" style={{transform: 'translateY(2px)'}} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
@@ -218,7 +225,7 @@ return (
             </button>
             <div className="menudrop dropdown-menu" x-placement="top-start" style={{position: 'absolute', top: '8px', left: '15px', willChange: 'top, left'}}>
 
-              <a onClick={()=> this.open_close('share',true)} name="share"  className="menudrop_item dropdown-item" href="#" data-tip="share">
+              <a onClick={()=> this.open_close('share',true)} name="share"  className="menudrop_item dropdown-item" href="#" data-tip="Share">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__b" d="M16 16c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1M3 10c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1m13-8c.552 0 1 .448 1 1s-.448 1-1 1-1-.448-1-1 .448-1 1-1m0 10c-.817 0-1.557.33-2.099.861L5.966 9.335C5.979 9.224 6 9.114 6 9c0-.114-.021-.224-.034-.335l7.935-3.526C14.443 5.67 15.183 6 16 6c1.654 0 3-1.346 3-3s-1.346-3-3-3-3 1.346-3 3c0 .114.021.224.034.335L5.099 6.861C4.557 6.33 3.817 6 3 6 1.346 6 0 7.346 0 9s1.346 3 3 3c.817 0 1.557-.33 2.099-.861l7.935 3.526c-.013.111-.034.221-.034.335 0 1.654 1.346 3 3 3s3-1.346 3-3-1.346-3-3-3" />
@@ -230,7 +237,7 @@ return (
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
              {this.props.host?<>
-              <a onClick={()=> this.open_close('project',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="switch project">
+              <a onClick={()=> this.open_close('project',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Switch project">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__c" d="M4.4 9.2c.443-.33 1.069-.242 1.4.2.331.442.242 1.07-.2 1.4L4 12h13c.552 0 1 .447 1 1 0 .553-.448 1-1 1H3.918l1.558 1.21c.436.34.515.968.176 1.403-.197.254-.492.387-.79.387-.215 0-.431-.068-.613-.21l-3.862-3c-.247-.19-.389-.486-.387-.799.002-.31.15-.604.4-.79zM12.348.387c.339-.437.968-.516 1.403-.177l3.862 3c.247.191.389.486.387.8-.002.31-.15.603-.4.79l-4 3c-.18.135-.391.2-.599.2-.304 0-.605-.138-.801-.4-.331-.442-.242-1.069.2-1.4L14 5H1c-.552 0-1-.447-1-1 0-.553.448-1 1-1h13.082l-1.558-1.21c-.436-.339-.515-.968-.176-1.403z" />
@@ -242,7 +249,7 @@ return (
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
               </>:<></>}{this.props.host?<>
-              <a onClick={()=> this.open_close('document',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="brochure">
+              <a onClick={()=> this.open_close('document',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Brochure">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__d" d="M11 14c.553 0 1 .448 1 1s-.447 1-1 1H5c-.552 0-1-.448-1-1s.448-1 1-1zm-3-4c.552 0 1 .448 1 1s-.448 1-1 1H5c-.552 0-1-.448-1-1s.448-1 1-1zm5.444 8H2.555C2.25 18 2 17.776 2 17.5v-15c0-.276.25-.5.555-.5H8v3.15C8 6.722 9.217 8 10.714 8H14v9.5c0 .276-.249.5-.556.5zM10 2.978L12.742 6h-2.028C10.32 6 10 5.619 10 5.15V2.978zm5.74 3.35l-5.444-6C10.106.119 9.838 0 9.556 0h-7C1.145 0 0 1.122 0 2.5v15C0 18.878 1.146 20 2.555 20h10.89C14.852 20 16 18.878 16 17.5V7c0-.249-.093-.488-.26-.672z" />
