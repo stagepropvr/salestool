@@ -98,6 +98,13 @@ this.audioallctrl=this.audioallctrl.bind(this);
                 init:false,
                 name:"host"
               });
+              if(document.getElementById(x+"_thumb")){
+                var a = document.querySelectorAll('.item_active');
+                [].forEach.call(a, function(el) {
+                          el.classList.remove("item_active");
+                });
+                document.getElementById(x+"_thumb").classList.add('item_active');
+              }
             break;
             }
 
@@ -499,6 +506,11 @@ track.stop();
       document.getElementById('chat_tab').classList.add('show');
       document.getElementById('chat').classList.add('active');
       document.getElementById('chat').classList.add('show');
+    }else if(e.target.getAttribute('datasrc')==="close_icon"){
+      document.getElementById('members_tab').classList.add('active');
+      document.getElementById('members_tab').classList.add('show');
+      document.getElementById('members').classList.add('active');
+      document.getElementById('members').classList.add('show');
     }
     //console.log(this.Sidenav.current.style.width);
     console.log();

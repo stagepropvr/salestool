@@ -20635,6 +20635,33 @@ select{
     font-weight: bold;
     font-size: 15px;
 }
+
+.relative-localvideo .video_hide{
+  position: fixed;
+    right: 1.3vh;
+    bottom: 15vh !important;
+    height: 113px;
+    width: 180px;
+    background: #000;
+    z-index: 1;
+}
+
+.video_hide{
+  position: absolute;
+  width: 260px;
+  height: 145px;
+  background: #000;
+  z-index: 1;
+}
+
+.video_hide_svg{
+  position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+}
 /* Scene.html End  */
 
 /* End Session */
