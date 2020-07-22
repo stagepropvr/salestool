@@ -32,15 +32,24 @@ handleChange = selectedOption => {
 
 
   changesky(event){
-      var list = Object.values(this.props.data.images);
-      var key = Object.keys(this.props.data.images);
+    //   var list = Object.values(this.props.data.images);
+    //   var key = Object.keys(this.props.data.images);
       
-      for(var i =0; i<key.length; i++){
-        if(list[i].url === event.target.id){
-            this.props.changeImage(key[i]);
-            document.getElementById(event.target.id).classList.add('bounce');
-        }
-      }
+    var a = document.querySelectorAll('.bounce');
+    [].forEach.call(a, function(el) {
+              el.classList.remove("bounce");
+    });
+
+    var key = event.target.id.split("_pins");
+    console.log(event.target);
+    this.props.changeImage(key[0]);
+    document.getElementById(event.target.id).classList.add('bounce');
+    //   for(var i =0; i<key.length; i++){
+    //     if(list[i].url === event.target.id){
+            
+           
+    //     }
+    //   }
   }
 
 componentDidMount(){
@@ -76,12 +85,20 @@ this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data
 
             var pins=[];
             var j;
+            var k;
             for(j in list[i]['pins']){
-                pins.push({
-                    x:list[i]['pins'][j].posx,
-                    y:list[i]['pins'][j].posy,
-                    dest:list[i]['pins'][j].dest
-                })
+                for(k in this.props.data.images){
+                    if(this.props.data.images[k].url==list[i]['pins'][j].dest){
+                        console.log(k);
+                        pins.push({
+                            x:list[i]['pins'][j].posx,
+                            y:list[i]['pins'][j].posy,
+                            dest:list[i]['pins'][j].dest,
+                            id:k+"_pins"+j
+                        })
+                    }
+                }
+               
             }
 
             temp_floor.push({
@@ -166,7 +183,7 @@ this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data
                         </div>
                         {value.pins.map((sub)=>{
                             return(
-                                <div onClick={this.changesky} id={sub.dest}  style={{top:(sub.y+8.5)+'%',left:(sub.x)+'%'}} className="box"> 
+                                <div onClick={this.changesky} id={sub.id}  style={{top:(sub.y+8.5)+'%',left:(sub.x)+'%'}} className="box"> 
                             </div>
                             )
                             

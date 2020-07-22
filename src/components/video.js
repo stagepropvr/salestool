@@ -478,14 +478,14 @@ track.stop();
   {
     //console.log(this.Sidenav.current.style.width);
     
-    if(this.Sidenav.current.style.width==="300px"){
+    if(this.Sidenav.current.style.width==="320px"){
       this.Sidenav.current.style.width="0px";
           //console.log(this.bottom.current.offsetWidth);
           this.bottom.current.style.width="100%";
           this.localvideo.current.classList.add('relative-localvideo');
     }
     else{
-      this.Sidenav.current.style.width="300px";
+      this.Sidenav.current.style.width="320px";
       //console.log(this.bottom.current.offsetWidth);
       this.localvideo.current.classList.remove('relative-localvideo');
       this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
@@ -647,7 +647,7 @@ fileupload = (event)=>{
           <input ref={this.audioctrl} onChange={this.audioallctrl} type="checkbox"/>
           <label className="mute_all">Mute all</label>
           </div>:<></>}
-      <ul style={{padding:'0px',height:'90%',overflow: "auto", listStyle:"none",width:'85%',paddingLeft:'8px'}}>
+      <ul style={{padding:'0px',height:'90%',overflow: "auto", listStyle:"none",width:'85%',paddingLeft:'12px'}}>
       <li>
                   <div ref={this.localvideo} style={{"background":"#000"}} className="relative-localvideo">
                      <div className="videotools">
