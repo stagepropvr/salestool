@@ -14,7 +14,7 @@ class Joinroom extends React.Component {
         number:'',
         cname:'',
         email:'',
-        startTime: new Date().toLocaleString(),
+        startTime: new Date().getTime(),
         endTime: "",
         exception:'',
         info_details:false,

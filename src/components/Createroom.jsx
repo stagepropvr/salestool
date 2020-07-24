@@ -121,7 +121,7 @@ room(){
   analytics:{
     host:{
       name:Fire.auth().currentUser.email,
-      startTime:new Date().toLocaleString(),
+      startTime:new Date().getTime(),
       endTime:"",
       status:"Live"
     }

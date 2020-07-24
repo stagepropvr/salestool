@@ -17,20 +17,18 @@ class CloseModal extends React.Component {
 }
   closeSocket = () => {
     //this.setState({redirect:true})   
-
+    this.props.destruct()
     this.props.socket.close(); 
+
     if(this.props.host)
-    {
-        
+    {    
        //Analytics
         Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host")
         .update({
-              endTime:new Date().toLocaleString(),
+              endTime:new Date().getTime(),
               status:"End"
             })
         //
-
-
       this.props.socket.emit('deleteRoom',{room:this.props.room});
       window.location="/projects";
     }
@@ -39,7 +37,7 @@ class CloseModal extends React.Component {
       //Analytics
       let uid = localStorage.getItem("uid");
       let key = localStorage.getItem("guestkey");
-      let end = new Date().toLocaleString();
+      let end = new Date().getTime();
 
       if(uid && key && end)
       {
@@ -50,7 +48,6 @@ class CloseModal extends React.Component {
       }
       window.location="/feedback";
     }
-    
   }
   
 componentDidMount(){
@@ -108,7 +105,7 @@ componentDidMount(){
             <div style={{display: "block"}} className="modal-footer">
                 <center style={{display: "flex",justifyContent: "center"}}>
                     <button onClick={() => this.props.open_close('close',false)} type="button" className="btn cancel">Cancel</button>
-                    <button onClick={this.closeSocket}style={{marginLeft: "20px"}} type="button" className="btn proceed">Proceed</button>
+                    <button onClick={() => {this.closeSocket()}}style={{marginLeft: "20px"}} type="button" className="btn proceed">Proceed</button>
                 </center>
                
             </div>
