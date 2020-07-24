@@ -41,11 +41,13 @@ class CloseModal extends React.Component {
       let key = localStorage.getItem("guestkey");
       let end = new Date().toLocaleString();
 
-      var ref =  Fire.database().ref('users/'+uid+'/Projects/'+this.props.project+'/rooms/'+this.props.room+'/analytics/'+key).update({
-          endTime:end,
-      });
-      //
-
+      if(uid && key && end)
+      {
+        var ref =  Fire.database().ref('users/'+uid+'/Projects/'+this.props.project+'/rooms/'+this.props.room+'/analytics/'+key).update({
+            endTime:end,
+        });
+        //
+      }
       window.location="/feedback";
     }
     

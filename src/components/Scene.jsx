@@ -44,6 +44,7 @@ imageloaded(){
 
     if(!this.props.host)
     {  
+      
       Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageid)    
       .set({duration:0})
     }
