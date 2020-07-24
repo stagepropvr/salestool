@@ -14,6 +14,8 @@ class Joinroom extends React.Component {
         number:'',
         cname:'',
         email:'',
+        startTime: new Date().toLocaleString(),
+        endTime: "",
         exception:'',
         info_details:false,
         bed:'',
@@ -61,23 +63,31 @@ componentDidMount(){
 
  handlejoin(event){
     event.preventDefault();
-
+    
     if(this.state.name!='' && this.state.email!='' && this.state.job_title!='' && this.state.cname!='' && this.state.number!=''){
         var alpha = /^[a-zA-Z-,]+(\s{0,1}[a-zA-Z-, ])*$/;
         if(this.state.name.match(alpha)){
             var email=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             if(this.state.email.match(email)){
                 var phoneno = /^\d{10}$/;
+
                 if(this.state.number.match(phoneno)){
                     document.getElementById('submit').style.display='none';
                     document.getElementById('loader').style.display='inline-block';
-                   var ref =  Fire.database().ref('users/'+this.props.match.params.uid+'/Projects/'+this.props.match.params.pid+'/rooms/'+this.props.match.params.rid+'/analystics').push({
+                   var ref =  Fire.database().ref('users/'+this.props.match.params.uid+'/Projects/'+this.props.match.params.pid+'/rooms/'+this.props.match.params.rid+'/analytics').push({
                      name:this.state.name,
                      number:this.state.number,
                      job:this.state.job_title,
                      company:this.state.cname,
-                     email:this.state.email   
+                     email:this.state.email,   
+                     startTime:this.state.startTime,
+                     endTime:this.state.endTime,
+                     feedback:{}
                     });
+                    localStorage.setItem("uid",this.props.match.params.uid);
+                    localStorage.setItem("pid",this.props.match.params.pid);
+                    localStorage.setItem("rid",this.props.match.params.rid);
+                    
                     localStorage.setItem("guestkey",ref.key);
                     localStorage.setItem("name",this.state.name);
                     localStorage.setItem(this.props.match.params.rid,false);

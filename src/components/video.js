@@ -50,8 +50,9 @@ class Video extends React.Component {
       name:localStorage.getItem("name"),
       hostaudioctrl:false,
       Switchstatus:false,
-      messagescount:0
-    };
+      messagescount:0,
+        };
+    
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
     this.togglenav=this.togglenav.bind(this); 
@@ -71,6 +72,16 @@ this.audioallctrl=this.audioallctrl.bind(this);
 
   switch = () => {this.setState({Switchstatus:true})}
 
+  getImageName = (id) => {
+      for (var x in this.state.images)
+      {
+        if(id === x)
+        {
+          return(this.state.images[x].name)
+        }
+      }
+  }
+
   componentDidMount() {
 
     this.setState({
@@ -83,15 +94,21 @@ this.audioallctrl=this.audioallctrl.bind(this);
        
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
           this.state.data = node.val();
+          console.log("pepe:::",this.state.data)
        
             for (var x in node.val().images){
               console.log(this.state.socket.id);
               Firebase.database().ref("roomsession/"+this.props.roomId).update({
-                currentimage:{currentimage:node.val().images[x].url,
-                imageid:x}
+                currentimage:{
+                    currentimage:node.val().images[x].url,
+                    currentimageName:node.val().images[x].name,
+                    imageid:x,
+                  }
               })
+
               this.setState({
                 current_image:x,
+                current_imageName:node.val().images[x].name,
                 images: node.val().images,
                 data:node.val(),
                 apiload:false,
@@ -129,6 +146,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
           this.setState({
             clientimage:snap.val().currentimage,
             clientimageid:snap.val().imageid,
+            clientimageName:snap.val().currentimageName,
             apiload:false,
             init:false,
            
@@ -307,8 +325,9 @@ if(!this.state.host){
     });
 }
 
-
 });
+  // this.analytics();
+
   }
 
   getUserMedia(cb) {
@@ -439,10 +458,10 @@ track.stop();
       console.log('11')
     }
 
-
   changeImage = (str) => {
     Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage").set({
       currentimage:this.state.images[str].url,
+      currentimageName:this.state.images[str].name,
       imageid:str
     })
     this.setState({ current_image: str })
@@ -481,6 +500,7 @@ track.stop();
           });
           Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage").set({
             currentimage:node.val().images[x].url,
+            currentimageName:node.val().images[x].name,
             imageid:x
           })
         break;
@@ -622,7 +642,7 @@ console.log(data);
 this.state.socket.emit('audioctrl', data);
 }
   render() {
-
+    // console.log("Pew",this.imageData)
     if(this.state.closeRoom)
     {
       this.state.socket.close();
@@ -632,6 +652,8 @@ this.state.socket.emit('audioctrl', data);
     return (<>
 
     {!this.state.init?<Scene
+            room={this.props.roomId}
+            project={this.props.pid}
             data={this.state.images}
             image={this.state.current_image}
             change={this.change}
@@ -639,6 +661,8 @@ this.state.socket.emit('audioctrl', data);
             loader={this.loader}
             clientimage={this.state.clientimage}
             clientimageid={this.state.clientimageid}
+            clientimageName={this.state.clientimageName}
+            getImageName={this.getImageName}
           />:<></>}
             {/* <div style={{position: "absolute",bottom: "80px",right: "16px"}}>
     <span className="host_video_name">You</span>

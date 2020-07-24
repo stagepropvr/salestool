@@ -1,6 +1,54 @@
 import React from "react";
+import Fire from "../config/Firebase.jsx";
 
 export default class EndSession extends React.Component {
+
+    constructor()
+    {
+        super();
+        this.state = {
+            stars: 0,
+            qn2: "Need to explore further",
+            cmnt:"",
+        }
+        this.handlechange=this.handlechange.bind(this);
+
+    }
+    
+    handlechange(event){
+        this.setState({cmnt:event.target.value})
+    }
+
+    submit = (event) => {
+        event.preventDefault();
+
+        let uid = localStorage.getItem("uid");
+        let pid = localStorage.getItem("pid");
+        let rid = localStorage.getItem("rid");
+        let key = localStorage.getItem("guestkey");
+       
+        if(uid && pid && rid && key)
+        {
+            var ref =  Fire.database().ref('users/'+uid+'/Projects/'+pid+'/rooms/'+rid+'/analytics/'+key)
+            .update(
+                {feedback:{
+                    Rating:this.state.stars,
+                    Expirience:this.state.qn2,
+                    Comment:this.state.cmnt,
+                }
+                });
+        }
+        localStorage.removeItem('uid');
+        localStorage.removeItem('pid');
+        localStorage.removeItem('rid');
+        localStorage.removeItem('guestkey');
+
+
+    }
+
+    qn2 = (str) => {
+        console.log(str)
+    }
     render(){
         return(
             
@@ -93,7 +141,7 @@ export default class EndSession extends React.Component {
                                                 1. How would you rate the experience?
                                             </label>
                                             <div class="rating">
-                                                <input id="star1" name="star" type="radio" value="1" class="radio-btn hide" />
+                                                <input id="star1" name="star" onClick={(e)=>{this.setState({stars:e.target.value})}} type="radio" value="5" class="radio-btn hide" />
                                                 <label class="star_hover" for="star1" >
                                                     <svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24">
                                                         <defs>
@@ -104,7 +152,7 @@ export default class EndSession extends React.Component {
                                                         </g>
                                                     </svg>
                                                 </label>
-                                                <input id="star2" name="star" type="radio" value="2" class="radio-btn hide" />
+                                                <input id="star2" name="star" onClick={(e)=>{this.setState({stars:e.target.value})}} type="radio" value="4" class="radio-btn hide" />
                                                 <label class="star_hover" for="star2" >
                                                     <svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24">
                                                         <defs>
@@ -116,7 +164,7 @@ export default class EndSession extends React.Component {
                                                     </svg>
                                                 </label>
                                                 
-                                                <input id="star3" name="star" type="radio" value="3" class="radio-btn hide" />
+                                                <input id="star3" name="star" onClick={(e)=>{this.setState({stars:e.target.value})}} type="radio" value="3" class="radio-btn hide" />
                                                 <label class="star_hover" for="star3" >
                                                     <svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24">
                                                         <defs>
@@ -127,7 +175,7 @@ export default class EndSession extends React.Component {
                                                         </g>
                                                     </svg>
                                                 </label>
-                                                <input id="star4" name="star" type="radio" value="4" class="radio-btn hide" />
+                                                <input id="star4" name="star" onClick={(e)=>{this.setState({stars:e.target.value})}} type="radio" value="2" class="radio-btn hide" />
                                                 <label class="star_hover" for="star4" >
                                                     <svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24">
                                                         <defs>
@@ -138,7 +186,7 @@ export default class EndSession extends React.Component {
                                                         </g>
                                                     </svg>
                                                 </label>
-                                                <input id="star5" name="star" type="radio" value="5" class="radio-btn hide" />
+                                                <input id="star5" name="star" onClick={(e)=>{this.setState({stars:e.target.value})}} type="radio" value="1" class="radio-btn hide" />
                                                 <label class="star_hover" for="star5" >
                                                     <svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24">
                                                         <defs>
@@ -148,7 +196,6 @@ export default class EndSession extends React.Component {
                                                             <use for="star5" class="prefix__star1" fill="#222B45" href="#prefix__star"/>
                                                         </g>
                                                     </svg>
-                                                    
                                                 </label>
                                                 <div class="clear"></div>
                                             </div>
@@ -161,14 +208,14 @@ export default class EndSession extends React.Component {
                                         <div style={{marginTop:'-10px !important'}} class="form-check form-check-radio">
     
                                             <label class="radio_label form-check-label">
-                                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" />
+                                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked/>
                                                 Need to explore further
                                                 <span class="circle">
                                                     <span class="check"></span>
                                                 </span>
                                             </label>
-                                            <label class="radio_label form-check-label">
-                                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" checked/>
+                                            <label class="radio_label form-check-label" >
+                                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" />
                                                 I am convinced, call me for next steps
                                                 <span class="circle">
                                                     <span class="check"></span>
@@ -178,12 +225,12 @@ export default class EndSession extends React.Component {
     
                                         <div class="form-group">
                                             <label class="input_Label_endsession">3. Additonal Comments (if any)</label>
-                                            <textarea  class="textbox_endsession form-control" placeholder="Enter your comments"></textarea>
+                                            <textarea  onChange={this.handlechange} class="textbox_endsession form-control" placeholder="Enter your comments"></textarea>
                                         </div>
                                         
                                         <div  style={{paddingLeft: '10px', paddingTop: '20px'}}>
                                             <button type="submit" class="btn feedback_cancel">Cancel</button>
-                                            <button type="submit" class="btn feedback">Proceed</button>
+                                            <button type="submit" onClick={(event) => {this.submit(event)}} class="btn feedback">Proceed</button>
                                         </div>
                                 </div>
                             </form>
