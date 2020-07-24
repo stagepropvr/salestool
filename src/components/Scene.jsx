@@ -37,7 +37,7 @@ imageloaded(){
     if(this.props.host)
     {
       // console.log('  2::: Image Loaded',this.props.image)
-      let ref = Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.image)
+      let ref = Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(this.props.image))
       .set({
           duration:0}) 
     }
@@ -45,7 +45,7 @@ imageloaded(){
     if(!this.props.host)
     {  
       
-      Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageid)    
+      Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageName)    
       .set({duration:0})
     }
   }
@@ -55,6 +55,7 @@ imageloaded(){
   
   componentDidUpdate(prevProps, prevState) {
 
+    if(this.props.loader){
     if(this.props.host)
     {      
       // console.log("Called");
@@ -67,32 +68,32 @@ imageloaded(){
             this.start = new Date;
         
           //entering the room
-          Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.image)
+          Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(this.props.image))
           .once('value').then( (snapshot) => {
             if(!snapshot.val())
             {
-              Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.image)
+              Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(this.props.image))
               .update({duration:0})
             }
           });  
 
           //leving the room
-          Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+prevProps.image)
+          Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(prevProps.image))
           .once('value').then( (snapshot) => {
             if(snapshot.val())
             {
               if(snapshot.val().duration)
               {
-                Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+prevProps.image)
+                Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(prevProps.image))
                 .update({duration:snapshot.val().duration+diffrence})
               }
               else{
-                Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+prevProps.image)
+                Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(prevProps.image))
                 .update({duration:diffrence})
               }
             }
             else{
-              Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+prevProps.image)
+              Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(prevProps.image))
               .update({duration:diffrence})
             }
           });
@@ -111,43 +112,43 @@ imageloaded(){
             this.start = new Date;
             
           //entering the room  
-          Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageid)
+          Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageName)
           .once('value').then( (snapshot) => {
             if(!snapshot.val())
             {
-              Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageid)
+              Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageName)
               .update({duration:0})
             }
           });  
 
           //leaving the room
-          Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageid)
+          Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageName)
           .once('value').then( (snapshot) => {
             // console.log("snap::",snapshot.val())
             if(snapshot.val())
             {
               if(snapshot.val().duration)
               {
-                Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageid)
+                Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageName)
                 .update({duration:snapshot.val().duration+diffrence})
               }
               else{
-                Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageid)
+                Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageName)
                 .update({duration:diffrence})
               }
             }
             else{
-              Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageid)
+              Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageName)
               .update({duration:diffrence})
             }
           });
         }
         }
       }
-      
+    }
   }
 
-   loadAssets = () => {
+  loadAssets = () => {
     //  console.log("Not Host : Load Assets Called", this.props.clientimageid,this.props.clientimage)
     if(!this.assets.includes(this.props.clientimageid))
     {this.setState({
@@ -168,7 +169,7 @@ imageloaded(){
 
     }
 
-    // console.log(this.clientAssets)
+  // console.log(this.clientAssets)
 
     
     }
@@ -176,7 +177,7 @@ imageloaded(){
   
   render()
     {
-      // console.log('Host: ',this.props.host);
+      // console.log('Pew: ',this.props.clientimageName);
     if(this.props.host){
       
     return (
