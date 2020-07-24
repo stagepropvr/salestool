@@ -12,6 +12,7 @@ import SceneControls from "./SceneControls.js";
 import { useEffect } from 'react';
 import Switchprojectloader from './Switchprojectloader';
 
+
 let userId = null
 
 class Video extends React.Component {
@@ -52,7 +53,7 @@ class Video extends React.Component {
       Switchstatus:false,
       messagescount:0,
         };
-    
+    this.duration = 0;
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
     this.togglenav=this.togglenav.bind(this); 
@@ -66,7 +67,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
     this.inputFileRef = React.createRef();
     this.onBtnClick = this.handleBtnClick.bind(this);
     this.muteclient=this.muteclient.bind(this);
-
+        this.start = 0;
   }
   videoCall = new VideoCall();
 
@@ -83,7 +84,9 @@ this.audioallctrl=this.audioallctrl.bind(this);
   }
 
   componentDidMount() {
-
+ 
+    this.start = new Date;
+    
     this.setState({
       pid:this.props.pid
     })
@@ -324,11 +327,102 @@ if(!this.state.host){
     }
     });
 }
-
 });
-  // this.analytics();
-
   }
+
+  componentDidUpdate(prevProps, prevState) {
+  
+    if(this.state.host)
+    {
+      if(prevState.current_image){
+      if (prevState.current_image !== this.state.current_image) {          
+            let end = new Date;
+            this.diffrence = Math.floor((Math.abs(end - this.start)/1000));
+            this.start = new Date;
+
+        console.log(this.getImageName(prevState.current_image),this.diffrence)
+
+        // entering room
+        Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(this.state.current_image))
+            .once('value').then( (snapshot) => {
+              if(!snapshot.val())
+              {
+                Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(this.state.current_image))
+                .update({duration:0})
+              }
+            });  
+
+
+        //leving the room
+        console.log("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(prevState.current_image))
+        Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(prevState.current_image))
+        .once('value').then( (snapshot) => {
+          if(snapshot.val())
+          {
+            if(snapshot.val().duration)
+            {
+              Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(prevState.current_image))
+              .update({duration:snapshot.val().duration+this.diffrence})
+            }
+            else{
+              Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(prevState.current_image))
+              .update({duration:this.diffrence})
+            }
+          }
+          else{
+            Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(prevState.current_image))
+            .update({duration:this.diffrence})
+          }
+        });
+      }}
+    }
+    else{
+      if(!this.state.host)
+    {
+      if(prevState.clientimageName){
+      if (prevState.clientimageName !== this.state.clientimageName) {          
+            let end = new Date;
+            this.diffrence = Math.floor((Math.abs(end - this.start)/1000));
+            this.start = new Date;
+
+        console.log(this.getImageName(prevState.clientimageName),this.diffrence)
+
+        // entering room
+        Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+(this.state.clientimageName))
+            .once('value').then( (snapshot) => {
+              if(!snapshot.val())
+              {
+                Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+(this.state.clientimageName))
+                .update({duration:0})
+              }
+            });  
+
+
+        //leving the room
+        console.log("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(prevState.clientimageName))
+        Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+(prevState.clientimageName))
+        .once('value').then( (snapshot) => {
+          if(snapshot.val())
+          {
+            if(snapshot.val().duration)
+            {
+              Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+(prevState.clientimageName))
+              .update({duration:snapshot.val().duration+this.diffrence})
+            }
+            else{
+              Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+(prevState.clientimageName))
+              .update({duration:this.diffrence})
+            }
+          }
+          else{
+            Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+(prevState.clientimageName))
+            .update({duration:this.diffrence})
+          }
+        });
+      }}
+    }
+    }}
+
 
   getUserMedia(cb) {
     
@@ -641,6 +735,56 @@ document.getElementById(key+"micon").style.display="none";
 console.log(data);
 this.state.socket.emit('audioctrl', data);
 }
+
+destruct = () => {
+  
+  let end = new Date;
+  this.diffrence = Math.floor((Math.abs(end - this.start)/1000));
+  console.log(this.getImageName(this.state.current_image),this.diffrence)
+
+  if(this.state.host)
+  {
+    console.log("Destruct: users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(this.state.current_image))
+  let added = false
+  
+  Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(this.state.current_image))
+  .once('value').then( (snapshot) => {
+    if(snapshot.val())
+    {
+        console.log('Visited Place');
+        Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(this.state.current_image))
+        .update({duration:snapshot.val().duration+this.diffrence})
+        added = true;
+    }
+    else{
+      console.log('New Place')
+      Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(this.state.current_image))
+      .update({duration:this.diffrence})
+    }
+  });
+  }
+  else{
+    console.log("Destruct: users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+ this.state.clientimageName)
+  let added = false
+  
+  Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+ this.state.clientimageName)
+  .once('value').then( (snapshot) => {
+    if(snapshot.val())
+    {
+        console.log('Visited Place');
+        Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+ this.state.clientimageName)
+        .update({duration:snapshot.val().duration+this.diffrence})
+        added = true;
+    }
+    else{
+      console.log('New Place')
+      Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+ this.state.clientimageName)
+      .update({duration:this.diffrence})
+    }
+  });
+  }
+      
+}
   render() {
     // console.log("Pew",this.imageData)
     if(this.state.closeRoom)
@@ -679,6 +823,7 @@ this.state.socket.emit('audioctrl', data);
     
           <div id="bottom" className="container" ref={this.bottom} >
           <SceneControls
+              destruct={this.destruct}
               pid={this.state.pid}
               socket={this.state.socket}
               roomId={this.props.roomId}

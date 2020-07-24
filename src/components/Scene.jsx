@@ -33,84 +33,84 @@ imageloaded(){
   })
 }
 
-  componentDidMount(){
-    // if(this.props.loader && this.state.imageload)
-    {
-      if(this.props.host)
-      {
-        console.log("Host Timer")
-        this.hostTimer = setInterval(this.fn, 2000);
-      }
-      else{
-        console.log("Client Timer")
-        this.clientTimer = setInterval(this.fn2, 2000);
-      }
-    }
-  }
+  // componentDidMount(){
+  //   // if(this.props.loader && this.state.imageload)
+  //   {
+  //     if(this.props.host)
+  //     {
+  //       console.log("Host Timer")
+  //       this.hostTimer = setInterval(this.fn, 2000);
+  //     }
+  //     else{
+  //       console.log("Client Timer")
+  //       this.clientTimer = setInterval(this.fn2, 2000);
+  //     }
+  //   }
+  // }
 
-  fn = () => {
-    this.seconds+=2;
-    let ref = Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(this.props.image))
-    .update({
-        duration:this.seconds}) 
-    console.log(this.props.getImageName(this.props.image),this.seconds);
-  }
+  // fn = () => {
+  //   this.seconds+=2;
+  //   let ref = Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(this.props.image))
+  //   .update({
+  //       duration:this.seconds}) 
+  //   console.log(this.props.getImageName(this.props.image),this.seconds);
+  // }
 
   
-  fn2 = () => {
-    this.seconds+=2;
-    let ref = Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageName)
-    .update({
-        duration:this.seconds}) 
-    console.log("Client",this.props.clientimageName,this.seconds);
-  }
+  // fn2 = () => {
+  //   this.seconds+=2;
+  //   let ref = Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageName)
+  //   .update({
+  //       duration:this.seconds}) 
+  //   console.log("Client",this.props.clientimageName,this.seconds);
+  // }
 
-  componentDidUpdate(prevProps, prevState) {    
+  // componentDidUpdate(prevProps, prevState) {    
       
-    //host
-      if(this.props.host)
-      {
-       {
-              if (prevProps.image !== this.props.image) {
-                  clearInterval(this.hostTimer);
-                  //check if place is already visited
-                  Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(this.props.image))
-                  .once('value').then( (snapshot) => {
-                    if(!snapshot.val())
-                    {
-                      this.seconds = 0;
-                    }
-                    else{
-                      this.seconds = snapshot.val().duration;
-                      console.log(snapshot.val().duration);
-                    }
-                  });
-                  // this.seconds = 0;
-                  this.hostTimer = setInterval(this.fn, 2000);
-          }
-        }
-      }
-      else if(!this.props.host)
-      {
-          if (prevProps.clientimageid !== this.props.clientimageid) {
-            clearInterval(this.clientTimer);
-            //check if place is already visited
-            Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageName)
-            .once('value').then( (snapshot) => {
-              if(!snapshot.val())
-              {
-                this.seconds = 0;
-              }
-              else{
-                this.seconds = snapshot.val().duration;
-                console.log("Fetched",snapshot.val().duration);
-              }
-            });
-            this.clientTimer = setInterval(this.fn2, 2000);
-          }
-        }
+  //   //host
+  //     if(this.props.host)
+  //     {
+  //      {
+  //             if (prevProps.image !== this.props.image) {
+  //                 clearInterval(this.hostTimer);
+  //                 //check if place is already visited
+  //                 Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(this.props.image))
+  //                 .once('value').then( (snapshot) => {
+  //                   if(!snapshot.val())
+  //                   {
+  //                     this.seconds = 0;
+  //                   }
+  //                   else{
+  //                     this.seconds = snapshot.val().duration;
+  //                     console.log(snapshot.val().duration);
+  //                   }
+  //                 });
+  //                 // this.seconds = 0;
+  //                 this.hostTimer = setInterval(this.fn, 2000);
+  //         }
+  //       }
+  //     }
+  //     else if(!this.props.host)
+  //     {
+  //         if (prevProps.clientimageid !== this.props.clientimageid) {
+  //           clearInterval(this.clientTimer);
+  //           //check if place is already visited
+  //           Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageName)
+  //           .once('value').then( (snapshot) => {
+  //             if(!snapshot.val())
+  //             {
+  //               this.seconds = 0;
+  //             }
+  //             else{
+  //               this.seconds = snapshot.val().duration;
+  //               console.log("Fetched",snapshot.val().duration);
+  //             }
+  //           });
+  //           this.clientTimer = setInterval(this.fn2, 2000);
+  //         }
+  //       }
              
-  }
+  // }
     
     
 
