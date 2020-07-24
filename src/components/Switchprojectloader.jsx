@@ -7,7 +7,6 @@ import "../assets/demo/demo.css";
 class Switchprojectloader extends React.Component {
   constructor(props){
     super(props);
-    console.log("pew:::",this.props.host)
    
     this.state={
         bath:'',

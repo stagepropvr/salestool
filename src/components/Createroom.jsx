@@ -115,8 +115,17 @@ componentDidMount(){
 }
 
 room(){
- Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.match.params.pid+"/rooms").push({
-  val:"dummy"
+  // console.log("peepee:::",Fire.auth().currentUser)
+ Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.match.params.pid+"/rooms/")
+ .push({
+  analytics:{
+    host:{
+      name:Fire.auth().currentUser.email,
+      startTime:new Date().toLocaleString(),
+      endTime:"",
+      status:"Live"
+    }
+  }
 }).then((res)=>{
   localStorage.setItem(res.key,true);
   //console.log(res.key);

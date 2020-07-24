@@ -50,8 +50,8 @@ class Video extends React.Component {
       name:localStorage.getItem("name"),
       hostaudioctrl:false,
       Switchstatus:false,
-      messagescount:0
-    };
+      messagescount:0,    };
+    
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
     this.togglenav=this.togglenav.bind(this); 
@@ -87,8 +87,9 @@ this.audioallctrl=this.audioallctrl.bind(this);
             for (var x in node.val().images){
               console.log(this.state.socket.id);
               Firebase.database().ref("roomsession/"+this.props.roomId).update({
-                currentimage:{currentimage:node.val().images[x].url,
-                imageid:x}
+                currentimage:{
+                    currentimage:node.val().images[x].url,
+                  imageid:x}
               })
               this.setState({
                 current_image:x,
@@ -622,7 +623,6 @@ console.log(data);
 this.state.socket.emit('audioctrl', data);
 }
   render() {
-
     if(this.state.closeRoom)
     {
       this.state.socket.close();
@@ -632,6 +632,8 @@ this.state.socket.emit('audioctrl', data);
     return (<>
 
     {!this.state.init?<Scene
+            room={this.props.roomId}
+            project={this.props.pid}
             data={this.state.images}
             image={this.state.current_image}
             change={this.change}

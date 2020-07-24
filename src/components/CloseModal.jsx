@@ -15,16 +15,37 @@ class CloseModal extends React.Component {
     }
    // this.handlechange=this.handlechange.bind(this);
 }
-
   closeSocket = () => {
     //this.setState({redirect:true})   
+
     this.props.socket.close(); 
     if(this.props.host)
     {
+        
+       //Analytics
+        Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host")
+        .update({
+              endTime:new Date().toLocaleString(),
+              status:"End"
+            })
+        //
+
+
       this.props.socket.emit('deleteRoom',{room:this.props.room});
-window.location="/projects";
+      window.location="/projects";
     }
     else{
+
+      //Analytics
+      let uid = localStorage.getItem("uid");
+      let key = localStorage.getItem("guestkey");
+      let end = new Date().toLocaleString();
+
+      var ref =  Fire.database().ref('users/'+uid+'/Projects/'+this.props.project+'/rooms/'+this.props.room+'/analytics/'+key).update({
+          endTime:end,
+      });
+      //
+
       window.location="/feedback";
     }
     
@@ -50,7 +71,8 @@ componentDidMount(){
 
 
   render() {
-    console.log("Pew ::: Host :::",this.props.host)
+  
+    // console.log("Pew ::: Host :::",this.props.host)
     if(this.state.redirect && this.props.host){
       return <Redirect to="/projects" />
     }

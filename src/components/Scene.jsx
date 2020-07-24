@@ -2,10 +2,11 @@ import React from 'react';
 
 import 'aframe';
 import 'aframe-look-at-component';
+
 // import './AframeComp';
 
 import AssestsLoader from "./AssetsLoader";
-
+import Fire from "../config/Firebase.jsx";
 
 class Scene extends React.Component {
 
@@ -15,8 +16,10 @@ class Scene extends React.Component {
       this.state = {
         loaded:false,
         VRMode:false,
-        imageload:true
+        imageload:true,
     };
+    this.time = null;
+    this.total = 0;
     this.assets = [];
     this.clientAssets = [];
       //  console.log(this.props)
@@ -28,25 +31,120 @@ imageloaded(){
     imageload:false
   })
 }
-  //  componentDidMount(){
-  //   const AFRAME = window.AFRAME
 
-  //   AFRAME.registerComponent('rotation-reader', {
-  //     tick: function () {
+  componentDidMount(){
+    this.start = new Date();
+    if(this.props.host)
+    {
+      // console.log('  2::: Image Loaded',this.props.image)
+      let ref = Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.image)
+      .set({
+          duration:0}) 
+    }
+
+    if(!this.props.host)
+    {  
+      Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageid)    
+      .set({duration:0})
+    }
+  }
+  componentWillUnmount(){
+    console.log("Unmounted")
+  }
+  
+  componentDidUpdate(prevProps, prevState) {
+
+    if(this.props.host)
+    {      
+      // console.log("Called");
+      if(prevProps.image !== "")
+      {
+          if (prevProps.image !== this.props.image) {
+
+            let end = new Date;
+            var diffrence = Math.floor((Math.abs(end - this.start)/1000));
+            this.start = new Date;
         
-  //       var x = this.el.object3D.rotation.x;
-  //       var y = this.el.object3D.rotation.y
-  //       console.log(this.el.getAttribute('rotation').x);
-  //       console.log(this.el.getAttribute('rotation').y);
-  //      }
-  //   });
+          //entering the room
+          Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.image)
+          .once('value').then( (snapshot) => {
+            if(!snapshot.val())
+            {
+              Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.image)
+              .update({duration:0})
+            }
+          });  
 
-  //   AFRAME.registerComponent('rotation-setter', {
-  //     tick: function () {
-  //      this.el.setAttribute('rotation', {x: 0, y: 90, z: 30});
-  //      }
-  //   });
-  //  }
+          //leving the room
+          Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+prevProps.image)
+          .once('value').then( (snapshot) => {
+            if(snapshot.val())
+            {
+              if(snapshot.val().duration)
+              {
+                Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+prevProps.image)
+                .update({duration:snapshot.val().duration+diffrence})
+              }
+              else{
+                Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+prevProps.image)
+                .update({duration:diffrence})
+              }
+            }
+            else{
+              Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+prevProps.image)
+              .update({duration:diffrence})
+            }
+          });
+          }
+      }
+    }
+
+      if(!this.props.host)
+      {
+        if(prevProps.clientimageid !== "")
+        {
+          if (prevProps.clientimageid !== this.props.clientimageid) {
+                  
+            let end = new Date;
+            var diffrence = Math.floor((Math.abs(end - this.start)/1000));
+            this.start = new Date;
+            
+          //entering the room  
+          Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageid)
+          .once('value').then( (snapshot) => {
+            if(!snapshot.val())
+            {
+              Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageid)
+              .update({duration:0})
+            }
+          });  
+
+          //leaving the room
+          Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageid)
+          .once('value').then( (snapshot) => {
+            // console.log("snap::",snapshot.val())
+            if(snapshot.val())
+            {
+              if(snapshot.val().duration)
+              {
+                Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageid)
+                .update({duration:snapshot.val().duration+diffrence})
+              }
+              else{
+                Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageid)
+                .update({duration:diffrence})
+              }
+            }
+            else{
+              Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageid)
+              .update({duration:diffrence})
+            }
+          });
+        }
+        }
+      }
+      
+  }
 
    loadAssets = () => {
     //  console.log("Not Host : Load Assets Called", this.props.clientimageid,this.props.clientimage)
