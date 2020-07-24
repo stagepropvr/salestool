@@ -8,10 +8,21 @@ class Header extends React.Component {
     super(props);
     this.state={
         redirect:false,
-        email:''
+        email:'',
+        myaccount:false,
+        name:'',
+        username:'',
+        profile_pic:'',
+        file:'',
+        local_pic:''
     }
 
     this.signout = this.signout.bind(this);
+    this.handleregister = this.handleregister.bind(this);
+    this.handlechange =  this.handlechange.bind(this);
+    this.inputFileRef = React.createRef();
+    this.onBtnClick = this.handleBtnClick.bind(this);
+
   }
   
 componentDidMount(){
@@ -20,6 +31,27 @@ componentDidMount(){
     if (user) {
       var ref = Fire.database().ref("users/"+user.uid);
       ref.once('value',child=>{
+        if(child.hasChild('username')){
+          this.setState({
+            username:child.val().username
+          })
+        }else{
+          this.setState({
+            username:'John Doe'
+          })
+        }
+        if(child.hasChild('profile_pic')){
+          this.setState({
+            profile_pic:child.val().profile_pic,
+            local_pic:child.val().profile_pic
+          })
+        }
+        else{
+          this.setState({
+            profile_pic:'https://s3.amazonaws.com/creativetim_bucket/new_logo.png',
+            local_pic:'https://s3.amazonaws.com/creativetim_bucket/new_logo.png'
+          })
+        }
         this.setState({
           email:child.val().email
         })
@@ -51,16 +83,76 @@ signout(event){
   });
 }
 
+handleregister(event){
+  event.preventDefault();
+  const ref = Fire.storage().ref();
+  const file = this.state.file;
+  let reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onloadend = () => {
+    const name = file.name;
+    const metadata = {
+      contentType: file.type
+    };
+    const task = ref.child(name).put(file, metadata);
+    task.then(snapshot => snapshot.ref.getDownloadURL()).then((url) => {
+    console.log(url);
+    Fire.auth().onAuthStateChanged((user) => {
+      if (user) {
+        Fire.database().ref("users/"+user.uid).update({
+          username:this.state.name,
+          profile_pic:url
+        }).then(()=>{
+          this.setState({
+            myaccount:false,
+            username:this.state.name
+          })
+        })
+      }
+    });
+    
+   }).catch(console.error);
+
+  }
+  
 
 
+}
 
+handlechange(event){
+  const { name, value } = event.target;
+  this.setState({ [name]: value });
+}
+
+handleBtnClick() {
+  /*Collecting node-element and performing click*/
+  this.inputFileRef.current.click();
+}
+
+fileupload = (event)=>{
+  let file = event.target.files[0];
+  this.setState({
+    file:file
+  })
+  let reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onloadend = () => {
+    console.log(file.name);
+    console.log(reader.result); 
+    this.setState({
+      profile_pic:reader.result
+    })
+  };
+}
 
   render() {
 
     if(this.state.redirect){
       return <Redirect to="/login"></Redirect>
     }else{
-   return( <nav className="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
+   return( 
+   <>
+   <nav className="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
    <div className="container">
      <div  className="navbar-translate">
        <a href="/" className="navbar-brand">
@@ -101,8 +193,8 @@ signout(event){
        </li>
        <li style={{paddingLeft: "10px"}} className="dropdown nav-item">
          <a href="/" className="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
-           <img src="https://s3.amazonaws.com/creativetim_bucket/new_logo.png" alt="username" className="rounded-circle img-fluid" />
-           <span className="username">John Doe</span>
+           <img src={this.state.local_pic} alt="username" className="rounded-circle img-fluid" />
+              <span className="username">{this.state.username}</span>
            <b className="caret"></b>
          </a>
          <div className="dropdown-menu dropdown-menu-right">
@@ -115,13 +207,76 @@ signout(event){
          </div>
          </a>
            <a href="#javascript" className="header_dropdown dropdown-item">Downloads</a>
+           <a href="#javascript" onClick={()=> this.setState({
+             myaccount:true
+           })} className="header_dropdown dropdown-item">My Account</a>
            <a target="_blank" href="https://www.touchwizardtechnologies.com/#comp-jqhpwkc6" className="header_dropdown dropdown-item">Contact us</a>
            <a href="#" style={{border:'none'}} onClick={this.signout} className="header_dropdown dropdown-item">Sign out</a>
          </div>
        </li>
    </ul>
    </div>
- </nav>)
+ </nav>
+ <div className="modal" style={{display:this.state.myaccount==true?'block':'none'}} id="myaccount_modal" tabIndex="-1" role="dialog">
+    <div className="modal-dialog" role="document">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 style={{color: "#222b45"}} className="modal-title">My Account</h5>
+          <button onClick={()=> this.setState({
+            myaccount:false
+          })} type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                <defs>
+                    <path id="prefix__close" d="M7.414 6l4.293-4.293c.391-.391.391-1.023 0-1.414-.39-.391-1.023-.391-1.414 0L6 4.586 1.707.293C1.317-.098.684-.098.293.293c-.39.391-.39 1.023 0 1.414L4.586 6 .293 10.293c-.39.391-.39 1.023 0 1.414.195.195.451.293.707.293.256 0 .512-.098.707-.293L6 7.414l4.293 4.293c.195.195.451.293.707.293.256 0 .512-.098.707-.293.391-.391.391-1.023 0-1.414L7.414 6z"/>
+                </defs>
+                <g fill="none" fillRule="evenodd" transform="translate(6 6)">
+                    <use fill="#222B45" href="#prefix__close"/>
+                </g>
+            </svg></span>
+          </button>
+        </div>
+        <form onSubmit={this.handleregister}>
+        <div className="modal-body">
+          <div>
+          <div className="form-group">
+            <label className="input_Label">
+                                            Name
+            </label>
+            <input onChange={this.handlechange}  type="text" id="name" name="name" className="input_box form-control" placeholder={this.state.username} required />
+                <small id="name_error" className="form-text text-muted">
+                 <span className="input_error input_error_hide">
+                  <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            Name is <sup>*</sup> required
+                </span>
+                                        
+                </small>
+             </div>
+             <div className="form-group">
+                <label className="input_Label">
+                                    Profile Pic
+                </label>
+                <input ref={this.inputFileRef} style={{display: 'none'}} onChange={this.fileupload}  type="file" accept="image/*" />
+                <div>
+                <span style={{cursor:'pointer'}} onClick={this.onBtnClick} className="profile_edit">
+                  <i className="fa fa-pencil profile_icon"></i>
+                </span>
+                  <img src={this.state.profile_pic} class="rounded-circle img-fluid" style={{height: "80px",width: "80px"}} />                  
+                </div>
+             </div>
+          </div>
+        </div>
+        <div style={{display: "block"}} className="modal-footer">
+            <center className="modal_button_div">
+                <button onClick={()=> this.setState({myaccount:false})} type="button" className="btn cancel">Cancel</button>
+                <button style={{marginLeft: "20px"}} type="submit" className="btn proceed">Save</button>
+            </center> 
+        </div>
+        </form>
+      </div>
+    </div>
+    </div>
+ </>)
     }
 }
 }
