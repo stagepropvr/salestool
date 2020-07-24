@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Video from '../Tools/Host/video'
+import Video from '../Tools/Guest/video'
 
 
-class Salespage extends Component {
+class SalespageClient extends Component {
   render() {
     return (
      <Video pid={this.props.match.params.pid} roomId={this.props.match.params.roomid}/>
@@ -11,4 +11,4 @@ class Salespage extends Component {
   }
 }
 
-export default Salespage;
+export default SalespageClient;

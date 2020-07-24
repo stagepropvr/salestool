@@ -16,6 +16,7 @@ import Tools from './components/Tools';
 
 
 import { goToRoomInput } from './components/goToRoomInput';
+import SalespageClient from './Layouts/SalespageClient';
 class App extends Component {
 
   
@@ -42,6 +43,8 @@ class App extends Component {
 
          <Route path='/createroom/:pid' component={Createroom} />
          <Route path='/room/:pid/:roomid' component={Salespage} />
+         <Route path='/guest/room/:pid/:roomid' component={SalespageClient} />
+
          <Route  path='/feedback' component={EndSession} />
 
          </Switch>

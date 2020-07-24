@@ -115,7 +115,7 @@ componentDidMount(){
 }
 
 room(){
-  // console.log("peepee:::",Fire.auth().currentUser)
+  console.log("peepee:::",Fire.auth().currentUser)
  Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.match.params.pid+"/rooms/")
  .push({
   analytics:{

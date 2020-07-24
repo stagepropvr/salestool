@@ -1,16 +1,13 @@
 import React from 'react';
 import { Redirect } from "react-router-dom";
 import VideoCall from '../helpers/simple-peer';
-import '../styles/video.css';
+import '../../styles/video.css';
 import io from 'socket.io-client';
-import { getDisplayStream } from '../helpers/media-access';
 import Peer from 'simple-peer'
-import VideoItem from "./videoItem";
+import VideoItem from "../ToolComponents/videoItem";
 import Scene from "./Scene";
-import Firebase from "../config/Firebase";
+import Firebase from "../../config/Firebase";
 import SceneControls from "./SceneControls.js";
-import { useEffect } from 'react';
-import Switchprojectloader from './Switchprojectloader';
 
 let userId = null
 
@@ -90,49 +87,8 @@ this.audioallctrl=this.audioallctrl.bind(this);
     var promise = new Promise( (resolve, reject) => {
     Firebase.auth().onAuthStateChanged((user) => {
 
-      if (user &&  localStorage.getItem(this.props.roomId)!==undefined) {
-       
-        Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
-          this.state.data = node.val();
-          console.log("pepe:::",this.state.data)
-       
-            for (var x in node.val().images){
-              console.log(this.state.socket.id);
-              Firebase.database().ref("roomsession/"+this.props.roomId).update({
-                currentimage:{
-                    currentimage:node.val().images[x].url,
-                    currentimageName:node.val().images[x].name,
-                    imageid:x,
-                  }
-              })
-
-              this.setState({
-                current_image:x,
-                current_imageName:node.val().images[x].name,
-                images: node.val().images,
-                data:node.val(),
-                apiload:false,
-                user_id:user.uid,
-                init:false,
-                name:"host"
-              });
-              if(document.getElementById(x+"_thumb")){
-                var a = document.querySelectorAll('.item_active');
-                [].forEach.call(a, function(el) {
-                          el.classList.remove("item_active");
-                });
-                document.getElementById(x+"_thumb").classList.add('item_active');
-              }
-            break;
-            }
-
-        }).then((value)=>{
-          
-          resolve("Promise resolved successfully");
-        })
-
-      }
-      else{
+    
+      
        
         this.setState({
           host:false
@@ -153,7 +109,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
             loader:true
           });
         })
-      }
+    
       
         resolve("Promise resolved successfully");
      
@@ -189,16 +145,13 @@ this.audioallctrl=this.audioallctrl.bind(this);
 
     this.state.socket.on('init', (data) => {
       Firebase.database().ref("roomsession/"+this.props.roomId+"/members").update({
-        [this.state.socket.id]:(this.state.host?"host":this.state.name)
+        [this.state.socket.id]:this.state.name
         })
-        if(this.state.host){
-        Firebase.database().ref("roomsession/"+this.props.roomId+"/hostid").set({
-    hostid:this.state.socket.id
-        })}
+      
     console.log("socket.on init", data)
 
       userId = data.userId;
-      this.state.socket.emit('ready', ({ room: roomId, userId:userId, name:(!this.state.host?this.state.name:"host") }));
+      this.state.socket.emit('ready', ({ room: roomId, userId:userId, name:this.state.name }));
      
       Firebase.database().ref("roomsession/"+this.props.roomId+"/members").on("value",(members)=>{
           console.log(members.val());
@@ -298,7 +251,7 @@ this.state.socket.on("switchimage",(url)=>{
 //console.log(url);
 });
 
-if(!this.state.host){
+
   this.state.socket.on("audioctrl",(audioctrl)=>{
     if(audioctrl){
       if (this.state.localStream.getAudioTracks().length > 0) {
@@ -323,7 +276,7 @@ if(!this.state.host){
       })
     }
     });
-}
+
 
 });
   // this.analytics();
@@ -768,10 +721,7 @@ this.state.socket.emit('audioctrl', data);
     </div>
     <div style={{height: '100%'}} className="tab-content text-center">
       <div style={{height: '100%'}} className="tab-pane active show" id="members">
-       {this.state.host? <div className="mute_all_div">
-          <input ref={this.audioctrl} onChange={this.audioallctrl} type="checkbox"/>
-          <label className="mute_all">Mute all</label>
-          </div>:<></>}
+      
       <ul style={{padding:'0px',height:'90%',overflow: "auto", listStyle:"none",width:'85%',paddingLeft:'12px'}}>
       <li>
                   <div ref={this.localvideo} style={{"background":"#000"}} className="relative-localvideo">
@@ -796,23 +746,7 @@ this.state.socket.emit('audioctrl', data);
                   return    <li>
                   <div style={{"background":"#000"}}>
                      <div className="videotools">
-                    {this.state.host?   <button id={key} onClick={() => this.muteclient(key)} mic="false" className="menu_option video_on guest_video_mute video_mute_option">
-                        <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" id={key+"micon"}>
-                           <path fill="#222B45" fillRule="evenodd" d="M13 17.92V20h2.105c.493 0 .895.402.895.895v.21c0 .493-.402.895-.895.895h-6.21C8.402 22 8 21.598 8 21.106v-.211c0-.493.402-.895.895-.895H11v-2.08c-3.387-.488-6-3.4-6-6.92 0-.552.447-1 1-1 .553 0 1 .448 1 1 0 2.757 2.243 5 5 5s5-2.243 5-5c0-.552.447-1 1-1 .553 0 1 .448 1 1 0 3.52-2.613 6.432-6 6.92zM10 6c0-1.103.897-2 2-2s2 .897 2 2v5c0 1.103-.897 2-2 2s-2-.897-2-2V6zm2 9c2.206 0 4-1.794 4-4V6c0-2.205-1.794-4-4-4S8 3.795 8 6v5c0 2.206 1.794 4 4 4z" />
-                        </svg>
-                        <svg width={18} height={18} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id={key+"micoff"} style={{"display":"none"}}>
-                        <g data-name="Layer 2">
-                           <g data-name="mic-off">
-                              <rect width={24} height={24} opacity={0} />
-                              <path fill="#fff" d="M10 6a2 2 0 0 1 4 0v5a1 1 0 0 1 0 .16l1.6 1.59A4 4 0 0 0 16 11V6a4 4 0 0 0-7.92-.75L10 7.17z" />
-                              <path fill="#fff" d="M19 11a1 1 0 0 0-2 0 4.86 4.86 0 0 1-.69 2.48L17.78 15A7 7 0 0 0 19 11z" />
-                              <path fill="#fff" d="M12 15h.16L8 10.83V11a4 4 0 0 0 4 4z" />
-                              <path fill="#fff" d="M20.71 19.29l-16-16a1 1 0 0 0-1.42 1.42l16 16a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z" />
-                              <path fill="#fff" d="M15 20h-2v-2.08a7 7 0 0 0 1.65-.44l-1.6-1.6A4.57 4.57 0 0 1 12 16a5 5 0 0 1-5-5 1 1 0 0 0-2 0 7 7 0 0 0 6 6.92V20H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2z" />
-                           </g>
-                        </g>
-                        </svg>
-                     </button>:<></>}
+                   
                        <span className="guest_video_name video_name_option">{this.state.members[key]}</span>
                      
                   </div>
@@ -909,9 +843,9 @@ this.state.socket.emit('audioctrl', data);
 
 
 
-{this.state.loader && this.state.host?
+{/* {this.state.loader && this.state.host?
 <Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host} Switchstatus={this.state.Switchstatus}></Switchprojectloader>
-:<></>}
+:<></>} */}
 
       </>
     );
