@@ -367,7 +367,7 @@ return (
   {this.state.floorplan?
     <Floorplan  socket={this.props.socket} room={this.props.roomId} changeImage = {this.props.changeImage} data={this.state.data} open_close={this.open_close} floorplan={this.state.floorplan}></Floorplan>
     :<></>}
-    <CloseModal socket={this.props.socket} project={this.props.pid} room={this.props.roomId}  close={this.state.close} open_close={this.open_close} ></CloseModal>
+    <CloseModal destruct={this.props.destruct} socket={this.props.socket} project={this.props.pid} room={this.props.roomId}  close={this.state.close} open_close={this.open_close} ></CloseModal>
     {/* <Map pid={this.state.pid} user_id={this.props.user_id} open_close={this.open_close} map={this.state.map}></Map> */}
 
     {this.state.settings?<Settings videoinput={this.props.videoinput}
