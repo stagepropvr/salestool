@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-ro
 import Salespage from './Layouts/Salespage'
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import Dashboard from "./components/Dashboard";
 import Projects from "./components/Projects";
 import Createroom from "./components/Createroom";
 import Joinroom from "./components/Joinroom";
@@ -32,8 +31,6 @@ class App extends Component {
         {/* <Route  path='/' exa ct component={MapModal} /> */}
 
          <Route path='/signup' component={Signup} />
-
-         <Route  path='/dashboard' component={Dashboard} />
 
          <Route  path='/projects' component={Projects} />
 
