@@ -331,8 +331,8 @@ if(!this.state.host){
 });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-
+componentDidUpdate(prevProps, prevState) {
+console.log("Updated");
     if(this.state.host)
     {
       if(prevState.current_image){

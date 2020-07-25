@@ -284,34 +284,34 @@ this.state.socket.on("switchimage",(url)=>{
   }
 
   componentDidUpdate(prevProps, prevState) {		
-      if(prevState.clientimageName){	
-        if (prevState.clientimageName !== this.state.clientimageName) {  	
-          	
-          let end = new Date;	
-          let diffrence = Math.floor((Math.abs(end - this.start)/1000));	
-          this.start = new Date;	
-  	
-          //Visited Place	
-          if(this.analytics.filter(a=>a.name === prevState.clientimageName).length === 1)	
-          {	
-            var place = this.analytics.filter(a=>a.name === prevState.clientimageName);	
-            place[0].duration += diffrence	
-  	
-            Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevState.clientimageName)	
-            .update({duration:place[0].duration})	
-          }	
-  	
-          // New Place	
-          if(this.analytics.filter(a=>a.name === prevState.clientimageName).length === 0)	
-          {	
-            this.analytics.push({name:prevState.clientimageName,duration:diffrence})	
-          	
-            Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevState.clientimageName)	
-            .update({duration:diffrence})	
-          }      	
-          console.log("Changed",this.analytics)    	
-        }	
-      }	
+    if(prevState.current_image){
+      if (prevState.current_image !== this.state.current_image) {  
+        
+        let end = new Date;
+        let diffrence = Math.floor((Math.abs(end - this.start)/1000));
+        this.start = new Date;
+
+        //Visited Place
+        if(this.analytics.filter(a=>a.name === this.getImageName(prevState.current_image)).length === 1)
+        {
+          var place = this.analytics.filter(a=>a.name === this.getImageName(prevState.current_image));
+          place[0].duration += diffrence
+
+          Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(prevState.current_image))
+          .update({duration:place[0].duration})
+        }
+
+        // New Place
+        if(this.analytics.filter(a=>a.name === this.getImageName(prevState.current_image)).length === 0)
+        {
+          this.analytics.push({name:this.getImageName(prevState.current_image),duration:diffrence})
+        
+          Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(prevState.current_image))
+          .update({duration:diffrence})
+        }      
+        console.log("Changed",this.analytics)    
+      }
+    }	
   }
 
   getUserMedia(cb) {
@@ -631,21 +631,21 @@ destruct = () => {
   let end = new Date;	
   let diffrence = Math.floor((Math.abs(end - this.start)/1000));	
   
-  // New Place	
-  if(this.analytics.filter(a=>a.name === this.state.clientimageName).length === 0)	
-  {	
-    Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.state.clientimageName)	
-    .update({duration:diffrence})	
-  }  	
+  // New Place
+  if(this.analytics.filter(a=>a.name === this.getImageName(this.state.current_image)).length === 0)
+  {
+    Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(this.state.current_image))
+    .update({duration:diffrence})
+  }  
   
-  //Visited Place	
-  if(this.analytics.filter(a=>a.name === this.state.clientimageName).length === 1)	
-  {	
-    var place = this.analytics.filter(a=>a.name === this.state.clientimageName);	
-    place[0].duration += diffrence	
+  //Visited Place
+  if(this.analytics.filter(a=>a.name === this.getImageName(this.state.current_image)).length === 1)
+  {
+    var place = this.analytics.filter(a=>a.name === this.getImageName(this.state.current_image));
+    place[0].duration += diffrence
 
-    Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.state.clientimageName)	
-    .update({duration:place[0].duration})	
+    Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(this.state.current_image))
+    .update({duration:place[0].duration})
   }	
   	
 }	
