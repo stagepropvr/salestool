@@ -29,6 +29,7 @@ componentDidMount(){
 
   Fire.auth().onAuthStateChanged((user) => {
     if (user) {
+      console.log("regr");
       var ref = Fire.database().ref("users/"+user.uid);
       ref.once('value',child=>{
         if(child.hasChild('username')){
@@ -55,6 +56,10 @@ componentDidMount(){
         this.setState({
           email:child.val().email
         })
+      })
+    }else{
+      this.setState({
+        redirect:true
       })
     }
   });
@@ -176,9 +181,9 @@ fileupload = (event)=>{
      </div>
      <div className="collapse navbar-collapse" id="navbarText">
        <ul className="navbar-nav mr-auto">
-         <li id="dashboard" className="nav-item active">
+         {/* <li id="dashboard" className="nav-item active">
            <Link to={"/dashboard"} className="nav-link">Dashboard</Link>
-         </li>
+         </li> */}
          <li id="project" className="nav-item">
            <Link to={"/projects"} className="nav-link">My projects</Link>
          </li>

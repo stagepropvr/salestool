@@ -14,7 +14,7 @@ class Joinroom extends React.Component {
         number:'',
         cname:'',
         email:'',
-        startTime: new Date().getTime(),
+        start: new Date().getTime(),
         endTime: "",
         exception:'',
         info_details:false,
@@ -80,8 +80,8 @@ componentDidMount(){
                      job:this.state.job_title,
                      company:this.state.cname,
                      email:this.state.email,   
-                     startTime:this.state.startTime,
-                     endTime:this.state.endTime,
+                     start:this.state.startTime,
+                     end:this.state.endTime,
                      feedback:{}
                     });
                     localStorage.setItem("uid",this.props.match.params.uid);
