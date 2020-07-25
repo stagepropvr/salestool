@@ -49,7 +49,7 @@ class Video extends React.Component {
       Switchstatus:false,
       messagescount:0,
         };
-    
+   
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
     this.togglenav=this.togglenav.bind(this); 
@@ -92,7 +92,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
       pid:this.props.pid
     })
     var promise = new Promise( (resolve, reject) => {
-    Firebase.auth().onAuthStateChanged((user) => {
+    
 
     
       
@@ -121,7 +121,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
         resolve("Promise resolved successfully");
      
  
-    });
+    
   });
 
 

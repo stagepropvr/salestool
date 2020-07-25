@@ -80,7 +80,7 @@ componentDidMount(){
                      job:this.state.job_title,
                      company:this.state.cname,
                      email:this.state.email,   
-                     start:this.state.startTime,
+                     start:this.state.start,
                      end:this.state.endTime,
                      feedback:{}
                     });
