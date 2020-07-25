@@ -64,9 +64,6 @@ this.audioallctrl=this.audioallctrl.bind(this);
     this.onBtnClick = this.handleBtnClick.bind(this);
     this.muteclient=this.muteclient.bind(this);
 
-    this.start = 0;	
-    this.analytics = [];
-
   }
   videoCall = new VideoCall();
 
@@ -83,8 +80,6 @@ this.audioallctrl=this.audioallctrl.bind(this);
   }
 
   componentDidMount() {
-
-    this.start = new Date;	
 
     this.setState({
       pid:this.props.pid
@@ -281,37 +276,6 @@ this.state.socket.on("switchimage",(url)=>{
 });
   // this.analytics();
 
-  }
-
-  componentDidUpdate(prevProps, prevState) {		
-    if(prevState.current_image){
-      if (prevState.current_image !== this.state.current_image) {  
-        
-        let end = new Date;
-        let diffrence = Math.floor((Math.abs(end - this.start)/1000));
-        this.start = new Date;
-
-        //Visited Place
-        if(this.analytics.filter(a=>a.name === this.getImageName(prevState.current_image)).length === 1)
-        {
-          var place = this.analytics.filter(a=>a.name === this.getImageName(prevState.current_image));
-          place[0].duration += diffrence
-
-          Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(prevState.current_image))
-          .update({duration:place[0].duration})
-        }
-
-        // New Place
-        if(this.analytics.filter(a=>a.name === this.getImageName(prevState.current_image)).length === 0)
-        {
-          this.analytics.push({name:this.getImageName(prevState.current_image),duration:diffrence})
-        
-          Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(prevState.current_image))
-          .update({duration:diffrence})
-        }      
-        console.log("Changed",this.analytics)    
-      }
-    }	
   }
 
   getUserMedia(cb) {
@@ -625,32 +589,6 @@ document.getElementById(key+"micon").style.display="none";
 console.log(data);
 this.state.socket.emit('audioctrl', data);
 }
-
-destruct = () => {	
-  console.log(this.analytics)	
-  let end = new Date;	
-  let diffrence = Math.floor((Math.abs(end - this.start)/1000));	
-  
-  // New Place
-  if(this.analytics.filter(a=>a.name === this.getImageName(this.state.current_image)).length === 0)
-  {
-    Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(this.state.current_image))
-    .update({duration:diffrence})
-  }  
-  
-  //Visited Place
-  if(this.analytics.filter(a=>a.name === this.getImageName(this.state.current_image)).length === 1)
-  {
-    var place = this.analytics.filter(a=>a.name === this.getImageName(this.state.current_image));
-    place[0].duration += diffrence
-
-    Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(this.state.current_image))
-    .update({duration:place[0].duration})
-  }	
-  	
-}	
-
-
   render() {
     // console.log("Pew",this.imageData)
     if(this.state.closeRoom)
@@ -689,7 +627,6 @@ destruct = () => {
     
           <div id="bottom" className="container" ref={this.bottom} >
           <SceneControls
-              destruct={this.destruct}	
               pid={this.state.pid}
               socket={this.state.socket}
               roomId={this.props.roomId}
