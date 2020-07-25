@@ -31,9 +31,7 @@ componentDidMount(){
 [].forEach.call(elems, function(el) {
     el.classList.remove("active");
 });
-if(this.props.current_tag===0)
-    document.getElementById('dashboard').classList.add('active');
-else if(this.props.current_tag===1)
+if(this.props.current_tag===1)
     document.getElementById('project').classList.add('active');
 else if(this.props.current_tag===2)
     document.getElementById('tool').classList.add('active')
@@ -50,10 +48,6 @@ signout(event){
     alert(error.message);
   });
 }
-
-
-
-
 
   render() {
 
@@ -84,9 +78,6 @@ signout(event){
      </div>
      <div className="collapse navbar-collapse" id="navbarText">
        <ul className="navbar-nav mr-auto">
-         <li id="dashboard" className="nav-item active">
-           <Link to={"/dashboard"} className="nav-link">Dashboard</Link>
-         </li>
          <li id="project" className="nav-item">
            <Link to={"/projects"} className="nav-link">My projects</Link>
          </li>
