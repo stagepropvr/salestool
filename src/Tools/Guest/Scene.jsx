@@ -5,8 +5,7 @@ import 'aframe-look-at-component';
 
 // import './AframeComp';
 
-import AssestsLoader from "./AssetsLoader";
-import Fire from "../config/Firebase.jsx";
+// import Fire from "../../config/Firebase.jsx";
 
 class Scene extends React.Component {
 
@@ -18,7 +17,6 @@ class Scene extends React.Component {
         VRMode:false,
         imageload:true,
     };
-    this.seconds = 0;
     this.time = null;
     this.total = 0;
     this.assets = [];
@@ -55,51 +53,14 @@ imageloaded(){
     }
 
   // console.log(this.clientAssets)
+
+    
     }
 
- 
-
+  
   render()
     {
-    if(this.props.host){
       
-    return (
-      <div style={{"position":"absolute"}}>
-        <a-scene loading-screen="dotsColor: transparent; backgroundColor: transparent" >
-            {/* Loads Assets a*/}
-            <AssestsLoader sceneloader={this.props.loader} data = {this.props.data}/>
-            
-            <a-sky src= {'#'+this.props.image} /> 
-            
-           
-            {this.links = Object.values(this.props.data[this.props.image].links).map((item,key) => 
-    {
-      var splitrot=item.position.split(" ");
-      var x= parseFloat(splitrot[0]*120);
-      // var y= parseFloat(splitrot[1]*80);
-      var z= parseFloat(splitrot[2]*120);
-      // console.log(item["dest-image"]);
-      return(
-        <a-image
-          id={item.name} key={item.name} src="#hotspot"
-          position={x+" -8 "+z} scale="10 10"
-          class="hotspot"
-          look-at='#cam1' 
-          onClick={(e) => this.props.change(item["dest-image"])}
-          raycaster-listen
-         >
-        </a-image>
-      ) 
-    })}
-           
-            {/* Loads Mouse */}
-            <a-camera id="cam1" rotation="0 0 0" rotation-reader cursor="rayOrigin: mouse; fuse: false;"></a-camera>           
-            
-        </a-scene>
-       
-      </div>
-    );}
-    else{
       this.loadAssets()      
       return(
       <div style={{"position":"absolute"}}>
@@ -128,7 +89,7 @@ imageloaded(){
       <a-camera id="cam1" rotation="0 0 0" rotation-reader cursor="rayOrigin: mouse; fuse: false;"></a-camera>
      
   </a-scene></div>
-        );  }
+        );  
     }
 }
 

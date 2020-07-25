@@ -144,7 +144,7 @@ componentDidMount(){
 
   render() {
     if(this.state.redirect){
-        return <Redirect to="/dashboard" />
+        return <Redirect to="/projects" />
         }
     else{
         return( 

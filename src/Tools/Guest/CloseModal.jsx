@@ -1,8 +1,8 @@
 import React from "react";
 import { Redirect, Route, Link } from "react-router-dom";
-import Fire from "../config/Firebase.jsx";
-import "../assets/css/material-kit.css?v=2.0.7" ;
-import "../assets/demo/demo.css";
+import Fire from "../../config/Firebase.jsx";
+import "../../assets/css/material-kit.css?v=2.0.7" ;
+import "../../assets/demo/demo.css";
 import 'jquery';
 import ReactTooltip from "react-tooltip";
 
@@ -16,29 +16,17 @@ class CloseModal extends React.Component {
    // this.handlechange=this.handlechange.bind(this);
 }
   closeSocket = () => {
-    //this.setState({redirect:true})   
-    this.props.destruct()
-    this.props.socket.close(); 
+    //this.setState({redirect:true})
+    this.props.destruct()	
+    this.props.socket.close();    
 
-    if(this.props.host)
-    {    
-       //Analytics
-        Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host")
-        .update({
-              endTime:new Date().getTime(),
-              status:"End"
-            })
-        //
-      this.props.socket.emit('deleteRoom',{room:this.props.room});
-      window.location="/projects";
-    }
-    else{
+ 
 
       //Analytics
       let uid = localStorage.getItem("uid");
       let key = localStorage.getItem("guestkey");
-      let end = new Date().getTime();
-
+      let end = new Date().getTime();	
+      
       if(uid && key && end)
       {
         var ref =  Fire.database().ref('users/'+uid+'/Projects/'+this.props.project+'/rooms/'+this.props.room+'/analytics/'+key).update({
@@ -47,7 +35,8 @@ class CloseModal extends React.Component {
         //
       }
       window.location="/feedback";
-    }
+    
+    
   }
   
 componentDidMount(){
@@ -105,7 +94,7 @@ componentDidMount(){
             <div style={{display: "block"}} className="modal-footer">
                 <center style={{display: "flex",justifyContent: "center"}}>
                     <button onClick={() => this.props.open_close('close',false)} type="button" className="btn cancel">Cancel</button>
-                    <button onClick={() => {this.closeSocket()}}style={{marginLeft: "20px"}} type="button" className="btn proceed">Proceed</button>
+                    <button onClick={this.closeSocket}style={{marginLeft: "20px"}} type="button" className="btn proceed">Proceed</button>
                 </center>
                
             </div>
