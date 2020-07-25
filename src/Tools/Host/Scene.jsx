@@ -32,73 +32,7 @@ imageloaded(){
   })
 }
 
-  componentDidMount(){
-    this.start = new Date();
-  
-    
-      // console.log('  2::: Image Loaded',this.props.image)
-      let ref = Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(this.props.image))
-      .set({
-          duration:0}) 
-    
-
-   
-  }
-  componentWillUnmount(){
-    console.log("Unmounted")
-  }
-  
-  componentDidUpdate(prevProps, prevState) {
-
-    if(this.props.loader){
-   
-      // console.log("Called");
-      if(prevProps.image !== "")
-      {
-          if (prevProps.image !== this.props.image) {
-
-            let end = new Date;
-            var diffrence = Math.floor((Math.abs(end - this.start)/1000));
-            this.start = new Date;
-        
-          //entering the room
-          Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(this.props.image))
-          .once('value').then( (snapshot) => {
-            if(!snapshot.val())
-            {
-              Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(this.props.image))
-              .update({duration:0})
-            }
-          });  
-
-          //leving the room
-          Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(prevProps.image))
-          .once('value').then( (snapshot) => {
-            if(snapshot.val())
-            {
-              if(snapshot.val().duration)
-              {
-                Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(prevProps.image))
-                .update({duration:snapshot.val().duration+diffrence})
-              }
-              else{
-                Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(prevProps.image))
-                .update({duration:diffrence})
-              }
-            }
-            else{
-              Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host/images/"+this.props.getImageName(prevProps.image))
-              .update({duration:diffrence})
-            }
-          });
-          }
-      }
-    
-
-      
-    }
-  }
-
+ 
   loadAssets = () => {
     //  console.log("Not Host : Load Assets Called", this.props.clientimageid,this.props.clientimage)
     if(!this.assets.includes(this.props.clientimageid))

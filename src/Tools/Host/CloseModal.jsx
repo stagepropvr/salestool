@@ -16,14 +16,14 @@ class CloseModal extends React.Component {
 }
   closeSocket = () => {
     //this.setState({redirect:true})   
-
+    this.props.destruct()	
     this.props.socket.close(); 
    
         
        //Analytics
         Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host")
         .update({
-              endTime:new Date().toLocaleString(),
+              endTime:new Date().getTime(),	
               status:"End"
             })
         //

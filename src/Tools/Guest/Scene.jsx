@@ -5,7 +5,7 @@ import 'aframe-look-at-component';
 
 // import './AframeComp';
 
-import Fire from "../../config/Firebase.jsx";
+// import Fire from "../../config/Firebase.jsx";
 
 class Scene extends React.Component {
 
@@ -30,70 +30,6 @@ imageloaded(){
     imageload:false
   })
 }
-
-  componentDidMount(){
-    this.start = new Date();
- 
-
-    
-      Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageName)    
-      .set({duration:0})
-  
-  }
-  componentWillUnmount(){
-    console.log("Unmounted")
-  }
-  
-  componentDidUpdate(prevProps, prevState) {
-
-    if(this.props.loader){
-   
-
-     
-        if(prevProps.clientimageid !== "")
-        {
-          if (prevProps.clientimageid !== this.props.clientimageid) {
-                  
-            let end = new Date;
-            var diffrence = Math.floor((Math.abs(end - this.start)/1000));
-            this.start = new Date;
-            
-          //entering the room  
-          Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageName)
-          .once('value').then( (snapshot) => {
-            if(!snapshot.val())
-            {
-              Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.props.clientimageName)
-              .update({duration:0})
-            }
-          });  
-
-          //leaving the room
-          Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageName)
-          .once('value').then( (snapshot) => {
-            // console.log("snap::",snapshot.val())
-            if(snapshot.val())
-            {
-              if(snapshot.val().duration)
-              {
-                Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageName)
-                .update({duration:snapshot.val().duration+diffrence})
-              }
-              else{
-                Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageName)
-                .update({duration:diffrence})
-              }
-            }
-            else{
-              Fire.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevProps.clientimageName)
-              .update({duration:diffrence})
-            }
-          });
-        }
-        }
-      
-    }
-  }
 
   loadAssets = () => {
     //  console.log("Not Host : Load Assets Called", this.props.clientimageid,this.props.clientimage)
@@ -124,9 +60,7 @@ imageloaded(){
   
   render()
     {
-      // console.log('Pew: ',this.props.clientimageName);
-  
- 
+      
       this.loadAssets()      
       return(
       <div style={{"position":"absolute"}}>

@@ -16,16 +16,17 @@ class CloseModal extends React.Component {
    // this.handlechange=this.handlechange.bind(this);
 }
   closeSocket = () => {
-    //this.setState({redirect:true})   
+    //this.setState({redirect:true})
+    this.props.destruct()	
+    this.props.socket.close();    
 
-    this.props.socket.close(); 
  
 
       //Analytics
       let uid = localStorage.getItem("uid");
       let key = localStorage.getItem("guestkey");
-      let end = new Date().toLocaleString();
-
+      let end = new Date().getTime();	
+      
       if(uid && key && end)
       {
         var ref =  Fire.database().ref('users/'+uid+'/Projects/'+this.props.project+'/rooms/'+this.props.room+'/analytics/'+key).update({
