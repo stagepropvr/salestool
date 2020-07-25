@@ -1,17 +1,14 @@
 import React from 'react';
 import { Redirect } from "react-router-dom";
 import VideoCall from '../helpers/simple-peer';
-import '../styles/video.css';
+import '../../styles/video.css';
 import io from 'socket.io-client';
-import { getDisplayStream } from '../helpers/media-access';
 import Peer from 'simple-peer'
-import VideoItem from "./videoItem";
+import VideoItem from "../ToolComponents/videoItem";
 import Scene from "./Scene";
-import Firebase from "../config/Firebase";
+import Firebase from "../../config/Firebase";
 import SceneControls from "./SceneControls.js";
-import { useEffect } from 'react';
 import Switchprojectloader from './Switchprojectloader';
-
 
 let userId = null
 
@@ -49,11 +46,10 @@ class Video extends React.Component {
       members:[],
       closeRoom:false,
       name:localStorage.getItem("name"),
-      hostaudioctrl:false,
       Switchstatus:false,
       messagescount:0,
         };
-    this.duration = 0;
+    
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
     this.togglenav=this.togglenav.bind(this); 
@@ -67,8 +63,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
     this.inputFileRef = React.createRef();
     this.onBtnClick = this.handleBtnClick.bind(this);
     this.muteclient=this.muteclient.bind(this);
-        this.start = 0;
-    this.analytics = [];
+
   }
   videoCall = new VideoCall();
 
@@ -85,16 +80,14 @@ this.audioallctrl=this.audioallctrl.bind(this);
   }
 
   componentDidMount() {
- 
-    this.start = new Date;
-    
+
     this.setState({
       pid:this.props.pid
     })
     var promise = new Promise( (resolve, reject) => {
     Firebase.auth().onAuthStateChanged((user) => {
 
-      if (user &&  localStorage.getItem(this.props.roomId)!==undefined) {
+     
        
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
           this.state.data = node.val();
@@ -135,29 +128,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
           resolve("Promise resolved successfully");
         })
 
-      }
-      else{
-       
-        this.setState({
-          host:false
-        })
-        Firebase.database().ref("roomsession/"+this.props.roomId+"/hostid").on("value",(snap)=>{
-          this.setState({
-            hostref:snap.val().hostid
-          })
-        })
-        Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage").on("value",(snap)=>{
-          this.setState({
-            clientimage:snap.val().currentimage,
-            clientimageid:snap.val().imageid,
-            clientimageName:snap.val().currentimageName,
-            apiload:false,
-            init:false,
-           
-            loader:true
-          });
-        })
-      }
+     
       
         resolve("Promise resolved successfully");
      
@@ -171,7 +142,6 @@ this.audioallctrl=this.audioallctrl.bind(this);
     
 
 
-    // const socket = io.connect("localhost:5000");
     const component = this;
     // this.setState({ socket });
     const { roomId } = this.props;
@@ -179,7 +149,6 @@ this.audioallctrl=this.audioallctrl.bind(this);
       console.log(this.state.localStream);
       this.state.socket.emit('join', { roomId });
       ////console.log("socket.on join", roomId)
-      console.log(this.state.host);
      
     });
 
@@ -193,16 +162,17 @@ this.audioallctrl=this.audioallctrl.bind(this);
 
     this.state.socket.on('init', (data) => {
       Firebase.database().ref("roomsession/"+this.props.roomId+"/members").update({
-        [this.state.socket.id]:(this.state.host?"host":this.state.name)
+        [this.state.socket.id]:"host"
         })
-        if(this.state.host){
+    
         Firebase.database().ref("roomsession/"+this.props.roomId+"/hostid").set({
     hostid:this.state.socket.id
-        })}
+        })
+        
     console.log("socket.on init", data)
 
       userId = data.userId;
-      this.state.socket.emit('ready', ({ room: roomId, userId:userId, name:(!this.state.host?this.state.name:"host") }));
+      this.state.socket.emit('ready', ({ room: roomId, userId:userId, name:"host" }));
      
       Firebase.database().ref("roomsession/"+this.props.roomId+"/members").on("value",(members)=>{
           console.log(members.val());
@@ -302,101 +272,11 @@ this.state.socket.on("switchimage",(url)=>{
 //console.log(url);
 });
 
-if(!this.state.host){
-  this.state.socket.on("audioctrl",(audioctrl)=>{
-    if(audioctrl){
-      if (this.state.localStream.getAudioTracks().length > 0) {
-        this.state.localStream.getAudioTracks().forEach(track => {
-          track.enabled =false;
-        });
-      }
-      this.setState({
-        micState: false,
-        hostaudioctrl:true
-      })
-    }
-    else{
-      if (this.state.localStream.getAudioTracks().length > 0) {
-        this.state.localStream.getAudioTracks().forEach(track => {
-          track.enabled =true;
-        });
-      }
-      this.setState({
-        micState: true,
-        hostaudioctrl:true
-      })
-    }
-    });
-}
+
 });
+  // this.analytics();
+
   }
-
-  componentDidUpdate(prevProps, prevState) {
-
-    if(this.state.host)
-    {
-      if(prevState.current_image){
-        if (prevState.current_image !== this.state.current_image) {  
-          
-          let end = new Date;
-          let diffrence = Math.floor((Math.abs(end - this.start)/1000));
-          this.start = new Date;
-  
-          //Visited Place
-          if(this.analytics.filter(a=>a.name === this.getImageName(prevState.current_image)).length === 1)
-          {
-            var place = this.analytics.filter(a=>a.name === this.getImageName(prevState.current_image));
-            place[0].duration += diffrence
-  
-            Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(prevState.current_image))
-            .update({duration:place[0].duration})
-          }
-  
-          // New Place
-          if(this.analytics.filter(a=>a.name === this.getImageName(prevState.current_image)).length === 0)
-          {
-            this.analytics.push({name:this.getImageName(prevState.current_image),duration:diffrence})
-          
-            Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(prevState.current_image))
-            .update({duration:diffrence})
-          }      
-          console.log("Changed",this.analytics)    
-        }
-      }
-    }
-    if(!this.state.host)
-    {
-      if(prevState.clientimageName){
-        if (prevState.clientimageName !== this.state.clientimageName) {  
-          
-          let end = new Date;
-          let diffrence = Math.floor((Math.abs(end - this.start)/1000));
-          this.start = new Date;
-  
-          //Visited Place
-          if(this.analytics.filter(a=>a.name === prevState.clientimageName).length === 1)
-          {
-            var place = this.analytics.filter(a=>a.name === prevState.clientimageName);
-            place[0].duration += diffrence
-  
-            Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevState.clientimageName)
-            .update({duration:place[0].duration})
-          }
-  
-          // New Place
-          if(this.analytics.filter(a=>a.name === prevState.clientimageName).length === 0)
-          {
-            this.analytics.push({name:prevState.clientimageName,duration:diffrence})
-          
-            Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevState.clientimageName)
-            .update({duration:diffrence})
-          }      
-          console.log("Changed",this.analytics)    
-        }
-      }
-    }
-  }
-
 
   getUserMedia(cb) {
     
@@ -433,7 +313,7 @@ if(!this.state.host){
   }
 
   setAudioLocal() {
-    if(!this.state.hostaudioctrl){
+    
     if (this.state.localStream.getAudioTracks().length > 0) {
       this.state.localStream.getAudioTracks().forEach(track => {
         track.enabled = !track.enabled;
@@ -442,7 +322,7 @@ if(!this.state.host){
     this.setState({
       micState: !this.state.micState
     })
-  }
+  
   }
   setVideoLocal() {
     if (this.state.localStream.getVideoTracks().length > 0) {
@@ -490,7 +370,7 @@ track.stop();
         () => { }
       );
       console.log('6')
-      var op = {
+     op = {
         video: {
           width: { min: 160, ideal: 640, max: 1280 },
           height: { min: 120, ideal: 360, max: 720 },
@@ -584,7 +464,7 @@ track.stop();
       el.classList.remove("show");
     });
 
-    var a = document.querySelectorAll('.tab-pane.active');
+   a = document.querySelectorAll('.tab-pane.active');
     [].forEach.call(a, function(el) {
       el.classList.remove("active");
       el.classList.remove("show");
@@ -709,53 +589,6 @@ document.getElementById(key+"micon").style.display="none";
 console.log(data);
 this.state.socket.emit('audioctrl', data);
 }
-
-destruct = () => {
-
-  console.log(this.analytics)
-
-  let end = new Date;
-  let diffrence = Math.floor((Math.abs(end - this.start)/1000));
-
-  if(this.state.host)
-  {
-      // New Place
-    if(this.analytics.filter(a=>a.name === this.getImageName(this.state.current_image)).length === 0)
-    {
-      Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(this.state.current_image))
-      .update({duration:diffrence})
-    }  
-    
-    //Visited Place
-    if(this.analytics.filter(a=>a.name === this.getImageName(this.state.current_image)).length === 1)
-    {
-      var place = this.analytics.filter(a=>a.name === this.getImageName(this.state.current_image));
-      place[0].duration += diffrence
-
-      Firebase.database().ref("users/"+Firebase.auth().currentUser.uid+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/host/images/"+this.getImageName(this.state.current_image))
-      .update({duration:place[0].duration})
-    }
-  }
-  if(!this.state.host)
-  {
-     // New Place
-     if(this.analytics.filter(a=>a.name === this.state.clientimageName).length === 0)
-     {
-       Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.state.clientimageName)
-       .update({duration:diffrence})
-     }  
-     
-     //Visited Place
-     if(this.analytics.filter(a=>a.name === this.state.clientimageName).length === 1)
-     {
-       var place = this.analytics.filter(a=>a.name === this.state.clientimageName);
-       place[0].duration += diffrence
- 
-       Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+this.state.clientimageName)
-       .update({duration:place[0].duration})
-     }
-  }
-}
   render() {
     // console.log("Pew",this.imageData)
     if(this.state.closeRoom)
@@ -772,7 +605,7 @@ destruct = () => {
             data={this.state.images}
             image={this.state.current_image}
             change={this.change}
-            host={this.state.host}
+           
             loader={this.loader}
             clientimage={this.state.clientimage}
             clientimageid={this.state.clientimageid}
@@ -794,7 +627,6 @@ destruct = () => {
     
           <div id="bottom" className="container" ref={this.bottom} >
           <SceneControls
-              destruct={this.destruct}
               pid={this.state.pid}
               socket={this.state.socket}
               roomId={this.props.roomId}
@@ -812,7 +644,7 @@ destruct = () => {
                 this.setVideoLocal();
               }}
               camstate={this.state.camState}
-              host={this.state.host}
+            
               videoinput={this.state.videoinput}
               audioinput={this.state.audioinput}
             />  
@@ -884,10 +716,10 @@ destruct = () => {
     </div>
     <div style={{height: '100%'}} className="tab-content text-center">
       <div style={{height: '100%'}} className="tab-pane active show" id="members">
-       {this.state.host? <div className="mute_all_div">
+        <div className="mute_all_div">
           <input ref={this.audioctrl} onChange={this.audioallctrl} type="checkbox"/>
           <label className="mute_all">Mute all</label>
-          </div>:<></>}
+          </div>
       <ul style={{padding:'0px',height:'90%',overflow: "auto", listStyle:"none",width:'85%',paddingLeft:'12px'}}>
       <li>
                   <div ref={this.localvideo} style={{"background":"#000"}} className="relative-localvideo">
@@ -912,7 +744,7 @@ destruct = () => {
                   return    <li>
                   <div style={{"background":"#000"}}>
                      <div className="videotools">
-                    {this.state.host?   <button id={key} onClick={() => this.muteclient(key)} mic="false" className="menu_option video_on guest_video_mute video_mute_option">
+                      <button id={key} onClick={() => this.muteclient(key)} mic="false" className="menu_option video_on guest_video_mute video_mute_option">
                         <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" id={key+"micon"}>
                            <path fill="#222B45" fillRule="evenodd" d="M13 17.92V20h2.105c.493 0 .895.402.895.895v.21c0 .493-.402.895-.895.895h-6.21C8.402 22 8 21.598 8 21.106v-.211c0-.493.402-.895.895-.895H11v-2.08c-3.387-.488-6-3.4-6-6.92 0-.552.447-1 1-1 .553 0 1 .448 1 1 0 2.757 2.243 5 5 5s5-2.243 5-5c0-.552.447-1 1-1 .553 0 1 .448 1 1 0 3.52-2.613 6.432-6 6.92zM10 6c0-1.103.897-2 2-2s2 .897 2 2v5c0 1.103-.897 2-2 2s-2-.897-2-2V6zm2 9c2.206 0 4-1.794 4-4V6c0-2.205-1.794-4-4-4S8 3.795 8 6v5c0 2.206 1.794 4 4 4z" />
                         </svg>
@@ -928,7 +760,7 @@ destruct = () => {
                            </g>
                         </g>
                         </svg>
-                     </button>:<></>}
+                     </button>
                        <span className="guest_video_name video_name_option">{this.state.members[key]}</span>
                      
                   </div>
@@ -970,7 +802,7 @@ destruct = () => {
   <div className="chat_name">{this.state.members[child.user]}</div>
   <div className= {this.state.socket.id===child.user?" media_msg self_msg":"media_msg  other_msg"}><span className="media_file_name">{child.filename}</span>
     <span style={{paddingRight: '8px', cursor: 'pointer'}}>
-     <a target="_blank" href={child.filedata} download> <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
+     <a  rel="noopener noreferrer" target="_blank" href={child.filedata} download> <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
         <defs>
           <path id="prefix__download" d="M19 16c.55 0 1 .45 1 1v2c0 .51-.388.935-.884.993L19 20H5c-.55 0-1-.45-1-1v-2c0-.55.45-1 1-1s1 .45 1 1v1h12v-1c0-.55.45-1 1-1zM12 3c.553 0 1 .448 1 1v8l2.4-1.8c.442-.333 1.069-.242 1.4.2.332.442.242 1.069-.2 1.4l-4 3c-.177.133-.389.2-.6.2-.201 0-.402-.061-.575-.182l-4-2.814c-.452-.318-.561-.942-.243-1.393.318-.452.941-.561 1.393-.243l2.428 1.71L11 12V4c0-.552.447-1 1-1z" />
         </defs>
@@ -1025,8 +857,8 @@ destruct = () => {
 
 
 
-{this.state.loader && this.state.host?
-<Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host} Switchstatus={this.state.Switchstatus}></Switchprojectloader>
+{this.state.loader ?
+<Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data}  Switchstatus={this.state.Switchstatus}></Switchprojectloader>
 :<></>}
 
       </>
