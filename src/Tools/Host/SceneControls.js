@@ -44,14 +44,12 @@ class SceneControls extends React.Component {
     //this.menu_bar_open();
    
     
-    //console.log(this.props.pid);
 
    
     this.props.socket.on("floorplan",(data)=>{
       this.setState({
         floorplandata:"false"
       })
-      console.log(data);
       this.setState({
         floorplandata:data
       })
@@ -60,7 +58,6 @@ class SceneControls extends React.Component {
         this.setState({
           pdfdata:"false"
         })
-        console.log(data.data);
         this.setState({
           pdfdata:data.data
         })
@@ -69,7 +66,6 @@ class SceneControls extends React.Component {
           this.setState({
             mapdata:"false"
           })
-          console.log(data);
           this.setState({
             mapdata:data.latlng
           })

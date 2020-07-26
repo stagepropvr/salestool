@@ -65,15 +65,12 @@ export class MapModal extends React.Component {
 
     togglenav()
   {
-    //console.log(this.Sidenav.current.style.width);
     
     if(this.Sidenav1.current.style.width==="300px"){
       this.Sidenav1.current.style.width="0px";
       this.setState({
         toogle_div:false
     })
-          //console.log(this.bottom.current.offsetWidth);
-         // this.bottom.current.style.width=this.bottom.current.offsetWidth+259+"px";
   
     }
     else{
@@ -81,8 +78,6 @@ export class MapModal extends React.Component {
       this.setState({
           toogle_div:true
       })
-      //console.log(this.bottom.current.offsetWidth);
-     // this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
     }
   }
   componentDidMount(){   
@@ -155,7 +150,6 @@ export class MapModal extends React.Component {
       callback = (results, status, pagination) => {
         if (status !== 'OK') return;
 
-        //console.log(results[0].geometry.location.lat());
         this.setState({
             places:results
         })

@@ -115,7 +115,6 @@ componentDidMount(){
 }
 
 room(){
-  console.log("peepee:::",Fire.auth().currentUser)
  Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.match.params.pid+"/rooms/")
  .push({
   analytics:{
@@ -128,12 +127,10 @@ room(){
   }
 }).then((res)=>{
   localStorage.setItem(res.key,true);
-  //console.log(res.key);
   this.setState({
   room:res.key
 });
 });
-//console.log(roomid);
 
 }
 

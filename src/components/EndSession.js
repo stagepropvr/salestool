@@ -47,7 +47,6 @@ export default class EndSession extends React.Component {
     }
 
     qn2 = (str) => {
-        console.log(str)
     }
     render(){
         return(

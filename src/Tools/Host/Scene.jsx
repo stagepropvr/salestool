@@ -22,8 +22,6 @@ class Scene extends React.Component {
     this.total = 0;
     this.assets = [];
     this.clientAssets = [];
-      //  console.log(this.props)
-    // this.change = this.change.bind(this);
 this.imageloaded=this.imageloaded.bind(this);
    }
 imageloaded(){
@@ -34,7 +32,6 @@ imageloaded(){
 
  
   loadAssets = () => {
-    //  console.log("Not Host : Load Assets Called", this.props.clientimageid,this.props.clientimage)
     if(!this.assets.includes(this.props.clientimageid))
     {this.setState({
       imageload:true
@@ -80,7 +77,6 @@ imageloaded(){
       var x= parseFloat(splitrot[0]*120);
       // var y= parseFloat(splitrot[1]*80);
       var z= parseFloat(splitrot[2]*120);
-      // console.log(item["dest-image"]);
       return(
         <a-image
           id={item.name} key={item.name} src="#hotspot"

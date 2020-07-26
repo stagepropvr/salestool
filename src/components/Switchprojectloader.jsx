@@ -24,7 +24,6 @@ componentDidMount(){
     window.scrollTo(0, 0);
 
     var list  = Object.values(this.props.data);
-    console.log(list);
     this.setState({
         img:list.thumb
       })
