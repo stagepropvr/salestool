@@ -25,9 +25,7 @@ handleChange = selectedOption => {
 
     this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data.plans[selectedOption.value],pin:null});
     this.setState({ selectedOption });
-    //console.log(this.state.data.plans[selectedOption.value]);
     document.getElementById(selectedOption.value).style.display='block';
-    //console.log(`Option selected:`, selectedOption);
   };
 
 
@@ -40,7 +38,6 @@ handleChange = selectedOption => {
               el.classList.remove("bounce");
     });
      var key = event.target.id.split("_pins");
-    console.log(event.target.style.top,event.target.style.left);
     this.props.changeImage(key[0]);
     this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data.plans[this.state.selectedOption[0].value],pin:event.target.style.top+"-"+event.target.style.left});
    
@@ -58,7 +55,6 @@ componentDidMount(){
     window.scrollTo(0, 0);
     var temp=[];
     var temp_floor=[];
-    //console.log(this.state.data);
     if(this.state.data.hasOwnProperty('plans')){
         var obj = Object.keys(this.state.data.plans);
         var list = Object.values(this.state.data.plans);
@@ -75,7 +71,6 @@ componentDidMount(){
                    selectedOption:a
                });
 
-//console.log(obj[i]);
 
 this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data.plans[obj[i]],pin:null});
             }
@@ -90,7 +85,6 @@ this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data
             for(j in list[i]['pins']){
                 for(k in this.props.data.images){
                     if(this.props.data.images[k].url==list[i]['pins'][j].dest){
-                        console.log(k);
                         pins.push({
                             x:list[i]['pins'][j].posx,
                             y:list[i]['pins'][j].posy,
@@ -111,7 +105,6 @@ this.props.socket.emit('floorplan',{ roomid:this.props.room,data:this.state.data
             })
         }
     }
-    //console.log(temp_floor);
     this.setState({
         floorplan_list:temp_floor,
         floorplan_name:temp

@@ -24,7 +24,6 @@ export class MapModal extends React.Component {
 
 
     collapse = (str) => {
-        console.log(str)
         if(str != this.state.tab)
         {
             this.setState({ show: true,tab:str });

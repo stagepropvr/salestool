@@ -57,7 +57,6 @@ componentDidMount(){
 
   render() {
   
-    // console.log("Pew ::: Host :::",this.props.host)
     if(this.state.redirect){
       return <Redirect to="/projects" />
     }

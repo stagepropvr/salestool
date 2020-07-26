@@ -31,7 +31,6 @@ Object.values(device.map((value)=>{
   }
 
 submit(){
-  console.log(this.state.currentvideoinput,this.state.currentaudioinput);
   this.props.changedevice(this.state.currentvideoinput,this.state.currentaudioinput);
 }
 

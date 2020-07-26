@@ -29,7 +29,6 @@ componentDidMount(){
 
   Fire.auth().onAuthStateChanged((user) => {
     if (user) {
-      console.log("regr");
       var ref = Fire.database().ref("users/"+user.uid);
       ref.once('value',child=>{
         if(child.hasChild('username')){
@@ -101,7 +100,6 @@ handleregister(event){
     };
     const task = ref.child(name).put(file, metadata);
     task.then(snapshot => snapshot.ref.getDownloadURL()).then((url) => {
-    console.log(url);
     Fire.auth().onAuthStateChanged((user) => {
       if (user) {
         Fire.database().ref("users/"+user.uid).update({
@@ -142,8 +140,6 @@ fileupload = (event)=>{
   let reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onloadend = () => {
-    console.log(file.name);
-    console.log(reader.result); 
     this.setState({
       profile_pic:reader.result
     })

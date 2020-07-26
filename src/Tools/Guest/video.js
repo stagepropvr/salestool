@@ -135,16 +135,12 @@ this.audioallctrl=this.audioallctrl.bind(this);
     // this.setState({ socket });
     const { roomId } = this.props;
     this.getUserMedia().then(() => {
-      console.log(this.state.localStream);
       this.state.socket.emit('join', { roomId });
-      ////console.log("socket.on join", roomId)
-      console.log(this.state.host);
      
     });
 
     
     this.state.socket.on('closeRoom', () => {
-      console.log("Host Closed The Room")
       this.state.socket.close()  
       this.setState({closeRoom:true});    
     });
@@ -155,13 +151,11 @@ this.audioallctrl=this.audioallctrl.bind(this);
         [this.state.socket.id]:this.state.name
         })
       
-    console.log("socket.on init", data)
 
       userId = data.userId;
       this.state.socket.emit('ready', ({ room: roomId, userId:userId, name:this.state.name }));
      
       Firebase.database().ref("roomsession/"+this.props.roomId+"/members").on("value",(members)=>{
-          console.log(members.val());
           this.setState({
             members:members.val()
           })
@@ -171,13 +165,11 @@ this.audioallctrl=this.audioallctrl.bind(this);
     this.state.socket.on("users", ({ initiator, users,name,usersocketid }) => {
 
 
-console.log(this.state.members);
       Object.keys(users.sockets)
         .filter(
           sid =>
             !this.state.peers[sid] && sid !== userId)
         .forEach(sid => {
-          console.log(sid);
           const peer = new Peer({
             initiator: userId === initiator,
             config: {
@@ -200,7 +192,6 @@ console.log(this.state.members);
           })
 
           peer.on('signal', data => {
-            //console.log("peer.on  signal", users)
 
             const signal = {
               userId: sid,
@@ -210,7 +201,6 @@ console.log(this.state.members);
             this.state.socket.emit('signal', signal);
           });
           peer.on('stream', (stream)=> {
-            console.log("peer.on  stream", stream)
 
             const streamsTemp = { ...this.state.streams }
             streamsTemp[sid] = stream
@@ -218,9 +208,7 @@ console.log(this.state.members);
             this.setState({ streams: streamsTemp })
           });
           peer.on('error', function (err) {
-            //console.log("peer.on  error", err)
 
-            //console.log(err);
           });
 
           const peersTemp = { ...this.state.peers }
@@ -235,14 +223,11 @@ console.log(this.state.members);
       messagescount:this.state.messagescount+1
       })
     }
-     console.log(msg);
       this.setState(ele => ({
         messages: [...ele.messages, msg]
       }))
-      console.log(this.state.messages);
     });
     this.state.socket.on('signal', ({ userId, signal,image }) => {
-     // //console.log("socket.on  signal userId", userId, "signal", signal);
    
 
       
@@ -255,7 +240,6 @@ console.log(this.state.members);
     });
     
 this.state.socket.on("switchimage",(url)=>{
-//console.log(url);
 });
 
 
@@ -315,7 +299,6 @@ this.state.socket.on("switchimage",(url)=>{
             Firebase.database().ref("users/"+localStorage.getItem('uid')+"/Projects/"+this.props.pid+"/rooms/"+this.props.roomId+"/analytics/"+localStorage.getItem('guestkey')+"/images/"+prevState.clientimageName)
             .update({duration:diffrence})
           }      
-          console.log("Changed",this.analytics)    
         }
       }
   }
@@ -349,7 +332,6 @@ this.state.socket.on("switchimage",(url)=>{
           resolve();
         },
         (err) => {
-          console.log(err);
          }
       );
     });
@@ -383,8 +365,6 @@ this.state.socket.on("switchimage",(url)=>{
   videoinput:videoinput,
   audioinput:audioinput
   });
-console.log('1');
- console.log(this.state.videoinput,this.state.audioinput);
       var op = {
         video: false,
         audio:{echoCancellation: true,
@@ -393,13 +373,11 @@ console.log('1');
       await navigator.getUserMedia(
         op,
         stream => {
-          console.log('2')
           var streamremove=this.localVideo.srcObject;
           streamremove.getTracks().forEach((track)=>{
 track.stop();
       });
           
-          console.log('4')
           Object.keys(this.state.peers).forEach((key)=>{
             this.state.peers[key].removeStream(this.state.localStream);
           })
@@ -408,11 +386,9 @@ track.stop();
             Object.keys(this.state.peers).forEach((key)=>{
               this.state.peers[key].addStream(this.state.localStream);
             })
-            console.log('5')
         },
         () => { }
       );
-      console.log('6')
       var op = {
         video: {
           width: { min: 160, ideal: 640, max: 1280 },
@@ -423,17 +399,14 @@ track.stop();
         audio:{echoCancellation: true,
           deviceId: this.state.audioinput} 
       };
-      console.log('7')
      navigator.getUserMedia(
         op,
         stream => {
-          console.log('8')
       var streamremove=this.localVideo.srcObject;
       //this.localVideo.srcObject=null;
       streamremove.getTracks().forEach((track)=>{
 track.stop();
   });
-  console.log('9')   
           Object.keys(this.state.peers).forEach((key)=>{
             this.state.peers[key].removeStream(this.state.localStream);
           })
@@ -442,11 +415,9 @@ track.stop();
             Object.keys(this.state.peers).forEach((key)=>{
               this.state.peers[key].addStream(this.state.localStream);
             })
-            console.log('10')
         },
         () => { }
       );
-      console.log('11')
     }
 
   changeImage = (str) => {
@@ -532,18 +503,14 @@ track.stop();
       document.getElementById('members').classList.add('active');
       document.getElementById('members').classList.add('show');
     }
-    //console.log(this.Sidenav.current.style.width);
-    console.log();
 
     if(this.Sidenav.current.style.width==="320px"){
       this.Sidenav.current.style.width="0px";
-          //console.log(this.bottom.current.offsetWidth);
           this.bottom.current.style.width="100%";
           this.localvideo.current.classList.add('relative-localvideo');
     }
     else{
       this.Sidenav.current.style.width="320px";
-      //console.log(this.bottom.current.offsetWidth);
       this.localvideo.current.classList.remove('relative-localvideo');
       this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
     }
@@ -556,7 +523,6 @@ track.stop();
       message: this.messagearea.current.value,
       type:"message"
     };
-    //console.log(message);
     this.state.socket.emit('chat message', message);
     this.messagearea.current.value="";
   }
@@ -570,7 +536,6 @@ audioallctrl(e){
     id: this.props.roomId,
     ctrl: this.audioctrl.current.checked
   };
-  console.log(data);
   this.state.socket.emit('audioctrl', data);
 }
 
@@ -583,8 +548,6 @@ fileupload = (event)=>{
   let reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onloadend = () => {
-    console.log(file.name);
-    console.log(reader.result);
     const message = {
       room: this.props.roomId,
       user: this.state.socket.id,
@@ -593,7 +556,6 @@ fileupload = (event)=>{
       filename:file.name,
       filedata:reader.result
     };
-    //console.log(message);
     this.state.socket.emit('chat message', message);
     
   };
@@ -629,13 +591,11 @@ document.getElementById(key+"micoff").style.display="block";
 document.getElementById(key).style.background="rgb(255, 61, 113)";
 document.getElementById(key+"micon").style.display="none";
 }
-console.log(data);
 this.state.socket.emit('audioctrl', data);
 }
 
 destruct = () => {
 
-  console.log(this.analytics)
 
   let end = new Date;
   let diffrence = Math.floor((Math.abs(end - this.start)/1000));
@@ -658,7 +618,6 @@ destruct = () => {
 }
 
   render() {
-    // console.log("Pew",this.imageData)
     if(this.state.closeRoom)
     {
       this.state.socket.close();
@@ -806,7 +765,6 @@ destruct = () => {
       {
                 Object.keys(this.state.streams).map((key, id) => {
                   if(this.state.streams[key].active ){
-                    console.log(this.state.members[key]);
                   return    <li>
                   <div style={{"background":"#000"}}>
                      <div className="videotools">

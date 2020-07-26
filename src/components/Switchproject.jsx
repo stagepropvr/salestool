@@ -19,14 +19,11 @@ componentDidMount(){
     
     window.scrollTo(0, 0);
     var temp=[];
-    console.log(this.props.user_id);
 
     
     var ref = Fire.database().ref("users/"+this.props.user_id+"/Projects");
         ref.once('value',child=>{
-            console.log(child.val());
         child.forEach(snap=>{
-            console.log(snap.val());
             temp.push({
                 id:snap.key
             })

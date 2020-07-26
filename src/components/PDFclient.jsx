@@ -13,7 +13,6 @@ class Pdfviewer extends React.Component {
       
     }
    this. ExamplePDFViewer = this. ExamplePDFViewer.bind(this);
- console.log(this.props)
 }
   
 componentDidMount(){

@@ -8,7 +8,6 @@ import Select from 'react-select';
 class Flooplanclient extends React.Component {
   constructor(props){
     super(props);
-    console.log(this.props.data);
 }
 
 
@@ -22,7 +21,6 @@ componentDidMount()
 var position=[];
   if(this.props.data.pin!==null){
 position=this.props.data.pin.split("-");
-console.log(position);
   }
       return(          
         <div style={{display:this.props.data.data!=false?'block':'none'}} className="floorplan_div">
