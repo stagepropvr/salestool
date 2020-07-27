@@ -27,7 +27,7 @@ class Video extends React.Component {
       peers: {},
       streams: {},
       current_image: "",
-      socket: io.connect("localhost:5000"),
+      socket: io.connect("reactserver.propvr.tech"),
       host: true,
       apiload: true,
       images:"",
