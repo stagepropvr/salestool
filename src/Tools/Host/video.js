@@ -188,11 +188,20 @@ this.audioallctrl=this.audioallctrl.bind(this);
             config: {
               iceServers: [
                 {
-                  urls: 'turn:52.15.126.155:3478',
-                  credential: 'revsmart123',
-                  username: 'propvr' 
-                                      }
-              ]
+                    'urls': [
+                       'stun:stun.l.google.com:19302',
+                'stun:stun1.l.google.com:19302',
+                'stun:stun2.l.google.com:19302',
+                'stun:stun3.l.google.com:19302',
+                'stun:stun4.l.google.com:19302',
+                    ]
+                },
+                {
+                    'urls': 'turn:52.15.126.155:3478',
+                    'credential': 'revsmart123',
+                    'username': 'propvr'
+                    }
+            ]
             },
             // Allow the peer to receive video, even if it's not sending stream:
             // https://github.com/feross/simple-peer/issues/95
