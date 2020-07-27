@@ -37,7 +37,7 @@ export class MapModal extends React.Component {
             <rect height="2" width="8" y="4" x="1"/>
         </svg>
 
-        this.close = <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+        this.close = <svg  width="24" height="24" viewBox="0 0 24 24">
         <defs>
             <path id="prefix__close" d="M7.414 6l4.293-4.293c.391-.391.391-1.023 0-1.414-.39-.391-1.023-.391-1.414 0L6 4.586 1.707.293C1.317-.098.684-.098.293.293c-.39.391-.39 1.023 0 1.414L4.586 6 .293 10.293c-.39.391-.39 1.023 0 1.414.195.195.451.293.707.293.256 0 .512-.098.707-.293L6 7.414l4.293 4.293c.195.195.451.293.707.293.256 0 .512-.098.707-.293.391-.391.391-1.023 0-1.414L7.414 6z"/>
         </defs>
@@ -176,7 +176,7 @@ export class MapModal extends React.Component {
             <div style={{height:'100%'}} className="map-row">
 
             <button onClick={this.togglenav} className="map-menu_option" style={{background: '#3366ff',float: 'left',color: '#fff',position: 'absolute',top: '8px',zIndex: '1',display:this.state.toogle_div?'none':'block'}}>
-                    <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                    <svg  width="24" height="24" viewBox="0 0 24 24">
                         <defs>
                             <path id="prefix__dot" d="M12 17c1.104 0 2 .896 2 2s-.896 2-2 2-2-.896-2-2 .896-2 2-2zm0-7c1.104 0 2 .896 2 2s-.896 2-2 2-2-.896-2-2 .896-2 2-2zm0-7c1.104 0 2 .896 2 2s-.896 2-2 2-2-.896-2-2 .896-2 2-2z"/>
                         </defs>

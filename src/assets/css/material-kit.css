@@ -15998,6 +15998,9 @@ h2.title {
 .menudrop.dropdown-menu.show{
   top:-16px !important;
   left:-2px !important;
+  transform: translate3d(15px, -338px, 0px) !important;
+    position: absolute !important;
+    will-change: transform !important;
 }
 
 .dropdown-menu.hiding {
@@ -20673,6 +20676,27 @@ select{
     bottom: 0;
     top: 0;
     margin: auto;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+ border-radius: 5.5px;
+  background-color: #d8d8d8;
+}
+
+.video_content{
+  margin-bottom:30px;
+}
+#tools_div .dropdown-item:active,.dropdown-item:focus{
+  background-color: transparent !important;
+    color: #101426 !important;
 }
 /* Scene.html End  */
 
