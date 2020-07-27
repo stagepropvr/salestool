@@ -1,19 +1,16 @@
 import React from "react";
-import "../assets/css/material-kit.css?v=2.0.7" ;
-import "../assets/demo/demo.css";
-import "../assets/css/Custom.css";
+import "../../assets/css/material-kit.css?v=2.0.7" ;
+import "../../assets/demo/demo.css";
+import "../../assets/css/Custom.css";
 import BottomSlider from "./BottomSlider";
-import Share from "./ShareModal";
+import Share from "../ToolComponents/ShareModal";
 import DocumentModal from "./DocumentModal";
 import ReactTooltip from "react-tooltip";
 import Switchproject from "./Switchproject";
 import Floorplan from './Floorplan';
 import CloseModal from './CloseModal';
-import Map from './Map';
-import FloorplanClient from "./FloorplanClient";
-import Settings from "./Settings";
+import Settings from "../ToolComponents/Settings";
 import MapModal from "./Mapmodal";
-import PDFclient from "./PDFclient";
 class SceneControls extends React.Component { 
   constructor(props){
     super(props);
@@ -80,7 +77,7 @@ class SceneControls extends React.Component {
 
     // ignore clicks on the component itself
 
-    if(this.state.menu_bar && e.target.id!='menu_bar_up_icon'){
+    if(this.state.menu_bar && e.target.id!=='menu_bar_up_icon'){
       this.setState({
         menu_bar:false
       })
@@ -123,8 +120,8 @@ open_close = (name,flag) =>{
   this.setState({
     [name]:flag
   })
-  if(this.props.host){
-    if(name=='map'){
+ 
+    if(name==='map'){
       if(flag){
         this.props.socket.emit('map',{ roomid:this.props.roomId,latlng:this.props.data["latlng"]});
       }
@@ -132,7 +129,7 @@ open_close = (name,flag) =>{
         this.props.socket.emit('map',{ roomid:this.props.roomId,latlng:false});
       }
     }
-  if(name!='floorplan'){
+  if(name!=='floorplan'){
     if(flag){
       document.getElementById('left_light_mode').style.display='none';
       document.getElementById('right_light_mode').style.display='none';
@@ -164,7 +161,7 @@ open_close = (name,flag) =>{
   
       document.getElementById('bottom').classList.remove('bottom_modal_open');
       var a = document.querySelectorAll('pad15_modal_open_active');
-      var a = document.querySelectorAll('.pad15');
+       a = document.querySelectorAll('.pad15');
       for(var i =0 ; i<a.length;i++){
           var classname = a[i].parentNode.className;
           if(classname.includes('item_active')){
@@ -184,7 +181,7 @@ open_close = (name,flag) =>{
     this.props.socket.emit('floorplan',{ roomid:this.props.roomId,data:false,pin:null});
   }
   }
-}
+
   
   this.setState({
     [name]:flag
@@ -198,7 +195,7 @@ return (
         <div style={{height: '72px', flexWrap: 'nowrap'}} className="row">
           <div className="content_padding dropup">
             <button ref={elem => this.menu = elem}  id="menu_bar" type="button" className="menu_option dropdown-toggle menu_option_click" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-              <span id="menu_bar_up" style={{display:this.state.menu_bar==false?'block':'none'}}>
+              <span id="menu_bar_up" style={{display:this.state.menu_bar===false?'block':'none'}}>
                 <svg id="menu_bar_up_icon" style={{transform: 'translateY(2px)'}} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__a" d="M6.373 7.22c.371-.298.901-.294 1.267.012l6 5c.424.354.481.984.128 1.408-.198.238-.482.36-.769.36-.225 0-.452-.076-.639-.232L6.99 9.293l-5.363 4.314c-.43.347-1.059.279-1.406-.152-.347-.43-.278-1.06.152-1.406zm0-7c.371-.298.901-.295 1.267.012l6 5c.425.353.482.983.128 1.408-.198.237-.482.36-.768.36-.226 0-.453-.077-.64-.232L6.989 2.292 1.627 6.607c-.43.346-1.059.278-1.406-.152-.346-.43-.278-1.06.152-1.407z" />
@@ -208,7 +205,7 @@ return (
                   </g>
                 </svg>
               </span>
-              <span style={{display:this.state.menu_bar==true?'block':'none', transform: 'translateY(2px)'}} id="menu_bar_down">
+              <span style={{display:this.state.menu_bar===true?'block':'none', transform: 'translateY(2px)'}} id="menu_bar_down">
                 <svg id="menu_bar_down_icon" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__down" d="M.232 7.36c.353-.424.983-.482 1.408-.128l5.371 4.476 5.362-4.315c.43-.345 1.061-.277 1.406.152.346.43.278 1.06-.152 1.407l-6 4.828c-.183.147-.405.22-.627.22-.228 0-.455-.077-.64-.232l-6-5c-.425-.353-.482-.983-.128-1.408zm0-7c.354-.425.983-.48 1.408-.128l5.37 4.475L12.374.393c.43-.346 1.06-.278 1.406.152.347.43.278 1.06-.152 1.406l-6 4.828C7.444 6.926 7.222 7 7 7c-.227 0-.455-.077-.64-.232l-6-5C-.064 1.414-.121.784.232.36z" />
@@ -232,7 +229,7 @@ return (
                 </svg>
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
-             {this.props.host?<>
+            
               <a onClick={()=> this.open_close('project',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Switch project">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
@@ -244,7 +241,7 @@ return (
                 </svg>
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
-              </>:<></>}{this.props.host?<>
+             
               <a onClick={()=> this.open_close('document',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Brochure">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
@@ -257,7 +254,7 @@ return (
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
 
- </>:<></>}{this.props.host?<>
+
               <a onClick={()=> this.open_close('floorplan',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Floor Plan">
 
              
@@ -273,7 +270,7 @@ return (
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
 
-</>:<></>}{this.props.host?<>
+
               <a  onClick={()=> this.open_close('map',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Near By">
 
               
@@ -288,7 +285,7 @@ return (
                 </svg>
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
-              </>:<></>}
+              
               <a onClick={()=> this.open_close('settings',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Settings">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
                   <defs>
@@ -353,7 +350,7 @@ return (
           {/* <OwlCarousel responsiveClass={true} autoWidth={true}   margin={10} navText={nav} dots={false} responsive={res} nav={true} id="MultiCarousel" className="MultiCarousel owl-carousel">
             {this.rooms}
         </OwlCarousel> */}
-   {this.props.host?<BottomSlider data={this.state.data} changeImage = {this.props.changeImage}/>:<></>}
+<BottomSlider data={this.state.data} changeImage = {this.props.changeImage}/>
         
  
         </div>
@@ -361,19 +358,18 @@ return (
      
   
     <Share open_close={this.open_close} share={this.state.share} pid={this.state.pid} roomId={this.props.roomId} user_id={this.props.user_id} ></Share>
-    <DocumentModal  socket={this.props.socket} room={this.props.roomId} host={this.props.host} data={this.props.data} open_close={this.open_close} document={this.state.document}></DocumentModal>
+    <DocumentModal  socket={this.props.socket} room={this.props.roomId}  data={this.props.data} open_close={this.open_close} document={this.state.document}></DocumentModal>
     <Switchproject switch={this.props.switch} changeProject={this.props.changeProject} data={this.state.data} open_close={this.open_close} project={this.state.project} pid={this.state.pid} user_id={this.props.user_id}></Switchproject>
   {this.state.floorplan?
     <Floorplan  socket={this.props.socket} room={this.props.roomId} changeImage = {this.props.changeImage} data={this.state.data} open_close={this.open_close} floorplan={this.state.floorplan}></Floorplan>
     :<></>}
-    <CloseModal destruct={this.props.destruct} socket={this.props.socket} project={this.props.pid} room={this.props.roomId} host={this.props.host} close={this.state.close} open_close={this.open_close} ></CloseModal>
+    <CloseModal destruct={this.props.destruct} socket={this.props.socket} project={this.props.pid} room={this.props.roomId}  close={this.state.close} open_close={this.open_close} ></CloseModal>
     {/* <Map pid={this.state.pid} user_id={this.props.user_id} open_close={this.open_close} map={this.state.map}></Map> */}
 
     {this.state.settings?<Settings videoinput={this.props.videoinput}
               audioinput={this.props.audioinput} changedevice={this.props.changedevice} open_close={this.open_close} />:<></>}
 
-{this.state.floorplandata!="false" && !this.props.host?<FloorplanClient data={this.state.floorplandata}/>:<></>}
-{this.state.pdfdata!="false" && !this.props.host?<PDFclient data={this.state.pdfdata}/>:<></>}
+
 
 
 {this.state.mapdata?<MapModal

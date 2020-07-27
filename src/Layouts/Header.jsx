@@ -56,6 +56,10 @@ componentDidMount(){
           email:child.val().email
         })
       })
+    }else{
+      this.setState({
+        redirect:true
+      })
     }
   });
   var elems = document.querySelectorAll(".active");
@@ -96,7 +100,7 @@ handleregister(event){
     };
     const task = ref.child(name).put(file, metadata);
     task.then(snapshot => snapshot.ref.getDownloadURL()).then((url) => {
-    console.log(url);
+
     Fire.auth().onAuthStateChanged((user) => {
       if (user) {
         Fire.database().ref("users/"+user.uid).update({
@@ -113,6 +117,7 @@ handleregister(event){
     
    }).catch(console.error);
 
+
   }
   
 
@@ -124,10 +129,13 @@ handlechange(event){
   this.setState({ [name]: value });
 }
 
+
 handleBtnClick() {
   /*Collecting node-element and performing click*/
   this.inputFileRef.current.click();
 }
+
+
 
 fileupload = (event)=>{
   let file = event.target.files[0];
@@ -137,8 +145,8 @@ fileupload = (event)=>{
   let reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onloadend = () => {
-    console.log(file.name);
-    console.log(reader.result); 
+
+
     this.setState({
       profile_pic:reader.result
     })
@@ -176,9 +184,9 @@ fileupload = (event)=>{
      </div>
      <div className="collapse navbar-collapse" id="navbarText">
        <ul className="navbar-nav mr-auto">
-         <li id="dashboard" className="nav-item active">
+         {/* <li id="dashboard" className="nav-item active">
            <Link to={"/dashboard"} className="nav-link">Dashboard</Link>
-         </li>
+         </li> */}
          <li id="project" className="nav-item">
            <Link to={"/projects"} className="nav-link">My projects</Link>
          </li>

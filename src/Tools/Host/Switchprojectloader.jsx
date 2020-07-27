@@ -1,8 +1,6 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
-import Fire from "../config/Firebase.jsx";
-import "../assets/css/material-kit.css?v=2.0.7" ;
-import "../assets/demo/demo.css";
+import "../../assets/css/material-kit.css?v=2.0.7" ;
+import "../../assets/demo/demo.css";
 
 class Switchprojectloader extends React.Component {
   constructor(props){
@@ -29,7 +27,7 @@ componentDidMount(){
       })
 
     if(list.hasOwnProperty('Info')){
-        if(list.Info.baths=='' || list.Info.beds=='' || list.Info.sqft==''){
+        if(list.Info.baths==='' || list.Info.beds==='' || list.Info.sqft===''){
             this.setState({
               info_details:false
             })
@@ -46,7 +44,7 @@ componentDidMount(){
             info_details:false
           })
     }
-    if(this.props.host){
+
         if(this.props.Switchstatus)
         {  
           this.setState({title:'You are switching project !'})
@@ -54,11 +52,7 @@ componentDidMount(){
         else{
           this.setState({title:'You are opening project !'})
         }
-    }else{
-        this.setState({
-            title:'Project is switched by the host'
-        })
-    }
+  
   }
 
   render() {
@@ -93,7 +87,7 @@ componentDidMount(){
                                           
                                           <div style={{width: "300px"}}>
                                  <h4 style={{paddingLeft: "25px"}} className="card-title project_heading">{this.props.pid}</h4>
-                                            <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">
+                                            <div style={{display:this.state.info_details===true?'flex':'none'}} className="card-text flex-row project_icon_content">
                                               <div>
                                                 <span>
                                                 <span>

@@ -9,7 +9,6 @@ export default class VRScene extends React.Component {
     }
     
     changeImage = (str) => {
-        // console.log(str);
         this.setState({current_image:str})
     }
 

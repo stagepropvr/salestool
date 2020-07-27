@@ -1,5 +1,5 @@
 import React from "react";
-import Fire from "../config/Firebase.jsx";
+import Fire from "../../config/Firebase.jsx";
 
 export default class EndSession extends React.Component {
 

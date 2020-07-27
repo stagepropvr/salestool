@@ -1,6 +1,6 @@
 import React from 'react';
 import {Map, InfoWindow, Marker, GoogleApiWrapper,Circle,Listing} from 'google-maps-react';
-import "../styles/mapmodal.css"
+import "../../styles/mapmodal.css"
 
 export class MapModal extends React.Component {
     constructor(props)
@@ -71,6 +71,7 @@ export class MapModal extends React.Component {
       this.setState({
         toogle_div:false
     })
+         // this.bottom.current.style.width=this.bottom.current.offsetWidth+259+"px";
   
     }
     else{
@@ -78,6 +79,7 @@ export class MapModal extends React.Component {
       this.setState({
           toogle_div:true
       })
+     // this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
     }
   }
   componentDidMount(){   

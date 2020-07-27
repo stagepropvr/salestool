@@ -14,7 +14,7 @@ class Joinroom extends React.Component {
         number:'',
         cname:'',
         email:'',
-        startTime: new Date().toLocaleString(),
+        start: new Date().getTime(),
         endTime: "",
         exception:'',
         info_details:false,
@@ -30,9 +30,6 @@ class Joinroom extends React.Component {
   
 componentDidMount(){
     
-    ////console.log(this.props.match.params.uid);
-    //console.log(this.props.match.params.pid);
-    //console.log(this.props.match.params.rid);
     var ref = Fire.database().ref("users/"+this.props.match.params.uid+'/Projects/'+this.props.match.params.pid);
     ref.once('value',child=>{
         this.setState({
@@ -80,8 +77,8 @@ componentDidMount(){
                      job:this.state.job_title,
                      company:this.state.cname,
                      email:this.state.email,   
-                     startTime:this.state.startTime,
-                     endTime:this.state.endTime,
+                     start:this.state.start,
+                     end:this.state.endTime,
                      feedback:{}
                     });
                     localStorage.setItem("uid",this.props.match.params.uid);
@@ -170,7 +167,7 @@ handlechange(event){
   render() {
 if(this.state.redirect){
     return(
-    <Redirect to={"/room/"+this.props.match.params.pid+"/"+this.props.match.params.rid}/>
+    <Redirect to={"/guest/room/"+this.props.match.params.pid+"/"+this.props.match.params.rid}/>
     )
 }else{
     return( 

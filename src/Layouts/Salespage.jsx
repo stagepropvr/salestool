@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Video from '../components/video'
-
+import Video from '../Tools/Host/video'
 
 class Salespage extends Component {
   render() {
