@@ -100,6 +100,7 @@ handleregister(event){
     };
     const task = ref.child(name).put(file, metadata);
     task.then(snapshot => snapshot.ref.getDownloadURL()).then((url) => {
+
     Fire.auth().onAuthStateChanged((user) => {
       if (user) {
         Fire.database().ref("users/"+user.uid).update({
@@ -116,6 +117,7 @@ handleregister(event){
     
    }).catch(console.error);
 
+
   }
   
 
@@ -127,10 +129,13 @@ handlechange(event){
   this.setState({ [name]: value });
 }
 
+
 handleBtnClick() {
   /*Collecting node-element and performing click*/
   this.inputFileRef.current.click();
 }
+
+
 
 fileupload = (event)=>{
   let file = event.target.files[0];
@@ -140,6 +145,8 @@ fileupload = (event)=>{
   let reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onloadend = () => {
+
+
     this.setState({
       profile_pic:reader.result
     })
