@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect, Route, Link } from "react-router-dom";
-import Fire from "../config/Firebase.jsx";
+import Fire,{Firebase} from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
 class Signup extends React.Component {
@@ -13,15 +13,24 @@ class Signup extends React.Component {
         password:'',
         number:'',
         email:'',
-        exception:''
+        exception:'',
+        googleSignin:false
     }
     this.handlechange=this.handlechange.bind(this);
     this.handleregister=this.handleregister.bind(this);
+    // this.SignupWithGoogle=this.SignupWithGoogle.bind(this);
+    
   }
   
   componentDidMount(){
     window.scrollTo(0, 0);
     Fire.auth().onAuthStateChanged((user) => {
+        // if(user)
+        // {
+        //     this.setState({name:user.displayName})
+        //     this.setState({email:user.email})
+        //     console.log("User:",user.email)
+        // }
         if (user) {
            this.setState({
               redirect: true
@@ -49,6 +58,7 @@ handleregister(event){
                 if(this.state.number.match(phoneno)){
                     document.getElementById('submit').style.display='none';
                     document.getElementById('loader').style.display='inline-block';
+                    
                     Fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(result=> {
                         var user = Fire.auth().currentUser;
                         var appnd = user.uid;
@@ -72,7 +82,8 @@ handleregister(event){
                             exception:err.message
                         })
                     })
-                }
+              
+            }
                 else{
                     document.getElementById('number').classList.add('input_error_border');
                     document.getElementById('other_exception').style.display='block';
@@ -143,7 +154,30 @@ handlechange(event){
 		this.setState({ [name]: value });
 }
 
-
+// SignupWithGoogle(){
+//  console.log("Goog")
+ 
+//  var provider = new Firebase.auth.GoogleAuthProvider();
+//  Fire.auth().signInWithPopup(provider).then((result) => {
+//     // This gives you a Google Access Token. You can use it to access the Google API.
+//     var token = result.credential.accessToken;
+//     // The signed-in user info.
+//     var user = result.user;
+//     console.log(user.displayName)
+//     console.log(user.email)
+//     // ...
+//   }).catch(function(error) {
+//     // Handle Errors here.
+//     var errorCode = error.code;
+//     var errorMessage = error.message;
+//     // The email of the user's account used.
+//     var email = error.email;
+//     // The firebase.auth.AuthCredential type that was used.
+//     var credential = error.credential;
+//     console.log(error)
+//     // ...
+//   });
+// }
 
 
   render() {
@@ -178,7 +212,7 @@ handlechange(event){
                                         <label className="input_Label">
                                             Name
                                         </label>
-                                        <input onChange={this.handlechange} type="text" id="name" name="name" className="input_box form-control" placeholder="Enter your full name" />
+                                        <input value={this.state.name} onChange={this.handlechange} type="text" id="name" name="name" className="input_box form-control" placeholder="Enter your full name" />
                                         <small id="name_error" className="form-text text-muted">
                                         <span className="input_error input_error_hide">
                                             <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
@@ -192,7 +226,7 @@ handlechange(event){
                                         <label className="input_Label">
                                             Email ID
                                         </label>
-                                        <input onChange={this.handlechange} type="email" id="email" name="email" className="input_box form-control" placeholder="Enter your email address" />
+                                        <input onChange={this.handlechange} value={this.state.email} type="email" id="email" name="email" className="input_box form-control" placeholder="Enter your email address" />
                                         <small id="email_error" className="form-text text-muted">
                                         <span className="input_error input_error_hide">
                                             <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
@@ -266,7 +300,7 @@ handlechange(event){
                         <span>or join with other accounts</span>
                         </div>
                         <div style={{textAlign: "center"}}>
-                            <button className="btn google_button">
+                            <button className="btn google_button" /*onClick={this.SignupWithGoogle} */>
                                 <i className="fa fa-google" aria-hidden="true"></i> Sign up with Google
                               </button>
                         </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect, Route, Link } from "react-router-dom";
-import Fire from "../config/Firebase.jsx";
+import Fire,{Firebase} from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
 class Login extends React.Component {
@@ -137,6 +137,37 @@ componentDidMount(){
         document.getElementById(name).classList.remove('input_error_border');
 }
 
+googleSignin = () => {
+    console.log("Perform ")
+    var provider = new Firebase.auth.GoogleAuthProvider();
+
+     Fire.auth().signInWithPopup(provider).then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = result.credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+        localStorage.setItem("id", user.uid);
+        localStorage.setItem("email", user.email);    
+        this.setState({
+            redirect:false
+        })
+
+        console.log(user.displayName)
+        console.log(user.email)
+        // ...
+      }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+        console.log(error)
+        // ...
+      });
+}
+
 
 
 
@@ -210,7 +241,7 @@ componentDidMount(){
                         <span>or join with other accounts</span>
                         </div>
                         <div style={{textAlign: "center"}}>
-                            <button className="btn google_button">
+                            <button className="btn google_button"/* onClick={this.googleSignin} */>
                                 <i className="fa fa-google" aria-hidden="true"></i> Sign up with Google
                               </button>
                         </div>
