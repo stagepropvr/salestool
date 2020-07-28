@@ -9,6 +9,7 @@ import Scene from "./Scene";
 import Firebase from "../../config/Firebase";
 import SceneControls from "./SceneControls.js";
 import Switchprojectloader from './Switchprojectloader';
+import * as RTCMultiConnection from 'rtcmulticonnection';
 
 let userId = null
 
@@ -48,6 +49,9 @@ class Video extends React.Component {
       name:localStorage.getItem("name"),
       Switchstatus:false,
       messagescount:0,
+      connection : new RTCMultiConnection(),
+      rtcstreams:[]
+
         };
     
     this.Sidenav = React.createRef();
@@ -78,7 +82,9 @@ this.audioallctrl=this.audioallctrl.bind(this);
         }
       }
   }
-
+setrtcstream(stream){
+  
+}
   componentDidMount() {
 
     this.setState({
@@ -138,7 +144,61 @@ this.audioallctrl=this.audioallctrl.bind(this);
     promise.then( result => {
     
     
+      this.state.connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+      this.state.connection.socketMessageEvent = 'video-conference-demo';
 
+      this.state.connection.session = {
+          audio: true,
+          video: true
+      };
+      this.state.connection.sdpConstraints.mandatory = {
+          OfferToReceiveAudio: true,
+          OfferToReceiveVideo: true
+      };
+      var bitrates = 512;
+
+
+
+var  videoConstraints = {
+  width: {
+      ideal: 1280
+  },
+  height: {
+      ideal: 720
+  },
+  frameRate: 30
+};
+
+this.state.connection.iceServers.push( {
+  'urls': [
+     'stun:stun.l.google.com:19302',
+'stun:stun1.l.google.com:19302',
+'stun:stun2.l.google.com:19302',
+'stun:stun3.l.google.com:19302',
+'stun:stun4.l.google.com:19302',
+  ]
+},
+{
+  'urls': 'turn:52.15.126.155:3478',
+  'credential': 'revsmart123',
+  'username': 'propvr'
+  });
+
+
+
+
+this.state.connection.mediaConstraints = {
+video: videoConstraints,
+audio: true
+};
+this.state.connection.onstream = event => {
+console.log( event.stream.streamid );
+this.setState(ele => ({
+  rtcstreams: [...ele.rtcstreams, event]
+}))
+console.log(this.state.rtcstreams);
+};
+this.state.connection.openOrJoin(this.props.roomId);
 
     const component = this;
     // this.setState({ socket });
@@ -227,7 +287,8 @@ this.audioallctrl=this.audioallctrl.bind(this);
             const streamsTemp = { ...this.state.streams }
             streamsTemp[sid] = stream
 
-            this.setState({ streams: streamsTemp })
+            // this.setState({ streams: streamsTemp })
+            // console.log(this.state.streams);
           });
           peer.on('error', function (err) {
 
@@ -294,7 +355,7 @@ this.state.socket.on("switchimage",(url)=>{
           
           this.setState({ streamUrl: stream, localStream: stream });
           
-          this.localVideo.srcObject = stream;
+     //     this.localVideo.srcObject = stream;
           resolve();
         },
         (err) => {
@@ -473,11 +534,11 @@ track.stop();
     if(this.Sidenav.current.style.width==="320px"){
       this.Sidenav.current.style.width="0px";
           this.bottom.current.style.width="100%";
-          this.localvideo.current.classList.add('relative-localvideo');
+     //     this.localvideo.current.classList.add('relative-localvideo');
     }
     else{
       this.Sidenav.current.style.width="320px";
-      this.localvideo.current.classList.remove('relative-localvideo');
+      // this.localvideo.current.classList.remove('relative-localvideo');
       this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
     }
   }
@@ -690,7 +751,7 @@ this.state.socket.emit('audioctrl', data);
           <label className="mute_all">Mute all</label>
           </div>
       <ul style={{padding:'0px',height:'90%',overflow: "auto", listStyle:"none",width:'85%',paddingLeft:'12px'}}>
-      <li>
+      {/* <li>
                   <div ref={this.localvideo} style={{"background":"#000"}} className="relative-localvideo">
                      <div className="videotools">
                    
@@ -704,9 +765,43 @@ this.state.socket.emit('audioctrl', data);
                 ref={video => (this.localVideo = video)}
               />
                   </div>
+               </li> */}
+   {this.state.rtcstreams.map((key)=>{
+     console.log(key.stream);
+     return(
+      <li>
+      <div style={{"background":"#000"}}>
+         <div className="videotools">
+          <button id={key} onClick={() => this.muteclient(key)} mic="false" className="menu_option video_on guest_video_mute video_mute_option">
+            <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" id={key+"micon"}>
+               <path fill="#222B45" fillRule="evenodd" d="M13 17.92V20h2.105c.493 0 .895.402.895.895v.21c0 .493-.402.895-.895.895h-6.21C8.402 22 8 21.598 8 21.106v-.211c0-.493.402-.895.895-.895H11v-2.08c-3.387-.488-6-3.4-6-6.92 0-.552.447-1 1-1 .553 0 1 .448 1 1 0 2.757 2.243 5 5 5s5-2.243 5-5c0-.552.447-1 1-1 .553 0 1 .448 1 1 0 3.52-2.613 6.432-6 6.92zM10 6c0-1.103.897-2 2-2s2 .897 2 2v5c0 1.103-.897 2-2 2s-2-.897-2-2V6zm2 9c2.206 0 4-1.794 4-4V6c0-2.205-1.794-4-4-4S8 3.795 8 6v5c0 2.206 1.794 4 4 4z" />
+            </svg>
+            <svg width={18} height={18} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id={key+"micoff"} style={{"display":"none"}}>
+            <g data-name="Layer 2">
+               <g data-name="mic-off">
+                  <rect width={24} height={24} opacity={0} />
+                  <path fill="#fff" d="M10 6a2 2 0 0 1 4 0v5a1 1 0 0 1 0 .16l1.6 1.59A4 4 0 0 0 16 11V6a4 4 0 0 0-7.92-.75L10 7.17z" />
+                  <path fill="#fff" d="M19 11a1 1 0 0 0-2 0 4.86 4.86 0 0 1-.69 2.48L17.78 15A7 7 0 0 0 19 11z" />
+                  <path fill="#fff" d="M12 15h.16L8 10.83V11a4 4 0 0 0 4 4z" />
+                  <path fill="#fff" d="M20.71 19.29l-16-16a1 1 0 0 0-1.42 1.42l16 16a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z" />
+                  <path fill="#fff" d="M15 20h-2v-2.08a7 7 0 0 0 1.65-.44l-1.6-1.6A4.57 4.57 0 0 1 12 16a5 5 0 0 1-5-5 1 1 0 0 0-2 0 7 7 0 0 0 6 6.92V20H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2z" />
+               </g>
+            </g>
+            </svg>
+         </button>
+           <span className="guest_video_name video_name_option">{this.state.members[key]}</span>
+         
+      </div>
+      <VideoItem
+      key={"sff"}
+      userId={"Asdsa"}
+      stream={key.stream}
+    />
+      </div>
                </li>
-   
-      {
+     )
+   })}
+      {/* {
                 Object.keys(this.state.streams).map((key, id) => {
                   if(this.state.streams[key].active ){
                   return    <li>
@@ -751,7 +846,7 @@ this.state.socket.emit('audioctrl', data);
                       <></>
                     )
                   }  })
-              }
+              } */}
               </ul>
       </div>
       <div style={{height: '100%'}} className="tab-pane" id="chat">

@@ -25,6 +25,7 @@
     "react-select": "^3.1.0",
     "react-slick": "^0.26.1",
     "react-tooltip": "^4.2.7",
+    "rtcmulticonnection": "^3.7.0",
     "shortid": "^2.2.15",
     "simple-peer": "^9.7.2",
     "socket.io": "^2.3.0",
