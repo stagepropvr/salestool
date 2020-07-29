@@ -77,7 +77,7 @@ componentDidMount(){
               <h5 style={{color: "#222b45"}} className="modal-title">Documents</h5>
               <button  onClick={() => this.props.open_close('document',false)} type="button" className="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">
-                    <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                    <svg  width="24" height="24" viewBox="0 0 24 24">
                     <defs>
                         <path id="prefix__close" d="M7.414 6l4.293-4.293c.391-.391.391-1.023 0-1.414-.39-.391-1.023-.391-1.414 0L6 4.586 1.707.293C1.317-.098.684-.098.293.293c-.39.391-.39 1.023 0 1.414L4.586 6 .293 10.293c-.39.391-.39 1.023 0 1.414.195.195.451.293.707.293.256 0 .512-.098.707-.293L6 7.414l4.293 4.293c.195.195.451.293.707.293.256 0 .512-.098.707-.293.391-.391.391-1.023 0-1.414L7.414 6z"/>
                     </defs>
@@ -98,7 +98,7 @@ componentDidMount(){
                         <div key={index} className="form-check form-check-radio">
                         <label className="switch_project_label form-check-label">
                             <input onChange={this.handleChange} className="form-check-input" type="radio" name="exampleRadios" id={value.id} value={value.url} />
-                            <svg style={{transform:'translateY(1px)'}} width={24} height={24} xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" viewBox="0 0 100 100">
+                            <svg style={{transform:'translateY(1px)'}} width={24} height={24}  version="1.2" baseProfile="tiny" viewBox="0 0 100 100">
                             <path fill="#d80505" d="M40 65h2.5c4.136 0 7.5-3.364 7.5-7.5S46.636 50 42.5 50H35v20h5v-5zm0-10h2.5c1.379 0 2.5 1.122 2.5 2.5S43.879 60 42.5 60H40v-5zM75 65h7.5v-5H75v-5h10v-5H70v20h5zM67.5 62.5v-5c0-4.136-3.364-7.5-7.5-7.5h-7.5v20H60c4.136 0 7.5-3.364 7.5-7.5zm-10-7.5H60c1.379 0 2.5 1.122 2.5 2.5v5c0 1.378-1.121 2.5-2.5 2.5h-2.5V55z"/>
                             <path fill="#d80505" d="M77.5 30l-25-25h-35c-5.523 0-10 4.477-10 10v70c0 5.523 4.477 10 10 10h50c5.523 0 10-4.477 10-10v-5H95V40H77.5V30zM50 13.107L69.393 32.5H50V13.107zM90 45v30H30V45h60z"/>
                             </svg>

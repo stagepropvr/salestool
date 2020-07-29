@@ -217,6 +217,7 @@ this.state.connection.openOrJoin(this.props.roomId);
       });
     });
 
+
     // this.state.socket.on("users", ({ initiator, users,name,usersocketid }) => {
 
 
@@ -252,10 +253,13 @@ this.state.connection.openOrJoin(this.props.roomId);
     //           offerToReceiveVideo: true,
     //         },
     //         stream: this.state.localStream,
+
             
     //       })
 
+
     //       peer.on('signal', data => {
+
 
     //         const signal = {
     //           userId: sid,
@@ -266,14 +270,17 @@ this.state.connection.openOrJoin(this.props.roomId);
     //       });
     //       peer.on('stream', (stream)=> {
 
+
     //         const streamsTemp = { ...this.state.streams }
     //         streamsTemp[sid] = stream
+
 
     //         this.setState({ streams: streamsTemp })
     //       });
     //       peer.on('error', function (err) {
 
     //       });
+
 
     //       const peersTemp = { ...this.state.peers }
     //       peersTemp[sid] = peer
@@ -575,7 +582,10 @@ track.stop();
     }
     else{
       this.Sidenav.current.style.width="320px";
+
     //  this.localvideo.current.classList.remove('relative-localvideo');
+
+
       this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
     }
   }
@@ -760,7 +770,7 @@ destruct = () => {
 
   <div className="sidedrawer_icon"> 
     <button datasrc="user_icon" onClick={this.togglenav} className="menu_option" style={{background: '#fff',display:'flex'}}>
-      <svg style={{transform:'translateY(8px)'}} datasrc="user_icon" xmlns="http://www.w3.org/2000/svg" height={24}  width={24} viewBox="0 0 24 24">
+      <svg style={{transform:'translateY(8px)'}} datasrc="user_icon"  height={24}  width={24} viewBox="0 0 24 24">
               <g datasrc="user_icon" data-name="Layer 2">
                   <g datasrc="user_icon" fill="#3366ff" data-name="people">
                       <rect datasrc="user_icon" width="24" height="24" opacity="0"/>
@@ -774,7 +784,7 @@ destruct = () => {
      </button>
     <span className="sidedrawer_icon_separate"></span>
     <button datasrc="chat_icon" onClick={this.togglenav} className="menu_option" style={{background: '#fff',display:'flex'}}>
-     <svg style={{transform:'translateY(8px) translateX(-1px)'}} datasrc="chat_icon" xmlns="http://www.w3.org/2000/svg" height={24}  width={24} viewBox="0 0 24 24">
+     <svg style={{transform:'translateY(8px) translateX(-1px)'}} datasrc="chat_icon"  height={24}  width={24} viewBox="0 0 24 24">
       <g datasrc="chat_icon" data-name="Layer 2">
         <g datasrc="chat_icon" fill="#3366ff" dataName="message-square">
           <rect datasrc="chat_icon" width="24" height="24" opacity="0"/>
@@ -797,7 +807,7 @@ destruct = () => {
     <div className="nav-tabs-navigation">
       <div className="nav-tabs-wrapper">
         <ul style={{padding: 0}} className="nav nav-tabs" data-tabs="tabs">
-          <li style={{marginLeft: 0}} className="nav-item">
+          <li className="nav-item">
             <a id="members_tab" className="nav-link" href="#members" data-toggle="tab">Members</a>
           </li>
           <li className="nav-item">
@@ -809,8 +819,10 @@ destruct = () => {
     <div style={{height: '100%'}} className="tab-content text-center">
       <div style={{height: '100%'}} className="tab-pane active show" id="members">
       
+
       <ul style={{padding:'0px',height:'90%',overflow: "auto", listStyle:"none",width:'85%',paddingLeft:'12px'}}>
       {/* <li>
+
                   <div ref={this.localvideo} style={{"background":"#000"}} className="relative-localvideo">
                      <div className="videotools">
                    
@@ -863,7 +875,9 @@ destruct = () => {
       {/* {
                 Object.keys(this.state.streams).map((key, id) => {
                   if(this.state.streams[key].active ){
+
                   return    <li>
+
                   <div style={{"background":"#000"}}>
                      <div className="videotools">
                    
@@ -908,7 +922,7 @@ destruct = () => {
   <div className="chat_name">{this.state.members[child.user]}</div>
   <div className= {this.state.socket.id===child.user?" media_msg self_msg":"media_msg  other_msg"}><span className="media_file_name">{child.filename}</span>
     <span style={{paddingRight: '8px', cursor: 'pointer'}}>
-     <a target="_blank" href={child.filedata} download> <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
+     <a target="_blank" href={child.filedata} download> <svg   width={24} height={24} viewBox="0 0 24 24">
         <defs>
           <path id="prefix__download" d="M19 16c.55 0 1 .45 1 1v2c0 .51-.388.935-.884.993L19 20H5c-.55 0-1-.45-1-1v-2c0-.55.45-1 1-1s1 .45 1 1v1h12v-1c0-.55.45-1 1-1zM12 3c.553 0 1 .448 1 1v8l2.4-1.8c.442-.333 1.069-.242 1.4.2.332.442.242 1.069-.2 1.4l-4 3c-.177.133-.389.2-.6.2-.201 0-.402-.061-.575-.182l-4-2.814c-.452-.318-.561-.942-.243-1.393.318-.452.941-.561 1.393-.243l2.428 1.71L11 12V4c0-.552.447-1 1-1z" />
         </defs>
@@ -928,7 +942,7 @@ destruct = () => {
         <form className="media_form" onSubmit={this.sendmessage}>
           <span style={{cursor:'pointer'}} onClick={this.onBtnClick}>
             <input type="file" ref={this.inputFileRef} onChange={this.fileupload} style={{display: 'none'}} />
-            <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24">
+            <svg   width={24} height={24} viewBox="0 0 24 24">
               <defs>
                 <path id="prefix__file" d="M12 22c-3.309 0-6-2.557-6-5.698V6.132C6 3.854 7.944 2 10.333 2c2.39 0 4.334 1.854 4.334 4.132l-.006 10.177c0 1.414-1.197 2.565-2.667 2.565-1.47 0-2.666-1.151-2.666-2.566l.005-9.391c.001-.552.449-.999 1-.999h.001c.552 0 1 .448.999 1.001l-.005 9.39c0 .311.298.565.666.565.368 0 .667-.254.667-.566l.006-10.177C12.667 4.956 11.62 4 10.333 4 9.047 4 8 4.956 8 6.132v10.17C8 18.341 9.794 20 12 20s4-1.659 4-3.698V6.132c0-.553.448-1 1-1s1 .447 1 1v10.17C18 19.443 15.309 22 12 22" />
               </defs>
