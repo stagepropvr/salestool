@@ -1,6 +1,5 @@
 import React from 'react';
 import { Redirect } from "react-router-dom";
-import VideoCall from '../helpers/simple-peer';
 import '../../styles/video.css';
 import io from 'socket.io-client';
 import Peer from 'simple-peer'
@@ -69,7 +68,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
     this.muteclient=this.muteclient.bind(this);
 
   }
-  videoCall = new VideoCall();
+
 
   switch = () => {this.setState({Switchstatus:true})}
 
@@ -82,9 +81,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
         }
       }
   }
-setrtcstream(stream){
-  
-}
+
   componentDidMount() {
 
     this.setState({
@@ -143,13 +140,14 @@ setrtcstream(stream){
 
     promise.then( result => {
     
-    
+      this.state.socket.emit('join',  this.props.roomId );
       this.state.connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
-      this.state.connection.socketMessageEvent = 'video-conference-demo';
+  
 
       this.state.connection.session = {
           audio: true,
-          video: true
+          video: true,
+          data:true
       };
       this.state.connection.sdpConstraints.mandatory = {
           OfferToReceiveAudio: true,
@@ -166,7 +164,8 @@ var  videoConstraints = {
   height: {
       ideal: 720
   },
-  frameRate: 30
+  frameRate: 30,
+  deviceId:this.state.videoinput
 };
 
 this.state.connection.iceServers.push( {
@@ -177,36 +176,38 @@ this.state.connection.iceServers.push( {
 'stun:stun3.l.google.com:19302',
 'stun:stun4.l.google.com:19302',
   ]
-},
+});
+
+this.state.connection.iceServers.push(
 {
   'urls': 'turn:52.15.126.155:3478',
   'credential': 'revsmart123',
   'username': 'propvr'
-  });
-
-
-
+  }
+);
 
 this.state.connection.mediaConstraints = {
 video: videoConstraints,
-audio: true
+audio:{echoCancellation: true,
+  deviceId:this.state.audioinput}
 };
 this.state.connection.onstream = event => {
 console.log( event.stream.streamid );
 this.setState(ele => ({
   rtcstreams: [...ele.rtcstreams, event]
 }))
+
 console.log(this.state.rtcstreams);
+if(event.type==="local"){
+  this.setState({
+    localStream:event
+  })
+console.log(this.state.connection)
+}
 };
 this.state.connection.openOrJoin(this.props.roomId);
 
-    const component = this;
-    // this.setState({ socket });
-    const { roomId } = this.props;
-    this.getUserMedia().then(() => {
-      this.state.socket.emit('join', { roomId });
-     
-    });
+ 
 
     
     this.state.socket.on('closeRoom', () => {
@@ -215,91 +216,11 @@ this.state.connection.openOrJoin(this.props.roomId);
     });
 
 
-    this.state.socket.on('init', (data) => {
-      Firebase.database().ref("roomsession/"+this.props.roomId+"/members").update({
-        [this.state.socket.id]:"host"
-        })
-    
-        Firebase.database().ref("roomsession/"+this.props.roomId+"/hostid").set({
-    hostid:this.state.socket.id
-        })
-        
-
-      userId = data.userId;
-      this.state.socket.emit('ready', ({ room: roomId, userId:userId, name:"host" }));
-     
-      Firebase.database().ref("roomsession/"+this.props.roomId+"/members").on("value",(members)=>{
-          this.setState({
-            members:members.val()
-          })
-      });
-    });
-
-    this.state.socket.on("users", ({ initiator, users,name,usersocketid }) => {
 
 
-      Object.keys(users.sockets)
-        .filter(
-          sid =>
-            !this.state.peers[sid] && sid !== userId)
-        .forEach(sid => {
-          const peer = new Peer({
-            initiator: userId === initiator,
-            config: {
-              iceServers: [
-                {
-                    'urls': [
-                       'stun:stun.l.google.com:19302',
-                'stun:stun1.l.google.com:19302',
-                'stun:stun2.l.google.com:19302',
-                'stun:stun3.l.google.com:19302',
-                'stun:stun4.l.google.com:19302',
-                    ]
-                },
-                {
-                    'urls': 'turn:52.15.126.155:3478',
-                    'credential': 'revsmart123',
-                    'username': 'propvr'
-                    }
-            ]
-            },
-            // Allow the peer to receive video, even if it's not sending stream:
-            // https://github.com/feross/simple-peer/issues/95
-            offerConstraints: {
-              offerToReceiveAudio: true,
-              offerToReceiveVideo: true,
-            },
-            stream: this.state.localStream,
-            
-          })
+  
+  
 
-          peer.on('signal', data => {
-
-            const signal = {
-              userId: sid,
-              signal: data
-            };
-
-            this.state.socket.emit('signal', signal);
-          });
-          peer.on('stream', (stream)=> {
-
-            const streamsTemp = { ...this.state.streams }
-            streamsTemp[sid] = stream
-
-            // this.setState({ streams: streamsTemp })
-            // console.log(this.state.streams);
-          });
-          peer.on('error', function (err) {
-
-          });
-
-          const peersTemp = { ...this.state.peers }
-          peersTemp[sid] = peer
-
-          this.setState({ peers: peersTemp })
-        })
-    })
     this.state.socket.on('chat message',  msg  => {
       if(!document.getElementById('chat_tab').getAttribute("class").includes("active show")){
       this.setState({
@@ -318,9 +239,7 @@ this.state.connection.openOrJoin(this.props.roomId);
       peer.signal(signal)
     })
 
-    this.state.socket.on('disconnected', () => {
-      component.setState({ initiator: true });
-    });
+
     
 this.state.socket.on("switchimage",(url)=>{
 });
@@ -331,60 +250,55 @@ this.state.socket.on("switchimage",(url)=>{
 
   }
 
-  getUserMedia(cb) {
-    
-    return new Promise((resolve, reject) => {
-      navigator.getUserMedia = navigator.getUserMedia =
-        navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia;
-      const op = {
-        video: {
-          width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 },
-          deviceId:this.state.videoinput
-          
-        },
-        audio:{echoCancellation: true,
-          deviceId: this.state.audioinput} 
-      };
-      navigator.getUserMedia(
-        op,
-        stream => {
-          stream["name"]="karthik";
-          
-          this.setState({ streamUrl: stream, localStream: stream });
-          
-     //     this.localVideo.srcObject = stream;
-          resolve();
-        },
-        (err) => {
-         }
-      );
-    });
-  }
-
   setAudioLocal() {
-    
-    if (this.state.localStream.getAudioTracks().length > 0) {
-      this.state.localStream.getAudioTracks().forEach(track => {
-        track.enabled = !track.enabled;
+
+
+    this.state.connection.onmessage = (event)=> {
+      alert(event.userid + ' said: ' + event.data);
+  };
+   this.state.connection.send({
+      chatMessage: "fsafa",
+      senderFullName: 'Bob'
+  });
+    console.log(this.state.localStream)
+    if (this.state.localStream.stream.getAudioTracks().length > 0) {
+      this.state.localStream.stream.getAudioTracks().forEach(track => {
+        if(track.enabled){
+          this.state.localStream.stream.mute("audio");
+          this.setState({
+            micState: false
+          })
+        }
+        else{
+          this.state.localStream.stream.unmute("audio");
+          this.setState({
+            micState: true
+          })
+        }
       });
     }
-    this.setState({
-      micState: !this.state.micState
-    })
+   
   
   }
   setVideoLocal() {
-    if (this.state.localStream.getVideoTracks().length > 0) {
-      this.state.localStream.getVideoTracks().forEach(track => {
-        track.enabled = !track.enabled;
+    this.state.connection.send('hello everyone');
+    if (this.state.localStream.stream.getVideoTracks().length > 0) {
+      this.state.localStream.stream.getVideoTracks().forEach(track => {
+        if(track.enabled){
+          this.state.localStream.stream.mute("video");
+          this.setState({
+            camState: false
+          })
+        }
+        else{
+          this.state.localStream.stream.unmute("video");
+          this.setState({
+            camState: true
+          })
+        }
       });
     }
-    this.setState({
-      camState: !this.state.camState
-    })
+    
   }
 
   async changedevice(videoinput,audioinput) {
@@ -392,59 +306,62 @@ this.state.socket.on("switchimage",(url)=>{
   videoinput:videoinput,
   audioinput:audioinput
   });
-      var op = {
-        video: false,
-        audio:{echoCancellation: true,
-          deviceId:audioinput} 
-      };
-      await navigator.getUserMedia(
-        op,
-        stream => {
-          var streamremove=this.localVideo.srcObject;
-          streamremove.getTracks().forEach((track)=>{
-track.stop();
-      });
+this.state.connection.replaceTrack({
+  screen: true,
+  oneway: true
+});
+//   if(this.state.connection.mediaConstraints.video.optional.length && this.state.connection.attachStreams.length) {
+//     if(this.state.connection.mediaConstraints.video.optional[0].sourceId === videoinput) {
+//         alert('Selected video device is already selected.');
+//          return;
+//      }
+//  }
+
+//  this.state.connection.attachStreams.forEach((stream)=> {
+//   stream.getVideoTracks().forEach((track)=> {
+//     track.stop();
+// });
+//  });
+//  var mediaConstraints = {
+//   video: {
+//     width: { min: 160, ideal: 640, max: 1280 },
+//     height: { min: 120, ideal: 360, max: 720 },
+//     deviceId:this.state.videoinput
+    
+//   },
+//   audio:{echoCancellation: true,
+//     deviceId: this.state.audioinput} 
+// };
+//  navigator.mediaDevices.getUserMedia(mediaConstraints).then((frontCamera)=> {
+//   var frontCameraTrack = frontCamera.getVideoTracks()[0];
+//   this.state.connection.getAllParticipants().forEach((pid)=> {
+//      this.state.connection.peers[pid].peer.getSenders().forEach((sender)=> {
+//           if (sender.track.kind == 'video') {
+//               sender.replaceTrack(frontCameraTrack);
+//           }
+//       });
+//   });
+// });
+
+      
+  //  var  op = {
+  //       video: {
+  //         width: { min: 160, ideal: 640, max: 1280 },
+  //         height: { min: 120, ideal: 360, max: 720 },
+  //         deviceId: videoinput
           
-          Object.keys(this.state.peers).forEach((key)=>{
-            this.state.peers[key].removeStream(this.state.localStream);
-          })
-          this.setState({ streamUrl: stream, localStream: stream });
-          this.localVideo.srcObject = stream;
-            Object.keys(this.state.peers).forEach((key)=>{
-              this.state.peers[key].addStream(this.state.localStream);
-            })
-        },
-        () => { }
-      );
-     op = {
-        video: {
-          width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 },
-          deviceId: videoinput
-          
-        },
-        audio:{echoCancellation: true,
-          deviceId: this.state.audioinput} 
-      };
-     navigator.getUserMedia(
-        op,
-        stream => {
-      var streamremove=this.localVideo.srcObject;
-      //this.localVideo.srcObject=null;
-      streamremove.getTracks().forEach((track)=>{
-track.stop();
-  });
-          Object.keys(this.state.peers).forEach((key)=>{
-            this.state.peers[key].removeStream(this.state.localStream);
-          })
-          this.setState({ streamUrl: stream, localStream: stream });
-          this.localVideo.srcObject = stream;
-            Object.keys(this.state.peers).forEach((key)=>{
-              this.state.peers[key].addStream(this.state.localStream);
-            })
-        },
-        () => { }
-      );
+  //       },
+  //       audio:{echoCancellation: true,
+  //         deviceId: this.state.audioinput} 
+  //     };
+  //    navigator.getUserMedia(
+  //       op,
+  //       stream => {
+         
+  //         this.state.connection.attachStreams.push( stream );
+  //       },
+  //       () => { }
+  //     );
     }
 
   changeImage = (str) => {
@@ -544,6 +461,9 @@ track.stop();
   }
   sendmessage(e){
     e.preventDefault();
+
+
+    
     const message = {
       room: this.props.roomId,
       user: this.state.socket.id,
