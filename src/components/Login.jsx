@@ -225,72 +225,88 @@ googleSignin = () => {
         return( 
             <>
         <div style={{width:"100%"}} className="page-header header-filter">
-		<div  className="login_container container">
+		<div  className="login_container container " >
 			<div  className="login_container row">
-				<div style={{padding:"0"}} className="col-sm-4">
-                    <div className="login_card card card-signup">
-                        <a className="login_logo">
-                            <svg width="72" height="39" viewBox="0 0 72 39" fill="none">
-                                <rect width="72" height="39" fill="url(#pattern0)"/>
-                                <defs>
-                                <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
-                                <use href="#image0" transform="scale(0.00970874 0.0178571)"/>
-                                </pattern>
-                                <image id="image0" width="103" height="56" href="data:image/png;base64,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"/>
-                                </defs>
-                                </svg>
-                            <span>prop vr</span>                
-                        </a>
-                        <h2 style={{paddingTop: "25px"}} className="Welcome-to-Prop-VR">Hello! Welcome back!</h2>
-                            <p className="Have-an-account-alre">New to Prop VR?   <Link style={{paddingLeft: "10px"}} to="/signup" className="login_span">Sign up</Link></p>
-						<form onSubmit={this.handlelogin} className="form" style={{paddingTop: "12px"}}>
-							<div className="card-content">							
-									<div className="form-group">
-                                        <label className="input_Label">
-                                            User name
-                                        </label>
-                                        <input onChange={this.handlechange} id="email" name="email" type="email" className="input_box form-control" placeholder="Enter your email address"/>
-                                    </div>
-			
-                                    <div className="form-group">
-                                        <label className="input_Label">
-                                            Password
-                                        </label>
-                                        <input onChange={this.handlechange} id="password" name="password" type="password" className="input_box form-control" placeholder="Enter your password" />
-                                    </div>
+            {/* image Col */}
+            <div style={{padding:"0", maxHeight:'100vh', position:"relative"}} className="col-sm-5 d-none d-sm-block">
+                <img style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
+                <div className="loginNew_logo">
+                    <svg width="72" height="39" viewBox="0 0 72 39" fill="none">
+                        <rect width="72" height="39" fill="url(#pattern0)"/>
+                        <defs>
+                        <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                        <use href="#image0" transform="scale(0.00970874 0.0178571)"/>
+                        </pattern>
+                        <image id="image0" width="103" height="56" href="data:image/png;base64,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"/>
+                        </defs>
+                    </svg>
+                    <span>prop vr</span>                
+                </div>
+                
+                <div class="loginNew_center">
+                    <h3>Create, Collaborate and Share</h3>
+                    <p>Prop VR allows you to create, collaborate and share virtual tour experience of your properties with your customers. Take your customers for a virtual-guided tour and increase sales. </p>
+                </div>
 
-                                    <div onClick={this.openmodal} className="form-group">
-                                        <span className="login_span">
-                                            Forgot password?
-                                        </span>
-                                    </div>
+                <div class="loginNew_bottom">
+                    <p>Trusted by India’s top real-estate companies</p>   
+                </div>
+                
+            </div>
+				
+            {/* Form Col */}
+            <div style={{padding:"0", textAlign:'center', width:"100%"}} className="col-sm-7 col-xs-12">
+                <div className="login_card card card-signup" style={{justifyContent:'center', padding:'0px 20% 0px 20%'}}>
+                    <h2 style={{paddingTop: "25px"}} className="Welcome-to-Prop-VR">Hello! Welcome back!</h2>
+                        <p className="Have-an-account-alre">New to Prop VR?   <Link style={{paddingLeft: "10px"}} to="/signup" className="login_span">Sign up</Link></p>
+                    <form onSubmit={this.handlelogin} className="form" style={{paddingTop: "12px", textAlign:'left'}}>
+                        <div className="card-content">							
+                                <div className="form-group">
+                                    <label className="input_Label">
+                                        User name
+                                    </label>
+                                    <input onChange={this.handlechange} id="email" name="email" type="email" className="input_box form-control" placeholder="Enter your email address"/>
+                                </div>
+        
+                                <div className="form-group">
+                                    <label className="input_Label">
+                                        Password
+                                    </label>
+                                    <input onChange={this.handlechange} id="password" name="password" type="password" className="input_box form-control" placeholder="Enter your password" />
+                                </div>
 
-                                    <div id="exception" className="form-group">
-                                        <span className="input_error input_error_hide">
-                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>  
-                                            {this.state.exception}
-                                        </span>
-                                    </div>
+                                <div onClick={this.openmodal} className="form-group">
+                                    <span className="login_span">
+                                        Forgot password?
+                                    </span>
+                                </div>
 
-                                    <div style={{textAlign: "center"}} className="form-group">
-                                    <button id="submit" type="submit" className="btn input_button">Login</button>
-                                    <button style={{cursor: "progress",display:'none'}} id="loader" type="button" className="btn input_button" disabled>
-                                    <i id="loginloader" className="fa fa-circle-o-notch fa-spin" style={{ fontSize: "1rem", color: "white", paddingRight: 2, paddingLeft: 2 }}></i>
-                                    </button>
-                                    </div>
-							</div>
-                        </form>
-                        
-                        <div className="join_now">
-                        <span>or join with other accounts</span>
+                                <div id="exception" className="form-group">
+                                    <span className="input_error input_error_hide">
+                                        <i className="fa fa-exclamation-circle" aria-hidden="true"></i>  
+                                        {this.state.exception}
+                                    </span>
+                                </div>
+
+                                <div style={{textAlign: "center"}} className="form-group">
+                                <button id="submit" type="submit" className="btn input_button">Login</button>
+                                <button style={{cursor: "progress",display:'none'}} id="loader" type="button" className="btn input_button" disabled>
+                                <i id="loginloader" className="fa fa-circle-o-notch fa-spin" style={{ fontSize: "1rem", color: "white", paddingRight: 2, paddingLeft: 2 }}></i>
+                                </button>
+                                </div>
                         </div>
-                        <div style={{textAlign: "center"}}>
-                            <button className="btn google_button" onClick={this.googleSignin} >
-                                <i className="fa fa-google" aria-hidden="true"></i> Sign In with Google
-                              </button>
-                        </div>
-					</div>
-				</div>
+                    </form>
+                    
+                    <div className="join_now">
+                    <span>or join with other accounts</span>
+                    </div>
+                    <div style={{textAlign: "center"}}>
+                        <button className="btn google_button" onClick={this.googleSignin} >
+                            <i className="fa fa-google" aria-hidden="true"></i> Sign In with Google
+                            </button>
+                    </div>
+                </div>
+            </div>
 			</div>
 		</div>
 	</div>
