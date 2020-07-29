@@ -1,6 +1,5 @@
 import React from 'react';
 import { Redirect } from "react-router-dom";
-import VideoCall from '../helpers/simple-peer';
 import '../../styles/video.css';
 import io from 'socket.io-client';
 import Peer from 'simple-peer'
@@ -9,6 +8,7 @@ import Scene from "./Scene";
 import Firebase from "../../config/Firebase";
 import SceneControls from "./SceneControls.js";
 import Switchprojectloader from './Switchprojectloader';
+import * as RTCMultiConnection from 'rtcmulticonnection';
 
 let userId = null
 
@@ -28,7 +28,7 @@ class Video extends React.Component {
       peers: {},
       streams: {},
       current_image: "",
-      socket: io.connect("localhost:5000"),
+      socket: io.connect("reactserver.propvr.tech"),
       host: true,
       apiload: true,
       images:"",
@@ -48,6 +48,9 @@ class Video extends React.Component {
       name:localStorage.getItem("name"),
       Switchstatus:false,
       messagescount:0,
+      connection : new RTCMultiConnection(),
+      rtcstreams:[]
+
         };
     
     this.Sidenav = React.createRef();
@@ -65,7 +68,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
     this.muteclient=this.muteclient.bind(this);
 
   }
-  videoCall = new VideoCall();
+
 
   switch = () => {this.setState({Switchstatus:true})}
 
@@ -137,16 +140,77 @@ this.audioallctrl=this.audioallctrl.bind(this);
 
     promise.then( result => {
     
-    
+      this.state.socket.emit('join',  this.props.roomId );
+      this.state.connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+  
 
 
-    const component = this;
-    // this.setState({ socket });
-    const { roomId } = this.props;
-    this.getUserMedia().then(() => {
-      this.state.socket.emit('join', { roomId });
-     
-    });
+      this.state.connection.session = {
+          audio: true,
+          video: true,
+          data:true
+      };
+      this.state.connection.sdpConstraints.mandatory = {
+          OfferToReceiveAudio: true,
+          OfferToReceiveVideo: true
+      };
+      var bitrates = 512;
+
+
+
+var  videoConstraints = {
+  width: {
+      ideal: 1280
+  },
+  height: {
+      ideal: 720
+  },
+  frameRate: 30,
+  deviceId:this.state.videoinput
+};
+
+this.state.connection.iceServers.push( {
+  'urls': [
+     'stun:stun.l.google.com:19302',
+'stun:stun1.l.google.com:19302',
+'stun:stun2.l.google.com:19302',
+'stun:stun3.l.google.com:19302',
+'stun:stun4.l.google.com:19302',
+  ]
+});
+
+this.state.connection.iceServers.push(
+{
+  'urls': 'turn:52.15.126.155:3478',
+  'credential': 'revsmart123',
+  'username': 'propvr'
+  }
+);
+
+this.state.connection.mediaConstraints = {
+video: videoConstraints,
+audio:{echoCancellation: true,
+  deviceId:this.state.audioinput}
+};
+this.state.connection.onstream = event => {
+console.log( event.stream.streamid );
+this.setState(ele => ({
+  rtcstreams: [...ele.rtcstreams, event]
+}))
+
+console.log(this.state.rtcstreams);
+if(event.type==="local"){
+  this.setState({
+    localStream:event
+  })
+console.log(this.state.connection)
+}
+};
+this.state.connection.openOrJoin(this.props.roomId);
+
+
+ 
+
 
     
     this.state.socket.on('closeRoom', () => {
@@ -155,81 +219,13 @@ this.audioallctrl=this.audioallctrl.bind(this);
     });
 
 
-    this.state.socket.on('init', (data) => {
-      Firebase.database().ref("roomsession/"+this.props.roomId+"/members").update({
-        [this.state.socket.id]:"host"
-        })
-    
-        Firebase.database().ref("roomsession/"+this.props.roomId+"/hostid").set({
-    hostid:this.state.socket.id
-        })
-        
-
-      userId = data.userId;
-      this.state.socket.emit('ready', ({ room: roomId, userId:userId, name:"host" }));
-     
-      Firebase.database().ref("roomsession/"+this.props.roomId+"/members").on("value",(members)=>{
-          this.setState({
-            members:members.val()
-          })
-      });
-    });
-
-    this.state.socket.on("users", ({ initiator, users,name,usersocketid }) => {
 
 
-      Object.keys(users.sockets)
-        .filter(
-          sid =>
-            !this.state.peers[sid] && sid !== userId)
-        .forEach(sid => {
-          const peer = new Peer({
-            initiator: userId === initiator,
-            config: {
-              iceServers: [
-                {
-                  urls: 'turn:52.15.126.155:3478',
-                  credential: 'revsmart123',
-                  username: 'propvr' 
-                                      }
-              ]
-            },
-            // Allow the peer to receive video, even if it's not sending stream:
-            // https://github.com/feross/simple-peer/issues/95
-            offerConstraints: {
-              offerToReceiveAudio: true,
-              offerToReceiveVideo: true,
-            },
-            stream: this.state.localStream,
-            
-          })
 
-          peer.on('signal', data => {
 
-            const signal = {
-              userId: sid,
-              signal: data
-            };
+  
+  
 
-            this.state.socket.emit('signal', signal);
-          });
-          peer.on('stream', (stream)=> {
-
-            const streamsTemp = { ...this.state.streams }
-            streamsTemp[sid] = stream
-
-            this.setState({ streams: streamsTemp })
-          });
-          peer.on('error', function (err) {
-
-          });
-
-          const peersTemp = { ...this.state.peers }
-          peersTemp[sid] = peer
-
-          this.setState({ peers: peersTemp })
-        })
-    })
     this.state.socket.on('chat message',  msg  => {
       if(!document.getElementById('chat_tab').getAttribute("class").includes("active show")){
       this.setState({
@@ -248,9 +244,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
       peer.signal(signal)
     })
 
-    this.state.socket.on('disconnected', () => {
-      component.setState({ initiator: true });
-    });
+
     
 this.state.socket.on("switchimage",(url)=>{
 });
@@ -261,60 +255,57 @@ this.state.socket.on("switchimage",(url)=>{
 
   }
 
-  getUserMedia(cb) {
-    
-    return new Promise((resolve, reject) => {
-      navigator.getUserMedia = navigator.getUserMedia =
-        navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia;
-      const op = {
-        video: {
-          width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 },
-          deviceId:this.state.videoinput
-          
-        },
-        audio:{echoCancellation: true,
-          deviceId: this.state.audioinput} 
-      };
-      navigator.getUserMedia(
-        op,
-        stream => {
-          stream["name"]="karthik";
-          
-          this.setState({ streamUrl: stream, localStream: stream });
-          
-          this.localVideo.srcObject = stream;
-          resolve();
-        },
-        (err) => {
-         }
-      );
-    });
-  }
 
+ 
   setAudioLocal() {
-    
-    if (this.state.localStream.getAudioTracks().length > 0) {
-      this.state.localStream.getAudioTracks().forEach(track => {
-        track.enabled = !track.enabled;
+
+
+    this.state.connection.onmessage = (event)=> {
+      alert(event.userid + ' said: ' + event.data);
+  };
+   this.state.connection.send({
+      chatMessage: "fsafa",
+      senderFullName: 'Bob'
+  });
+    console.log(this.state.localStream)
+    if (this.state.localStream.stream.getAudioTracks().length > 0) {
+      this.state.localStream.stream.getAudioTracks().forEach(track => {
+        if(track.enabled){
+          this.state.localStream.stream.mute("audio");
+          this.setState({
+            micState: false
+          })
+        }
+        else{
+          this.state.localStream.stream.unmute("audio");
+          this.setState({
+            micState: true
+          })
+        }
       });
     }
-    this.setState({
-      micState: !this.state.micState
-    })
+   
   
   }
   setVideoLocal() {
-    if (this.state.localStream.getVideoTracks().length > 0) {
-      this.state.localStream.getVideoTracks().forEach(track => {
-        track.enabled = !track.enabled;
+    this.state.connection.send('hello everyone');
+    if (this.state.localStream.stream.getVideoTracks().length > 0) {
+      this.state.localStream.stream.getVideoTracks().forEach(track => {
+        if(track.enabled){
+          this.state.localStream.stream.mute("video");
+          this.setState({
+            camState: false
+          })
+        }
+        else{
+          this.state.localStream.stream.unmute("video");
+          this.setState({
+            camState: true
+          })
+        }
       });
     }
-    this.setState({
-      camState: !this.state.camState
-    })
+    
   }
 
   async changedevice(videoinput,audioinput) {
@@ -322,59 +313,64 @@ this.state.socket.on("switchimage",(url)=>{
   videoinput:videoinput,
   audioinput:audioinput
   });
-      var op = {
-        video: false,
-        audio:{echoCancellation: true,
-          deviceId:audioinput} 
-      };
-      await navigator.getUserMedia(
-        op,
-        stream => {
-          var streamremove=this.localVideo.srcObject;
-          streamremove.getTracks().forEach((track)=>{
-track.stop();
-      });
+
+this.state.connection.replaceTrack({
+  screen: true,
+  oneway: true
+});
+//   if(this.state.connection.mediaConstraints.video.optional.length && this.state.connection.attachStreams.length) {
+//     if(this.state.connection.mediaConstraints.video.optional[0].sourceId === videoinput) {
+//         alert('Selected video device is already selected.');
+//          return;
+//      }
+//  }
+
+//  this.state.connection.attachStreams.forEach((stream)=> {
+//   stream.getVideoTracks().forEach((track)=> {
+//     track.stop();
+// });
+//  });
+//  var mediaConstraints = {
+//   video: {
+//     width: { min: 160, ideal: 640, max: 1280 },
+//     height: { min: 120, ideal: 360, max: 720 },
+//     deviceId:this.state.videoinput
+    
+//   },
+//   audio:{echoCancellation: true,
+//     deviceId: this.state.audioinput} 
+// };
+//  navigator.mediaDevices.getUserMedia(mediaConstraints).then((frontCamera)=> {
+//   var frontCameraTrack = frontCamera.getVideoTracks()[0];
+//   this.state.connection.getAllParticipants().forEach((pid)=> {
+//      this.state.connection.peers[pid].peer.getSenders().forEach((sender)=> {
+//           if (sender.track.kind == 'video') {
+//               sender.replaceTrack(frontCameraTrack);
+//           }
+//       });
+//   });
+// });
+
+      
+  //  var  op = {
+  //       video: {
+  //         width: { min: 160, ideal: 640, max: 1280 },
+  //         height: { min: 120, ideal: 360, max: 720 },
+  //         deviceId: videoinput
           
-          Object.keys(this.state.peers).forEach((key)=>{
-            this.state.peers[key].removeStream(this.state.localStream);
-          })
-          this.setState({ streamUrl: stream, localStream: stream });
-          this.localVideo.srcObject = stream;
-            Object.keys(this.state.peers).forEach((key)=>{
-              this.state.peers[key].addStream(this.state.localStream);
-            })
-        },
-        () => { }
-      );
-     op = {
-        video: {
-          width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 },
-          deviceId: videoinput
-          
-        },
-        audio:{echoCancellation: true,
-          deviceId: this.state.audioinput} 
-      };
-     navigator.getUserMedia(
-        op,
-        stream => {
-      var streamremove=this.localVideo.srcObject;
-      //this.localVideo.srcObject=null;
-      streamremove.getTracks().forEach((track)=>{
-track.stop();
-  });
-          Object.keys(this.state.peers).forEach((key)=>{
-            this.state.peers[key].removeStream(this.state.localStream);
-          })
-          this.setState({ streamUrl: stream, localStream: stream });
-          this.localVideo.srcObject = stream;
-            Object.keys(this.state.peers).forEach((key)=>{
-              this.state.peers[key].addStream(this.state.localStream);
-            })
-        },
-        () => { }
-      );
+  //       },
+  //       audio:{echoCancellation: true,
+  //         deviceId: this.state.audioinput} 
+  //     };
+  //    navigator.getUserMedia(
+  //       op,
+  //       stream => {
+         
+  //         this.state.connection.attachStreams.push( stream );
+  //       },
+  //       () => { }
+  //     );
+
     }
 
   changeImage = (str) => {
@@ -464,16 +460,21 @@ track.stop();
     if(this.Sidenav.current.style.width==="320px"){
       this.Sidenav.current.style.width="0px";
           this.bottom.current.style.width="100%";
-          this.localvideo.current.classList.add('relative-localvideo');
+     //     this.localvideo.current.classList.add('relative-localvideo');
     }
     else{
       this.Sidenav.current.style.width="320px";
-      this.localvideo.current.classList.remove('relative-localvideo');
+
+      // this.localvideo.current.classList.remove('relative-localvideo');
+
       this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
     }
   }
   sendmessage(e){
     e.preventDefault();
+
+
+    
     const message = {
       room: this.props.roomId,
       user: this.state.socket.id,
@@ -680,8 +681,10 @@ this.state.socket.emit('audioctrl', data);
           <input ref={this.audioctrl} onChange={this.audioallctrl} type="checkbox"/>
           <label className="mute_all">Mute all</label>
           </div>
-      <ul className="video_div" style={{padding:'0px',height:'90%',overflowX:'hidden',overflowY: "auto", listStyle:"none",width:'85%',paddingLeft:'12px'}}>
-      <li className="video_content">
+
+      <ul style={{padding:'0px',height:'90%',overflow: "auto", listStyle:"none",width:'85%',paddingLeft:'12px'}}>
+      {/* <li>
+
                   <div ref={this.localvideo} style={{"background":"#000"}} className="relative-localvideo">
                      <div className="videotools">
                    
@@ -695,12 +698,47 @@ this.state.socket.emit('audioctrl', data);
                 ref={video => (this.localVideo = video)}
               />
                   </div>
+               </li> */}
+   {this.state.rtcstreams.map((key)=>{
+     console.log(key.stream);
+     return(
+      <li>
+      <div style={{"background":"#000"}}>
+         <div className="videotools">
+          <button id={key} onClick={() => this.muteclient(key)} mic="false" className="menu_option video_on guest_video_mute video_mute_option">
+            <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" id={key+"micon"}>
+               <path fill="#222B45" fillRule="evenodd" d="M13 17.92V20h2.105c.493 0 .895.402.895.895v.21c0 .493-.402.895-.895.895h-6.21C8.402 22 8 21.598 8 21.106v-.211c0-.493.402-.895.895-.895H11v-2.08c-3.387-.488-6-3.4-6-6.92 0-.552.447-1 1-1 .553 0 1 .448 1 1 0 2.757 2.243 5 5 5s5-2.243 5-5c0-.552.447-1 1-1 .553 0 1 .448 1 1 0 3.52-2.613 6.432-6 6.92zM10 6c0-1.103.897-2 2-2s2 .897 2 2v5c0 1.103-.897 2-2 2s-2-.897-2-2V6zm2 9c2.206 0 4-1.794 4-4V6c0-2.205-1.794-4-4-4S8 3.795 8 6v5c0 2.206 1.794 4 4 4z" />
+            </svg>
+            <svg width={18} height={18} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id={key+"micoff"} style={{"display":"none"}}>
+            <g data-name="Layer 2">
+               <g data-name="mic-off">
+                  <rect width={24} height={24} opacity={0} />
+                  <path fill="#fff" d="M10 6a2 2 0 0 1 4 0v5a1 1 0 0 1 0 .16l1.6 1.59A4 4 0 0 0 16 11V6a4 4 0 0 0-7.92-.75L10 7.17z" />
+                  <path fill="#fff" d="M19 11a1 1 0 0 0-2 0 4.86 4.86 0 0 1-.69 2.48L17.78 15A7 7 0 0 0 19 11z" />
+                  <path fill="#fff" d="M12 15h.16L8 10.83V11a4 4 0 0 0 4 4z" />
+                  <path fill="#fff" d="M20.71 19.29l-16-16a1 1 0 0 0-1.42 1.42l16 16a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z" />
+                  <path fill="#fff" d="M15 20h-2v-2.08a7 7 0 0 0 1.65-.44l-1.6-1.6A4.57 4.57 0 0 1 12 16a5 5 0 0 1-5-5 1 1 0 0 0-2 0 7 7 0 0 0 6 6.92V20H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2z" />
+               </g>
+            </g>
+            </svg>
+         </button>
+           <span className="guest_video_name video_name_option">{this.state.members[key]}</span>
+         
+      </div>
+      <VideoItem
+      key={"sff"}
+      userId={"Asdsa"}
+      stream={key.stream}
+    />
+      </div>
                </li>
-   
-      {
+     )
+   })}
+      {/* {
                 Object.keys(this.state.streams).map((key, id) => {
                   if(this.state.streams[key].active ){
-                  return    <li className="video_content">
+               return    <li>
+
                   <div style={{"background":"#000"}}>
                      <div className="videotools">
                       <button id={key} onClick={() => this.muteclient(key)} mic="false" className="menu_option video_on guest_video_mute video_mute_option">
@@ -742,7 +780,7 @@ this.state.socket.emit('audioctrl', data);
                       <></>
                     )
                   }  })
-              }
+              } */}
               </ul>
       </div>
       <div style={{height: '100%'}} className="tab-pane" id="chat">

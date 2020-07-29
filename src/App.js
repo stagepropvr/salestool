@@ -16,6 +16,7 @@ import Tools from './components/Tools';
 
 import { goToRoomInput } from './components/goToRoomInput';
 import SalespageClient from './Layouts/SalespageClient';
+import RTC from './components/RTC';
 class App extends Component {
 
   
@@ -27,6 +28,7 @@ class App extends Component {
           
       <Router >
        <Switch> 
+       <Route  path='/'  exact component={RTC} />
         <Route  path='/login' component={Login} />
         {/* <Route  path='/' exa ct component={MapModal} /> */}
 
