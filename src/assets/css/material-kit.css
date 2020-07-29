@@ -19408,6 +19408,12 @@ transform: translate(0, -50%);
 }
 
 
+.login_card_Mobile{
+  height: 100%;
+    margin: 0;
+    border-radius: 0;
+}
+
 .Have-an-account-alre {
   font-family: 'propvr';
   font-size: 13px;
@@ -20916,5 +20922,34 @@ select{
   position: absolute;
   background: #fff;
 
+}
+
+.JoiningForm{
+  padding: 0px 25% 0px 25%;
+}
+
+.BlueBG{
+  text-align: left;
+  background-color: #3366ff;
+  padding: 20px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+}
+
+.BlueBG>p{
+  color:white;
+  padding: 10px 0px 10px 0px;
+}
+
+.BlueBG>h1{
+  font-size: 26px;
+  color:white;
+  padding: 25px 0px 10px 0px;
+}
+
+.form_Mobile{
+  padding: 20px;
+  align-self: center;
 }
 /*# sourceMappingURL=kit-free.css.map */

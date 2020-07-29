@@ -224,11 +224,11 @@ googleSignin = () => {
     else{
         return( 
             <>
-        <div style={{width:"100%"}} className="page-header header-filter">
-		<div  className="login_container container " >
+        <div style={{width:"100%"}} className="page-header header-filter d-none d-sm-block">
+		<div  className="login_container container  " >
 			<div  className="login_container row">
             {/* image Col */}
-            <div style={{padding:"0", maxHeight:'100vh', position:"relative"}} className="col-sm-5 d-none d-sm-block">
+            <div style={{padding:"0", maxHeight:'100vh', position:"relative"}} className="col-sm-5">
                 <img style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
                 <div className="loginNew_logo">
                     <svg width="72" height="39" viewBox="0 0 72 39" fill="none">
@@ -361,6 +361,121 @@ googleSignin = () => {
         </div>
       </div>
     </div>
+    </div>
+
+{/* Mobile */}
+    <div style={{width:"100%"}} className="page-header header-filter d-sm-none">
+		<div  className="login_container container  " >
+			<div  className="login_container row">
+            {/* Form Col */}
+            <div style={{padding:"0", textAlign:'center', width:"100%"}} className="col-sm-7 col-xs-12">
+                <div className="login_card card card-signup" style={{justifyContent:'center'}}>
+                    <h2 style={{paddingTop: "25px"}} className="Welcome-to-Prop-VR">Hello! Welcome back!</h2>
+                        <p className="Have-an-account-alre">New to Prop VR?   <Link style={{paddingLeft: "10px"}} to="/signup" className="login_span">Sign up</Link></p>
+                    <form onSubmit={this.handlelogin} className="form" style={{paddingTop: "12px", textAlign:'left'}}>
+                        <div className="card-content">							
+                                <div className="form-group">
+                                    <label className="input_Label">
+                                        User name
+                                    </label>
+                                    <input onChange={this.handlechange} id="email" name="email" type="email" className="input_box form-control" placeholder="Enter your email address"/>
+                                </div>
+        
+                                <div className="form-group">
+                                    <label className="input_Label">
+                                        Password
+                                    </label>
+                                    <input onChange={this.handlechange} id="password" name="password" type="password" className="input_box form-control" placeholder="Enter your password" />
+                                </div>
+
+                                <div onClick={this.openmodal} className="form-group">
+                                    <span className="login_span">
+                                        Forgot password?
+                                    </span>
+                                </div>
+
+                                <div id="exception" className="form-group">
+                                    <span className="input_error input_error_hide">
+                                        <i className="fa fa-exclamation-circle" aria-hidden="true"></i>  
+                                        {this.state.exception}
+                                    </span>
+                                </div>
+
+                                <div style={{textAlign: "center"}} className="form-group">
+                                <button id="submit" type="submit" className="btn input_button">Login</button>
+                                <button style={{cursor: "progress",display:'none'}} id="loader" type="button" className="btn input_button" disabled>
+                                <i id="loginloader" className="fa fa-circle-o-notch fa-spin" style={{ fontSize: "1rem", color: "white", paddingRight: 2, paddingLeft: 2 }}></i>
+                                </button>
+                                </div>
+                        </div>
+                    </form>
+                    
+                    <div className="join_now">
+                    <span>or join with other accounts</span>
+                    </div>
+                    <div style={{textAlign: "center"}}>
+                        <button className="btn google_button" onClick={this.googleSignin} >
+                            <i className="fa fa-google" aria-hidden="true"></i> Sign In with Google
+                            </button>
+                    </div>
+                </div>
+            </div>
+			</div>
+		</div>
+	</div>
+
+    <div className="modal" style={{display: this.state.modal==true? 'block':'none'}} id="forget_modal" tabIndex="-1" role="dialog">
+    <div className="modal-dialog" role="document">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 style={{color: "#222b45"}} className="modal-title">Password Reset Email</h5>
+          <button onClick={this.closemodal} type="button" className="close" data-dismiss="modal" aria-label="Close">
+            
+            
+            <span aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24">
+                <defs>
+                    <path id="prefix__close" d="M7.414 6l4.293-4.293c.391-.391.391-1.023 0-1.414-.39-.391-1.023-.391-1.414 0L6 4.586 1.707.293C1.317-.098.684-.098.293.293c-.39.391-.39 1.023 0 1.414L4.586 6 .293 10.293c-.39.391-.39 1.023 0 1.414.195.195.451.293.707.293.256 0 .512-.098.707-.293L6 7.414l4.293 4.293c.195.195.451.293.707.293.256 0 .512-.098.707-.293.391-.391.391-1.023 0-1.414L7.414 6z"></path>
+                </defs>
+                <g fill="none" fillRule="evenodd" transform="translate(6 6)">
+                    <use fill="#222B45" href="#prefix__close"></use>
+                </g>
+            </svg></span>
+          </button>
+
+        </div>
+        <div className="modal-body">          
+        <hr style={{marginTop: "-4px"}}></hr>
+                    <div className="form-group">
+                                    <label className="input_Label">Registered Email Address
+                                    </label>
+                                    <input onChange={this.handlechange} name="forget_email" id="forget_email" type="email" className="input_box form-control" placeholder="Enter your email address" />
+                                    <small id="email_exception" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            Email is <sup>*</sup> required
+                                        </span>
+                                        
+                                        </small>
+                                        <small id="other_exception" className="form-text text-muted">
+                                            <span className="input_error input_error_hide">
+                                                <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                               
+                                            </span>
+                                            
+                                            </small>
+                                </div>
+        </div>
+        <div style={{display: 'block',marginTop: '-20px'}} className="modal-footer">
+            <hr></hr>
+                <center className="modal_button_div">
+                <button onClick={this.forgetpass} style={{marginLeft: "20px"}} type="button" className="btn proceed">Send request</button>
+                </center>
+        </div>
+      </div>
+    </div>
+
+    
     </div>
     </>
     )

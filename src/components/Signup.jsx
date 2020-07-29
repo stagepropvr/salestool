@@ -69,15 +69,13 @@ class Signup extends React.Component {
 handleregister(event){
     event.preventDefault();
 
-    if(this.state.name!='' && this.state.cname!='' && this.state.email!='' && this.state.number!='' && this.state.password!=''){
+    if(this.state.name!='' && this.state.email!='' && this.state.password!=''){
 
         var alpha = /^[a-zA-Z-,]+(\s{0,1}[a-zA-Z-, ])*$/;
         if(this.state.name.match(alpha)){
 
             var email=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             if(this.state.email.match(email)){
-                var phoneno = /^\d{10}$/;
-                if(this.state.number.match(phoneno)){
                     document.getElementById('submit').style.display='none';
                     document.getElementById('loader').style.display='inline-block';
                     
@@ -104,16 +102,6 @@ handleregister(event){
                             exception:err.message
                         })
                     })
-              
-            }
-                else{
-                    document.getElementById('number').classList.add('input_error_border');
-                    document.getElementById('other_exception').style.display='block';
-                    document.getElementById('other_exception').childNodes[0].classList.remove('input_error_hide');
-                    this.setState({
-                        exception:'Contains only Numbers[0-9] and length is upto 10'
-                    })
-                }
             }
             else{
                 document.getElementById('email').classList.add('input_error_border');
@@ -211,7 +199,8 @@ SignupWithGoogle(){
     }
     else{
         return( 
-        <div style={{width:'100%', height:'100vh'}} className="header-filter">
+            <>
+        <div style={{width:'100%', height:'100vh'}} className="header-filter d-none d-sm-block">
 		<div  className="login_container container">
 			<div  className="login_container row">
             {/* image Col */}
@@ -352,7 +341,125 @@ SignupWithGoogle(){
 				</div>
 			</div>
 		</div>
-    </div> )
+    </div>
+
+    {/* Mobile */}
+    <div style={{width:'100%', height:'100vh'}} className="header-filter d-sm-none">
+		<div  className="login_container container">
+			<div  className="login_container row">
+   			
+            {/* Form Col */}
+            <div style={{padding:"0", textAlign:'center', width:"100%"}} className="col-sm-7 col-xs-12">
+                   <div className="login_card card card-signup" style={{justifyContent:'center'}}>
+                        <h2 className="Welcome-to-Prop-VR" style={{paddingTop: "25px"}}>Welcome to Prop VR!</h2>
+                            <p className="Have-an-account-alre">Have an account already?   <Link style={{paddingLeft: "10px"}} to="/login" className="login_span">Login</Link>
+                            </p>
+						<form onSubmit={this.handleregister} className="form" style={{paddingTop: "25px", textAlign:'left'}}>
+							<div className="card-content">							
+        
+                                    <div className="form-group">
+                                        <label className="input_Label">
+                                            Email ID
+                                        </label>
+                                        <input onChange={this.handlechange} value={this.state.email} type="email" id="email" name="email" className="input_box form-control" placeholder="Enter your email address" />
+                                        <small id="email_error" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                          Email Address <sup>*</sup> is required
+                                        </span>
+                                        
+                                        </small>
+                                    </div>
+
+                                    
+                                    <div className="form-group">
+                                        <label className="input_Label">
+                                            Name
+                                        </label>
+                                        <input value={this.state.name} onChange={this.handlechange} type="text" id="name" name="name" className="input_box form-control" placeholder="Enter your full name" />
+                                        <small id="name_error" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            Name is <sup>*</sup> required
+                                        </span>
+                                        
+                                        </small>
+                                    </div>
+								
+                                    {/* <div className="form-group">
+                                        <label className="input_Label">
+                                            Company name
+                                        </label>
+                                        <input onChange={this.handlechange} type="text" id="cname" name="cname" className="input_box form-control" placeholder="Enter the company name" />
+                                        <small id="cname_error" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            Company name is <sup>*</sup>required
+                                        </span>
+                                        
+                                        </small>
+                                        </div> */}
+
+
+                                    {/* <div className="form-group">
+                                        <label className="input_Label">
+                                            Phone number
+                                        </label>
+                                        <input onChange={this.handlechange} type="text" id="number" name="number" className="input_box form-control" placeholder="Enter your 10-digit phone number" />
+                                        <small id="number_error" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            Number is <sup>*</sup> required
+                                        </span>
+                                        
+                                        </small>
+                                    </div> */}
+
+                                    <div className="form-group">
+                                        <label className="input_Label">
+                                            Password
+                                        </label>
+                                        <input onChange={this.handlechange} type="password" id="password" name="password" className="input_box form-control" placeholder="Create your password" />
+                                        <small id="password_error" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                           Password is <sup>*</sup> required
+                                        </span>
+                                        
+                                        </small>
+
+                                    </div>
+
+                                    <div id="other_exception" style={{display:'none'}} className="form-group">   
+                                         <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            {this.state.exception}
+                                        </span>
+                                    </div>
+
+                                    <div style={{textAlign: "center"}} className="form-group">
+                                    <button id="submit" type="submit" className="btn input_button">Sign up</button>
+                                    <button style={{cursor: "progress",display:'none'}} id="loader" type="button" className="btn input_button" disabled>
+                                    <i id="loginloader" className="fa fa-circle-o-notch fa-spin" style={{ fontSize: "1rem", color: "white", paddingRight: 2, paddingLeft: 2 }}></i>
+                                    </button>
+
+                                    </div>
+							</div>
+                        </form>
+                        <div className="join_now">
+                        <span>or join with other accounts</span>
+                        </div>
+                        <div style={{textAlign: "center"}}>
+                            <button className="btn google_button" onClick={this.SignupWithGoogle} >
+                                <i className="fa fa-google" aria-hidden="true"></i> Sign up with Google
+                              </button>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+    </> )
     }
 }
 }
