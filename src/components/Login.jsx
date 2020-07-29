@@ -24,17 +24,43 @@ class Login extends React.Component {
 componentDidMount(){
     
     window.scrollTo(0, 0);
-    Fire.auth().onAuthStateChanged((user) => {
+    this.fireBaseListener = Fire.auth().onAuthStateChanged((user) => {
+      
         if (user) {
-           this.setState({
-              redirect: true
-           });
-        } else {
-           this.setState({
-              redirect: false
-           })
+            var ref = Fire.database().ref("users/"+user.uid);
+            ref.once('value',child=>{
+                if(child.hasChild('username') && child.hasChild('email'))
+                {
+                    this.setState({
+                        redirect: true
+                    });
+                }
+                else{    
+                    console.log("User Not Found")
+                    document.getElementById('exception').style.display='block';
+                    this.setState({
+                        exception:"User Not Found",
+                        redirect: false
+                    }) 
+
+                    Fire.auth().signOut().then(function() {
+                        // console.log("Signed Out")
+                      }, function(error) {
+                        // An error happened.
+                      });
+                }
+            });
+        }
+        else {
+            this.setState({
+                redirect: false
+            })
         }
      });
+  }
+
+  componentWillUnmount(){
+    this.fireBaseListener && this.fireBaseListener();
   }
 
   forgetpass(event){
@@ -84,6 +110,7 @@ componentDidMount(){
                         document.getElementById('submit').style.display='none';
                         document.getElementById('loader').style.display='inline-block';
                         Fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then( result => {
+                    
                             var user = Fire.auth().currentUser;
                             localStorage.setItem("id", user.uid);
                             localStorage.setItem("email", user.email);    
@@ -148,9 +175,26 @@ googleSignin = () => {
         var user = result.user;
         localStorage.setItem("id", user.uid);
         localStorage.setItem("email", user.email);    
-        this.setState({
-            redirect:false
-        })
+
+        var ref = Fire.database().ref("users/"+user.uid);
+        ref.once('value',child=>{
+            if(child.hasChild('username') && child.hasChild('email'))
+            {
+                this.setState({
+                    redirect: true
+                });
+            }
+            else{    
+                console.log("User Not Found")
+                document.getElementById('exception').style.display='block';
+                document.getElementById('exception').childNodes[0].classList.remove('input_error_hide');
+                        
+                this.setState({
+                    exception:"User Not Found",
+                    redirect: false
+                }) 
+            }
+        });
 
         console.log(user.displayName)
         console.log(user.email)
@@ -241,8 +285,8 @@ googleSignin = () => {
                         <span>or join with other accounts</span>
                         </div>
                         <div style={{textAlign: "center"}}>
-                            <button className="btn google_button"/* onClick={this.googleSignin} */>
-                                <i className="fa fa-google" aria-hidden="true"></i> Sign up with Google
+                            <button className="btn google_button" onClick={this.googleSignin} >
+                                <i className="fa fa-google" aria-hidden="true"></i> Sign In with Google
                               </button>
                         </div>
 					</div>

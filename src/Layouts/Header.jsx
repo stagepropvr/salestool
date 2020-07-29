@@ -26,35 +26,40 @@ class Header extends React.Component {
   }
   
 componentDidMount(){
-
-  Fire.auth().onAuthStateChanged((user) => {
+  this.fireBaseListener1 = Fire.auth().onAuthStateChanged((user) => {
     if (user) {
       var ref = Fire.database().ref("users/"+user.uid);
       ref.once('value',child=>{
-        if(child.hasChild('username')){
+        if(child.hasChild('username') && child.hasChild('email'))
+        {
+          if(child.hasChild('username')){
+            this.setState({
+              username:child.val().username
+            })
+          }else{
+            this.setState({
+              username:'John Doe'
+            })
+          }
+          if(child.hasChild('profile_pic')){
+            this.setState({
+              profile_pic:child.val().profile_pic,
+              local_pic:child.val().profile_pic
+            })
+          }
+          else{
+            this.setState({
+              profile_pic:'https://s3.amazonaws.com/creativetim_bucket/new_logo.png',
+              local_pic:'https://s3.amazonaws.com/creativetim_bucket/new_logo.png'
+            })
+          }
           this.setState({
-            username:child.val().username
-          })
-        }else{
-          this.setState({
-            username:'John Doe'
-          })
-        }
-        if(child.hasChild('profile_pic')){
-          this.setState({
-            profile_pic:child.val().profile_pic,
-            local_pic:child.val().profile_pic
+            email:child.val().email
           })
         }
         else{
-          this.setState({
-            profile_pic:'https://s3.amazonaws.com/creativetim_bucket/new_logo.png',
-            local_pic:'https://s3.amazonaws.com/creativetim_bucket/new_logo.png'
-          })
+          console.log("User Not Found")    
         }
-        this.setState({
-          email:child.val().email
-        })
       })
     }else{
       this.setState({
@@ -77,6 +82,11 @@ else if(this.props.current_tag===2)
     window.scrollTo(0, 0)
 }
   
+componentWillUnmount(){
+  this.fireBaseListener1 && this.fireBaseListener1();
+  this.fireBaseListener2 && this.fireBaseListener2();
+
+}
 signout(event){
   Fire.auth().signOut().then(e=> {
     this.setState({
@@ -101,7 +111,7 @@ handleregister(event){
     const task = ref.child(name).put(file, metadata);
     task.then(snapshot => snapshot.ref.getDownloadURL()).then((url) => {
 
-    Fire.auth().onAuthStateChanged((user) => {
+      this.fireBaseListener2 = Fire.auth().onAuthStateChanged((user) => {
       if (user) {
         Fire.database().ref("users/"+user.uid).update({
           username:this.state.name,
@@ -269,7 +279,7 @@ fileupload = (event)=>{
                 <span style={{cursor:'pointer'}} onClick={this.onBtnClick} className="profile_edit">
                   <i className="fa fa-pencil profile_icon"></i>
                 </span>
-                  <img src={this.state.profile_pic} class="rounded-circle img-fluid" style={{height: "80px",width: "80px"}} />                  
+                  <img src={this.state.profile_pic} className="rounded-circle img-fluid" style={{height: "80px",width: "80px"}} />                  
                 </div>
              </div>
           </div>

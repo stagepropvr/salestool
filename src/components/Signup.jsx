@@ -18,29 +18,51 @@ class Signup extends React.Component {
     }
     this.handlechange=this.handlechange.bind(this);
     this.handleregister=this.handleregister.bind(this);
-    // this.SignupWithGoogle=this.SignupWithGoogle.bind(this);
+    this.SignupWithGoogle=this.SignupWithGoogle.bind(this);
     
   }
   
   componentDidMount(){
     window.scrollTo(0, 0);
-    Fire.auth().onAuthStateChanged((user) => {
+    this.fireBaseListener = Fire.auth().onAuthStateChanged((user) => {
         // if(user)
         // {
         //     this.setState({name:user.displayName})
         //     this.setState({email:user.email})
         //     console.log("User:",user.email)
         // }
+        // if (user) {
+        //    this.setState({
+        //       redirect: true
+        //    });
+        // } else {
+        //    this.setState({
+        //       redirect: false
+        //    })
+        // }
         if (user) {
-           this.setState({
-              redirect: true
-           });
-        } else {
-           this.setState({
-              redirect: false
-           })
+            var ref = Fire.database().ref("users/"+user.uid);
+            ref.once('value',child=>{
+                if(child.hasChild('username') && child.hasChild('email'))
+                {
+                    this.setState({
+                        redirect: true
+                    });
+                }
+                else{    
+                    console.log("User Not Found")
+                    this.setState({
+                        redirect: false
+                    }) 
+                }
+            });
         }
      });
+
+  }
+
+  componentWillUnmount(){
+    this.fireBaseListener && this.fireBaseListener();
   }
 
   
@@ -154,30 +176,33 @@ handlechange(event){
 		this.setState({ [name]: value });
 }
 
-// SignupWithGoogle(){
-//  console.log("Goog")
+SignupWithGoogle(){
+ console.log("Goog")
  
-//  var provider = new Firebase.auth.GoogleAuthProvider();
-//  Fire.auth().signInWithPopup(provider).then((result) => {
-//     // This gives you a Google Access Token. You can use it to access the Google API.
-//     var token = result.credential.accessToken;
-//     // The signed-in user info.
-//     var user = result.user;
-//     console.log(user.displayName)
-//     console.log(user.email)
-//     // ...
-//   }).catch(function(error) {
-//     // Handle Errors here.
-//     var errorCode = error.code;
-//     var errorMessage = error.message;
-//     // The email of the user's account used.
-//     var email = error.email;
-//     // The firebase.auth.AuthCredential type that was used.
-//     var credential = error.credential;
-//     console.log(error)
-//     // ...
-//   });
-// }
+ var provider = new Firebase.auth.GoogleAuthProvider();
+ Fire.auth().signInWithPopup(provider).then((result) => {
+    // var token = result.credential.accessToken;
+    var user = result.user;
+    var appnd = user.uid;
+    
+    Fire.database().ref("users/" + appnd).set({
+                    "email": user.email,
+                    "id" : user.uid,
+                    "username":user.displayName,
+                    "company":this.state.cname,
+                    "phone":this.state.number
+                }).then(()=>{
+                    this.setState({
+                        redirect:true
+                    })
+                });
+    console.log(user.displayName)
+    console.log(user.email)
+    
+  }).catch(function(error) {
+        console.log(error)
+  });
+}
 
 
   render() {
@@ -300,7 +325,7 @@ handlechange(event){
                         <span>or join with other accounts</span>
                         </div>
                         <div style={{textAlign: "center"}}>
-                            <button className="btn google_button" /*onClick={this.SignupWithGoogle} */>
+                            <button className="btn google_button" onClick={this.SignupWithGoogle} >
                                 <i className="fa fa-google" aria-hidden="true"></i> Sign up with Google
                               </button>
                         </div>
