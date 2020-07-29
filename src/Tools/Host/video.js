@@ -206,6 +206,10 @@ if(event.type==="local"){
 console.log(this.state.connection)
 }
 };
+ this.state.connection.onmessage = (event)=> {
+      console.log(event.userid);
+      console.log(event.data);
+  };
 this.state.connection.openOrJoin(this.props.roomId);
 
 
@@ -258,15 +262,6 @@ this.state.socket.on("switchimage",(url)=>{
 
  
   setAudioLocal() {
-
-
-    this.state.connection.onmessage = (event)=> {
-      alert(event.userid + ' said: ' + event.data);
-  };
-   this.state.connection.send({
-      chatMessage: "fsafa",
-      senderFullName: 'Bob'
-  });
     console.log(this.state.localStream)
     if (this.state.localStream.stream.getAudioTracks().length > 0) {
       this.state.localStream.stream.getAudioTracks().forEach(track => {
@@ -481,6 +476,12 @@ this.state.connection.replaceTrack({
       message: this.messagearea.current.value,
       type:"message"
     };
+    this.state.connection.send({
+      room: this.props.roomId,
+      user: this.state.socket.id,
+      message: this.messagearea.current.value,
+      type:"message"
+    })
     this.state.socket.emit('chat message', message);
     this.messagearea.current.value="";
   }
@@ -700,7 +701,7 @@ this.state.socket.emit('audioctrl', data);
                   </div>
                </li> */}
    {this.state.rtcstreams.map((key)=>{
-     console.log(key.stream);
+    // console.log(key.stream);
      return(
       <li>
       <div style={{"background":"#000"}}>
