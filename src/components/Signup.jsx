@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect, Route, Link } from "react-router-dom";
-import Fire from "../config/Firebase.jsx";
+import Fire,{Firebase} from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
 class Signup extends React.Component {
@@ -13,42 +13,72 @@ class Signup extends React.Component {
         password:'',
         number:'',
         email:'',
-        exception:''
+        exception:'',
+        googleSignin:false
     }
     this.handlechange=this.handlechange.bind(this);
     this.handleregister=this.handleregister.bind(this);
+    this.SignupWithGoogle=this.SignupWithGoogle.bind(this);
+    
   }
   
   componentDidMount(){
     window.scrollTo(0, 0);
-    Fire.auth().onAuthStateChanged((user) => {
+    this.fireBaseListener = Fire.auth().onAuthStateChanged((user) => {
+        // if(user)
+        // {
+        //     this.setState({name:user.displayName})
+        //     this.setState({email:user.email})
+        //     console.log("User:",user.email)
+        // }
+        // if (user) {
+        //    this.setState({
+        //       redirect: true
+        //    });
+        // } else {
+        //    this.setState({
+        //       redirect: false
+        //    })
+        // }
         if (user) {
-           this.setState({
-              redirect: true
-           });
-        } else {
-           this.setState({
-              redirect: false
-           })
+            var ref = Fire.database().ref("users/"+user.uid);
+            ref.once('value',child=>{
+                if(child.hasChild('username') && child.hasChild('email'))
+                {
+                    this.setState({
+                        redirect: true
+                    });
+                }
+                else{    
+                    console.log("User Not Found")
+                    this.setState({
+                        redirect: false
+                    }) 
+                }
+            });
         }
      });
+
+  }
+
+  componentWillUnmount(){
+    this.fireBaseListener && this.fireBaseListener();
   }
 
   
 handleregister(event){
     event.preventDefault();
 
-    if(this.state.name!='' && this.state.cname!='' && this.state.email!='' && this.state.number!='' && this.state.password!=''){
+    if(this.state.name!='' && this.state.email!='' && this.state.password!=''){
 
         var alpha = /^[a-zA-Z-,]+(\s{0,1}[a-zA-Z-, ])*$/;
         if(this.state.name.match(alpha)){
 
             var email=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             if(this.state.email.match(email)){
-                var phoneno = /^\d{10}$/;
-                if(this.state.number.match(phoneno)){
                     document.getElementById('submit').style.display='none';
                     document.getElementById('loader').style.display='inline-block';
+                    
                     Fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(result=> {
                         var user = Fire.auth().currentUser;
                         var appnd = user.uid;
@@ -72,15 +102,6 @@ handleregister(event){
                             exception:err.message
                         })
                     })
-                }
-                else{
-                    document.getElementById('number').classList.add('input_error_border');
-                    document.getElementById('other_exception').style.display='block';
-                    document.getElementById('other_exception').childNodes[0].classList.remove('input_error_hide');
-                    this.setState({
-                        exception:'Contains only Numbers[0-9] and length is upto 10'
-                    })
-                }
             }
             else{
                 document.getElementById('email').classList.add('input_error_border');
@@ -143,7 +164,33 @@ handlechange(event){
 		this.setState({ [name]: value });
 }
 
-
+SignupWithGoogle(){
+ console.log("Goog")
+ 
+ var provider = new Firebase.auth.GoogleAuthProvider();
+ Fire.auth().signInWithPopup(provider).then((result) => {
+    // var token = result.credential.accessToken;
+    var user = result.user;
+    var appnd = user.uid;
+    
+    Fire.database().ref("users/" + appnd).set({
+                    "email": user.email,
+                    "id" : user.uid,
+                    "username":user.displayName,
+                    "company":this.state.cname,
+                    "phone":this.state.number
+                }).then(()=>{
+                    this.setState({
+                        redirect:true
+                    })
+                });
+    console.log(user.displayName)
+    console.log(user.email)
+    
+  }).catch(function(error) {
+        console.log(error)
+  });
+}
 
 
   render() {
@@ -152,47 +199,52 @@ handlechange(event){
     }
     else{
         return( 
-        <div style={{width:'100%'}} className="header-filter">
+            <>
+        <div style={{width:'100%', height:'100vh'}} className="header-filter d-none d-sm-block">
 		<div  className="login_container container">
 			<div  className="login_container row">
-				<div style={{padding:"0"}} className="col-sm-4">
-                    <div className="login_card card card-signup">
-                        <a className="login_logo">
-                            <svg width="72" height="39" viewBox="0 0 72 39" fill="none">
-                                <rect width="72" height="39" fill="url(#pattern0)"/>
-                                <defs>
-                                <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
-                                <use href="#image0" transform="scale(0.00970874 0.0178571)"/>
-                                </pattern>
-                                <image id="image0" width="103" height="56" href="data:image/png;base64,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"/>
-                                </defs>
-                                </svg>
-                            <span>prop vr</span>                
-                        </a>
-                        <h2 className="Welcome-to-Prop-VR">Welcome to Prop VR!</h2>
+            {/* image Col */}
+            <div style={{padding:"0", maxHeight:'100vh', position:"relative"}} className="col-sm-5 d-none d-sm-block">
+                <img style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
+                <div className="loginNew_logo">
+                    <svg width="72" height="39" viewBox="0 0 72 39" fill="none">
+                        <rect width="72" height="39" fill="url(#pattern0)"/>
+                        <defs>
+                        <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                        <use href="#image0" transform="scale(0.00970874 0.0178571)"/>
+                        </pattern>
+                        <image id="image0" width="103" height="56" href="data:image/png;base64,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"/>
+                        </defs>
+                    </svg>
+                    <span>prop vr</span>                
+                </div>
+                
+                <div class="loginNew_center">
+                    <h3>Create, Collaborate and Share</h3>
+                    <p>Prop VR allows you to create, collaborate and share virtual tour experience of your properties with your customers. Take your customers for a virtual-guided tour and increase sales. </p>
+                    <button type="submit" className="btn create_session_back">SCHEDULE DEMO</button>
+                </div>
+
+                <div class="loginNew_bottom">
+                    <p>Trusted by India’s top real-estate companies</p>   
+                </div>
+                
+            </div>
+				
+            {/* Form Col */}
+            <div style={{padding:"0", textAlign:'center', width:"100%"}} className="col-sm-7 col-xs-12">
+                   <div className="login_card card card-signup" style={{justifyContent:'center', padding:'0px 20% 0px 20%'}}>
+                        <h2 className="Welcome-to-Prop-VR" style={{paddingTop: "25px"}}>Welcome to Prop VR!</h2>
                             <p className="Have-an-account-alre">Have an account already?   <Link style={{paddingLeft: "10px"}} to="/login" className="login_span">Login</Link>
                             </p>
-						<form onSubmit={this.handleregister} className="form" style={{paddingTop: "25px"}}>
+						<form onSubmit={this.handleregister} className="form" style={{paddingTop: "25px", textAlign:'left'}}>
 							<div className="card-content">							
-									<div className="form-group">
-                                        <label className="input_Label">
-                                            Name
-                                        </label>
-                                        <input onChange={this.handlechange} type="text" id="name" name="name" className="input_box form-control" placeholder="Enter your full name" />
-                                        <small id="name_error" className="form-text text-muted">
-                                        <span className="input_error input_error_hide">
-                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
-                                            Name is <sup>*</sup> required
-                                        </span>
-                                        
-                                        </small>
-                                    </div>
-								
+        
                                     <div className="form-group">
                                         <label className="input_Label">
                                             Email ID
                                         </label>
-                                        <input onChange={this.handlechange} type="email" id="email" name="email" className="input_box form-control" placeholder="Enter your email address" />
+                                        <input onChange={this.handlechange} value={this.state.email} type="email" id="email" name="email" className="input_box form-control" placeholder="Enter your email address" />
                                         <small id="email_error" className="form-text text-muted">
                                         <span className="input_error input_error_hide">
                                             <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
@@ -202,7 +254,22 @@ handlechange(event){
                                         </small>
                                     </div>
 
+                                    
                                     <div className="form-group">
+                                        <label className="input_Label">
+                                            Name
+                                        </label>
+                                        <input value={this.state.name} onChange={this.handlechange} type="text" id="name" name="name" className="input_box form-control" placeholder="Enter your full name" />
+                                        <small id="name_error" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            Name is <sup>*</sup> required
+                                        </span>
+                                        
+                                        </small>
+                                    </div>
+								
+                                    {/* <div className="form-group">
                                         <label className="input_Label">
                                             Company name
                                         </label>
@@ -214,10 +281,10 @@ handlechange(event){
                                         </span>
                                         
                                         </small>
-                                        </div>
+                                        </div> */}
 
 
-                                    <div className="form-group">
+                                    {/* <div className="form-group">
                                         <label className="input_Label">
                                             Phone number
                                         </label>
@@ -229,7 +296,7 @@ handlechange(event){
                                         </span>
                                         
                                         </small>
-                                    </div>
+                                    </div> */}
 
                                     <div className="form-group">
                                         <label className="input_Label">
@@ -266,7 +333,7 @@ handlechange(event){
                         <span>or join with other accounts</span>
                         </div>
                         <div style={{textAlign: "center"}}>
-                            <button className="btn google_button">
+                            <button className="btn google_button" onClick={this.SignupWithGoogle} >
                                 <i className="fa fa-google" aria-hidden="true"></i> Sign up with Google
                               </button>
                         </div>
@@ -274,7 +341,125 @@ handlechange(event){
 				</div>
 			</div>
 		</div>
-    </div> )
+    </div>
+
+    {/* Mobile */}
+    <div style={{width:'100%', height:'100vh'}} className="header-filter d-sm-none">
+		<div  className="login_container container">
+			<div  className="login_container row">
+   			
+            {/* Form Col */}
+            <div style={{padding:"0", textAlign:'center', width:"100%"}} className="col-sm-7 col-xs-12">
+                   <div className="login_card card card-signup" style={{justifyContent:'center'}}>
+                        <h2 className="Welcome-to-Prop-VR" style={{paddingTop: "25px"}}>Welcome to Prop VR!</h2>
+                            <p className="Have-an-account-alre">Have an account already?   <Link style={{paddingLeft: "10px"}} to="/login" className="login_span">Login</Link>
+                            </p>
+						<form onSubmit={this.handleregister} className="form" style={{paddingTop: "25px", textAlign:'left'}}>
+							<div className="card-content">							
+        
+                                    <div className="form-group">
+                                        <label className="input_Label">
+                                            Email ID
+                                        </label>
+                                        <input onChange={this.handlechange} value={this.state.email} type="email" id="email" name="email" className="input_box form-control" placeholder="Enter your email address" />
+                                        <small id="email_error" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                          Email Address <sup>*</sup> is required
+                                        </span>
+                                        
+                                        </small>
+                                    </div>
+
+                                    
+                                    <div className="form-group">
+                                        <label className="input_Label">
+                                            Name
+                                        </label>
+                                        <input value={this.state.name} onChange={this.handlechange} type="text" id="name" name="name" className="input_box form-control" placeholder="Enter your full name" />
+                                        <small id="name_error" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            Name is <sup>*</sup> required
+                                        </span>
+                                        
+                                        </small>
+                                    </div>
+								
+                                    {/* <div className="form-group">
+                                        <label className="input_Label">
+                                            Company name
+                                        </label>
+                                        <input onChange={this.handlechange} type="text" id="cname" name="cname" className="input_box form-control" placeholder="Enter the company name" />
+                                        <small id="cname_error" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            Company name is <sup>*</sup>required
+                                        </span>
+                                        
+                                        </small>
+                                        </div> */}
+
+
+                                    {/* <div className="form-group">
+                                        <label className="input_Label">
+                                            Phone number
+                                        </label>
+                                        <input onChange={this.handlechange} type="text" id="number" name="number" className="input_box form-control" placeholder="Enter your 10-digit phone number" />
+                                        <small id="number_error" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            Number is <sup>*</sup> required
+                                        </span>
+                                        
+                                        </small>
+                                    </div> */}
+
+                                    <div className="form-group">
+                                        <label className="input_Label">
+                                            Password
+                                        </label>
+                                        <input onChange={this.handlechange} type="password" id="password" name="password" className="input_box form-control" placeholder="Create your password" />
+                                        <small id="password_error" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                           Password is <sup>*</sup> required
+                                        </span>
+                                        
+                                        </small>
+
+                                    </div>
+
+                                    <div id="other_exception" style={{display:'none'}} className="form-group">   
+                                         <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            {this.state.exception}
+                                        </span>
+                                    </div>
+
+                                    <div style={{textAlign: "center"}} className="form-group">
+                                    <button id="submit" type="submit" className="btn input_button">Sign up</button>
+                                    <button style={{cursor: "progress",display:'none'}} id="loader" type="button" className="btn input_button" disabled>
+                                    <i id="loginloader" className="fa fa-circle-o-notch fa-spin" style={{ fontSize: "1rem", color: "white", paddingRight: 2, paddingLeft: 2 }}></i>
+                                    </button>
+
+                                    </div>
+							</div>
+                        </form>
+                        <div className="join_now">
+                        <span>or join with other accounts</span>
+                        </div>
+                        <div style={{textAlign: "center"}}>
+                            <button className="btn google_button" onClick={this.SignupWithGoogle} >
+                                <i className="fa fa-google" aria-hidden="true"></i> Sign up with Google
+                              </button>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+    </> )
     }
 }
 }
