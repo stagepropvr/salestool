@@ -45,7 +45,7 @@ class App extends Component {
          
          <Route path='/room/:pid/:roomid' component={Salespage} />
          
-         <Route path='/guest/room/:pid/:roomid' component={SalespageClient} />
+         <Route path='/guest/room/:uid/:pid/:roomid' component={SalespageClient} />
 
          <Route  path='/feedback' component={EndSession} />
 

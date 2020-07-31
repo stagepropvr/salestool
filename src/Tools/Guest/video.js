@@ -203,6 +203,22 @@ if(event.type==="local"){
     localStream:event
   })
 console.log(this.state.connection)
+if(!this.props.video){
+  alert("audio");
+  this.state.localStream.stream.mute("video");
+  this.setState({
+    camState: false
+  })
+}
+if(!this.props.audio){
+  alert("video");
+  this.state.localStream.stream.mute("audio");
+  this.setState({
+    micState: false
+  })
+}else{
+  this.state.localStream.stream.unmute("audio");
+}
 }
 };
 this.state.connection.userid=localStorage.getItem("guestkey");
@@ -279,7 +295,8 @@ this.state.connection.userid=localStorage.getItem("guestkey");
       }
   }
   this.state.connection.join(this.props.roomId);
-  this.state.connection.isAudioMuted=false;
+
+ 
 
 
   this.state.connection.onmute = (e)=> {

@@ -167,7 +167,7 @@ handlechange(event){
   render() {
 if(this.state.redirect){
     return(
-    <Redirect to={"/guest/room/"+this.props.match.params.pid+"/"+this.props.match.params.rid}/>
+    <Redirect to={"/guest/room/"+this.props.match.params.uid+"/"+this.props.match.params.pid+"/"+this.props.match.params.rid}/>
     )
 }else{
     return( 

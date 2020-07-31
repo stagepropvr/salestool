@@ -20957,3 +20957,44 @@ select{
   align-self: center;
 }
 /*# sourceMappingURL=kit-free.css.map */
+
+
+
+
+.Great-you-are-about{
+  width: 468px;
+  height: 24px;
+
+  font-size: 18px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: center;
+  color: #222b45;
+  width: inherit;
+}
+
+.Steph_Video_Call_Thumbnailsocial_share_1024x512_center {
+  width: 271px;
+  height: 134px;
+  margin: 32px auto;
+}
+.accesstools{
+  top: 93px;
+  z-index: 2;
+}
+.accesstools-icon{
+  width: 32px;
+  height: 32px;
+}
+.accessjoin-button{
+  width: 155px;
+  height: 40px;
+  border-radius: 4px;
+  background-color: #3366ff;
+  color: #fff;
+  border:none;
+  cursor: pointer;
+}
