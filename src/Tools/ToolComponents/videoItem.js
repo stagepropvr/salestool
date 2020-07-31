@@ -23,7 +23,7 @@ console.log(this.props.stream)
     return (
         <video className="user-video"
           id={`video-${userId}`}
-          autoPlay
+          autoPlay muted={this.props.stream.type==="local"?true:false}
           ref={this.videoRef}
         />
     )

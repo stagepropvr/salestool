@@ -181,7 +181,6 @@ open_close = (name,flag) =>{
     }
   }else{
     if(!flag){
-    this.props.socket.emit('floorplan',{ roomid:this.props.roomId,data:false,pin:null});
   }
   }
 }

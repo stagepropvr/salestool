@@ -7,8 +7,6 @@ class SalespageClient extends Component {
     if(localStorage.getItem("rid")===null){
       window.location="/invalidinvitation"
     }else{
-
-    
     return (
      <Video pid={this.props.match.params.pid} roomId={this.props.match.params.roomid}/>
     
