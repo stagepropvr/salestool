@@ -19331,17 +19331,67 @@ transform: translate(0, -50%);
 }
 
 .login_logo>span{
+  font-family: 'propvr';
+  font-size: 18px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  color: #3366ff;
+}
+
+.loginNew_logo{
   position: absolute;
-  left: 110px;
-  top: 37px;
-    font-family: 'propvr';
-    font-size: 18px;
-    font-weight: bold;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.33;
-    letter-spacing: normal;
-    color: #3366ff;
+  left: 20px;
+  top: 30px;
+
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: row;
+}
+
+.loginNew_center{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  text-align: center;
+  color: white;
+}
+.loginNew_center>h3{
+  font-weight: 600;
+  margin-bottom:5%;
+}
+
+.loginNew_bottom{
+  position: absolute;
+  left: 50%;
+  bottom: 5%;
+  transform: translate( -50%);
+  width: 80%;
+  text-align: center;
+}
+
+.loginNew_bottom>p{
+  color: white;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.loginNew_logo>span{
+  margin-left: 17px;
+  font-family: 'propvr';
+  font-size: 18px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.8;
+  letter-spacing: normal;
+  color: #ffffff;
 }
 
 .login_container{
@@ -19358,6 +19408,11 @@ transform: translate(0, -50%);
 }
 
 
+.login_card_Mobile{
+  height: 100%;
+    margin: 0;
+    border-radius: 0;
+}
 
 .Have-an-account-alre {
   font-family: 'propvr';
@@ -20781,7 +20836,7 @@ select{
   content: "\2605";
   position: absolute;
   color: #FFD700;
-  left: 2px;
+  /* left: 2px; */
     top: -14px;
     font-size: 28px;
 }
@@ -20867,5 +20922,34 @@ select{
   position: absolute;
   background: #fff;
 
+}
+
+.JoiningForm{
+  padding: 0px 25% 0px 25%;
+}
+
+.BlueBG{
+  text-align: left;
+  background-color: #3366ff;
+  padding: 20px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+}
+
+.BlueBG>p{
+  color:white;
+  padding: 10px 0px 10px 0px;
+}
+
+.BlueBG>h1{
+  font-size: 26px;
+  color:white;
+  padding: 25px 0px 10px 0px;
+}
+
+.form_Mobile{
+  padding: 20px;
+  align-self: center;
 }
 /*# sourceMappingURL=kit-free.css.map */
