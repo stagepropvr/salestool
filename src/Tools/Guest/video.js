@@ -8,6 +8,7 @@ import VideoItem from "../ToolComponents/videoItem";
 import Scene from "./Scene";
 import Firebase from "../../config/Firebase";
 import SceneControls from "./SceneControls.js";
+import * as RTCMultiConnection from 'rtcmulticonnection';
 
 let userId = null
 
@@ -25,9 +26,12 @@ class Video extends React.Component {
       micState: true,
       camState: true,
       peers: {},
+      floorplandata:"false",
+      pdfdata:"false",
+      mapdata:"",
       streams: {},
       current_image: "",
-      socket: io.connect("localhost:5000"),
+      
       host: true,
       apiload: true,
       images:"",
@@ -48,6 +52,8 @@ class Video extends React.Component {
       hostaudioctrl:false,
       Switchstatus:false,
       messagescount:0,
+      connection : new RTCMultiConnection(),
+      rtcstreams:[]
         };
    
     this.Sidenav = React.createRef();
@@ -56,13 +62,11 @@ class Video extends React.Component {
     this.sendmessage=this.sendmessage.bind(this);
     this.loader=this.loader.bind(this);
 this.changedevice=this.changedevice.bind(this);
-this.audioallctrl=this.audioallctrl.bind(this);
     this.messagearea=React.createRef();
     this.audioctrl=React.createRef();
     this.localvideo=React.createRef();
     this.inputFileRef = React.createRef();
     this.onBtnClick = this.handleBtnClick.bind(this);
-    this.muteclient=this.muteclient.bind(this);
 
     this.start = 0;	
     this.analytics = [];
@@ -130,147 +134,182 @@ this.audioallctrl=this.audioallctrl.bind(this);
     
 
 
-    // const socket = io.connect("localhost:5000");
-    const component = this;
-    // this.setState({ socket });
-    const { roomId } = this.props;
-    this.getUserMedia().then(() => {
-      this.state.socket.emit('join', { roomId });
-     
-    });
+  
 
     
-    this.state.socket.on('closeRoom', () => {
-      this.state.socket.close()  
-      this.setState({closeRoom:true});    
-    });
+      this.state.connection.socketURL = 'propvrrtc.propvr.tech/';
+  
 
 
-    this.state.socket.on('init', (data) => {
-      Firebase.database().ref("roomsession/"+this.props.roomId+"/members").update({
-        [this.state.socket.id]:this.state.name
-        })
-      
-
-      userId = data.userId;
-      this.state.socket.emit('ready', ({ room: roomId, userId:userId, name:this.state.name }));
-     
-      Firebase.database().ref("roomsession/"+this.props.roomId+"/members").on("value",(members)=>{
-          this.setState({
-            members:members.val()
-          })
-      });
-    });
-
-    this.state.socket.on("users", ({ initiator, users,name,usersocketid }) => {
+      this.state.connection.session = {
+          audio: true,
+          video: true,
+          data:true
+      };
+      this.state.connection.sdpConstraints.mandatory = {
+          OfferToReceiveAudio: true,
+          OfferToReceiveVideo: true
+      };
+      var bitrates = 512;
 
 
-      Object.keys(users.sockets)
-        .filter(
-          sid =>
-            !this.state.peers[sid] && sid !== userId)
-        .forEach(sid => {
-          const peer = new Peer({
-            initiator: userId === initiator,
-            config: {
-              iceServers: [
-                {
-                  urls: 'turn:52.15.126.155:3478',
-                  credential: 'revsmart123',
-                  username: 'propvr' 
-                                      }
-              ]
-            },
-            // Allow the peer to receive video, even if it's not sending stream:
-            // https://github.com/feross/simple-peer/issues/95
-            offerConstraints: {
-              offerToReceiveAudio: true,
-              offerToReceiveVideo: true,
-            },
-            stream: this.state.localStream,
-            
-          })
 
-          peer.on('signal', data => {
+var  videoConstraints = {
+  width: {
+      ideal: 1280
+  },
+  height: {
+      ideal: 720
+  },
+  frameRate: 30,
+  deviceId:this.state.videoinput
+};
 
-            const signal = {
-              userId: sid,
-              signal: data
-            };
-
-            this.state.socket.emit('signal', signal);
-          });
-          peer.on('stream', (stream)=> {
-
-            const streamsTemp = { ...this.state.streams }
-            streamsTemp[sid] = stream
-
-            this.setState({ streams: streamsTemp })
-          });
-          peer.on('error', function (err) {
-
-          });
-
-          const peersTemp = { ...this.state.peers }
-          peersTemp[sid] = peer
-
-          this.setState({ peers: peersTemp })
-        })
-    })
-    this.state.socket.on('chat message',  msg  => {
-      if(!document.getElementById('chat_tab').getAttribute("class").includes("active show")){
-      this.setState({
-      messagescount:this.state.messagescount+1
-      })
-    }
-      this.setState(ele => ({
-        messages: [...ele.messages, msg]
-      }))
-    });
-    this.state.socket.on('signal', ({ userId, signal,image }) => {
-   
-
-      
-      const peer = this.state.peers[userId]
-      peer.signal(signal)
-    })
-
-    this.state.socket.on('disconnected', () => {
-      component.setState({ initiator: true });
-    });
-    
-this.state.socket.on("switchimage",(url)=>{
+this.state.connection.iceServers.push( {
+  'urls': [
+     'stun:stun.l.google.com:19302',
+'stun:stun1.l.google.com:19302',
+'stun:stun2.l.google.com:19302',
+'stun:stun3.l.google.com:19302',
+'stun:stun4.l.google.com:19302',
+  ]
 });
 
-
-  this.state.socket.on("audioctrl",(audioctrl)=>{
-    if(audioctrl){
-      if (this.state.localStream.getAudioTracks().length > 0) {
-        this.state.localStream.getAudioTracks().forEach(track => {
-          track.enabled =false;
-        });
-      }
-      this.setState({
-        micState: false,
-        hostaudioctrl:true
-      })
-    }
-    else{
-      if (this.state.localStream.getAudioTracks().length > 0) {
-        this.state.localStream.getAudioTracks().forEach(track => {
-          track.enabled =true;
-        });
-      }
-      this.setState({
-        micState: true,
-        hostaudioctrl:true
-      })
-    }
-    });
-
-
-});
+this.state.connection.iceServers.push(
+{
+  'urls': 'turn:52.15.126.155:3478',
+  'credential': 'revsmart123',
+  'username': 'propvr'
   }
+);
+this.state.connection.userId=localStorage.getItem("guestkey");
+this.state.connection.extra={
+  name:localStorage.getItem("name")
+}
+this.state.connection.mediaConstraints = {
+video: videoConstraints,
+audio:{echoCancellation: true,
+  deviceId:this.state.audioinput}
+};
+this.state.connection.onstream = event => {
+console.log( event.stream.streamid );
+this.setState(ele => ({
+  rtcstreams: [...ele.rtcstreams, event]
+}))
+
+console.log(this.state.rtcstreams);
+if(event.type==="local"){
+  this.setState({
+    localStream:event
+  })
+console.log(this.state.connection)
+}
+};
+this.state.connection.userid=localStorage.getItem("guestkey");
+ this.state.connection.onmessage = (event)=> {
+   if(event.data.actiontype==="chat"){
+     
+  if(!document.getElementById('chat_tab').getAttribute("class").includes("active show")){
+    this.setState({
+    messagescount:this.state.messagescount+1
+    })
+  }
+    this.setState(ele => ({
+      messages: [...ele.messages, event.data]
+    }))
+  }
+
+  if(event.data.actiontype==="floorplan"){
+
+    this.setState({
+      floorplandata:event.data
+    })
+  }
+  if(event.data.actiontype==="pdf"){
+    console.log(event.data);
+
+    this.setState({
+      pdfdata:event.data.data
+    })
+  }
+  if(event.data.actiontype==="map"){
+    console.log(event.data);
+
+    this.setState({
+      mapdata:event.data.data
+    })
+  }
+
+  if(event.data.actiontype==="muteall"){
+    if(event.data.data.ctrl){
+     
+          this.state.localStream.stream.mute("audio");
+          this.setState({
+            micState: false,
+            hostaudioctrl:true
+          })
+      }else{
+            this.state.localStream.stream.unmute("audio");
+        
+        this.setState({
+          micState: true,
+          hostaudioctrl:false
+        })
+      }
+     
+    }
+    if(event.data.actiontype==="mute"){
+      if(event.data.user===this.state.connection.userid){
+      if(!event.data.status){
+       
+            this.state.localStream.stream.mute("audio");
+            this.setState({
+              micState: false,
+              hostaudioctrl:true
+            })
+        }else{
+              this.state.localStream.stream.unmute("audio");
+          
+          this.setState({
+            micState: true,
+            hostaudioctrl:false
+          })
+        }
+      }
+      }
+  }
+  this.state.connection.join(this.props.roomId);
+  this.state.connection.isAudioMuted=false;
+
+
+  this.state.connection.onmute = (e)=> {
+    const temp=this.state.connection;
+    this.setState({
+      connection:temp,
+      micState:!this.state.localStream.isAudioMuted
+    });
+    
+
+  };
+  
+  this.state.connection.onunmute = (e)=> {
+    const temp=this.state.connection;
+    this.setState({
+      connection:temp,
+      micState:!this.state.localStream.isAudioMuted
+    });
+  
+  };
+  
+
+
+
+});
+    
+
+
+
+}
 
   componentDidUpdate(prevProps, prevState) {
 
@@ -304,121 +343,68 @@ this.state.socket.on("switchimage",(url)=>{
   }
 
 
-  getUserMedia(cb) {
-    
-    return new Promise((resolve, reject) => {
-      navigator.getUserMedia = navigator.getUserMedia =
-        navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia;
-      const op = {
-        video: {
-          width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 },
-          deviceId:this.state.videoinput
-          
-        },
-        audio:{echoCancellation: true,
-          deviceId: this.state.audioinput} 
-      };
-      navigator.getUserMedia(
-        op,
-        stream => {
-          stream["name"]="karthik";
-          
-          this.setState({ streamUrl: stream, localStream: stream });
-          
-          this.localVideo.srcObject = stream;
-          resolve();
-        },
-        (err) => {
-         }
-      );
-    });
-  }
-
+ 
+ 
   setAudioLocal() {
-    if(!this.state.hostaudioctrl){
-    if (this.state.localStream.getAudioTracks().length > 0) {
-      this.state.localStream.getAudioTracks().forEach(track => {
-        track.enabled = !track.enabled;
+    
+    this.state.connection.send("audio");
+
+  
+    console.log(this.state.localStream)
+    if (this.state.localStream.stream.getAudioTracks().length > 0) {
+      this.state.localStream.stream.getAudioTracks().forEach(track => {
+        if(track.enabled){
+          this.state.localStream.stream.mute("audio");
+          this.setState({
+            micState: false
+          })
+        }
+        else{
+          this.state.localStream.stream.unmute("audio");
+          this.setState({
+            micState: true
+          })
+        }
       });
     }
-    this.setState({
-      micState: !this.state.micState
-    })
-  }
+  
+  
   }
   setVideoLocal() {
-    if (this.state.localStream.getVideoTracks().length > 0) {
-      this.state.localStream.getVideoTracks().forEach(track => {
-        track.enabled = !track.enabled;
+
+    if (this.state.localStream.stream.getVideoTracks().length > 0) {
+      this.state.localStream.stream.getVideoTracks().forEach(track => {
+        if(track.enabled){
+          this.state.localStream.stream.mute("video");
+          this.setState({
+            camState: false
+          })
+        }
+        else{
+          this.state.localStream.stream.unmute("video");
+          this.setState({
+            camState: true
+          })
+        }
       });
     }
-    this.setState({
-      camState: !this.state.camState
-    })
+    
   }
 
   async changedevice(videoinput,audioinput) {
-  this.setState({
-  videoinput:videoinput,
-  audioinput:audioinput
+    this.setState({
+    videoinput:videoinput,
+    audioinput:audioinput
+    });
+  
+  this.state.connection.replaceTrack({
+    screen: true,
+    oneway: true
   });
-      var op = {
-        video: false,
-        audio:{echoCancellation: true,
-          deviceId:audioinput} 
-      };
-      await navigator.getUserMedia(
-        op,
-        stream => {
-          var streamremove=this.localVideo.srcObject;
-          streamremove.getTracks().forEach((track)=>{
-track.stop();
-      });
-          
-          Object.keys(this.state.peers).forEach((key)=>{
-            this.state.peers[key].removeStream(this.state.localStream);
-          })
-          this.setState({ streamUrl: stream, localStream: stream });
-          this.localVideo.srcObject = stream;
-            Object.keys(this.state.peers).forEach((key)=>{
-              this.state.peers[key].addStream(this.state.localStream);
-            })
-        },
-        () => { }
-      );
-      var op = {
-        video: {
-          width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 },
-          deviceId: videoinput
-          
-        },
-        audio:{echoCancellation: true,
-          deviceId: this.state.audioinput} 
-      };
-     navigator.getUserMedia(
-        op,
-        stream => {
-      var streamremove=this.localVideo.srcObject;
-      //this.localVideo.srcObject=null;
-      streamremove.getTracks().forEach((track)=>{
-track.stop();
-  });
-          Object.keys(this.state.peers).forEach((key)=>{
-            this.state.peers[key].removeStream(this.state.localStream);
-          })
-          this.setState({ streamUrl: stream, localStream: stream });
-          this.localVideo.srcObject = stream;
-            Object.keys(this.state.peers).forEach((key)=>{
-              this.state.peers[key].addStream(this.state.localStream);
-            })
-        },
-        () => { }
-      );
-    }
+
+  
+      }
+  
 
   changeImage = (str) => {
     Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage").set({
@@ -443,33 +429,7 @@ track.stop();
         this.changeImage(key) }
     }
   }
-  changeProject = (user_id,pid) =>{
-    this.setState({
-      loader:true,
-      apiload:true
-    })
-    Firebase.database().ref("users/" + user_id + "/Projects/" + pid).once("value", (node) => {
-      this.setState({
-        data:node.val(),
-        pid:pid,
-        apiload:false
-      })
-      if (node.hasChild("images")) {
-        for (var x in node.val().images){
-          this.setState({
-            current_image:x,
-            images: node.val().images
-          });
-          Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage").set({
-            currentimage:node.val().images[x].url,
-            currentimageName:node.val().images[x].name,
-            imageid:x
-          })
-        break;
-        }
-      }
-    });
-  }
+ 
   togglenav(e)
   {
     var a = document.querySelectorAll('.nav-link.active');
@@ -507,7 +467,7 @@ track.stop();
     if(this.Sidenav.current.style.width==="320px"){
       this.Sidenav.current.style.width="0px";
           this.bottom.current.style.width="100%";
-          this.localvideo.current.classList.add('relative-localvideo');
+         this.localvideo.current.classList.add('relative-localvideo');
     }
     else{
       this.Sidenav.current.style.width="320px";
@@ -517,13 +477,22 @@ track.stop();
   }
   sendmessage(e){
     e.preventDefault();
+    const temp=this.state.connection;
+    this.setState({
+      connection:temp
+    });
     const message = {
+      actiontype:"chat",
       room: this.props.roomId,
-      user: this.state.socket.id,
+      user: this.state.connection.userid,
       message: this.messagearea.current.value,
+      name:localStorage.getItem("name"),
       type:"message"
     };
-    this.state.socket.emit('chat message', message);
+    this.state.connection.send(message);
+    this.setState(ele => ({
+      messages: [...ele.messages, message]
+    }))
     this.messagearea.current.value="";
   }
 loader(){
@@ -531,13 +500,7 @@ loader(){
     loader:false
   })
 }
-audioallctrl(e){
-  const data = {
-    id: this.props.roomId,
-    ctrl: this.audioctrl.current.checked
-  };
-  this.state.socket.emit('audioctrl', data);
-}
+
 
 handleBtnClick() {
   /*Collecting node-element and performing click*/
@@ -549,14 +512,20 @@ fileupload = (event)=>{
   reader.readAsDataURL(file);
   reader.onloadend = () => {
     const message = {
+      actiontype:"chat",
       room: this.props.roomId,
-      user: this.state.socket.id,
+      user: this.state.connection.userid,
       message:"",
+      name:localStorage.getItem("name"),
       type:"file",
       filename:file.name,
       filedata:reader.result
     };
-    this.state.socket.emit('chat message', message);
+    this.setState(ele => ({
+      messages: [...ele.messages, message]
+    }))
+    this.state.connection.send(message)
+
     
   };
 }
@@ -566,33 +535,7 @@ getstreamstatus(stream){
  return track[0].enabled;
   
 }
-muteclient(key){
- const ctrl=document.getElementById(key).getAttribute("mic");
- var data ;
- if(ctrl==="true"){
-   data = {
-    id: key,
-    ctrl: false
-  };
 
-
-  document.getElementById(key).setAttribute("mic","false");
-  document.getElementById(key+"micon").style.display="block";
-  document.getElementById(key).style.background="#fff";
-  
-  document.getElementById(key+"micoff").style.display="none";
- }else{
-  data = {
-  id: key ,
-  ctrl: true
-};
-document.getElementById(key).setAttribute("mic","true");
-document.getElementById(key+"micoff").style.display="block";
-document.getElementById(key).style.background="rgb(255, 61, 113)";
-document.getElementById(key+"micon").style.display="none";
-}
-this.state.socket.emit('audioctrl', data);
-}
 
 destruct = () => {
 
@@ -620,7 +563,6 @@ destruct = () => {
   render() {
     if(this.state.closeRoom)
     {
-      this.state.socket.close();
       return <Redirect to="/feedback" />
     }
 
@@ -656,7 +598,7 @@ destruct = () => {
           <SceneControls
               destruct={this.destruct}
               pid={this.state.pid}
-              socket={this.state.socket}
+              
               roomId={this.props.roomId}
               user_id={this.state.user_id}
               data={this.state.data}
@@ -665,6 +607,10 @@ destruct = () => {
               micstate={this.state.micState}
               changedevice={this.changedevice}
               switch={this.switch}
+              floorplandata={this.state.floorplandata}
+              pdfdata={this.state.pdfdata} 
+              mapdata={this.state.mapdata}
+              connection={this.state.connection}
               micaction={() => {
                 this.setAudioLocal();
               }}
@@ -706,7 +652,7 @@ destruct = () => {
                   </g>
               </g>
         </svg>  
-            <sup className="members_count">{Object.keys(this.state.streams).length}</sup>             
+            <sup className="members_count">{Object.keys(this.state.rtcstreams).length}</sup>             
      </button>
     <span className="sidedrawer_icon_separate"></span>
     <button datasrc="chat_icon" onClick={this.togglenav} className="menu_option" style={{background: '#fff',display:'flex'}}>
@@ -746,52 +692,45 @@ destruct = () => {
       <div style={{height: '100%'}} className="tab-pane active show" id="members">
       
       <ul className="video_div" style={{padding:'0px',height:'90%',overflowX:'hidden',overflowY: "auto", listStyle:"none",width:'85%',paddingLeft:'12px'}}>
-      <li style={{marginTop:'16px'}} className="video_content">
-                  <div ref={this.localvideo} style={{"background":"#000"}} className="relative-localvideo">
-                     <div className="videotools">
-                   
-                       <span className="guest_video_name video_name_option">You</span>
-                     
-                  </div>
-                  <video
-                autoPlay
-                id='localVideo' className="user-video"
-                muted
-                ref={video => (this.localVideo = video)}
-              />
-                  </div>
-               </li>
+      
    
-      {
-                Object.keys(this.state.streams).map((key, id) => {
-                  if(this.state.streams[key].active ){
-                  return    <li className="video_content">
-                  <div style={{"background":"#000"}}>
-                     <div className="videotools">
-                   
-                       <span className="guest_video_name video_name_option">{this.state.members[key]}</span>
-                     
-                  </div>
-                  <VideoItem
-                    key={key}
-                    userId={key}
-                    stream={this.state.streams[key]}
-                  />
-                  </div>
+               {this.state.rtcstreams.map((key)=>{
+      if(key.type=="local"){
+        return(
+          <li className="video_content">
+                          <div ref={this.localvideo} style={{"background":"#000"}} className="relative-localvideo">
+                             <div className="videotools">
+                           
+                               <span className="guest_video_name video_name_option">You</span>
+                             
+                          </div>
+                          <VideoItem
+              key={key.userid}
+              userId={key.userid}
+              stream={key.stream}
+            />
+                          </div>
+                       </li>
+          
+        )
+            }else{
+     return(
+      <li>
+      <div style={{"background":"#000"}}>
+         <div className="videotools">
+          
+           <span className="guest_video_name video_name_option">{key.extra.name}</span>
+         
+      </div>
+      <VideoItem
+      key={key.userid}
+      userId={key.userid}
+      stream={key.stream}
+    />
+      </div>
                </li>
-
-
-
-
-
-
-                   } 
-                  else{
-                    return(
-                      <></>
-                    )
-                  }  })
-              }
+     )}
+   })}
               </ul>
       </div>
       <div style={{height: '100%'}} className="tab-pane" id="chat">
@@ -799,16 +738,16 @@ destruct = () => {
         {this.state.messages.map((child)=>{
           if(child.type==="message"){
             return(
-              <li className={this.state.socket.id===child.user?"self":"other"}>
-              <div className="chat_name">{this.state.members[child.user]}</div>
-            <div className={this.state.socket.id===child.user?"self_msg":"other_msg"}>{child.message}</div>
+              <li className={this.state.connection.userid===child.user?"self":"other"}>
+              <div className="chat_name">{child.name}</div>
+            <div className={this.state.connection.userid===child.user?"self_msg":"other_msg"}>{child.message}</div>
             </li>
             )}
             else{
               return(
-                <li className={this.state.socket.id===child.user?"self":"other"}>
-  <div className="chat_name">{this.state.members[child.user]}</div>
-  <div className= {this.state.socket.id===child.user?" media_msg self_msg":"media_msg  other_msg"}><span className="media_file_name">{child.filename}</span>
+                <li className={this.state.connection.userid===child.user?"self":"other"}>
+  <div className="chat_name">{child.name}</div>
+  <div className= {this.state.connection.userid===child.user?" media_msg self_msg":"media_msg  other_msg"}><span className="media_file_name">{child.filename}</span>
     <span style={{paddingRight: '8px', cursor: 'pointer'}}>
      <a target="_blank" href={child.filedata} download> <svg   width={24} height={24} viewBox="0 0 24 24">
         <defs>
@@ -842,20 +781,6 @@ destruct = () => {
           <input type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message and press enter" required/>
         </form>
       </div>  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
       

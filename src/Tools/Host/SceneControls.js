@@ -46,30 +46,7 @@ class SceneControls extends React.Component {
     
 
    
-    this.props.socket.on("floorplan",(data)=>{
-      this.setState({
-        floorplandata:"false"
-      })
-      this.setState({
-        floorplandata:data
-      })
-      });
-      this.props.socket.on("pdf",(data)=>{
-        this.setState({
-          pdfdata:"false"
-        })
-        this.setState({
-          pdfdata:data.data
-        })
-        });
-        this.props.socket.on("map",(data)=>{
-          this.setState({
-            mapdata:"false"
-          })
-          this.setState({
-            mapdata:data.latlng
-          })
-          });
+  
   }
 
   handleOutsideClick(e) {
@@ -126,10 +103,16 @@ open_close = (name,flag) =>{
  
     if(name==='map'){
       if(flag){
-        this.props.socket.emit('map',{ roomid:this.props.roomId,latlng:this.props.data["latlng"]});
+        this.props.connection.send({actiontype:"map",data:this.props.data["latlng"]});
+        this.setState({
+          mapdata:this.props.data["latlng"]
+        })
       }
       else{
-        this.props.socket.emit('map',{ roomid:this.props.roomId,latlng:false});
+        this.props.connection.send({actiontype:"map",data:false});
+        this.setState({
+          mapdata:false
+        })
       }
     }
   if(name!=='floorplan'){
@@ -181,7 +164,7 @@ open_close = (name,flag) =>{
     }
   }else{
     if(!flag){
-    this.props.socket.emit('floorplan',{ roomid:this.props.roomId,data:false,pin:null});
+      this.props.connection.send({actiontype:"floorplan",roomid:this.props.roomId,data:false,pin:null})
   }
   }
 
@@ -361,12 +344,12 @@ return (
      
   
     <Share open_close={this.open_close} share={this.state.share} pid={this.state.pid} roomId={this.props.roomId} user_id={this.props.user_id} ></Share>
-    <DocumentModal  socket={this.props.socket} room={this.props.roomId}  data={this.props.data} open_close={this.open_close} document={this.state.document}></DocumentModal>
+    <DocumentModal  connection={this.props.connection} room={this.props.roomId}  data={this.props.data} open_close={this.open_close} document={this.state.document}></DocumentModal>
     <Switchproject switch={this.props.switch} changeProject={this.props.changeProject} data={this.state.data} open_close={this.open_close} project={this.state.project} pid={this.state.pid} user_id={this.props.user_id}></Switchproject>
   {this.state.floorplan?
-    <Floorplan  socket={this.props.socket} room={this.props.roomId} changeImage = {this.props.changeImage} data={this.state.data} open_close={this.open_close} floorplan={this.state.floorplan}></Floorplan>
+    <Floorplan  connection={this.props.connection} room={this.props.roomId} changeImage = {this.props.changeImage} data={this.state.data} open_close={this.open_close} floorplan={this.state.floorplan}></Floorplan>
     :<></>}
-    <CloseModal destruct={this.props.destruct} socket={this.props.socket} project={this.props.pid} room={this.props.roomId}  close={this.state.close} open_close={this.open_close} ></CloseModal>
+    <CloseModal destruct={this.props.destruct}  project={this.props.pid} room={this.props.roomId}  close={this.state.close} open_close={this.open_close} ></CloseModal>
     {/* <Map pid={this.state.pid} user_id={this.props.user_id} open_close={this.open_close} map={this.state.map}></Map> */}
 
     {this.state.settings?<Settings videoinput={this.props.videoinput}

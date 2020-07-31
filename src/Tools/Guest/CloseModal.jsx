@@ -10,7 +10,7 @@ class CloseModal extends React.Component {
   constructor(props){
     super(props);
     this.state={
-        url:'',
+
         redirect:false
     }
    // this.handlechange=this.handlechange.bind(this);
@@ -18,7 +18,7 @@ class CloseModal extends React.Component {
   closeSocket = () => {
     //this.setState({redirect:true})
     this.props.destruct()	
-    this.props.socket.close();    
+    // this.props.socket.close();    
 
  
 
@@ -41,9 +41,7 @@ class CloseModal extends React.Component {
   
 componentDidMount(){
     window.scrollTo(0, 0);
-    this.setState({
-        url:'http://localhost:3000/joinroom/'+this.props.user_id+'/'+this.props.pid+'/'+this.props.roomId
-    })
+ 
   }
 
  

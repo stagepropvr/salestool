@@ -44,30 +44,7 @@ class SceneControls extends React.Component {
     
 
    
-    this.props.socket.on("floorplan",(data)=>{
-      this.setState({
-        floorplandata:"false"
-      })
-      this.setState({
-        floorplandata:data
-      })
-      });
-      this.props.socket.on("pdf",(data)=>{
-        this.setState({
-          pdfdata:"false"
-        })
-        this.setState({
-          pdfdata:data.data
-        })
-        });
-        this.props.socket.on("map",(data)=>{
-          this.setState({
-            mapdata:"false"
-          })
-          this.setState({
-            mapdata:data.latlng
-          })
-          });
+   
   }
 
   handleOutsideClick(e) {
@@ -244,16 +221,16 @@ return (
   
     <Share open_close={this.open_close} share={this.state.share} pid={this.state.pid} roomId={this.props.roomId} user_id={this.props.user_id} ></Share>
    
-    <CloseModal destruct={this.props.destruct} socket={this.props.socket} project={this.props.pid} room={this.props.roomId} host={this.props.host} close={this.state.close} open_close={this.open_close} ></CloseModal>
+    <CloseModal destruct={this.props.destruct}  project={this.props.pid} room={this.props.roomId} host={this.props.host} close={this.state.close} open_close={this.open_close} ></CloseModal>
    
 
     {this.state.settings?<Settings videoinput={this.props.videoinput}
               audioinput={this.props.audioinput} changedevice={this.props.changedevice} open_close={this.open_close} />:<></>}
 
-{this.state.floorplandata!="false"?<FloorplanClient data={this.state.floorplandata}/>:<></>}
-{this.state.pdfdata!="false"?<PDFclient data={this.state.pdfdata}/>:<></>}
+{this.props.floorplandata!="false"?<FloorplanClient data={this.props.floorplandata}/>:<></>}
+{this.props.pdfdata!="false"?<PDFclient data={this.props.pdfdata}/>:<></>}
 
-{this.state.mapdata?<MapModal
+{this.props.mapdata?<MapModal
         open_close={this.open_close}
         data={this.state.mapdata}
       />:<></>}

@@ -45,7 +45,7 @@ componentDidMount(){
 
     }
     else{
-      this.props.socket.emit('pdf',{ roomid:this.props.room,data:"false"});
+      this.props.connection.send({ actiontype:"pdf",roomid:this.props.room,data:"false"});
 
     }
     this.setState({
@@ -63,7 +63,7 @@ componentDidMount(){
   handleregister(event){
     event.preventDefault();
     this.open_close_pdf('pdf_modal',true);
-    this.props.socket.emit('pdf',{ roomid:this.props.room,data:this.state.pdf_data});
+    this.props.connection.send({actiontype:"pdf",roomid:this.props.room,data:this.state.pdf_data});
 }
 
   render() {
