@@ -9,16 +9,21 @@ class CloseModal extends React.Component {
   constructor(props){
     super(props);
     this.state={
-        url:'',
+     
         redirect:false
     }
    // this.handlechange=this.handlechange.bind(this);
 }
   closeSocket = () => {
     //this.setState({redirect:true})   
+
+    // this.props.destruct()	
+
+
     this.props.destruct()	
-    this.props.socket.close(); 
    
+   
+
         
        //Analytics
         Fire.database().ref("users/"+Fire.auth().currentUser.uid+"/Projects/"+this.props.project+"/rooms/"+this.props.room+"/analytics/host")
@@ -28,19 +33,13 @@ class CloseModal extends React.Component {
             })
         //
 
-
       this.props.socket.emit('deleteRoom',{room:this.props.room});
-      window.location="/projects";
-    
-   
-    
+      window.location="/projects";    
   }
   
 componentDidMount(){
     window.scrollTo(0, 0);
-    this.setState({
-        url:'http://localhost:3000/joinroom/'+this.props.user_id+'/'+this.props.pid+'/'+this.props.roomId
-    })
+  
   }
 
  
@@ -57,13 +56,13 @@ componentDidMount(){
 
   render() {
   
-    if(this.state.redirect){
-      return <Redirect to="/projects" />
-    }
-    else if(this.state.redirect){
-      return <Redirect to="/feedback" />
-    }
-    else{
+    // if(this.state.redirect){
+    //   return <Redirect to="/projects" />
+    // }
+    // else if(this.state.redirect){
+    //   return <Redirect to="/feedback" />
+    // }
+    // else{
       return( 
         <div style={{display:this.props.close===true?'block':'none'}} className="modal" id="close_modal" tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
@@ -98,5 +97,5 @@ componentDidMount(){
         </div>
         </div>)}
   }
-}
+// }
 export default CloseModal;

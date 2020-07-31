@@ -9,7 +9,7 @@ export default class VideoItem extends React.PureComponent {
   componentDidUpdate () {
     const { stream } = this.props
     const video = this.videoRef.current
-
+console.log(this.props.stream)
     if ('srcObject' in video) {
       video.srcObject = stream
     } else {
@@ -23,7 +23,7 @@ export default class VideoItem extends React.PureComponent {
     return (
         <video className="user-video"
           id={`video-${userId}`}
-          autoPlay
+          autoPlay muted={this.props.stream.type==="local"?true:false}
           ref={this.videoRef}
         />
     )

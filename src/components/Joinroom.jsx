@@ -12,7 +12,7 @@ class Joinroom extends React.Component {
         name:'',
         job_title:'',
         number:'',
-        cname:'',
+        // cname:'',
         email:'',
         start: new Date().getTime(),
         endTime: "",
@@ -61,7 +61,7 @@ componentDidMount(){
  handlejoin(event){
     event.preventDefault();
     
-    if(this.state.name!='' && this.state.email!='' && this.state.job_title!='' && this.state.cname!='' && this.state.number!=''){
+    if(this.state.name!='' && this.state.email!='' && this.state.number!=''){
         var alpha = /^[a-zA-Z-,]+(\s{0,1}[a-zA-Z-, ])*$/;
         if(this.state.name.match(alpha)){
             var email=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -74,8 +74,8 @@ componentDidMount(){
                    var ref =  Fire.database().ref('users/'+this.props.match.params.uid+'/Projects/'+this.props.match.params.pid+'/rooms/'+this.props.match.params.rid+'/analytics').push({
                      name:this.state.name,
                      number:this.state.number,
-                     job:this.state.job_title,
-                     company:this.state.cname,
+                    //  job:this.state.job_title,
+                    //  company:this.state.cname,
                      email:this.state.email,   
                      start:this.state.start,
                      end:this.state.endTime,
@@ -125,10 +125,10 @@ componentDidMount(){
             document.getElementById('name_error').childNodes[0].classList.remove('input_error_hide');
         }
 
-        if(this.state.cname==''){
-                document.getElementById('cname').classList.add('input_error_border');
-                document.getElementById('cname_error').childNodes[0].classList.remove('input_error_hide');
-        }
+        // if(this.state.cname==''){
+        //         document.getElementById('cname').classList.add('input_error_border');
+        //         document.getElementById('cname_error').childNodes[0].classList.remove('input_error_hide');
+        // }
 
         if(this.state.number==''){
             document.getElementById('number').classList.add('input_error_border');
@@ -136,11 +136,11 @@ componentDidMount(){
 
         }
 
-        if(this.state.job_title==''){
-            document.getElementById('job_title').classList.add('input_error_border');
-            document.getElementById('job_title_error').childNodes[0].classList.remove('input_error_hide');
+        // if(this.state.job_title==''){
+        //     document.getElementById('job_title').classList.add('input_error_border');
+        //     document.getElementById('job_title_error').childNodes[0].classList.remove('input_error_hide');
 
-        }
+        // }
 
         if(this.state.email==''){
             document.getElementById('email').classList.add('input_error_border');
@@ -171,86 +171,104 @@ if(this.state.redirect){
     )
 }else{
     return( 
-         <div className="header-filter">
-    <div  className="login_container container">
+         <div style={{width:'100%', height:'100vh'}} >
+    <div  className="login_container d-none d-sm-block">
         <div style={{background: "#eeeeee"}} className="login_container row">
-            <div style={{padding:"0"}} className="col-sm-5">
-                <div className="login_card card card-signup">
-                <a className="login_logo">
-                            <svg width="72" height="39" viewBox="0 0 72 39" fill="none">
-                                <rect width="72" height="39" fill="url(#pattern0)"/>
-                                <defs>
-                                <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
-                                <use href="#image0" transform="scale(0.00970874 0.0178571)"/>
-                                </pattern>
-                                <image id="image0" width="103" height="56" href="data:image/png;base64,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"/>
-                                </defs>
-                                </svg>
-                            <span>prop vr</span>                
-                        </a>
-                    <h2 className="Welcome-to-Prop-VR">Enter details join a session</h2>
-                    <div style={{margin:"0",padding:"0",paddingTop: "10px"}} className="row">
-                        <div style={{margin:"0"}} className="card project_det_background">
-                          <div style={{padding: "0px"}} className="card-body d-flex flex-row">
-                            <img src={this.state.img} width="81px" alt="avatar" />
-                            <div style={{width: "300px"}}>
-                         <h4 style={{paddingLeft: "25px"}} className="card-title project_heading">{this.props.match.params.pid}</h4>
-                              <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">
-                                <div>
-                                  <span>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                      <g id="27) Icon/archive">
-                                      <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor" fillRule="evenodd" clipRule="evenodd" d="M9.8662 14H14.1342C14.6102 14 15.0002 13.61 15.0002 13.134V12.866C15.0002 12.39 14.6102 12 14.1342 12H9.8662C9.3892 12 9.0002 12.39 9.0002 12.866V13.134C9.0002 13.61 9.3892 14 9.8662 14ZM18 18C18 18.551 17.552 19 17 19H7C6.449 19 6 18.551 6 18V9H18V18ZM6 5H18C18.552 5 19 5.449 19 6C19 6.551 18.552 7 18 7H6C5.449 7 5 6.551 5 6C5 5.449 5.449 5 6 5ZM21 6C21 4.346 19.654 3 18 3H6C4.346 3 3 4.346 3 6C3 6.883 3.391 7.67 4 8.22V18C4 19.654 5.346 21 7 21H17C18.654 21 20 19.654 20 18V8.22C20.609 7.67 21 6.883 21 6Z" fill="#222B45"/>
-                                      <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="3" y="3" width="18" height="18">
-                                      <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor_2" fillRule="evenodd" clipRule="evenodd" d="M9.8662 14H14.1342C14.6102 14 15.0002 13.61 15.0002 13.134V12.866C15.0002 12.39 14.6102 12 14.1342 12H9.8662C9.3892 12 9.0002 12.39 9.0002 12.866V13.134C9.0002 13.61 9.3892 14 9.8662 14ZM18 18C18 18.551 17.552 19 17 19H7C6.449 19 6 18.551 6 18V9H18V18ZM6 5H18C18.552 5 19 5.449 19 6C19 6.551 18.552 7 18 7H6C5.449 7 5 6.551 5 6C5 5.449 5.449 5 6 5ZM21 6C21 4.346 19.654 3 18 3H6C4.346 3 3 4.346 3 6C3 6.883 3.391 7.67 4 8.22V18C4 19.654 5.346 21 7 21H17C18.654 21 20 19.654 20 18V8.22C20.609 7.67 21 6.883 21 6Z" fill="white"/>
-                                      </mask>
-                                      <g mask="url(#mask0)">
-                                      </g>
-                                      </g>
-                                      </svg>        
-                                   </span>
-                                   <span id="room" className="createroom_icon_span">
-                                    {this.state.bed} BHK
-                                   </span> 
-                                </div>
-                              <div style={{paddingLeft: "15px"}}>
-                                <span>
-                                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                    <g id="27) Icon/droplet">
-                                    <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor" fillRule="evenodd" clipRule="evenodd" d="M12.5585 5.42903L8.64851 9.35503C6.47251 11.538 6.44351 15.114 8.58051 17.327C9.60951 18.394 10.9835 18.988 12.4475 19H12.4495C13.9145 19.011 15.2985 18.44 16.3445 17.39C18.5185 15.211 18.5475 11.636 16.4095 9.42103L12.5585 5.42903ZM12.4315 21C10.4245 20.983 8.54651 20.172 7.14151 18.716C4.25251 15.724 4.29151 10.893 7.22851 7.94603L11.8615 3.29503C12.0515 3.10503 12.3095 2.99803 12.5785 3.00003C12.8475 3.00303 13.1035 3.11403 13.2895 3.30603L17.8495 8.03303C20.7375 11.026 20.6985 15.858 17.7615 18.802C16.3325 20.236 14.4405 21.016 12.4335 21H12.4315Z" fill="#222B45"/>
-                                    <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="5" y="3" width="15" height="19">
-                                    <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor_2" fillRule="evenodd" clipRule="evenodd" d="M12.5585 5.42903L8.64851 9.35503C6.47251 11.538 6.44351 15.114 8.58051 17.327C9.60951 18.394 10.9835 18.988 12.4475 19H12.4495C13.9145 19.011 15.2985 18.44 16.3445 17.39C18.5185 15.211 18.5475 11.636 16.4095 9.42103L12.5585 5.42903ZM12.4315 21C10.4245 20.983 8.54651 20.172 7.14151 18.716C4.25251 15.724 4.29151 10.893 7.22851 7.94603L11.8615 3.29503C12.0515 3.10503 12.3095 2.99803 12.5785 3.00003C12.8475 3.00303 13.1035 3.11403 13.2895 3.30603L17.8495 8.03303C20.7375 11.026 20.6985 15.858 17.7615 18.802C16.3325 20.236 14.4405 21.016 12.4335 21H12.4315Z" fill="white"/>
-                                    </mask>
-                                    <g mask="url(#mask0)">
-                                    </g>
-                                    </g>
-                                    </svg>
-                                    
-                                </span>
-                                <span id="bath" className="createroom_icon_span">
-                                  {this.state.bath} Bath
-                                 </span> 
-                              </div>
-                               
-                               <div style={{paddingLeft: "15px"}}>
-                                <span>
-                                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                    <g id="27) Icon/home">
-                                    <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor" fillRule="evenodd" clipRule="evenodd" d="M16.0002 19.9878H18.9902L19.0002 11.6118L11.9982 4.41981L5.0062 11.5708L5.0002 19.9878H8.0002V12.9878C8.0002 12.4348 8.4472 11.9878 9.0002 11.9878H15.0002C15.5522 11.9878 16.0002 12.4348 16.0002 12.9878V19.9878ZM14.0002 19.9878H10.0002V13.9878H14.0002V19.9878ZM20.4242 10.1728L12.7152 2.28881C12.3382 1.90381 11.6622 1.90381 11.2852 2.28881L3.5752 10.1738C3.2102 10.5488 3.0002 11.0728 3.0002 11.6118V19.9878C3.0002 21.0908 3.8472 21.9878 4.8882 21.9878H9.0002H15.0002H19.1112C20.1522 21.9878 21.0002 21.0908 21.0002 19.9878V11.6118C21.0002 11.0728 20.7902 10.5488 20.4242 10.1728Z" fill="#222B45"/>
-                                    </g>
-                                    </svg>                    
-                                </span>
-                                <span id="sqft" className="createroom_icon_span">
-                                    {this.state.sqft} sq.ft
-                                 </span> 
-                               </div>
-                                                           
-                            </div>
-                          </div>
-                        </div>
-                       </div>           
-                    </div>
-                    <form onSubmit={this.handlejoin} className="form" style={{paddingTop: "25px"}}>
+            {/* Image Col */}
+            <div style={{padding:"0", maxHeight:'100vh', position:"relative"}} className="col-sm-5 d-none d-sm-block">
+                <img style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
+                <div className="loginNew_logo">
+                <svg width="72" height="39" viewBox="0 0 103 56" fill="none">
+                    <rect width="103" height="56" fill="url(#pattern0)"></rect>
+                        <defs>
+                    <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                    <use href="#image0" transform="scale(0.00970874 0.0178571)"></use>
+                    </pattern>
+                    <image id="image0" width="103" height="56" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGcAAAA4CAYAAADgmebbAAAABGdBTUEAALGOfPtRkwAABWpJREFUeAHtXE1oHVUUPi+mtUKkLqyFKLpIEIpRhEBBWiF0owshVRorRRqh4CKmNaXZFWoCXZVYW42KuDHukoZKiAtdWSiKIC2lhLb+dBFoU21LtW1KSJomft+bTDLvZ37evHve3JJ74CQz9+fMme+bc+fOuW8mJyllcXGxCV3boa3QxoA2YHu1yjROfCqgZ7A9lsvlLqcBJFdJJxDyFNp3Q9+EtlTSd5W3ncD5fwcdBFHXk2KRiByQwmg4AO2FrubISIprWDtG1gD0Y5DE7UiJJQfEvAULX0A3RlpylZUg8A8ad4Ggk1Gd6sIqQUoO+hHqR6GOmDCg0pUTz1HiS5zDTJStQIfH0GEI2hHW0ZUbQ+AELHUiimaKLZaQs8TkMBo6YorR0tsnQTtB0GLwEOWGtUNo4IgJoqS/TbyJe4EURA6ihjd/3mMKygt6uB0tBBg1O4KThGUSQAynyH9B3c1fC/54u5zFNYOg/DQ7OKzxOcYREw+gZgviTx7yko8cRA2f/JliYPQ4yRYBRk0Toue6Hzl7UeCIyZYU/+jkoZs7Pjnb/Rr33woEmLsUZgGYXeZEwIldCDQzcpj2d2IfAu0kh+sxTuxDoJXkcKHMiX0INNbDp5qQM/9A5NQ5Ty9Oity47aGxYb3IpudE2l72tP4R+1DKyKNGTgju4uCq02iScmxU5MqN6NN8ZoNIzw6PpOiW5mpv3xP5ckzk7J8is3MimzeJvPe6yNNPmjtGSkvTJKcgE5rSUNlutPwZFme//bFsdWjh7tdE9mIymVtOLoU2rariX1yWuw4jiv8rNPPoGo+gTpC0lmNLRqJKzqdY56uUGB8HErSPaVhF6R8SGf8l/ACM5N6dIltfDG+jWeM/hBo/BoeytMTQGfalDU357VK0dQ7DPYMi+z8XuXozuq1GrQo5vPnzHlOt0AZtacnft5JZPn1e5O0+ka+/F5mbT9bHRCsVcnjFx938kzhPG9rRk8QPtpm9L/LVuEcSJw+1EDVyTDlvCzn++fCC6T4u8vOEX6L3X4UcPseYEpO2TPk0hyg6OiKiN8/1PFUhx3/ANAGGSVsm/PFtTGLN8lrCe5bfp9L/KuRU6sTD2n5hQddzFXKYkjElJm2Z8ol2nsWCMp+DNEWFHObKTIlJW6Z8WrdW5OC7pqyF21Ehh0lMU2LSlgmfGC2DH2Kd5XkT1qJtqGSOCChPotpnHdqwhRzm25hrY1K0Vvk2lchh2p/Z5WqFNjSXEJ5oSObhqy+JjPSJvP9G7YihZyrk0DCveCYv0wr7akfNKy9Ee8fIPdYt8skH2SwhqGalbV8yuIkFvz1HSpOaWQxh5S4TknMHFY+XqzRVxhSMrYttJOibH0R+vSCygPWnLS0i72zLJlKK8L5Lcn5Hofrcwy1TF0Efv/sHyfkJ7dri27oWNUbgFCcEUzU+qDtcMgSmSA7flXdiHwJnOKy5n+PaRww9aq7DqwZ89aMGS0d2ImCpVxPkhcMaBT9gcmIRAnk+8r8Mw9DmXp6yh5lpuLLy8hTfokLBgD3+rWpPBpb4WHlrGtHTAEjcC7vZXhflX9gFWwynLiiSGE4yQIC483s45CEv/oQgv4OKk9jo96rc3xoj0L+E//Jh8xOC5T1sYHhj2TC0I1jutlUROAHr8Z9XAXsMr04oOzjRR4A488NEJbeTgmHN9wMNZ7CN39dLH7SkE8qcVI8Ace2DMmKId4mUDGvFLTDM8UUM9zG8YmCq2+esLPZjeLHk0IelafYBbPZCOeV2kg4BzsT4PGnmM5JBH0ASMwn82sd2aEuwzm1HIjCBWqZkzH+AtdxhQRSz2e3QVqj7dLEHEiOD62O+cjkm9aeL/wdo+WcsHD0GuAAAAABJRU5ErkJggg=="></image>
+                </defs>
+                </svg>
+                    <span>prop vr</span>                
+                </div>
+                
+                <div class="loginNew_center">
+                    <h3>Virtual Property Tour Invite</h3>
+                    <p>You are invited for a virtual guided property tour. Ask your questions, virtually experience the property and book your dream property.</p>
+                </div>
+
+                <div class="loginNew_bottom">
+                    <p>Powered by <u>PROPVR.in</u></p>   
+                </div>
+                
+            </div>
+			
+            {/* Form Col */} 
+            <div style={{padding:"0", textAlign:'center', width:"100%"}} className="col-sm-7 col-xs-12">
+                <div className="login_card card card-signup" style={{justifyContent:'center'}}>
+                    <h2 className="Welcome-to-Prop-VR" style={{padding: "25px"}}>You are joining a virtual tour session</h2>
+        
+                <div className="JoiningForm">
+                <div style={{margin:"0",padding:"0"}} className="row">
+        <div className="card project_det_background">
+          <div style={{padding: "0px"}} className="card-body d-flex flex-row">
+            <img src={this.state.img} width="81px" alt="avatar" />
+            <div style={{width: "300px"}}>
+        <h4 style={{paddingLeft: "25px"}} className="card-title project_heading">{this.props.match.params.pid}</h4>
+              <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">
+                <div>
+                  <span>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <g id="27) Icon/archive">
+                      <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor" fillRule="evenodd" clipRule="evenodd" d="M9.8662 14H14.1342C14.6102 14 15.0002 13.61 15.0002 13.134V12.866C15.0002 12.39 14.6102 12 14.1342 12H9.8662C9.3892 12 9.0002 12.39 9.0002 12.866V13.134C9.0002 13.61 9.3892 14 9.8662 14ZM18 18C18 18.551 17.552 19 17 19H7C6.449 19 6 18.551 6 18V9H18V18ZM6 5H18C18.552 5 19 5.449 19 6C19 6.551 18.552 7 18 7H6C5.449 7 5 6.551 5 6C5 5.449 5.449 5 6 5ZM21 6C21 4.346 19.654 3 18 3H6C4.346 3 3 4.346 3 6C3 6.883 3.391 7.67 4 8.22V18C4 19.654 5.346 21 7 21H17C18.654 21 20 19.654 20 18V8.22C20.609 7.67 21 6.883 21 6Z" fill="#222B45"/>
+                      <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="3" y="3" width="18" height="18">
+                      <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor_2" fillRule="evenodd" clipRule="evenodd" d="M9.8662 14H14.1342C14.6102 14 15.0002 13.61 15.0002 13.134V12.866C15.0002 12.39 14.6102 12 14.1342 12H9.8662C9.3892 12 9.0002 12.39 9.0002 12.866V13.134C9.0002 13.61 9.3892 14 9.8662 14ZM18 18C18 18.551 17.552 19 17 19H7C6.449 19 6 18.551 6 18V9H18V18ZM6 5H18C18.552 5 19 5.449 19 6C19 6.551 18.552 7 18 7H6C5.449 7 5 6.551 5 6C5 5.449 5.449 5 6 5ZM21 6C21 4.346 19.654 3 18 3H6C4.346 3 3 4.346 3 6C3 6.883 3.391 7.67 4 8.22V18C4 19.654 5.346 21 7 21H17C18.654 21 20 19.654 20 18V8.22C20.609 7.67 21 6.883 21 6Z" fill="white"/>
+                      </mask>
+                      <g mask="url(#mask0)">
+                      </g>
+                      </g>
+                      </svg>        
+                   </span>
+                   <span id="room" className="createroom_icon_span">
+                    {this.state.bed} BHK
+                   </span> 
+                </div>
+              <div style={{paddingLeft: "15px"}}>
+                <span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" >
+                    <g id="27) Icon/droplet">
+                    <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor" fillRule="evenodd" clipRule="evenodd" d="M12.5585 5.42903L8.64851 9.35503C6.47251 11.538 6.44351 15.114 8.58051 17.327C9.60951 18.394 10.9835 18.988 12.4475 19H12.4495C13.9145 19.011 15.2985 18.44 16.3445 17.39C18.5185 15.211 18.5475 11.636 16.4095 9.42103L12.5585 5.42903ZM12.4315 21C10.4245 20.983 8.54651 20.172 7.14151 18.716C4.25251 15.724 4.29151 10.893 7.22851 7.94603L11.8615 3.29503C12.0515 3.10503 12.3095 2.99803 12.5785 3.00003C12.8475 3.00303 13.1035 3.11403 13.2895 3.30603L17.8495 8.03303C20.7375 11.026 20.6985 15.858 17.7615 18.802C16.3325 20.236 14.4405 21.016 12.4335 21H12.4315Z" fill="#222B45"/>
+                    <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="5" y="3" width="15" height="19">
+                    <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor_2" fillRule="evenodd" clipRule="evenodd" d="M12.5585 5.42903L8.64851 9.35503C6.47251 11.538 6.44351 15.114 8.58051 17.327C9.60951 18.394 10.9835 18.988 12.4475 19H12.4495C13.9145 19.011 15.2985 18.44 16.3445 17.39C18.5185 15.211 18.5475 11.636 16.4095 9.42103L12.5585 5.42903ZM12.4315 21C10.4245 20.983 8.54651 20.172 7.14151 18.716C4.25251 15.724 4.29151 10.893 7.22851 7.94603L11.8615 3.29503C12.0515 3.10503 12.3095 2.99803 12.5785 3.00003C12.8475 3.00303 13.1035 3.11403 13.2895 3.30603L17.8495 8.03303C20.7375 11.026 20.6985 15.858 17.7615 18.802C16.3325 20.236 14.4405 21.016 12.4335 21H12.4315Z" fill="white"/>
+                    </mask>
+                    <g mask="url(#mask0)">
+                    </g>
+                    </g>
+                    </svg>
+                    
+                </span>
+                <span id="bath" className="createroom_icon_span">
+                {this.state.bath} Bath
+                 </span> 
+              </div>
+               
+               <div style={{paddingLeft: "15px"}}>
+                <span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" >
+                    <g id="27) Icon/home">
+                    <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor" fillRule="evenodd" clipRule="evenodd" d="M16.0002 19.9878H18.9902L19.0002 11.6118L11.9982 4.41981L5.0062 11.5708L5.0002 19.9878H8.0002V12.9878C8.0002 12.4348 8.4472 11.9878 9.0002 11.9878H15.0002C15.5522 11.9878 16.0002 12.4348 16.0002 12.9878V19.9878ZM14.0002 19.9878H10.0002V13.9878H14.0002V19.9878ZM20.4242 10.1728L12.7152 2.28881C12.3382 1.90381 11.6622 1.90381 11.2852 2.28881L3.5752 10.1738C3.2102 10.5488 3.0002 11.0728 3.0002 11.6118V19.9878C3.0002 21.0908 3.8472 21.9878 4.8882 21.9878H9.0002H15.0002H19.1112C20.1522 21.9878 21.0002 21.0908 21.0002 19.9878V11.6118C21.0002 11.0728 20.7902 10.5488 20.4242 10.1728Z" fill="#222B45"/>
+                    </g>
+                    </svg>                    
+                </span>
+                <span id="sqft" className="createroom_icon_span">
+                  {this.state.sqft} sq.ft
+                 </span> 
+               </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+       </div>
+                    <form onSubmit={this.handlejoin} className="form" style={{paddingTop: "25px", textAlign: "left"}}>
 							<div className="card-content">							
 									<div className="form-group">
                                         <label className="input_Label">
@@ -291,7 +309,7 @@ if(this.state.redirect){
                                         </small>
                                     </div>
                                     
-                                    <div className="form-group">
+                                    {/* <div className="form-group">
                                         <label className="input_Label">
                                            Job Title 
                                         </label>
@@ -303,9 +321,9 @@ if(this.state.redirect){
                                         </span>     
                                         </small>
 
-                                    </div>
+                                    </div> */}
 
-                                    <div className="form-group">
+                                    {/* <div className="form-group">
                                         <label className="input_Label">
                                             Company name
                                         </label>
@@ -316,7 +334,7 @@ if(this.state.redirect){
                                             Company name is <sup>*</sup>required
                                         </span>      
                                         </small>
-                                    </div>
+                                    </div> */}
 
                                     
 
@@ -328,7 +346,8 @@ if(this.state.redirect){
                                     </div>
 
                                     <div style={{textAlign: "center"}} className="form-group">
-                                    <button id="submit" type="submit" className="btn input_button">Sign up</button>
+                                    <button style={{ padding:'10px',margin:'10px'}} className="btn input_button">CANCEL</button>
+                                    <button id="submit" type="submit" style={{ padding:'10px',margin:'10px'}} className="btn input_button">NEXT</button>
                                     <button style={{cursor: "progress",display:'none'}} id="loader" type="button" className="btn input_button" disabled>
                                     <i id="loginloader" className="fa fa-circle-o-notch fa-spin" style={{ fontSize: "1rem", color: "white", paddingRight: 2, paddingLeft: 2 }}></i>
                                     </button>
@@ -336,9 +355,180 @@ if(this.state.redirect){
                                     </div>
 							</div>
                         </form>
+                        </div>
                 </div>
             </div>
         </div>
+
+
+        
+    </div>
+
+    {/* Mobile */}
+    <div  className="login_container container d-sm-none">
+        <div style={{background: "#eeeeee"}} className="login_container row">
+            {/* Form Col */} 
+            <div style={{padding:"0", textAlign:'center', width:"100%"}} className="col-sm-7 col-xs-12">
+                <div className="login_card_Mobile card card-signup" >
+                <div className="BlueBG">   
+                    <h1 className="Welcome-to-Prop-VR" >Join Virtual Tour </h1>
+                    <p>You are invited to join the virtual property tour. Fill the required details and enjoy your session.</p>
+                    <div style={{margin:0, padding:0, width:'100%'}} class="card project_det_background">    
+                          <div style={{padding: "0px"}} className="card-body d-flex flex-row">
+                            <img src={this.state.img} width="81px" alt="avatar" />
+                            <div style={{width: "100%"}}>
+                                <h4 className="card-title project_heading" style={{textAlign:"center"}}>{this.props.match.params.pid}</h4>
+                                <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">
+                                    <div className="col">
+                                    <span>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <g id="27) Icon/archive">
+                                        <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor" fillRule="evenodd" clipRule="evenodd" d="M9.8662 14H14.1342C14.6102 14 15.0002 13.61 15.0002 13.134V12.866C15.0002 12.39 14.6102 12 14.1342 12H9.8662C9.3892 12 9.0002 12.39 9.0002 12.866V13.134C9.0002 13.61 9.3892 14 9.8662 14ZM18 18C18 18.551 17.552 19 17 19H7C6.449 19 6 18.551 6 18V9H18V18ZM6 5H18C18.552 5 19 5.449 19 6C19 6.551 18.552 7 18 7H6C5.449 7 5 6.551 5 6C5 5.449 5.449 5 6 5ZM21 6C21 4.346 19.654 3 18 3H6C4.346 3 3 4.346 3 6C3 6.883 3.391 7.67 4 8.22V18C4 19.654 5.346 21 7 21H17C18.654 21 20 19.654 20 18V8.22C20.609 7.67 21 6.883 21 6Z" fill="#222B45"/>
+                                        <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="3" y="3" width="18" height="18">
+                                        <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor_2" fillRule="evenodd" clipRule="evenodd" d="M9.8662 14H14.1342C14.6102 14 15.0002 13.61 15.0002 13.134V12.866C15.0002 12.39 14.6102 12 14.1342 12H9.8662C9.3892 12 9.0002 12.39 9.0002 12.866V13.134C9.0002 13.61 9.3892 14 9.8662 14ZM18 18C18 18.551 17.552 19 17 19H7C6.449 19 6 18.551 6 18V9H18V18ZM6 5H18C18.552 5 19 5.449 19 6C19 6.551 18.552 7 18 7H6C5.449 7 5 6.551 5 6C5 5.449 5.449 5 6 5ZM21 6C21 4.346 19.654 3 18 3H6C4.346 3 3 4.346 3 6C3 6.883 3.391 7.67 4 8.22V18C4 19.654 5.346 21 7 21H17C18.654 21 20 19.654 20 18V8.22C20.609 7.67 21 6.883 21 6Z" fill="white"/>
+                                        </mask>
+                                        <g mask="url(#mask0)">
+                                        </g>
+                                        </g>
+                                        </svg>        
+                                   </span>
+                                   <span id="room" className="createroom_icon_span">
+                                        {this.state.bed} BHK
+                                   </span> 
+                                </div>
+                              <div className="col">
+                                <span>
+                                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <g id="27) Icon/droplet">
+                                    <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor" fillRule="evenodd" clipRule="evenodd" d="M12.5585 5.42903L8.64851 9.35503C6.47251 11.538 6.44351 15.114 8.58051 17.327C9.60951 18.394 10.9835 18.988 12.4475 19H12.4495C13.9145 19.011 15.2985 18.44 16.3445 17.39C18.5185 15.211 18.5475 11.636 16.4095 9.42103L12.5585 5.42903ZM12.4315 21C10.4245 20.983 8.54651 20.172 7.14151 18.716C4.25251 15.724 4.29151 10.893 7.22851 7.94603L11.8615 3.29503C12.0515 3.10503 12.3095 2.99803 12.5785 3.00003C12.8475 3.00303 13.1035 3.11403 13.2895 3.30603L17.8495 8.03303C20.7375 11.026 20.6985 15.858 17.7615 18.802C16.3325 20.236 14.4405 21.016 12.4335 21H12.4315Z" fill="#222B45"/>
+                                    <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="5" y="3" width="15" height="19">
+                                    <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor_2" fillRule="evenodd" clipRule="evenodd" d="M12.5585 5.42903L8.64851 9.35503C6.47251 11.538 6.44351 15.114 8.58051 17.327C9.60951 18.394 10.9835 18.988 12.4475 19H12.4495C13.9145 19.011 15.2985 18.44 16.3445 17.39C18.5185 15.211 18.5475 11.636 16.4095 9.42103L12.5585 5.42903ZM12.4315 21C10.4245 20.983 8.54651 20.172 7.14151 18.716C4.25251 15.724 4.29151 10.893 7.22851 7.94603L11.8615 3.29503C12.0515 3.10503 12.3095 2.99803 12.5785 3.00003C12.8475 3.00303 13.1035 3.11403 13.2895 3.30603L17.8495 8.03303C20.7375 11.026 20.6985 15.858 17.7615 18.802C16.3325 20.236 14.4405 21.016 12.4335 21H12.4315Z" fill="white"/>
+                                    </mask>
+                                    <g mask="url(#mask0)">
+                                    </g>
+                                    </g>
+                                    </svg>
+                                    
+                                </span>
+                                <span id="bath" className="createroom_icon_span">
+                                  {this.state.bath} Bath
+                                 </span> 
+                              </div>
+                               
+                               <div className="col">
+                                <span>
+                                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <g id="27) Icon/home">
+                                    <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor" fillRule="evenodd" clipRule="evenodd" d="M16.0002 19.9878H18.9902L19.0002 11.6118L11.9982 4.41981L5.0062 11.5708L5.0002 19.9878H8.0002V12.9878C8.0002 12.4348 8.4472 11.9878 9.0002 11.9878H15.0002C15.5522 11.9878 16.0002 12.4348 16.0002 12.9878V19.9878ZM14.0002 19.9878H10.0002V13.9878H14.0002V19.9878ZM20.4242 10.1728L12.7152 2.28881C12.3382 1.90381 11.6622 1.90381 11.2852 2.28881L3.5752 10.1738C3.2102 10.5488 3.0002 11.0728 3.0002 11.6118V19.9878C3.0002 21.0908 3.8472 21.9878 4.8882 21.9878H9.0002H15.0002H19.1112C20.1522 21.9878 21.0002 21.0908 21.0002 19.9878V11.6118C21.0002 11.0728 20.7902 10.5488 20.4242 10.1728Z" fill="#222B45"/>
+                                    </g>
+                                    </svg>                    
+                                </span>
+                                <span id="sqft" className="createroom_icon_span">
+                                    {this.state.sqft} sq.ft
+                                 </span> 
+                               </div>
+                                                           
+                            </div>
+                          </div>
+                        </div>
+                       </div>       
+                </div>
+                    <div style={{margin:"0",padding:"0",paddingTop: "0px", height: 'inherit'}} className="row">    
+                    
+                    <form onSubmit={this.handlejoin} className="form form_Mobile" style={{paddingTop: "25px", textAlign: "left", width:"100%"}}>
+							<div className="card-content">							
+									<div className="form-group">
+                                        <label className="input_Label">
+                                            Name
+                                        </label>
+                                        <input onChange={this.handlechange} type="text" id="name" name="name" className="input_box form-control" placeholder="Enter your full name" />
+                                        <small id="name_error" className="form-text text-muted">
+                                            <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            Name is <sup>*</sup> required
+                                            </span>
+                                        </small>
+                                    </div>
+								
+                                    <div className="form-group">
+                                        <label className="input_Label">
+                                            Email ID
+                                        </label>
+                                        <input onChange={this.handlechange} type="email" id="email" name="email" className="input_box form-control" placeholder="Enter your email address" />
+                                        <small id="email_error" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                          Email Address <sup>*</sup> is required
+                                        </span>   
+                                        </small>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label className="input_Label">
+                                            Phone number
+                                        </label>
+                                        <input onChange={this.handlechange} type="text" id="number" name="number" className="input_box form-control" placeholder="Enter your 10-digit phone number" />
+                                        <small id="number_error" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            Number is <sup>*</sup> required
+                                        </span>                    
+                                        </small>
+                                    </div>
+                                    
+                                    {/* <div className="form-group">
+                                        <label className="input_Label">
+                                           Job Title 
+                                        </label>
+                                        <input onChange={this.handlechange} type="text" id="job_title" name="job_title" className="input_box form-control" placeholder="Enter Job Title" />
+                                        <small id="job_title_error" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                           Job Title  is <sup>*</sup> required
+                                        </span>     
+                                        </small>
+
+                                    </div> */}
+
+                                    {/* <div className="form-group">
+                                        <label className="input_Label">
+                                            Company name
+                                        </label>
+                                        <input onChange={this.handlechange} type="text" id="cname" name="cname" className="input_box form-control" placeholder="Enter the company name" />
+                                        <small id="cname_error" className="form-text text-muted">
+                                        <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            Company name is <sup>*</sup>required
+                                        </span>      
+                                        </small>
+                                    </div> */}
+
+                                    
+
+                                    <div id="other_exception" style={{display:'none'}} className="form-group">   
+                                         <span className="input_error input_error_hide">
+                                            <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                            {this.state.exception}
+                                        </span>
+                                    </div>
+
+                                    <div style={{textAlign: "center"}} className="form-group">
+                                    <button style={{margin:'10px'}} className="btn input_button">CANCEL</button>
+                                    <button id="submit" type="submit" style={{margin:'10px'}} className="btn input_button">NEXT</button>
+                                    <button style={{cursor: "progress",display:'none'}} id="loader" type="button" className="btn input_button" disabled>
+                                    <i id="loginloader" className="fa fa-circle-o-notch fa-spin" style={{ fontSize: "1rem", color: "white", paddingRight: 2, paddingLeft: 2 }}></i>
+                                    </button>
+
+                                    </div>
+							</div>
+                        </form>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+
+        
     </div>
 </div>)}
   }

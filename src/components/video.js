@@ -12,7 +12,6 @@ import SceneControls from "./SceneControls.js";
 import { useEffect } from 'react';
 import Switchprojectloader from './Switchprojectloader';
 
-
 let userId = null
 
 class Video extends React.Component {
@@ -52,7 +51,9 @@ class Video extends React.Component {
       hostaudioctrl:false,
       Switchstatus:false,
       messagescount:0,
-        };
+
+      rtc:{}      };
+
     this.duration = 0;
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
@@ -862,7 +863,9 @@ destruct = () => {
       {
                 Object.keys(this.state.streams).map((key, id) => {
                   if(this.state.streams[key].active ){
-                  return    <li className="video_content">
+
+                  return    <li>
+
                   <div style={{"background":"#000"}}>
                      <div className="videotools">
                     {this.state.host?   <button id={key} onClick={() => this.muteclient(key)} mic="false" className="menu_option video_on guest_video_mute video_mute_option">
