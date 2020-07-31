@@ -104,11 +104,7 @@ this.changedevice=this.changedevice.bind(this);
         this.setState({
           host:false
         })
-        Firebase.database().ref("roomsession/"+this.props.roomId+"/hostid").on("value",(snap)=>{
-          this.setState({
-            hostref:snap.val().hostid
-          })
-        })
+      
         Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage").on("value",(snap)=>{
           this.setState({
             clientimage:snap.val().currentimage,
@@ -155,12 +151,8 @@ this.changedevice=this.changedevice.bind(this);
 
 
 var  videoConstraints = {
-  width: {
-      ideal: 1280
-  },
-  height: {
-      ideal: 720
-  },
+  width: { min: 160, ideal: 640, max: 1280 },
+          height: { min: 120, ideal: 360, max: 720 },
   frameRate: 30,
   deviceId:this.state.videoinput
 };
@@ -204,14 +196,14 @@ if(event.type==="local"){
   })
 console.log(this.state.connection)
 if(!this.props.video){
-  alert("audio");
+
   this.state.localStream.stream.mute("video");
   this.setState({
     camState: false
   })
 }
 if(!this.props.audio){
-  alert("video");
+
   this.state.localStream.stream.mute("audio");
   this.setState({
     micState: false
@@ -294,7 +286,7 @@ this.state.connection.userid=localStorage.getItem("guestkey");
       }
       }
   }
-  this.state.connection.join(this.props.roomId);
+  this.state.connection.openOrJoin(this.props.roomId);
 
  
 

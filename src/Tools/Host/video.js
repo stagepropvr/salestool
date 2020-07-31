@@ -81,7 +81,9 @@ this.audioallctrl=this.audioallctrl.bind(this);
     var promise = new Promise( (resolve, reject) => {
     Firebase.auth().onAuthStateChanged((user) => {
 
-     
+     if(!user){
+       window.location="/login"
+     }
        
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
           this.state.data = node.val();
@@ -151,12 +153,8 @@ this.audioallctrl=this.audioallctrl.bind(this);
 
 
 var  videoConstraints = {
-  width: {
-      ideal: 1280
-  },
-  height: {
-      ideal: 720
-  },
+  width: { min: 160, ideal: 640, max: 1280 },
+          height: { min: 120, ideal: 360, max: 720 },
   frameRate: 30,
   deviceId:this.state.videoinput
 };
@@ -218,7 +216,7 @@ console.log(this.state.connection)
   var socket = this.state.connection.getSocket();
   socket.on('custom-message', (data)=> {
   });
-this.state.connection.open(this.props.roomId);
+this.state.connection.openOrJoin(this.props.roomId);
 this.state.connection.isAudioMuted=false;
 
  
@@ -622,6 +620,7 @@ return(
   
 )
     }else{
+      if(key.stream.active){
      return(
       <li className="video_content">
       <div style={{"background":"#000"}}>
@@ -653,7 +652,7 @@ return(
     />
       </div>
                </li>
-     )}
+     )}}
    })}
       
               </ul>

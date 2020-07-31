@@ -20,7 +20,6 @@ class CloseModal extends React.Component {
     // this.props.destruct()	
 
 
-    this.props.destruct()	
    
    
 
@@ -33,7 +32,6 @@ class CloseModal extends React.Component {
             })
         //
 
-      this.props.socket.emit('deleteRoom',{room:this.props.room});
       window.location="/projects";    
   }
   
