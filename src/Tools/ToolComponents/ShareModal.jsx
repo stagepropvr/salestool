@@ -13,9 +13,16 @@ class Share extends React.Component {
         tooltip:false
     }
    this.handlecopy=this.handlecopy.bind(this);
+   this.onClick =  this.onClick.bind(this);
  
 }
   
+onClick(event){
+  this.setState({
+    tooltip:false
+  })
+  this.props.open_close('share',false);
+}
 handlecopy(event){
   navigator.clipboard.writeText(this.state.url);
   this.setState({
@@ -52,7 +59,7 @@ componentDidMount(){
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Add others to the session</h5>
-            <button onClick={() => this.props.open_close('share',false)} type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <button onClick={this.onClick} type="button" className="close" data-dismiss="modal" aria-label="Close">
               
               
               <span aria-hidden="true">

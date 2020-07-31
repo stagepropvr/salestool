@@ -697,7 +697,7 @@ destruct = () => {
                {this.state.rtcstreams.map((key)=>{
       if(key.type=="local"){
         return(
-          <li className="video_content">
+          <li style={{marginTop:'30px'}} className="video_content">
                           <div ref={this.localvideo} style={{"background":"#000"}} className="relative-localvideo">
                              <div className="videotools">
                            
@@ -715,7 +715,7 @@ destruct = () => {
         )
             }else{
      return(
-      <li>
+      <li className="video_content">
       <div style={{"background":"#000"}}>
          <div className="videotools">
           

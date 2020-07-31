@@ -228,9 +228,9 @@ fileupload = (event)=>{
        </ul>
      </div>
      <ul id="profile_img_div" className="navbar-nav mr-auto">
-       <li className="nav-item" >
+       {/* <li className="nav-item" >
           <button className="upgrade">Upgrade now</button> 
-       </li>
+       </li> */}
        <li style={{paddingLeft: "10px"}} className="dropdown nav-item">
          <a href="/" className="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
            <img src={this.state.local_pic} alt="username" className="rounded-circle img-fluid" />
@@ -239,13 +239,13 @@ fileupload = (event)=>{
          </a>
          <div className="dropdown-menu dropdown-menu-right">
            <a href="#javascript" style={{color:'#8f9bb3'}} className="header_dropdown header_dropdown_email dropdown-item">{this.state.email}</a>
-           <a href="#javascript" style={{flexDirection: "column",height: "90px"}} className="header_dropdown dropdown-item">
+           {/* <a href="#javascript" style={{flexDirection: "column",height: "90px"}} className="header_dropdown dropdown-item">
            <span>Enterprise plan</span>
            <span className="header_dropdown_subtext">794 MB of 10000 MB used</span>
          <div className="progress">
          <div className="progress-bar" role="progressbar" style={{width: "25%"}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
          </div>
-         </a>
+         </a> */}
            <a href="#javascript" className="header_dropdown dropdown-item">Downloads</a>
            <a href="#javascript" onClick={()=> this.setState({
              myaccount:true

@@ -97,6 +97,8 @@ menu_bar_open = (event) => {
   }
 }
 open_close = (name,flag) =>{
+  document.getElementById('tools_div').classList.remove('show');
+
   this.setState({
     [name]:flag
   })

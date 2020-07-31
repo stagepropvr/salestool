@@ -96,6 +96,8 @@ menu_bar_open = (event) => {
   }
 }
 open_close = (name,flag) =>{
+  document.getElementById('tools_div').classList.remove('show');
+
   this.setState({
     [name]:flag
   })
@@ -134,7 +136,7 @@ return (
                 </svg>
               </span>
             </button>
-            <div id="tools_div" className="menudrop dropdown-menu show" x-placement="top-start" style={{position: 'absolute', top: '8px', left: '15px', willChange: 'top, left'}}>
+            <div id="tools_div" className="tools_div_guest menudrop dropdown-menu show" x-placement="top-start" style={{position: 'absolute', top: '8px', left: '15px', willChange: 'top, left'}}>
 
               <a onClick={()=> this.open_close('share',true)} name="share"  className="menudrop_item dropdown-item" href="#" data-tip="Share">
                 <svg  width={24} height={24} viewBox="0 0 24 24">
