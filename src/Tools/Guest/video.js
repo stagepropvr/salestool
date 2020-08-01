@@ -133,7 +133,7 @@ this.changedevice=this.changedevice.bind(this);
   
 
     
-      this.state.connection.socketURL = 'propvrrtc.propvr.tech/';
+      this.state.connection.socketURL = 'https://propvrrtc.propvr.tech/';
   
 
 
@@ -160,7 +160,7 @@ var  videoConstraints = {
 this.state.connection.iceServers = [{
   'urls': [
      'stun:stun.l.google.com:19302',
-'stun:stun1.l.google.com:19302',
+'stun:stun1.l.google.com:19302',  
 'stun:stun2.l.google.com:19302',
 'stun:stun3.l.google.com:19302',
 'stun:stun4.l.google.com:19302',

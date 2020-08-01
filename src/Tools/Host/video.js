@@ -134,15 +134,13 @@ this.audioallctrl=this.audioallctrl.bind(this);
     promise.then( result => {
     
       
-      this.state.connection.socketURL = 'propvrrtc.propvr.tech/';
+      this.state.connection.socketURL = 'https://propvrrtc.propvr.tech/';
   
 
 
       this.state.connection.session = {
           audio: true,
-          video: true,
-          data:true,
-          oneway: true
+          video: true
       };
       this.state.connection.sdpConstraints.mandatory = {
           OfferToReceiveAudio: true,
