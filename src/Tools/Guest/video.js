@@ -157,7 +157,7 @@ var  videoConstraints = {
   deviceId:this.state.videoinput
 };
 
-this.state.connection.iceServers.push( {
+this.state.connection.iceServers = [{
   'urls': [
      'stun:stun.l.google.com:19302',
 'stun:stun1.l.google.com:19302',
@@ -165,15 +165,14 @@ this.state.connection.iceServers.push( {
 'stun:stun3.l.google.com:19302',
 'stun:stun4.l.google.com:19302',
   ]
-});
-
-this.state.connection.iceServers.push(
+},
 {
   'urls': 'turn:52.15.126.155:3478',
   'credential': 'revsmart123',
   'username': 'propvr'
   }
-);
+
+];
 this.state.connection.userId=localStorage.getItem("guestkey");
 this.state.connection.extra={
   name:localStorage.getItem("name")
