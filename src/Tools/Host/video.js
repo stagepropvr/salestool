@@ -214,8 +214,7 @@ console.log(this.state.connection)
   };
  
   var socket = this.state.connection.getSocket();
-  socket.on('custom-message', (data)=> {
-  });
+
 this.state.connection.openOrJoin(this.props.roomId);
 this.state.connection.isAudioMuted=false;
 

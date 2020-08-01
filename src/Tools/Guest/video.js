@@ -356,7 +356,6 @@ this.state.connection.userid=localStorage.getItem("guestkey");
  
   setAudioLocal() {
     
-    this.state.connection.send("audio");
 
   
     console.log(this.state.localStream)
