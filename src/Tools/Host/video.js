@@ -40,7 +40,8 @@ class Video extends React.Component {
       Switchstatus:false,
       messagescount:0,
       connection : new RTCMultiConnection(),
-      rtcstreams:[]
+      rtcstreams:[],
+      usercount:0
 
         };
     
@@ -188,7 +189,15 @@ console.log( event.stream.streamid );
 this.setState(ele => ({
   rtcstreams: [...ele.rtcstreams, event]
 }))
-
+var count=0;
+this.state.rtcstreams.map((key)=>{
+  if(key.stream.active){
+    count++;
+  }
+})
+this.setState({
+  usercount:count
+})
 console.log(this.state.rtcstreams);
 if(event.type==="local"){
   this.setState({
@@ -197,6 +206,17 @@ if(event.type==="local"){
   this.state.localStream.stream.unmute("audio");
 console.log(this.state.connection)
 }
+};
+this.state.connection.onUserStatusChanged = (event)=> {
+  var count=0;
+  this.state.rtcstreams.map((key)=>{
+    if(key.stream.active){
+      count++;
+    }
+  })
+  this.setState({
+    usercount:count
+  })
 };
  this.state.connection.onmessage = (event)=> {
   if(!document.getElementById('chat_tab').getAttribute("class").includes("active show")){
@@ -302,10 +322,7 @@ this.state.connection.onunmute = (e)=> {
   audioinput:audioinput
   });
 
-this.state.connection.replaceTrack({
-  screen: true,
-  oneway: true
-});
+
 
     }
 
@@ -480,6 +497,7 @@ muteclient(id,status){
 
 
 }
+
   render() {
     if(this.state.closeRoom)
     {
@@ -551,7 +569,7 @@ muteclient(id,status){
                   </g>
               </g>
         </svg>  
-            <sup className="members_count">{Object.keys(this.state.rtcstreams).length}</sup>             
+            <sup className="members_count">{this.state.usercount}</sup>             
      </button>
     <span className="sidedrawer_icon_separate"></span>
     <button datasrc="chat_icon" onClick={this.togglenav} className="menu_option" style={{background: '#fff',display:'flex'}}>

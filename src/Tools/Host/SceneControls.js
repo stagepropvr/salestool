@@ -273,7 +273,7 @@ return (
                 </svg>
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
-              
+{/*               
               <a onClick={()=> this.open_close('settings',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Settings">
                 <svg  width={24} height={24} viewBox="0 0 24 24">
                   <defs>
@@ -284,7 +284,7 @@ return (
                   </g>
                 </svg>
               </a>
-              <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
+              <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/> */}
 
             </div>
             <span className="content_separate" />

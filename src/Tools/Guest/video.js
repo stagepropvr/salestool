@@ -404,10 +404,7 @@ this.state.connection.userid=localStorage.getItem("guestkey");
     audioinput:audioinput
     });
   
-  this.state.connection.replaceTrack({
-    screen: true,
-    oneway: true
-  });
+
 
   
       }

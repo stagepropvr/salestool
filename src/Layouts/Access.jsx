@@ -441,7 +441,7 @@ setAudioLocal() {
                 </div>
                 <div><div><h2 className="Great-you-are-about">Great, you are about to enter your dream home</h2></div>
                         <div className="Steph_Video_Call_Thumbnailsocial_share_1024x512_center">
-         <div style={{marginLeft:'16px'}} className="accesstools  videotools ">
+         <div className="accesstools  videotools ">
           
            
           
