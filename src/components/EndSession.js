@@ -24,8 +24,6 @@ export default class EndSession extends React.Component {
         this.handlechange=this.handlechange.bind(this);
     }
     
-
-
     componentDidMount(){
     
         window.scrollTo(0, 0);
@@ -106,11 +104,11 @@ export default class EndSession extends React.Component {
         if(!this.state.feedback)
         {
             return(   
-                <div style={{background:'#eeee'}} className="header-filter">
+                <div style={{background:'#eeee', height:'100vh'}} className="header-filter">
                 <div  className="endsession_container container">
                     <div  className="endsession_container row">
                         <div style={{padding:0}}>
-                            <div class="endsession_card card card-signup">
+                            <div class="endsession_card card card-signup ">
                                 <a class="endsession_logo">
                                     <svg width="72" height="39" viewBox="0 0 72 39" fill="none"  >
                                         <rect width="72" height="39" fill="url(#pattern0)"/>
@@ -194,7 +192,7 @@ export default class EndSession extends React.Component {
                                                 <label class="input_Label_endsession">
                                                     1. How would you rate the experience?
                                                 </label>
-                                                <div class="rating">
+                                                <div class="rating d-none d-sm-block">
                                                     <input id="star1" name="star" onClick={(e)=>{this.setState({stars:e.target.value})}} type="radio" value="5" class="radio-btn hide" />
                                                     <label class="star_hover" for="star1" >
                                                         <svg   width="24" height="24" viewBox="0 0 24 24">
@@ -253,6 +251,68 @@ export default class EndSession extends React.Component {
                                                     </label>
                                                     <div class="clear"></div>
                                                 </div>
+
+                                                {/* Mobile */}
+                                                <div class="rating-Mobile d-sm-none">
+                                                    <input id="star1" name="star" onClick={(e)=>{this.setState({stars:e.target.value})}} type="radio" value="5" class="radio-btn hide" />
+                                                    <label class="star_hover" for="star1" >
+                                                        <svg   width="24" height="24" viewBox="0 0 24 24">
+                                                            <defs>
+                                                                <path id="prefix__star" d="M12 16.05c.159 0 .318.038.463.113l3.769 1.97-.717-4.157c-.057-.326.052-.658.29-.889l3.036-2.936-4.203-.612c-.325-.047-.606-.25-.752-.544L12 5.201l-1.886 3.794c-.146.294-.427.497-.752.544l-4.203.612 3.036 2.936c.238.231.347.563.29.889l-.717 4.157 3.769-1.97c.145-.075.304-.113.463-.113m5.562 4.905c-.16 0-.318-.037-.463-.113l-5.1-2.664-5.098 2.664c-.338.176-.746.145-1.051-.079-.308-.224-.461-.603-.397-.978l.972-5.628-4.12-3.985c-.275-.265-.373-.663-.256-1.026.116-.363.43-.627.807-.682l5.7-.828 2.548-5.126c.338-.68 1.454-.68 1.792 0l2.547 5.126 5.7.828c.378.055.692.319.808.682.117.363.019.761-.256 1.026l-4.12 3.985.972 5.628c.064.375-.09.754-.397.978-.173.128-.38.192-.588.192"/>
+                                                            </defs>
+                                                            <g fill="none" fill-rule="evenodd">
+                                                                <use for="star1" class="prefix__star1" fill="#222B45" href="#prefix__star"/>
+                                                            </g>
+                                                        </svg>
+                                                    </label>
+                                                    <input id="star2" name="star" onClick={(e)=>{this.setState({stars:e.target.value})}} type="radio" value="4" class="radio-btn hide" />
+                                                    <label class="star_hover" for="star2" >
+                                                        <svg   width="24" height="24" viewBox="0 0 24 24">
+                                                            <defs>
+                                                                <path id="prefix__star" d="M12 16.05c.159 0 .318.038.463.113l3.769 1.97-.717-4.157c-.057-.326.052-.658.29-.889l3.036-2.936-4.203-.612c-.325-.047-.606-.25-.752-.544L12 5.201l-1.886 3.794c-.146.294-.427.497-.752.544l-4.203.612 3.036 2.936c.238.231.347.563.29.889l-.717 4.157 3.769-1.97c.145-.075.304-.113.463-.113m5.562 4.905c-.16 0-.318-.037-.463-.113l-5.1-2.664-5.098 2.664c-.338.176-.746.145-1.051-.079-.308-.224-.461-.603-.397-.978l.972-5.628-4.12-3.985c-.275-.265-.373-.663-.256-1.026.116-.363.43-.627.807-.682l5.7-.828 2.548-5.126c.338-.68 1.454-.68 1.792 0l2.547 5.126 5.7.828c.378.055.692.319.808.682.117.363.019.761-.256 1.026l-4.12 3.985.972 5.628c.064.375-.09.754-.397.978-.173.128-.38.192-.588.192"/>
+                                                            </defs>
+                                                            <g fill="none" fill-rule="evenodd">
+                                                                <use for="star2" class="prefix__star1" fill="#222B45" href="#prefix__star"/>
+                                                            </g>
+                                                        </svg>
+                                                    </label>
+                                                    
+                                                    <input id="star3" name="star" onClick={(e)=>{this.setState({stars:e.target.value})}} type="radio" value="3" class="radio-btn hide" />
+                                                    <label class="star_hover" for="star3" >
+                                                        <svg   width="24" height="24" viewBox="0 0 24 24">
+                                                            <defs>
+                                                                <path id="prefix__star" d="M12 16.05c.159 0 .318.038.463.113l3.769 1.97-.717-4.157c-.057-.326.052-.658.29-.889l3.036-2.936-4.203-.612c-.325-.047-.606-.25-.752-.544L12 5.201l-1.886 3.794c-.146.294-.427.497-.752.544l-4.203.612 3.036 2.936c.238.231.347.563.29.889l-.717 4.157 3.769-1.97c.145-.075.304-.113.463-.113m5.562 4.905c-.16 0-.318-.037-.463-.113l-5.1-2.664-5.098 2.664c-.338.176-.746.145-1.051-.079-.308-.224-.461-.603-.397-.978l.972-5.628-4.12-3.985c-.275-.265-.373-.663-.256-1.026.116-.363.43-.627.807-.682l5.7-.828 2.548-5.126c.338-.68 1.454-.68 1.792 0l2.547 5.126 5.7.828c.378.055.692.319.808.682.117.363.019.761-.256 1.026l-4.12 3.985.972 5.628c.064.375-.09.754-.397.978-.173.128-.38.192-.588.192"/>
+                                                            </defs>
+                                                            <g fill="none" fill-rule="evenodd">
+                                                                <use for="star3" class="prefix__star1" fill="#222B45" href="#prefix__star"/>
+                                                            </g>
+                                                        </svg>
+                                                    </label>
+                                                    <input id="star4" name="star" onClick={(e)=>{this.setState({stars:e.target.value})}} type="radio" value="2" class="radio-btn hide" />
+                                                    <label class="star_hover" for="star4" >
+                                                        <svg   width="24" height="24" viewBox="0 0 24 24">
+                                                            <defs>
+                                                                <path id="prefix__star" d="M12 16.05c.159 0 .318.038.463.113l3.769 1.97-.717-4.157c-.057-.326.052-.658.29-.889l3.036-2.936-4.203-.612c-.325-.047-.606-.25-.752-.544L12 5.201l-1.886 3.794c-.146.294-.427.497-.752.544l-4.203.612 3.036 2.936c.238.231.347.563.29.889l-.717 4.157 3.769-1.97c.145-.075.304-.113.463-.113m5.562 4.905c-.16 0-.318-.037-.463-.113l-5.1-2.664-5.098 2.664c-.338.176-.746.145-1.051-.079-.308-.224-.461-.603-.397-.978l.972-5.628-4.12-3.985c-.275-.265-.373-.663-.256-1.026.116-.363.43-.627.807-.682l5.7-.828 2.548-5.126c.338-.68 1.454-.68 1.792 0l2.547 5.126 5.7.828c.378.055.692.319.808.682.117.363.019.761-.256 1.026l-4.12 3.985.972 5.628c.064.375-.09.754-.397.978-.173.128-.38.192-.588.192"/>
+                                                            </defs>
+                                                            <g fill="none" fill-rule="evenodd">
+                                                                <use for="star4" class="prefix__star1" fill="#222B45" href="#prefix__star"/>
+                                                            </g>
+                                                        </svg>
+                                                    </label>
+                                                    <input id="star5" name="star" onClick={(e)=>{this.setState({stars:e.target.value})}} type="radio" value="1" class="radio-btn hide" />
+                                                    <label class="star_hover" for="star5" >
+                                                        <svg   width="24" height="24" viewBox="0 0 24 24">
+                                                            <defs>
+                                                                <path id="prefix__star" d="M12 16.05c.159 0 .318.038.463.113l3.769 1.97-.717-4.157c-.057-.326.052-.658.29-.889l3.036-2.936-4.203-.612c-.325-.047-.606-.25-.752-.544L12 5.201l-1.886 3.794c-.146.294-.427.497-.752.544l-4.203.612 3.036 2.936c.238.231.347.563.29.889l-.717 4.157 3.769-1.97c.145-.075.304-.113.463-.113m5.562 4.905c-.16 0-.318-.037-.463-.113l-5.1-2.664-5.098 2.664c-.338.176-.746.145-1.051-.079-.308-.224-.461-.603-.397-.978l.972-5.628-4.12-3.985c-.275-.265-.373-.663-.256-1.026.116-.363.43-.627.807-.682l5.7-.828 2.548-5.126c.338-.68 1.454-.68 1.792 0l2.547 5.126 5.7.828c.378.055.692.319.808.682.117.363.019.761-.256 1.026l-4.12 3.985.972 5.628c.064.375-.09.754-.397.978-.173.128-.38.192-.588.192"/>
+                                                            </defs>
+                                                            <g fill="none" fill-rule="evenodd">
+                                                                <use for="star5" class="prefix__star1" fill="#222B45" href="#prefix__star"/>
+                                                            </g>
+                                                        </svg>
+                                                    </label>
+                                                    <div class="clear"></div>
+                                                </div>
+
                                             </div>
                                             
                                             <div class="form-group">
@@ -289,10 +349,13 @@ export default class EndSession extends React.Component {
                                     </div>
                                 </form>
                         </div>
+
+                    
                                     
                     </div>
                         </div>
                     </div>
+
                 </div>
             )
         }
@@ -316,7 +379,7 @@ export default class EndSession extends React.Component {
                             <span>prop vr</span>                
                         </a>
                         <div style={{margin:'0', padding:'0', marginTop: '10px', display: 'flex', height: '75%', justifyContent: 'center',alignItems: 'center'}} className="row">
-                            <div style={{marginLeft: '25px'}}>
+                            <div style={{marginLeft: '0px'}}>
                                 <h2 className="End-session-heading" style={{fontSize: '26px'}}>Thanks for your feedback! We will get in touch.</h2>
                                 <center>
                                     <div style={{margin:'0', padding:'0', marginTop:'20px'}} className="card project_det_background">
@@ -383,6 +446,8 @@ export default class EndSession extends React.Component {
                             
                           
                         </div>
+
+                        
                         
                     </div>
                     

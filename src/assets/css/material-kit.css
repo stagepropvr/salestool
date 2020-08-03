@@ -20808,13 +20808,22 @@ select{
   color: #222b45 !important;
 }
 
-.rating {
+.rating{
   margin-left: 12px;
   margin-top: 5px;
   unicode-bidi: bidi-override;
   direction: rtl;
   position: relative;
 }
+
+.rating-Mobile{
+  margin-left: 12px;
+  margin-top: 5px;
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  position: relative;
+}
+
 .hide {
   display: none;
 }
@@ -20840,9 +20849,38 @@ select{
   content: "\2605";
   position: absolute;
   color: #FFD700;
-  /* left: 2px; */
-    top: -14px;
-    font-size: 28px;
+  left: 2px;
+  top: -12px;
+  /* Monitor  */
+  font-size: 25px; 
+}
+
+.rating-Mobile > label {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  cursor: pointer;
+  color: #000;
+}
+
+.rating-Mobile > label:hover,
+.rating-Mobile > label:hover ~ label,
+.rating-Mobile > input.radio-btn:checked ~ label {
+  color: transparent;
+}
+
+.rating-Mobile > label:hover:before,
+.rating-Mobile > label:hover ~ label:before,
+.rating-Mobile > input.radio-btn:checked ~ label:before,
+.rating-Mobile > input.radio-btn:checked ~ label:before {
+  content: "\2605";
+  position: absolute;
+  color: #FFD700;
+  left: 2px;
+  top: -12px;
+  /* Mobile */
+  font-size: 22.5px;
 }
 
 .star_hover:hover .prefix__star1{
@@ -20855,6 +20893,15 @@ select{
 
 .rating > .prefix__star1:hover, 
 .rating > input.radio-btn:checked ~ .prefix__star1{
+  fill:#fff;
+}
+
+.rating-Mobile > input.radio-btn:checked ~ use{
+  fill:#fff;
+}
+
+.rating-Mobile > .prefix__star1:hover, 
+.rating-Mobile > input.radio-btn:checked ~ .prefix__star1{
   fill:#fff;
 }
 
