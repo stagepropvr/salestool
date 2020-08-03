@@ -20419,6 +20419,8 @@ select{
       margin-top: 7px;
       padding: 10px 10px 7px 8px;
       float:left;
+      width: 100%;
+      white-space: pre-wrap;
     }
     
     .self>.chat_name{
@@ -20438,6 +20440,8 @@ select{
       margin-top: 7px;
       padding: 10px 10px 7px 8px;
       float:right;
+      width: 100%;
+      white-space: pre-wrap;
     }
     
     .chat_bar{
@@ -20977,9 +20981,11 @@ select{
 }
 
 .Steph_Video_Call_Thumbnailsocial_share_1024x512_center {
-  width: 271px;
-  height: 134px;
+  width: fit-content;
+  height: fit-content;
   margin: 32px auto;
+  padding: 0px 9px;
+  background: #000;
 }
 .accesstools{
   top: 93px;
