@@ -601,7 +601,7 @@ destruct = () => {
     {this.state.apiload ?<></>: <>
   
     
-          <div id="bottom" className="container" ref={this.bottom} >
+          <div style={{width:'fit-content'}} id="bottom" className="container" ref={this.bottom} >
           <SceneControls
               destruct={this.destruct}
               pid={this.state.pid}

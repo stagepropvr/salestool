@@ -10,10 +10,51 @@ export default class EndSession extends React.Component {
             stars: 0,
             qn2: "Need to explore further",
             cmnt:"",
+            info_det:false,
+            bed:'',
+            bath:'',
+            sqft:'',
+            img_src:'',
+            project:''
         }
         this.handlechange=this.handlechange.bind(this);
 
     }
+
+
+    componentDidMount(){
+    
+        window.scrollTo(0, 0);
+        let uid = localStorage.getItem("uid");
+        let pid = localStorage.getItem("pid");
+        var ref = Fire.database().ref("users/"+uid+"/Projects/"+pid);
+        ref.once("value",child=>{
+            this.setState({
+                project:pid,
+                img_src:child.val().thumb
+            })
+            if(child.hasChild('Info')){
+                var ref1 = Fire.database().ref("users/"+uid+"/Projects/"+pid+'/Info');
+                ref1.once("value",snap=>{
+                    if(snap.val().baths==="" || snap.val().beds==='' || snap.val().sqft===''){
+                        this.setState({
+                            info_det:false
+                        })
+                    }else{
+                        this.setState({
+                            bed:snap.val().beds,
+                            bath:snap.val().baths,
+                            sqft:snap.val().sqft
+                        })
+                    }
+                })
+            }else{
+                this.setState({
+                    info_det:false
+                })
+            }
+        })
+      }
     
     handlechange(event){
         this.setState({cmnt:event.target.value})
@@ -72,10 +113,10 @@ export default class EndSession extends React.Component {
                             <div style={{margin:0, padding:0, marginTop: '10px'}} class="row">
                                 <div style={{margin:0, padding:0}} class="card project_det_background">
                                   <div style={{padding: "0px"}} class="card-body d-flex flex-row">
-                                    <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" width="81px" alt="avatar"/>
+                                    <img src={this.state.img_src} width="81px" alt="avatar"/>
                                     <div style={{width: '300px'}}>
-                                      <h4 style={{paddingLeft: '25px'}} class="card-title project_heading">Brigade Gateway</h4>
-                                      <div class="card-text flex-row project_icon_content">
+                                    <h4 style={{paddingLeft: '25px'}} class="card-title project_heading">{this.state.project}</h4>
+                                          <div style={{display:this.state.info_det==true?'flex':'none'}} class="card-text flex-row project_icon_content">
                                         <div>
                                           <span>
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" >
@@ -90,7 +131,7 @@ export default class EndSession extends React.Component {
                                               </svg>        
                                            </span>
                                            <span id="room" class="createroom_icon_span">
-                                            2 BHK
+                                            {this.state.bed} Beds
                                            </span> 
                                         </div>
                                       <div style={{paddingLeft: "15px"}}>
@@ -108,7 +149,7 @@ export default class EndSession extends React.Component {
                                             
                                         </span>
                                         <span id="bath" class="createroom_icon_span">
-                                          2 Bath
+                                          {this.state.bath} Baths
                                          </span> 
                                       </div>
                                        
@@ -121,7 +162,7 @@ export default class EndSession extends React.Component {
                                             </svg>                    
                                         </span>
                                         <span id="sqft" class="createroom_icon_span">
-                                          782 sq ft
+                                          {this.state.sqft} sq ft
                                          </span> 
                                        </div>
                                         

@@ -38,7 +38,7 @@ class SceneControls extends React.Component {
 
     window.scrollTo(0, 0);
     document.getElementById('menu_bar').click();
-    this.handleOutsideClick = this.handleOutsideClick.bind(this);
+   // this.handleOutsideClick = this.handleOutsideClick.bind(this);
    // document.addEventListener('click', this.handleOutsideClick, false);
     this.menu.addEventListener("click", this.menu_bar_open);
     //this.menu_bar_open();
@@ -49,32 +49,32 @@ class SceneControls extends React.Component {
   
   }
 
-  handleOutsideClick(e) {
+  // handleOutsideClick(e) {
 
 
-    // ignore clicks on the component itself
+  //   // ignore clicks on the component itself
 
-    if(this.state.menu_bar && e.target.id!=='menu_bar_up_icon'){
-      this.setState({
-        menu_bar:false
-      })
-      document.getElementById('tools_div').classList.remove('show');
-      document.getElementById('menu_bar').classList.remove('menu_option_click');
-      document.removeEventListener('click', this.handleOutsideClick, false);
+  //   if(this.state.menu_bar && e.target.id!=='menu_bar_up_icon'){
+  //     this.setState({
+  //       menu_bar:false
+  //     })
+  //     document.getElementById('tools_div').classList.remove('show');
+  //     document.getElementById('menu_bar').classList.remove('menu_option_click');
+  //     document.removeEventListener('click', this.handleOutsideClick, false);
 
-    }else{
-      document.addEventListener('click', this.handleOutsideClick, false);
-      this.setState({
-        menu_bar:true
-      })
-      document.getElementById('tools_div').classList.add('show');
-      document.getElementById('menu_bar').classList.add('menu_option_click');
-    }
+  //   }else{
+  //     document.addEventListener('click', this.handleOutsideClick, false);
+  //     this.setState({
+  //       menu_bar:true
+  //     })
+  //     document.getElementById('tools_div').classList.add('show');
+  //     document.getElementById('menu_bar').classList.add('menu_option_click');
+  //   }
 
    
     
 
-  }
+  // }
 
 menu_bar_open = (event) => {
  
@@ -84,14 +84,14 @@ menu_bar_open = (event) => {
     })
     document.getElementById('menu_bar').classList.remove('menu_option_click');
     document.getElementById('tools_div').classList.remove('show');
-   document.removeEventListener('click', this.handleOutsideClick, false);
+  // document.removeEventListener('click', this.handleOutsideClick, false);
 
   }
   else{
     this.setState({
       menu_bar:true
     })
-    document.addEventListener('click', this.handleOutsideClick, false);
+   // document.addEventListener('click', this.handleOutsideClick, false);
     document.getElementById('tools_div').classList.add('show');
     document.getElementById('menu_bar').classList.add('menu_option_click');
   }
@@ -181,8 +181,8 @@ return (
   <>
 
         <div style={{height: '72px', flexWrap: 'nowrap'}} className="row">
-          <div className="content_padding dropup">
-            <button ref={elem => this.menu = elem}  id="menu_bar" type="button" className="menu_option dropdown-toggle menu_option_click">
+          <div  className="content_padding dropup">
+            <button   ref={elem => this.menu = elem} id="menu_bar" type="button" className="menu_option dropdown-toggle menu_option_click">
               <span id="menu_bar_up" style={{display:this.state.menu_bar===false?'block':'none'}}>
                 <svg id="menu_bar_up_icon" style={{transform: 'translateY(2px)'}}  width={24} height={24} viewBox="0 0 24 24">
                   <defs>
