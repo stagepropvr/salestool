@@ -81,7 +81,6 @@ background:#fff;
 }
 
 .relative-localvideo{
-    background: rgb(0, 0, 0);
     position: fixed;
     right: 1.5vh;
     bottom: 10vh;
@@ -97,4 +96,9 @@ background:#fff;
 
 .localvideo-list{
     background: rgb(0, 0, 0);
+}
+
+#chat{
+    display: flex;
+    flex-direction: column; 
 }

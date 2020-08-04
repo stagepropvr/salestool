@@ -15996,7 +15996,7 @@ h2.title {
 }
 
 .menudrop.dropdown-menu.show{
-  top:-16px !important;
+  top:30px !important;
   left:-2px !important;
   transform: translate3d(15px, -285px, 0px) !important;
     position: absolute !important;
@@ -21090,4 +21090,16 @@ padding: 12px 42px;
   height: 134px;
   background-color: #0c0c0c;
   margin:auto;
+}
+
+.roomname{
+  color: #fff;
+    width: fit-content;
+    height: fit-content;
+    background: #000000b8;
+    z-index: 1;
+    padding: 12px 24px;
+    position: absolute;
+    margin: 8px;
+    border-radius: 8px;
 }
