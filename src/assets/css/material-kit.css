@@ -21091,3 +21091,15 @@ padding: 12px 42px;
   background-color: #0c0c0c;
   margin:auto;
 }
+
+.roomname{
+  color: #fff;
+    width: fit-content;
+    height: fit-content;
+    background: #000000b8;
+    z-index: 1;
+    padding: 12px 24px;
+    position: absolute;
+    margin: 8px;
+    border-radius: 8px;
+}

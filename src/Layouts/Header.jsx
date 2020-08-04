@@ -238,7 +238,7 @@ fileupload = (event)=>{
            <b className="caret"></b>
          </a>
          <div className="dropdown-menu dropdown-menu-right">
-           <a href="#javascript" style={{color:'#8f9bb3'}} className="header_dropdown header_dropdown_email dropdown-item">{this.state.email}</a>
+           <a  style={{color:'#8f9bb3'}} className="header_dropdown header_dropdown_email dropdown-item">{this.state.email}</a>
            {/* <a href="#javascript" style={{flexDirection: "column",height: "90px"}} className="header_dropdown dropdown-item">
            <span>Enterprise plan</span>
            <span className="header_dropdown_subtext">794 MB of 10000 MB used</span>
@@ -246,8 +246,8 @@ fileupload = (event)=>{
          <div className="progress-bar" role="progressbar" style={{width: "25%"}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
          </div>
          </a> */}
-           <a href="#javascript" className="header_dropdown dropdown-item">Downloads</a>
-           <a href="#javascript" onClick={()=> this.setState({
+           <a  className="header_dropdown dropdown-item">Downloads</a>
+           <a  onClick={()=> this.setState({
              myaccount:true
            })} className="header_dropdown dropdown-item">My Account</a>
            <a target="_blank" href="https://www.touchwizardtechnologies.com/#comp-jqhpwkc6" className="header_dropdown dropdown-item">Contact us</a>

@@ -151,11 +151,59 @@ this.changedevice=this.changedevice.bind(this);
 
 
 var  videoConstraints = {
-  width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 },
+  width: 191,
+  height: 113,
   frameRate: 30,
   deviceId:this.state.videoinput
 };
+
+
+
+
+
+// var CodecsHandler = this.state.connection.CodecsHandler;
+// var resolutions = 'HD';
+// this.state.connection.processSdp = (sdp)=> {
+//     var codecs = 'vp8';
+    
+//     if (codecs.length) {
+//         sdp = CodecsHandler.preferCodec(sdp, codecs.toLowerCase());
+//     }
+
+//     if (resolutions == 'HD') {
+//         sdp = CodecsHandler.setApplicationSpecificBandwidth(sdp, {
+//             audio: 128,
+//             video: bitrates,
+//             screen: bitrates
+//         });
+
+//         sdp = CodecsHandler.setVideoBitrates(sdp, {
+//             min: bitrates * 8 * 1024,
+//             max: bitrates * 8 * 1024,
+//         });
+//     }
+
+//     if (resolutions == 'Ultra-HD') {
+//         sdp = CodecsHandler.setApplicationSpecificBandwidth(sdp, {
+//             audio: 128,
+//             video: bitrates,
+//             screen: bitrates
+//         });
+
+//         sdp = CodecsHandler.setVideoBitrates(sdp, {
+//             min: bitrates * 8 * 1024,
+//             max: bitrates * 8 * 1024,
+//         });
+//     }
+
+//     return sdp;
+// };
+
+
+
+
+
+
 
 this.state.connection.iceServers = [{
   'urls': [
@@ -702,7 +750,7 @@ destruct = () => {
       if(key.type=="local"){
         return(
           <li style={{marginTop:'30px'}} className="video_content">
-                          <div ref={this.localvideo} style={{"background":"#000"}} className="relative-localvideo">
+                          <div ref={this.localvideo}  className="relative-localvideo">
                              <div className="videotools">
                            
                                <span className="guest_video_name video_name_option">You</span>

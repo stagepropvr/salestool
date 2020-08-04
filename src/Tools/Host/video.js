@@ -23,7 +23,7 @@ class Video extends React.Component {
       camState: true,
   
       current_image: "",
-    
+      currentimageName:"",
       apiload: true,
       images:"",
       user_id:'',
@@ -100,7 +100,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
 
               this.setState({
                 current_image:x,
-                current_imageName:node.val().images[x].name,
+                currentimageName:node.val().images[x].name,
                 images: node.val().images,
                 data:node.val(),
                 apiload:false,
@@ -152,8 +152,8 @@ this.audioallctrl=this.audioallctrl.bind(this);
 
 
 var  videoConstraints = {
-  width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 },
+  width: 191,
+          height: 113,
   frameRate: 30,
   deviceId:this.state.videoinput
 };
@@ -332,7 +332,8 @@ this.state.connection.onunmute = (e)=> {
       currentimageName:this.state.images[str].name,
       imageid:str
     })
-    this.setState({ current_image: str })
+    this.setState({ current_image: str,
+    currentimageName:this.state.images[str].name })
     if(document.getElementById(str+"_thumb")){
       var a = document.querySelectorAll('.item_active');
       [].forEach.call(a, function(el) {
@@ -364,7 +365,8 @@ this.state.connection.onunmute = (e)=> {
         for (var x in node.val().images){
           this.setState({
             current_image:x,
-            images: node.val().images
+            images: node.val().images,
+            currentimageName:node.val().images[x].name,
           });
           Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage").set({
             currentimage:node.val().images[x].url,
@@ -618,7 +620,7 @@ muteclient(id,status){
     if(key.type=="local"){
 return(
   <li className="video_content">
-                  <div ref={this.localvideo} style={{"background":"#000"}} className="relative-localvideo">
+                  <div ref={this.localvideo}  className="relative-localvideo">
                      <div className="videotools">
                    
                        <span className="guest_video_name video_name_option">You</span>
@@ -744,7 +746,7 @@ return(
 
 {this.state.loader ?
 <Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data}  Switchstatus={this.state.Switchstatus}></Switchprojectloader>
-:<></>}
+:<div className="roomname">{this.state.currentimageName}</div>}
 
       </>
     );
