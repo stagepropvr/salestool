@@ -97,7 +97,7 @@ menu_bar_open = (event) => {
   }
 }
 open_close = (name,flag) =>{
-  document.getElementById('tools_div').classList.remove('show');
+ // document.getElementById('tools_div').classList.remove('show');
 
   this.setState({
     [name]:flag
@@ -123,9 +123,9 @@ open_close = (name,flag) =>{
       document.getElementById('right_light_mode').style.display='none';
       document.getElementById('left_dark_mode').style.display='block';
       document.getElementById('right_dark_mode').style.display='block';
-      document.getElementById('menu_bar_down').style.display='none';
-      document.getElementById('menu_bar_up').style.display='block';
-      document.getElementById('menu_bar').classList.remove('menu_option_click');
+      //document.getElementById('menu_bar_down').style.display='none';
+      //document.getElementById('menu_bar_up').style.display='block';
+     // document.getElementById('menu_bar').classList.remove('menu_option_click');
       document.getElementById('bottom').classList.add('bottom_modal_open');
       var a = document.querySelectorAll('.pad15');
       for(var i =0 ; i<a.length;i++){

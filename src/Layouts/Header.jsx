@@ -14,7 +14,8 @@ class Header extends React.Component {
         username:'',
         profile_pic:'',
         file:'',
-        local_pic:''
+        local_pic:'',
+        button_dis:true
     }
 
     this.signout = this.signout.bind(this);
@@ -34,7 +35,8 @@ componentDidMount(){
         {
           if(child.hasChild('username')){
             this.setState({
-              username:child.val().username
+              username:child.val().username,
+              name:child.val().username
             })
           }else{
             this.setState({
@@ -98,37 +100,64 @@ signout(event){
 }
 
 handleregister(event){
+  this.setState({
+    button_dis:false
+  })
   event.preventDefault();
-  const ref = Fire.storage().ref();
-  const file = this.state.file;
-  let reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onloadend = () => {
-    const name = file.name;
-    const metadata = {
-      contentType: file.type
-    };
-    const task = ref.child(name).put(file, metadata);
-    task.then(snapshot => snapshot.ref.getDownloadURL()).then((url) => {
-
-      this.fireBaseListener2 = Fire.auth().onAuthStateChanged((user) => {
+  if(this.state.file!==""){
+    const ref = Fire.storage().ref();
+    const file = this.state.file;
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      const name = file.name;
+      const metadata = {
+        contentType: file.type
+      };
+      const task = ref.child(name).put(file, metadata);
+      task.then(snapshot => snapshot.ref.getDownloadURL()).then((url) => {
+  
+        this.fireBaseListener2 = Fire.auth().onAuthStateChanged((user) => {
+        if (user) {
+          Fire.database().ref("users/"+user.uid).update({
+           // username:this.state.name,
+            profile_pic:url
+          }).then(()=>{
+            this.setState({
+              myaccount:false,
+            //  username:this.state.name,
+              button_dis:true,
+              local_pic:url
+            })
+          })
+        }
+      });
+      
+     }).catch(console.error);
+  
+  
+    }
+  }else if(this.state.username!==this.state.name){
+    this.fireBaseListener2 = Fire.auth().onAuthStateChanged((user) => {
       if (user) {
         Fire.database().ref("users/"+user.uid).update({
           username:this.state.name,
-          profile_pic:url
         }).then(()=>{
           this.setState({
             myaccount:false,
-            username:this.state.name
+            username:this.state.name,
+            button_dis:true
           })
         })
       }
-    });
-    
-   }).catch(console.error);
-
-
+    })
+  }else{
+    this.setState({
+      myaccount:false,
+      button_dis:true
+    })
   }
+  
   
 
 
@@ -285,7 +314,7 @@ fileupload = (event)=>{
             <label className="input_Label">
                                             Name
             </label>
-            <input onChange={this.handlechange}  type="text" id="name" name="name" className="input_box form-control" placeholder={this.state.username} required />
+            <input onChange={this.handlechange}  type="text" id="name" name="name" className="input_box form-control" placeholder={this.state.username} />
                 <small id="name_error" className="form-text text-muted">
                  <span className="input_error input_error_hide">
                   <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
@@ -311,7 +340,10 @@ fileupload = (event)=>{
         <div style={{display: "block"}} className="modal-footer">
             <center className="modal_button_div">
                 <button onClick={()=> this.setState({myaccount:false})} type="button" className="btn cancel">Cancel</button>
-                <button style={{marginLeft: "20px"}} type="submit" className="btn proceed">Save</button>
+                <button style={{marginLeft: "20px",display:this.state.button_dis?'block':'none'}} type="submit" className="btn proceed">Save</button>
+                <button style={{cursor: "progress",display:this.state.button_dis?'none':'block', marginLeft: "20px"}} id="loader" type="button" className="proceed btn input_button" disabled>
+                                    <i id="loginloader" className="fa fa-circle-o-notch fa-spin" style={{ fontSize: "1rem", color: "white", paddingRight: 2, paddingLeft: 2 }}></i>
+                </button>
             </center> 
         </div>
         </form>
