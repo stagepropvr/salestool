@@ -639,7 +639,7 @@ return(
       if(key.stream.active){
      return(
       <li className="video_content">
-      <div style={{"background":"#000"}}>
+      <div>
          <div className="videotools">
           
            

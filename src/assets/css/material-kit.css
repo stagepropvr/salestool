@@ -20752,6 +20752,8 @@ select{
 
 .video_content{
   margin-bottom:30px;
+  width: fit-content;
+    margin: auto;
 }
 #tools_div .dropdown-item:active,.dropdown-item:focus{
   background-color: transparent !important;

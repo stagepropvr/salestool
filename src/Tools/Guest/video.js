@@ -30,8 +30,8 @@ class Video extends React.Component {
       pdfdata:"false",
       mapdata:"",
       streams: {},
-      current_image: "",
-      
+      current_image: "",  
+      currentimageName:"",
       host: true,
       apiload: true,
       images:"",
@@ -53,7 +53,8 @@ class Video extends React.Component {
       Switchstatus:false,
       messagescount:0,
       connection : new RTCMultiConnection(),
-      rtcstreams:[]
+      rtcstreams:[],
+      clientimageName:""
         };
    
     this.Sidenav = React.createRef();
@@ -768,7 +769,7 @@ destruct = () => {
             }else{
      return(
       <li className="video_content">
-      <div style={{"background":"#000"}}>
+      <div >
          <div className="videotools">
           
            <span className="guest_video_name video_name_option">{key.extra.name}</span>
@@ -840,11 +841,9 @@ destruct = () => {
   </div>
 </div>
 
+<div className="roomname">{this.state.clientimageName}</div>
 
 
-{/* {this.state.loader && this.state.host?
-<Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data} host={this.state.host} Switchstatus={this.state.Switchstatus}></Switchprojectloader>
-:<></>} */}
 
       </>
     );
