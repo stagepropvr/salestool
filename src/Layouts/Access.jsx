@@ -22,15 +22,21 @@ class Access extends React.Component {
         redirect:false,
         localStream:false,
         micstate:true,
-        camstate:true,
-        access:true,
+        camstate:{
+          width: { min: 160, ideal: 640, max: 1280 },
+          height: { min: 120, ideal: 360, max: 720 }
+         
+          
+        },
+        access:false,
     }
     this.setAudioLocal=this.setAudioLocal.bind(this);
     this.setVideoLocal=this.setVideoLocal.bind(this);
+    this.granted=this.granted.bind(this);
   }
   
 componentDidMount(){
-    
+
     var ref = Fire.database().ref("users/"+this.props.uid+'/Projects/'+this.props.pid);
     ref.once('value',child=>{
         this.setState({
@@ -56,56 +62,57 @@ componentDidMount(){
 
     })
     window.scrollTo(0, 0);
-    navigator.getUserMedia = navigator.getUserMedia =
-    navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia;
-  const op = {
-    video: {
-      width: { min: 160, ideal: 640, max: 1280 },
-      height: { min: 120, ideal: 360, max: 720 }
-     
-      
-    },
-    audio:true
-  };
-  navigator.getUserMedia(
-    op,
-    stream => {
-   this.setState({
-    localStream:stream
-   })
-    },
-    (err) => {
-     }
-  );
+    
   }
- 
+ granted(){
+  navigator.getUserMedia = navigator.getUserMedia =
+  navigator.getUserMedia ||
+  navigator.webkitGetUserMedia ||
+  navigator.mozGetUserMedia;
+const op = {
+  video: {
+    width: { min: 160, ideal: 640, max: 1280 },
+    height: { min: 120, ideal: 360, max: 720 }
+   
+    
+  },
+  audio:true
+};
+navigator.getUserMedia(
+  op,
+  stream => {
+ this.setState({
+  localStream:stream,
+  access:true
+ })
+  },
+  (err) => {
+   }
+);
+ }
   
 
-
-setAudioLocal() {
-    if (this.state.localStream.getAudioTracks().length > 0) {
-      this.state.localStream.getAudioTracks().forEach(track => {
-        track.enabled = !track.enabled;
-      });
-    }
-    this.setState({
-      micstate: !this.state.micstate
-    })
-  
+ setAudioLocal() {
+  if (this.state.localStream.getAudioTracks().length > 0) {
+    this.state.localStream.getAudioTracks().forEach(track => {
+      track.enabled = !track.enabled;
+    });
   }
-  setVideoLocal() {
-    if (this.state.localStream.getVideoTracks().length > 0) {
-      this.state.localStream.getVideoTracks().forEach(track => {
-        track.enabled = !track.enabled;
-      });
-    }
-    this.setState({
-      camstate: !this.state.camstate
-    })
-  }
+  this.setState({
+    micstate: !this.state.micstate
+  })
 
+}
+setVideoLocal() {
+  if (this.state.localStream.getVideoTracks().length > 0) {
+    this.state.localStream.getVideoTracks().forEach(track => {
+      track.enabled = !track.enabled;
+    });
+  }
+  this.setState({
+    camstate: !this.state.camstate
+  })
+}
 
 
   render() {
@@ -257,7 +264,7 @@ setAudioLocal() {
 </svg></div>
 
       </div>
-      <div><button onClick={() => { this.props.join(this.state.micstate,this.state.camstate) }} className="accessjoin-button">
+      <div><button onClick={this.granted } className="accessjoin-button">
       GRANT ACCESS</button></div></div>
                         
                         
@@ -272,7 +279,7 @@ setAudioLocal() {
                 <h2 className="Great-you-are-about">Great, you are about to enter your dream home</h2>
               </div>
                 <div className="Steph_Video_Call_Thumbnailsocial_share_1024x512_center">
-         <div style={{marginLeft:'16px'}} className="accesstools  videotools ">
+         <div  className="accesstools  videotools ">
           
            
           
@@ -438,7 +445,7 @@ setAudioLocal() {
 </svg></div>
 
       </div>
-      <div><button onClick={() => { this.props.join(this.state.micstate,this.state.camstate) }} className="accessjoin-button">
+      <div><button onClick={this.granted} className="accessjoin-button">
       GRANT ACCESS</button></div></div>
                         
                         
@@ -450,7 +457,7 @@ setAudioLocal() {
                         
             :<div><div><h2 className="Great-you-are-about">Great, you are about to enter your dream home</h2></div>
                 <div className="Steph_Video_Call_Thumbnailsocial_share_1024x512_center">
-         <div style={{marginLeft:'16px'}} className="accesstools  videotools ">
+         <div className="accesstools  videotools ">
           
            
           
