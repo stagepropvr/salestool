@@ -23,7 +23,7 @@ class Access extends React.Component {
         localStream:false,
         micstate:true,
         camstate:true,
-        access:false,
+        access:true,
     }
     this.setAudioLocal=this.setAudioLocal.bind(this);
     this.setVideoLocal=this.setVideoLocal.bind(this);

@@ -190,8 +190,8 @@ open_close = (name,flag) =>{
   })
 }
   render() {
+    console.log("pew",this.state.floorplandata)
 return (
-
   <>
 
         <div style={{height: '72px', flexWrap: 'nowrap'}} className="row">
