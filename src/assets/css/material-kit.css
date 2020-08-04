@@ -21028,9 +21028,9 @@ select{
 }
 
 .Steph_Video_Call_Thumbnailsocial_share_1024x512_center {
-  width: fit-content;
-  height: fit-content;
-  margin: 32px auto;
+  width: 256px;
+  height: 148.4px;
+  margin: 7px auto 24px auto;
   padding: 0px 9px;
   background: #000;
 }
@@ -21050,4 +21050,44 @@ select{
   color: #fff;
   border:none;
   cursor: pointer;
+}
+
+.Access-to-video-and {
+
+  font-size: 18px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  color: #222b45;
+}
+
+.For-others-to-see-yo {
+padding: 0px 20px;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.38;
+  letter-spacing: normal;
+  text-align: center;
+  color: #222b45;
+}
+.access_warning_content{
+padding: 12px 42px;
+  font-size: 14px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.14;
+  letter-spacing: normal;
+  text-align: center;
+  color: #8f9bb3;
+}
+.Steph_Video_Call_Thumbnailsocial_share_1024x512_center_preview {
+  width: 271px;
+  height: 134px;
+  background-color: #0c0c0c;
+  margin:auto;
 }
