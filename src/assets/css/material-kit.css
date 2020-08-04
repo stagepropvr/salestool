@@ -21014,7 +21014,7 @@ select{
 
 .Great-you-are-about{
   width: 468px;
-  height: 24px;
+  height: auto;
 
   font-size: 18px;
   font-weight: bold;
