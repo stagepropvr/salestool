@@ -15996,7 +15996,7 @@ h2.title {
 }
 
 .menudrop.dropdown-menu.show{
-  top:30px !important;
+  top:30px ;
   left:-2px !important;
   transform: translate3d(15px, -285px, 0px) !important;
     position: absolute !important;
@@ -20302,8 +20302,9 @@ select{
 
 .floorplan_div{
   position: fixed;
-  top: 16px;
-  left: 6px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
   width: 308px;
   height: 263px;
   border-radius: 6px;

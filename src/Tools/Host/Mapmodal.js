@@ -172,7 +172,6 @@ export class MapModal extends React.Component {
 
     render(){
         const cord = {lat:this.state.lat,lng:this.state.long}
-        console.log("pew",this.props.data)
     if(this.props.data)
     {
     return (
