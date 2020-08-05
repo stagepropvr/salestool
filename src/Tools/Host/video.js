@@ -75,7 +75,6 @@ this.audioallctrl=this.audioallctrl.bind(this);
   }
 
   componentDidMount() {
-
     this.setState({
       pid:this.props.pid
     })
@@ -380,6 +379,7 @@ this.state.connection.onunmute = (e)=> {
   }
   togglenav(e)
   {
+    this.messagearea.current.focus();
     var a = document.querySelectorAll('.nav-link.active');
     [].forEach.call(a, function(el) {
       el.classList.remove("active");
@@ -499,7 +499,9 @@ muteclient(id,status){
 
 
 }
-
+focus = (event)=>{
+  this.messagearea.current.focus();
+}
   render() {
     if(this.state.closeRoom)
     {
@@ -601,7 +603,7 @@ muteclient(id,status){
           <li className="nav-item">
             <a id="members_tab" className="nav-link" href="#members" data-toggle="tab">Members</a>
           </li>
-          <li className="nav-item">
+          <li onClick={this.focus} className="nav-item">
             <a id="chat_tab" className="nav-link" href="#chat" data-toggle="tab">CHAT</a>
           </li>
         </ul>
@@ -619,8 +621,8 @@ muteclient(id,status){
    {this.state.rtcstreams.map((key)=>{
     if(key.type=="local"){
 return(
-  <li className="video_content">
-                  <div ref={this.localvideo}  className="relative-localvideo">
+  <li  className="video_content">
+                  <div ref={this.localvideo}  className="local_host relative-localvideo">
                      <div className="videotools">
                    
                        <span className="guest_video_name video_name_option">You</span>
@@ -706,7 +708,7 @@ return(
           })}
          
         </ul>
-        <form className="media_form" onSubmit={this.sendmessage}>
+        <form style={{width:'90%'}} className="media_form" onSubmit={this.sendmessage}>
           <span style={{cursor:'pointer'}} onClick={this.onBtnClick}>
             <input type="file" ref={this.inputFileRef} onChange={this.fileupload} style={{display: 'none'}} />
             <svg   width={24} height={24} viewBox="0 0 24 24">
@@ -718,7 +720,17 @@ return(
               </g>
             </svg>
           </span>
-          <input type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message and press enter" required/>
+          <input  type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message and press enter" autofocus required/>
+          <button style={{cursor: "pointer",background: "#f7f9fc",border: "none",marginTop:'-5px'}} type="submit">
+              <svg width={24} height={24} viewBox="0 0 24.1 24.1">
+                  <g data-name="Layer 2">
+                    <g data-name="corner-down-left">
+                        <rect x=".05" y=".05" width="24" height="24" transform="rotate(-89.76 12.05 12.05)" opacity="0"/>
+                        <path d="M20 6a1 1 0 0 0-1-1 1 1 0 0 0-1 1v5a1 1 0 0 1-.29.71A1 1 0 0 1 17 12H8.08l2.69-3.39a1 1 0 0 0-1.52-1.17l-4 5a1 1 0 0 0 0 1.25l4 5a1 1 0 0 0 .78.37 1 1 0 0 0 .62-.22 1 1 0 0 0 .15-1.41l-2.66-3.36h8.92a3 3 0 0 0 3-3z"/>
+                    </g>
+                  </g>
+              </svg>
+          </button>
         </form>
       </div>  
 
