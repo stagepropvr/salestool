@@ -157,7 +157,7 @@ setVideoLocal() {
                 <h2 className="Welcome-to-Prop-VR" style={{color: "white"}}>You are joining a virtual tour session</h2>
         
                 <div style={{display:'flex',justifyContent:'center'}} className="JoiningForm">
-                <div style={{margin:"0",padding:"0"}} className="row">
+                <div style={{margin:"0",padding:"0",width:'300px'}} className="row">
         <div className="card project_det_background">
           <div style={{padding: "0px"}} className="card-body d-flex flex-row">
             <img src={this.state.img} width="81px" alt="avatar" />
