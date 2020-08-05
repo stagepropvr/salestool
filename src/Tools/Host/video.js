@@ -152,8 +152,8 @@ this.audioallctrl=this.audioallctrl.bind(this);
 
 
 var  videoConstraints = {
-  width: 191,
-          height: 113,
+  width: { min: 160, ideal: 640, max: 1280 },
+  height: { min: 120, ideal: 360, max: 720 },
   frameRate: 30,
   deviceId:this.state.videoinput
 };
@@ -620,7 +620,7 @@ muteclient(id,status){
     if(key.type=="local"){
 return(
   <li className="video_content">
-                  <div ref={this.localvideo}  className="relative-localvideo">
+                  <div ref={this.localvideo}  className=" fixed-video relative-localvideo">
                      <div className="videotools">
                    
                        <span className="guest_video_name video_name_option">You</span>
@@ -639,7 +639,7 @@ return(
       if(key.stream.active){
      return(
       <li className="video_content">
-      <div>
+      <div className="fixed-video">
          <div className="videotools">
           
            

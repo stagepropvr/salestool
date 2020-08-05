@@ -152,8 +152,8 @@ this.changedevice=this.changedevice.bind(this);
 
 
 var  videoConstraints = {
-  width: 191,
-  height: 113,
+  width: { min: 160, ideal: 640, max: 1280 },
+  height: { min: 120, ideal: 360, max: 720 },
   frameRate: 30,
   deviceId:this.state.videoinput
 };
@@ -751,7 +751,7 @@ destruct = () => {
       if(key.type=="local"){
         return(
           <li style={{marginTop:'30px'}} className="video_content">
-                          <div ref={this.localvideo}  className="relative-localvideo">
+                          <div ref={this.localvideo}  className="fixed-video relative-localvideo">
                              <div className="videotools">
                            
                                <span className="guest_video_name video_name_option">You</span>
@@ -769,7 +769,7 @@ destruct = () => {
             }else{
      return(
       <li className="video_content">
-      <div >
+      <div className="fixed-video">
          <div className="videotools">
           
            <span className="guest_video_name video_name_option">{key.extra.name}</span>
