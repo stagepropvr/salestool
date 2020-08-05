@@ -20310,6 +20310,18 @@ select{
   box-shadow: 0 -10px 24px 0 rgba(52, 52, 52, 0.5);
   background-color: #ffffff;
 }
+
+.Nofloorplan_div{
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%);
+  width: 408px;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 -10px 24px 0 rgba(52, 52, 52, 0.5);
+  background-color: #ffffff;
+}
 .select_map{
   flex: auto;
   margin-left: 12px;

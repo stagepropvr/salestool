@@ -144,55 +144,92 @@ componentDidMount(){
             display:'none'
         })
     }
-      return(          
-        <div style={{display:this.props.floorplan?'block':'none'}} className="floorplan_div">
-            <div className="container">
+    if(this.props.data.plans)
+    {
+        return(          
+            <div style={{display:this.props.floorplan?'block':'none'}} className="floorplan_div">
+                <div className="container">
+                    <div className="row">
+                    <Select
+                    value={this.state.selectedOption}
+                    onChange={this.handleChange}
+                    isSearchable={false}
+                     options={this.state.floorplan_name}
+                     className="select_map"
+                     style={{flex:'auto'}}
+                     styles={customStyles}
+                     defaultValue={this.state.default}
+                    />
+                <button onClick={() => this.props.open_close('floorplan',false)} type="button" className="close" data-dismiss="modal" aria-label="Close" style={{flex: "auto",textAlign: "end",marginRight: "10px"}}>
+                    <span aria-hidden="true">
+                        <svg  width="24" height="24" viewBox="0 0 24 24">
+                            <defs>
+                                <path id="prefix__close" d="M7.414 6l4.293-4.293c.391-.391.391-1.023 0-1.414-.39-.391-1.023-.391-1.414 0L6 4.586 1.707.293C1.317-.098.684-.098.293.293c-.39.391-.39 1.023 0 1.414L4.586 6 .293 10.293c-.39.391-.39 1.023 0 1.414.195.195.451.293.707.293.256 0 .512-.098.707-.293L6 7.414l4.293 4.293c.195.195.451.293.707.293.256 0 .512-.098.707-.293.391-.391.391-1.023 0-1.414L7.414 6z">
+                                </path>
+                            </defs>
+                            <g fill="none" fill-rule="evenodd" transform="translate(6 6)">
+                                <use fill="#222B45" href="#prefix__close"></use>
+                            </g>
+                        </svg>
+                    </span>
+                </button>
+                </div>
                 <div className="row">
-                <Select
-                value={this.state.selectedOption}
-                onChange={this.handleChange}
-                isSearchable={false}
-                 options={this.state.floorplan_name}
-                 className="select_map"
-                 style={{flex:'auto'}}
-                 styles={customStyles}
-                 defaultValue={this.state.default}
-                />
-            <button onClick={() => this.props.open_close('floorplan',false)} type="button" className="close" data-dismiss="modal" aria-label="Close" style={{flex: "auto",textAlign: "end",marginRight: "10px"}}>
-                <span aria-hidden="true">
-                    <svg  width="24" height="24" viewBox="0 0 24 24">
-                        <defs>
-                            <path id="prefix__close" d="M7.414 6l4.293-4.293c.391-.391.391-1.023 0-1.414-.39-.391-1.023-.391-1.414 0L6 4.586 1.707.293C1.317-.098.684-.098.293.293c-.39.391-.39 1.023 0 1.414L4.586 6 .293 10.293c-.39.391-.39 1.023 0 1.414.195.195.451.293.707.293.256 0 .512-.098.707-.293L6 7.414l4.293 4.293c.195.195.451.293.707.293.256 0 .512-.098.707-.293.391-.391.391-1.023 0-1.414L7.414 6z">
-                            </path>
-                        </defs>
-                        <g fill="none" fill-rule="evenodd" transform="translate(6 6)">
-                            <use fill="#222B45" href="#prefix__close"></use>
-                        </g>
-                    </svg>
-                </span>
-            </button>
-            </div>
-            <div className="row">
-                {this.state.floorplan_list.map((value,index)=>{
-                    return(
-                        <div className="map_div" key={index} id={value.id} style={{display:(value.index==0 ? 'block':'none')}}>
-                        <div className="map">
-                        <img  src={value.url} style={{width: "100%"}}/>
-                        </div>
-                        {value.pins.map((sub)=>{
-                            return(
-                                <div onClick={this.changesky} id={sub.id}  style={{top:(sub.y+8.5)+'%',left:(sub.x)+'%'}} className="box"> 
+                    {this.state.floorplan_list.map((value,index)=>{
+                        return(
+                            <div className="map_div" key={index} id={value.id} style={{display:(value.index==0 ? 'block':'none')}}>
+                            <div className="map">
+                            <img  src={value.url} style={{width: "100%"}}/>
                             </div>
-                            )
-                            
-                        })}
-                        </div>)
-                })}
+                            {value.pins.map((sub)=>{
+                                return(
+                                    <div onClick={this.changesky} id={sub.id}  style={{top:(sub.y+8.5)+'%',left:(sub.x)+'%'}} className="box"> 
+                                </div>
+                                )
+                                
+                            })}
+                            </div>)
+                    })}
+                </div>
+                </div>
+            </div>            
+          )
+    }
+    else{
+        return(
+            <div style={{display:this.props.floorplan?'block':'none'}} className="Nofloorplan_div">
+            <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className="modal-header" >
+                  <h5 style={{color: "#222b45", margin:'0px'}} className="modal-title">FloorPlan does not exist!</h5>
+                  <button onClick={() => this.props.open_close('floorplan',false)} type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    
+                    
+                    <span aria-hidden="true">
+                        <svg  width="24" height="24" viewBox="0 0 24 24">
+                        <defs>
+                            <path id="prefix__close" d="M7.414 6l4.293-4.293c.391-.391.391-1.023 0-1.414-.39-.391-1.023-.391-1.414 0L6 4.586 1.707.293C1.317-.098.684-.098.293.293c-.39.391-.39 1.023 0 1.414L4.586 6 .293 10.293c-.39.391-.39 1.023 0 1.414.195.195.451.293.707.293.256 0 .512-.098.707-.293L6 7.414l4.293 4.293c.195.195.451.293.707.293.256 0 .512-.098.707-.293.391-.391.391-1.023 0-1.414L7.414 6z"/>
+                        </defs>
+                        <g fill="none" fillRule="evenodd" transform="translate(6 6)">
+                            <use fill="#222B45" href="#prefix__close"/>
+                        </g>
+                    </svg></span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                    <p className="share_content">Floorplans are not available for this project</p>
+                </div>
+                <div style={{display: "block"}} className="modal-footer">
+                    <center style={{display: "flex",justifyContent: "center"}}>
+                        <button onClick={() => this.props.open_close('floorplan',false)} type="button" className="btn cancel">Close</button>
+                    </center>
+                </div>
+              </div>
             </div>
-        </div>
-    </div>
-        
-      )
+            </div>
+        )
+    
+    }
   }
 }
 export default Flooplan;

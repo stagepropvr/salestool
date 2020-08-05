@@ -29,7 +29,8 @@ class SceneControls extends React.Component {
       floorplandata:"false",
       pdfdata:"false",
       settings:false,
-      mapdata:""
+      mapdata:"",
+      map:false,
     }
   }
 
@@ -107,13 +108,15 @@ open_close = (name,flag) =>{
       if(flag){
         this.props.connection.send({actiontype:"map",data:this.props.data["latlng"]});
         this.setState({
-          mapdata:this.props.data["latlng"]
+          mapdata:this.props.data["latlng"],
+          map:true
         })
       }
       else{
         this.props.connection.send({actiontype:"map",data:false});
         this.setState({
-          mapdata:false
+          mapdata:false,
+          map:true
         })
       }
     }
@@ -242,7 +245,7 @@ return (
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
 
-              {this.state.data.plans &&
+              {/* {this.state.data.plans && */}
               <>
               <a onClick={()=> this.open_close('floorplan',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Floor Plan">
                 <svg  width={24} height={24} viewBox="0 0 24 24">
@@ -256,10 +259,10 @@ return (
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
               </>
-              }
+              {/* } */}
               
 
-              {this.state.data.latlng &&
+              {/* {this.state.data.latlng && */}
               <>
               <a  onClick={()=> this.open_close('map',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Near By">
                 <svg  width={24} height={24} viewBox="0 0 24 24">
@@ -273,7 +276,7 @@ return (
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
               </>
-              }
+              {/* } */}
 {/*               
               <a onClick={()=> this.open_close('settings',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Settings">
                 <svg  width={24} height={24} viewBox="0 0 24 24">
@@ -361,7 +364,7 @@ return (
 
 
 
-{this.state.mapdata?<MapModal
+{this.state.map?<MapModal
         open_close={this.open_close}
         data={this.state.mapdata}
       />:<></>}

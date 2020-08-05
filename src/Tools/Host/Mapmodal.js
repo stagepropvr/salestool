@@ -85,6 +85,8 @@ export class MapModal extends React.Component {
   componentDidMount(){   
 
     window.scrollTo(0, 0);
+    if(this.props.data)
+    {
     var a = {
             bank:'https://www.google.com/maps/vt/icon/name=assets/icons/poi/tactile/pinlet_shadow-2-medium.png,assets/icons/poi/tactile/pinlet_outline_v2-2-medium.png,assets/icons/poi/tactile/pinlet-2-medium.png,assets/icons/poi/quantum/pinlet/bank_intl_pinlet-2-medium.png&highlight=ff000000,ffffff,ea4335,ffffff&color=ff000000?scale=1.25',
             hospital:'https://www.google.com/maps/vt/icon/name=assets/icons/poi/tactile/pinlet_shadow-2-medium.png,assets/icons/poi/tactile/pinlet_outline_v2-2-medium.png,assets/icons/poi/tactile/pinlet-2-medium.png,assets/icons/poi/quantum/pinlet/hospital_H_pinlet-2-medium.png&highlight=ff000000,ffffff,ea4335,ffffff&color=ff000000?scale=1.25',
@@ -114,6 +116,7 @@ export class MapModal extends React.Component {
         else{
             // Remove Map Icon
         }
+    }
     }
 
      fetchPlaces=(mapProps, map) => {
@@ -169,6 +172,9 @@ export class MapModal extends React.Component {
 
     render(){
         const cord = {lat:this.state.lat,lng:this.state.long}
+        console.log("pew",this.props.data)
+    if(this.props.data)
+    {
     return (
       <div className="modal" style={{display:"block"}}
       >
@@ -525,6 +531,42 @@ export class MapModal extends React.Component {
         </div>
       </div>
     );
+}
+else{
+    return(
+    <div style={{display:'block'}} className="Nofloorplan_div">
+            <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className="modal-header" >
+                  <h5 style={{color: "#222b45", margin:'0px'}} className="modal-title">Location does not exist!</h5>
+                  <button onClick={() => this.props.open_close('map',false)} type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    
+                    
+                    <span aria-hidden="true">
+                        <svg  width="24" height="24" viewBox="0 0 24 24">
+                        <defs>
+                            <path id="prefix__close" d="M7.414 6l4.293-4.293c.391-.391.391-1.023 0-1.414-.39-.391-1.023-.391-1.414 0L6 4.586 1.707.293C1.317-.098.684-.098.293.293c-.39.391-.39 1.023 0 1.414L4.586 6 .293 10.293c-.39.391-.39 1.023 0 1.414.195.195.451.293.707.293.256 0 .512-.098.707-.293L6 7.414l4.293 4.293c.195.195.451.293.707.293.256 0 .512-.098.707-.293.391-.391.391-1.023 0-1.414L7.414 6z"/>
+                        </defs>
+                        <g fill="none" fillRule="evenodd" transform="translate(6 6)">
+                            <use fill="#222B45" href="#prefix__close"/>
+                        </g>
+                    </svg></span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                    <p className="share_content">Location is not available for this project</p>
+                </div>
+                <div style={{display: "block"}} className="modal-footer">
+                    <center style={{display: "flex",justifyContent: "center"}}>
+                        <button onClick={() => this.props.open_close('map',false)} type="button" className="btn cancel">Close</button>
+                    </center>
+                </div>
+              </div>
+            </div>
+            </div>
+        )
+
+}
     }
   }
   
