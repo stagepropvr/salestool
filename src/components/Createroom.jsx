@@ -21,7 +21,8 @@ class Createroom extends React.Component {
         img:'',
         username:'',
         modal:false,
-        room:""
+        room:"",
+        loader:true
         
     }
 
@@ -52,7 +53,8 @@ componentDidMount(){
         var ref = Fire.database().ref("users/"+user.uid+"/Projects/"+this.props.match.params.pid);
         ref.once('value',child=>{
           this.setState({
-            img:child.val().thumb
+            img:child.val().thumb,
+            loader:false
           })
             if(child.hasChild('Info')){
                 var ref1 = Fire.database().ref("users/"+user.uid+"/Projects/"+this.props.match.params.pid+'/Info');
@@ -151,9 +153,20 @@ room(){
       </div>
      
        <div style={{margin:"0",padding:"0"}} className="row">
-        <div className="card project_det_background">
+          
+                        <div className="card project_det_background">
+                        
           <div style={{padding: "0px"}} className="card-body d-flex flex-row">
-            <img src={this.state.img} width="81px" alt="avatar" />
+          {this.state.loader?
+               <><a>
+               <div>
+                <div style={{width:'280px',height:'108px'}} className="project_name">
+                 <span className="skeleton-box"></span>
+                </div>
+              </div></a></>:<>
+           <img src={this.state.img} width="81px" alt="avatar" />
+         
+            
             <div style={{width: "300px"}}>
         <h4 style={{paddingLeft: "25px"}} className="card-title project_heading">{this.props.match.params.pid}</h4>
               <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">
@@ -208,6 +221,7 @@ room(){
                 
               </div>
             </div>
+            </>}
           </div>
         </div>
        </div>

@@ -507,7 +507,7 @@ muteclient(id,status){
 
  // var streamByUserId = this.state.connection.streamEvents.selectFirst({ userid: id });
   
-alert(status);
+
     
   this.state.connection.send({actiontype:"mute",user:id,status});
 

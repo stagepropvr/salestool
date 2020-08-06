@@ -19,7 +19,8 @@ export default class EndSession extends React.Component {
             bath:'',
             sqft:'',
             img_src:'',
-            project:''
+            project:'',
+            loader:true
         }
         this.handlechange=this.handlechange.bind(this);
     }
@@ -34,7 +35,8 @@ export default class EndSession extends React.Component {
             console.log(child.val());
             this.setState({
                 project:pid,
-                img_src:child.val().thumb
+                img_src:child.val().thumb,
+                loader:false
             })
             if(child.hasChild('Info')){
                 var ref1 = Fire.database().ref("users/"+uid+"/Projects/"+pid+'/Info');
@@ -125,9 +127,15 @@ export default class EndSession extends React.Component {
                                 <div style={{margin:0, padding:0, marginTop: '10px'}} class="row">
                                     <div style={{margin:0, padding:0}} class="card project_det_background">
                                     <div style={{padding: "0px"}} class="card-body d-flex flex-row">
+                                    {this.state.loader?<><a>
+                                            <div>
+                                                 <div style={{width:'280px',height:'108px'}} className="project_name">
+                                                 <span className="skeleton-box"></span>
+                                                 </div>
+                                            </div></a></>:<>
                                         <img src={this.state.img_src} width="81px" alt="avatar"/>
                                         <div style={{width: '300px'}}>
-            <h4 style={{paddingLeft: '25px'}} class="card-title project_heading">{this.state.pid}</h4>
+                                         <h4 style={{paddingLeft: '25px'}} class="card-title project_heading">{this.state.pid}</h4>
                                         <div style={{display:this.state.info_det==true?'flex':'none'}} class="card-text flex-row project_icon_content">
                                             <div>
                                             <span>
@@ -180,6 +188,7 @@ export default class EndSession extends React.Component {
                                             
                                         </div>
                                         </div>
+                                        </>}
                                     </div>
                                     </div>
                                 
@@ -384,6 +393,12 @@ export default class EndSession extends React.Component {
                                 <center>
                                     <div style={{margin:'0', padding:'0', marginTop:'20px'}} className="card project_det_background">
                                         <div style={{padding: '0px'}} className="card-body d-flex flex-row">
+                                        {this.state.loader?<><a>
+                                                         <div>
+                                                     <div style={{width:'280px',height:'108px'}} className="project_name">
+                                                     <span className="skeleton-box"></span>
+                                                        </div>
+                                                 </div></a></>:<>
                                           <img src={this.state.img_src} width="81px" alt="avatar"/>
                                           <div style={{width: '300px'}}>
                                    <h4 style={{paddingLeft: '25px'}} className="card-title project_heading">{this.state.pid}</h4>
@@ -438,6 +453,7 @@ export default class EndSession extends React.Component {
                                              </div>
                                           </div>
                                         </div>
+                                        </>}
                                       </div>
                                      </div>
                                 </center>     
