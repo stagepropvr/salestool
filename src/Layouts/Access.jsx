@@ -34,10 +34,19 @@ class Access extends React.Component {
     this.setAudioLocal=this.setAudioLocal.bind(this);
     this.setVideoLocal=this.setVideoLocal.bind(this);
     this.granted=this.granted.bind(this);
+    this.permission = false;
   }
   
-componentDidMount(){
+componentDidMount = () => {
 
+  navigator.mediaDevices.enumerateDevices().then((devices) => {
+    devices.forEach((device) => {
+      if(device.deviceId){
+        this.setState({"access":true})
+      }
+    });
+  })
+  
     var ref = Fire.database().ref("users/"+this.props.uid+'/Projects/'+this.props.pid);
     ref.once('value',child=>{
         this.setState({

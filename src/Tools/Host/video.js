@@ -190,9 +190,8 @@ this.state.connection.onstreamended = (event)=> {
 };
 this.state.connection.onstream = event => {
 console.log( event.stream.streamid );
-this.setState(ele => ({
-  rtcstreams: [...ele.rtcstreams, event]
-}))
+
+
 var count=0;
 this.state.rtcstreams.map((key)=>{
   if(key.stream.active){
@@ -209,7 +208,12 @@ if(event.type==="local"){
   })
   this.state.localStream.stream.unmute("audio");
 console.log(this.state.connection)
+}else{
+  event.isAudioMuted=!event.extra.initaudio;
 }
+this.setState(ele => ({
+  rtcstreams: [...ele.rtcstreams, event]
+}))
 };
 
 this.state.connection.onUserStatusChanged = (event)=> {
@@ -503,7 +507,6 @@ muteclient(id,status){
 
  // var streamByUserId = this.state.connection.streamEvents.selectFirst({ userid: id });
   
- console.log(this.state.rtcstreams);
 
     
   this.state.connection.send({actiontype:"mute",user:id,status});
