@@ -58,7 +58,6 @@ this.audioallctrl=this.audioallctrl.bind(this);
     this.inputFileRef = React.createRef();
     this.onBtnClick = this.handleBtnClick.bind(this);
     this.muteclient=this.muteclient.bind(this);
-
   }
 
 
@@ -175,6 +174,7 @@ this.state.connection.iceServers = [{
 ];
 this.state.connection.extra={
   name:"host"
+
 }
 
 this.state.connection.mediaConstraints = {
@@ -182,7 +182,12 @@ video: videoConstraints,
 audio:{echoCancellation: true,
   deviceId:this.state.audioinput}
 };
-this.state.connection.userid="host"
+this.state.connection.userid="host";
+this.state.connection.onstreamended = (event)=> {
+  this.setState(ele => ({
+    rtcstreams: [...ele.rtcstreams]
+  })); 
+};
 this.state.connection.onstream = event => {
 console.log( event.stream.streamid );
 this.setState(ele => ({
@@ -206,6 +211,7 @@ if(event.type==="local"){
 console.log(this.state.connection)
 }
 };
+
 this.state.connection.onUserStatusChanged = (event)=> {
   var count=0;
   this.state.rtcstreams.map((key)=>{
@@ -215,7 +221,10 @@ this.state.connection.onUserStatusChanged = (event)=> {
   })
   this.setState({
     usercount:count
-  })
+  });
+  this.setState(ele => ({
+    rtcstreams: [...ele.rtcstreams]
+  }));  
 };
  this.state.connection.onmessage = (event)=> {
   if(!document.getElementById('chat_tab').getAttribute("class").includes("active show")){
@@ -272,6 +281,7 @@ this.state.connection.onunmute = (e)=> {
 
  
   setAudioLocal() {
+    console.log(this.state.rtcstreams);
 
     this.state.connection.send("audio");
 
@@ -493,6 +503,7 @@ muteclient(id,status){
 
  // var streamByUserId = this.state.connection.streamEvents.selectFirst({ userid: id });
   
+ console.log(this.state.rtcstreams);
 
     
   this.state.connection.send({actiontype:"mute",user:id,status});
@@ -502,6 +513,7 @@ muteclient(id,status){
 focus = (event)=>{
   this.messagearea.current.focus();
 }
+
   render() {
     if(this.state.closeRoom)
     {
@@ -680,18 +692,25 @@ return(
       </div>
       <div style={{height: '100%'}} className="tab-pane" id="chat">
         <ul className="chat_bar">
-        {this.state.messages.map((child)=>{
+        {this.state.messages.map((child,key)=>{
           if(child.type==="message"){
             return(
               <li className={this.state.connection.userid===child.user?"self":"other"}>
-              <div className="chat_name">{child.name}</div>
+             {key<1?<div className="chat_name">{child.name}</div>:
+             this.state.messages[key].name===this.state.messages[key-1].name?<></>:<div className="chat_name">{child.name}</div>
+             
+             }
+              
             <div className={this.state.connection.userid===child.user?"self_msg":"other_msg"}>{child.message}</div>
             </li>
             )}
             else{
               return(
                 <li className={this.state.connection.userid===child.user?"self":"other"}>
-  <div className="chat_name">{child.name}</div>
+   {key<1?<div className="chat_name">{child.name}</div>:
+             this.state.messages[key].name===this.state.messages[key-1].name?<></>:<div className="chat_name">{child.name}</div>
+             
+             }
   <div className= {this.state.connection.userid===child.user?" media_msg self_msg":"media_msg  other_msg"}><span className="media_file_name">{child.filename}</span>
     <span style={{paddingRight: '8px', cursor: 'pointer'}}>
      <a  rel="noopener noreferrer" target="_blank" href={child.filedata} download> <svg   width={24} height={24} viewBox="0 0 24 24">
