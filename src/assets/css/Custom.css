@@ -43,7 +43,7 @@ background:#fff;
     .videotools{
         position: relative;
         display: flex;
-        top: 109px;
+        top: 103px;
     }
 
     .video_mute_option{
@@ -70,7 +70,11 @@ background:#fff;
     }
 @media only screen and (min-width:0px) and (max-width:650px){
     .relative-localvideo{
-        bottom: 14.5vh !important;
+        bottom: 13vh !important;
+    }
+
+    .local_host.relative-localvideo{
+        bottom: 25vh !important;
     }
 }
 
@@ -84,15 +88,9 @@ background:#fff;
     position: fixed;
     right: 1.5vh;
     bottom: 10vh;
-    height: 113px;
-    width: 191px;
+ 
 }
-.relative-localvideo .videotools{
-    top: 80px;
-}
-.relative-localvideo video{
-    height: 100px !important;
-}
+
 
 .localvideo-list{
     background: rgb(0, 0, 0);
@@ -101,4 +99,9 @@ background:#fff;
 #chat{
     display: flex;
     flex-direction: column; 
+}
+.fixed-video{
+    height: 135px;
+    width: 226px;
+    background:#000;
 }

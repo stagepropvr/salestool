@@ -152,8 +152,8 @@ this.changedevice=this.changedevice.bind(this);
 
 
 var  videoConstraints = {
-  width: 191,
-  height: 113,
+  width: { min: 160, ideal: 640, max: 1280 },
+  height: { min: 120, ideal: 360, max: 720 },
   frameRate: 30,
   deviceId:this.state.videoinput
 };
@@ -751,7 +751,7 @@ destruct = () => {
       if(key.type=="local"){
         return(
           <li style={{marginTop:'30px'}} className="video_content">
-                          <div ref={this.localvideo}  className="relative-localvideo">
+                          <div ref={this.localvideo}  className="fixed-video relative-localvideo">
                              <div className="videotools">
                            
                                <span className="guest_video_name video_name_option">You</span>
@@ -769,7 +769,7 @@ destruct = () => {
             }else{
      return(
       <li className="video_content">
-      <div >
+      <div className="fixed-video">
          <div className="videotools">
           
            <span className="guest_video_name video_name_option">{key.extra.name}</span>
@@ -819,7 +819,7 @@ destruct = () => {
           })}
          
         </ul>
-        <form className="media_form" onSubmit={this.sendmessage}>
+        <form style={{width:'90%'}} className="media_form" onSubmit={this.sendmessage}>
           <span style={{cursor:'pointer'}} onClick={this.onBtnClick}>
             <input type="file" ref={this.inputFileRef} onChange={this.fileupload} style={{display: 'none'}} />
             <svg   width={24} height={24} viewBox="0 0 24 24">
@@ -832,6 +832,16 @@ destruct = () => {
             </svg>
           </span>
           <input type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message and press enter" required/>
+          <button style={{cursor: "pointer",background: "#f7f9fc",border: "none",marginTop:'-5px'}} type="submit">
+              <svg width={24} height={24} viewBox="0 0 24.1 24.1">
+                  <g data-name="Layer 2">
+                    <g data-name="corner-down-left">
+                        <rect x=".05" y=".05" width="24" height="24" transform="rotate(-89.76 12.05 12.05)" opacity="0"/>
+                        <path d="M20 6a1 1 0 0 0-1-1 1 1 0 0 0-1 1v5a1 1 0 0 1-.29.71A1 1 0 0 1 17 12H8.08l2.69-3.39a1 1 0 0 0-1.52-1.17l-4 5a1 1 0 0 0 0 1.25l4 5a1 1 0 0 0 .78.37 1 1 0 0 0 .62-.22 1 1 0 0 0 .15-1.41l-2.66-3.36h8.92a3 3 0 0 0 3-3z"/>
+                    </g>
+                  </g>
+              </svg>
+          </button>
         </form>
       </div>  
 
