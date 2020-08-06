@@ -347,6 +347,7 @@ this.state.connection.onUserStatusChanged = (event)=> {
     }
     if(event.data.actiontype==="mute"){
       if(event.data.user===this.state.connection.userid){
+        alert(!event.data.status);
       if(!event.data.status){
        
             this.state.localStream.stream.mute("audio");
