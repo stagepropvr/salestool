@@ -22,6 +22,7 @@ class Access extends React.Component {
         redirect:false,
         localStream:false,
         micstate:true,
+        loader:true,
         camstate:{
           width: { min: 160, ideal: 640, max: 1280 },
           height: { min: 120, ideal: 360, max: 720 }
@@ -40,7 +41,8 @@ componentDidMount(){
     var ref = Fire.database().ref("users/"+this.props.uid+'/Projects/'+this.props.pid);
     ref.once('value',child=>{
         this.setState({
-            img:child.val().thumb
+            img:child.val().thumb,
+            loader:false
         })
         if(child.hasChild('Info')){
             var ref1 = Fire.database().ref("users/"+this.props.uid+'/Projects/'+this.props.pid+"/Info");
@@ -160,6 +162,13 @@ setVideoLocal() {
                 <div style={{margin:"0",padding:"0",width:'300px'}} className="row">
         <div className="card project_det_background">
           <div style={{padding: "0px"}} className="card-body d-flex flex-row">
+          {this.state.loader?
+               <><a>
+               <div>
+                <div style={{width:'280px',height:'108px'}} className="project_name">
+                 <span className="skeleton-box"></span>
+                </div>
+              </div></a></>:<>
             <img src={this.state.img} width="81px" alt="avatar" />
             <div style={{width: "300px"}}>
         <h4 style={{paddingLeft: "25px"}} className="card-title project_heading">{this.props.pid}</h4>
@@ -214,6 +223,7 @@ setVideoLocal() {
                 
               </div>
               </div>
+              </>}
             </div>
           </div>
         </div>

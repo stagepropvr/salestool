@@ -20459,7 +20459,7 @@ select{
     }
     
     .chat_bar{
-      height: 92%;
+      height: 100%;
       overflow: auto;
       list-style: none;
       padding: 0px 20px;
@@ -20477,8 +20477,10 @@ select{
       margin-top: -56px;
       display: flex;
       background: #F7F9FC;
+      position: absolute;
+      bottom: -25px;
     }
-    @media screen and (min-width: 1300px) and (max-width:1500px) {
+    /* @media screen and (min-width: 1300px) and (max-width:1500px) {
       .media_form{
         margin-top: -50px;
       }
@@ -20506,7 +20508,7 @@ select{
       .media_form{
         margin-top: 0px;
       }
-    }
+    } */
 
     .media_form input{
       border-radius: 0;
