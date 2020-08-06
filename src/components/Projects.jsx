@@ -10,7 +10,8 @@ class Projects extends React.Component {
     super(props);
     this.state={
         redirect:true,
-        project_list:[]
+        project_list:[],
+        loader:true
     }
   }
   
@@ -31,7 +32,8 @@ componentDidMount(){
             }
           })
           this.setState({
-            project_list:temp_list
+            project_list:temp_list,
+            loader:false
           })
         })
          this.setState({
@@ -66,8 +68,37 @@ componentDidMount(){
             <div className="project_list">
                    <div className="container">
                        <div style={{padding: "20px"}} className="row">
-                       {this.state.project_list.map((node) =>{
-                         return(
+{this.state.loader?  <>
+  <a style={{paddingLeft:'16px',"flex":"auto"}}>
+                         <div  className="project_card">
+                          <div  className="skeleton-box"></div>
+                          <div className="project_name">
+                           <span className="skeleton-box"></span>
+                          </div>
+                        </div></a><a style={{paddingLeft:'16px',"flex":"auto"}}>
+                         <div  className="project_card">
+                          <div  className="skeleton-box"></div>
+                          <div className="project_name">
+                           <span className="skeleton-box"></span>
+                          </div>
+                        </div></a> <a style={{paddingLeft:'16px',"flex":"auto"}}>
+                         <div  className="project_card">
+                          <div  className="skeleton-box"></div>
+                          <div className="project_name">
+                           <span className="skeleton-box"></span>
+                          </div>
+                        </div></a><a style={{paddingLeft:'16px',"flex":"auto"}}>
+                         <div  className="project_card">
+                          <div  className="skeleton-box"></div>
+                          <div className="project_name">
+                           <span className="skeleton-box"></span>
+                          </div>
+                        </div></a></>:
+
+                         
+                       this.state.project_list.map((node) =>{
+                         return(<>
+                       
                           <Link style={{paddingLeft:'16px'}} key={node.id} to={"/createroom/" + node.id}>
                           <div  className="project_card">
                           <img src={node.img} />
@@ -75,10 +106,10 @@ componentDidMount(){
                            <span>{node.id}</span>
                           </div>
                         </div>
-                        </Link>
+                        </Link></>
                          )
                          
-                       })}   
+                       }) }  
                        </div>
                    </div>
             </div>

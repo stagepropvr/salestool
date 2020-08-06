@@ -15,7 +15,8 @@ class Header extends React.Component {
         profile_pic:'',
         file:'',
         local_pic:'',
-        button_dis:true
+        button_dis:true,
+        loader:true
     }
 
     this.signout = this.signout.bind(this);
@@ -36,7 +37,8 @@ componentDidMount(){
           if(child.hasChild('username')){
             this.setState({
               username:child.val().username,
-              name:child.val().username
+              name:child.val().username,
+              loader:false
             })
           }else{
             this.setState({
@@ -261,11 +263,16 @@ fileupload = (event)=>{
           <button className="upgrade">Upgrade now</button> 
        </li> */}
        <li style={{paddingLeft: "10px"}} className="dropdown nav-item">
-         <a href="/" className="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+         {this.state.loader?<a href="/" className=" nav-link" data-toggle="dropdown" aria-expanded="false">
+           
+              <span className="username skeleton-box" ></span>
+     
+         </a>:
+           <a href="/" className="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
            <img src={this.state.local_pic} alt="username" className="rounded-circle img-fluid" />
               <span className="username">{this.state.username}</span>
            <b className="caret"></b>
-         </a>
+         </a>}
          <div className="dropdown-menu dropdown-menu-right">
            <a  style={{color:'#8f9bb3'}} className="header_dropdown header_dropdown_email dropdown-item">{this.state.email}</a>
            {/* <a href="#javascript" style={{flexDirection: "column",height: "90px"}} className="header_dropdown dropdown-item">

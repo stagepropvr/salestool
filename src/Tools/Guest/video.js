@@ -23,8 +23,8 @@ class Video extends React.Component {
       peer: {},
       connecting: false,
       waiting: true,
-      micState: true,
-      camState: true,
+      micState: this.props.audio,
+      camState: this.props.video,
       peers: {},
       floorplandata:"false",
       pdfdata:"false",
@@ -224,12 +224,37 @@ this.state.connection.iceServers = [{
 ];
 this.state.connection.userId=localStorage.getItem("guestkey");
 this.state.connection.extra={
-  name:localStorage.getItem("name")
+  name:localStorage.getItem("name"),
+  initaudio:this.state.micState
 }
 this.state.connection.mediaConstraints = {
 video: videoConstraints,
 audio:{echoCancellation: true,
   deviceId:this.state.audioinput}
+};
+this.state.connection.onstreamended = (event)=> {
+  this.setState(ele => ({
+    rtcstreams: [...ele.rtcstreams]
+  })); 
+};
+this.state.connection.onopen =  (event)=> {
+
+  
+console.log(this.state.connection)
+if(!this.state.camState){
+
+  this.state.localStream.stream.mute("video");
+
+}
+if(!this.state.micState){
+
+  this.state.localStream.stream.mute("audio");
+ 
+}else{
+  this.state.localStream.stream.unmute("audio");
+
+
+}
 };
 this.state.connection.onstream = event => {
 console.log( event.stream.streamid );
@@ -242,27 +267,33 @@ if(event.type==="local"){
   this.setState({
     localStream:event
   })
-console.log(this.state.connection)
-if(!this.props.video){
+}
+}
 
-  this.state.localStream.stream.mute("video");
-  this.setState({
-    camState: false
-  })
-}
-if(!this.props.audio){
 
-  this.state.localStream.stream.mute("audio");
-  this.setState({
-    micState: false
-  })
-}else{
-  this.state.localStream.stream.unmute("audio");
-}
-}
-};
+
+
+
+
 this.state.connection.userid=localStorage.getItem("guestkey");
+
+this.state.connection.onUserStatusChanged = (event)=> {
+  var count=0;
+  this.state.rtcstreams.map((key)=>{
+    if(key.stream.active){
+      count++;
+    }
+  })
+  this.setState({
+    usercount:count
+  })
+  this.setState(ele => ({
+    rtcstreams: [...ele.rtcstreams]
+  }));
+  
+};
  this.state.connection.onmessage = (event)=> {
+
    if(event.data.actiontype==="chat"){
      
   if(!document.getElementById('chat_tab').getAttribute("class").includes("active show")){
@@ -403,7 +434,9 @@ this.state.connection.userid=localStorage.getItem("guestkey");
  
  
   setAudioLocal() {
-    
+    this.state.connection.extra={
+      name:"effafsafsafas"
+    }
 
   
     console.log(this.state.localStream)
@@ -427,7 +460,9 @@ this.state.connection.userid=localStorage.getItem("guestkey");
   
   }
   setVideoLocal() {
-
+    this.state.connection.extra={
+      name:"asdd"
+    }
     if (this.state.localStream.stream.getVideoTracks().length > 0) {
       this.state.localStream.stream.getVideoTracks().forEach(track => {
         if(track.enabled){
@@ -788,18 +823,24 @@ destruct = () => {
       </div>
       <div style={{height: '100%'}} className="tab-pane" id="chat">
         <ul className="chat_bar">
-        {this.state.messages.map((child)=>{
+        {this.state.messages.map((child,key)=>{
           if(child.type==="message"){
             return(
               <li className={this.state.connection.userid===child.user?"self":"other"}>
-              <div className="chat_name">{child.name}</div>
+              {key<1?<div className="chat_name">{child.name}</div>:
+             this.state.messages[key].name===this.state.messages[key-1].name?<></>:<div className="chat_name">{child.name}</div>
+             
+             }
             <div className={this.state.connection.userid===child.user?"self_msg":"other_msg"}>{child.message}</div>
             </li>
             )}
             else{
               return(
                 <li className={this.state.connection.userid===child.user?"self":"other"}>
-  <div className="chat_name">{child.name}</div>
+  {key<1?<div className="chat_name">{child.name}</div>:
+             this.state.messages[key].name===this.state.messages[key-1].name?<></>:<div className="chat_name">{child.name}</div>
+             
+             }
   <div className= {this.state.connection.userid===child.user?" media_msg self_msg":"media_msg  other_msg"}><span className="media_file_name">{child.filename}</span>
     <span style={{paddingRight: '8px', cursor: 'pointer'}}>
      <a target="_blank" href={child.filedata} download> <svg   width={24} height={24} viewBox="0 0 24 24">
