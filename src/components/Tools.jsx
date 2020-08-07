@@ -44,12 +44,12 @@ componentDidMount(){
     <div className="space-70"></div>
 
         <div className="cd-section">
-            <div className="banner">
+       <div style={{"background":"#edf1f7"}}>     <div className="banner container">
                <span>Tools</span>
-            </div>
+            </div></div>
             <div className="project_list">
-                   <div className="container">
-                       <div style={{padding: "20px"}} className="row">
+                   <div className="container" style={{"padding":"0"}}>
+                       <div style={{padding: "16px 4px"}} className="row">
                        <a href="#" className="product" id="creator">
                            <img src="https://cdn.glitch.com/d919fddc-bed5-4101-a53e-3764014fe3bb%2F5.png?v=1585560094420" /></a>
                       <Link to={"/projects"} className="product" id="sales">

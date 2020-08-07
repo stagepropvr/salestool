@@ -30,26 +30,26 @@ class App extends Component {
       <Router >
        <Switch> 
     
-        <Route  path='/login' component={Login} />
+        <Route  path='/salestool/login' component={Login} />
         {/* <Route  path='/' exa ct component={MapModal} /> */}
 
-         <Route path='/signup' component={Signup} />
+         <Route path='/salestool/signup' component={Signup} />
 
-         <Route  path='/projects' component={Projects} />
+         <Route  path='/salestool/projects' component={Projects} />
 
-         <Route  path='/tools' component={Tools} />
+         <Route  path='/salestool/tools' component={Tools} />
 
-         <Route  path='/joinroom/:uid/:pid/:rid' component={Joinroom} />
+         <Route  path='/salestool/joinroom/:uid/:pid/:rid' component={Joinroom} />
 
-         <Route path='/createroom/:pid' component={Createroom} />
+         <Route path='/salestool/createroom/:pid' component={Createroom} />
          
-         <Route path='/room/:pid/:roomid' component={Salespage} />
+         <Route path='/salestool/room/:pid/:roomid' component={Salespage} />
          
-         <Route path='/guest/room/:uid/:pid/:roomid' component={SalespageClient} />
+         <Route path='/salestool/guest/room/:uid/:pid/:roomid' component={SalespageClient} />
 
-         <Route  path='/feedback' component={EndSession} />
+         <Route  path='/salestool/feedback' component={EndSession} />
 
-         <Route  path='/joining' component={JoiningRoom} />
+         <Route  path='/salestool/joining' component={JoiningRoom} />
 
 
          </Switch>

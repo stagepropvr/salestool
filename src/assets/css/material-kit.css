@@ -19295,7 +19295,7 @@ display:none;
   max-width: 344px;
 border-radius: 20px;
 display: block;
-margin: 35px;
+margin: 30px;
 box-shadow: 0px 10px 17px 1px #00000057;
 border-width: 3px;
 }
@@ -19605,7 +19605,7 @@ height: 40px;
   height: 111px;
   border-radius: 4px;
   background-color: #edf1f7;
-  padding: 30px;
+  padding: 32px 20px;
   
 }
 .banner>span{
@@ -19617,7 +19617,7 @@ height: 40px;
   line-height: 1.33;
   letter-spacing: normal;
   color: #222b45;
-  margin-left:20px;
+
 
 }
 .project_list{
@@ -19625,8 +19625,8 @@ height: 40px;
 }
 
 .project_name{
-  height: 44px;
-  padding: 10px;
+  height: 56px;
+  padding: 16px 24px;
   background-color: #f9f9f9;
   opacity: 1;
   text-align: left;

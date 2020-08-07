@@ -62,12 +62,12 @@ componentDidMount(){
     <div className="space-70"></div>
 
         <div className="cd-section">
-            <div className="banner">
+            <div style={{"background":"#edf1f7"}}><div className="banner container">
                <span>My projects</span>
-            </div>
+            </div></div>
             <div className="project_list">
                    <div className="container">
-                       <div style={{padding: "20px"}} className="row">
+                       <div style={{padding: "16px 4px"}} className="row">
 {this.state.loader?  <>
   <a style={{paddingLeft:'16px',"flex":"auto"}}>
                          <div  className="project_card">

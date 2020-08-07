@@ -76,12 +76,12 @@ componentDidMount(){
 [].forEach.call(elems, function(el) {
     el.classList.remove("active");
 });
-if(this.props.current_tag===0)
-    document.getElementById('dashboard').classList.add('active');
-else if(this.props.current_tag===1)
-    document.getElementById('project').classList.add('active');
-else if(this.props.current_tag===2)
-    document.getElementById('tool').classList.add('active')
+// if(this.props.current_tag===0)
+//     document.getElementById('dashboard').classList.add('active');
+// else if(this.props.current_tag===1)
+//     document.getElementById('project').classList.add('active');
+// else if(this.props.current_tag===2)
+//     document.getElementById('tool').classList.add('active')
 
     window.scrollTo(0, 0)
 }
@@ -224,7 +224,8 @@ fileupload = (event)=>{
    return( 
    <>
    <nav className="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
-   <div className="container">
+   <div style={{ "padding-left": "20px",
+  "padding-right": "20px"}} className="container">
      <div  className="navbar-translate">
        <a href="/" className="navbar-brand">
            <svg width="72" height="39" viewBox="0 0 72 39" fill="none">
@@ -246,17 +247,17 @@ fileupload = (event)=>{
        </button>
      </div>
      <div className="collapse navbar-collapse" id="navbarText">
-       <ul className="navbar-nav mr-auto">
-         {/* <li id="dashboard" className="nav-item active">
+       {/* <ul className="navbar-nav mr-auto">
+         <li id="dashboard" className="nav-item active">
            <Link to={"/dashboard"} className="nav-link">Dashboard</Link>
-         </li> */}
+         </li>
          <li id="project" className="nav-item">
            <Link to={"/projects"} className="nav-link">My projects</Link>
          </li>
          <li id="tool" className="nav-item">
            <Link to={"/tools"} className="nav-link">Tools</Link>
          </li>
-       </ul>
+       </ul> */}
      </div>
      <ul id="profile_img_div" className="navbar-nav mr-auto">
        {/* <li className="nav-item" >
