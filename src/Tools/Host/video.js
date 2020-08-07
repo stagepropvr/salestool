@@ -745,16 +745,11 @@ return(
               </g>
             </svg>
           </span>
-          <input  type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message and press enter" autofocus required/>
+          <input  type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message" autofocus required/>
           <button style={{cursor: "pointer",background: "#f7f9fc",border: "none",marginTop:'-5px'}} type="submit">
-              <svg width={24} height={24} viewBox="0 0 24.1 24.1">
-                  <g data-name="Layer 2">
-                    <g data-name="corner-down-left">
-                        <rect x=".05" y=".05" width="24" height="24" transform="rotate(-89.76 12.05 12.05)" opacity="0"/>
-                        <path d="M20 6a1 1 0 0 0-1-1 1 1 0 0 0-1 1v5a1 1 0 0 1-.29.71A1 1 0 0 1 17 12H8.08l2.69-3.39a1 1 0 0 0-1.52-1.17l-4 5a1 1 0 0 0 0 1.25l4 5a1 1 0 0 0 .78.37 1 1 0 0 0 .62-.22 1 1 0 0 0 .15-1.41l-2.66-3.36h8.92a3 3 0 0 0 3-3z"/>
-                    </g>
-                  </g>
-              </svg>
+          <svg focusable="false" width={24} height={24} viewBox="0 0 24 24" class="Hdh4hc cIGbvc NMm5M hhikbc">
+            <path d="M2 3v18l20-9L2 3zm2 11l9-2-9-2V6.09L17.13 12 4 17.91V14z" style={{fill: "#222b45"}}></path>
+          </svg>
           </button>
         </form>
       </div>  

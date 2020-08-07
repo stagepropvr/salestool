@@ -19711,11 +19711,13 @@ height: 40px;
   color: #222b45;
   position: relative;
   top:-7px;
+  padding-left: 4px;
 }
 .project_icon_content{
   display: flex;
     padding-left: 20px;
     flex-flow: wrap;
+    padding-bottom: 13px;
 }
 .heading_align{
   padding-left: 10px;
@@ -19751,7 +19753,16 @@ height: 40px;
   background-color: #3366ff;
   padding: 0;
 }
-
+@media only screen and (max-width:390px){
+  .create_session{
+    margin-left: 0px !important;
+  }
+}
+@media only screen and (min-width:768px) and (max-width:896px){
+  .create_session{
+    margin-left: 0px !important;
+  }
+}
 .create_session_back{
   padding: 0;
   font-family: 'propvr';
@@ -19780,7 +19791,7 @@ height: 40px;
     left: 0;
     box-shadow: 0 -10px 24px 0 rgba(52, 52, 52, 0.5);
     transition: all 0.5s ease-in-out;
-    background: rgba(0, 0, 0, 0.35);
+    background: #00000075;
 }
 .content_padding{
   padding: 10px;
@@ -19795,14 +19806,16 @@ height: 40px;
 }
 .owl-stage-outer{
   width:95% !important;
-  margin-left: 5px;
+  margin-left: 12px;
+  margin-top: 5px;
 }
 .MultiCarousel {
 	float: left;
 	overflow: hidden;
 	padding: 15px;
 	width: 80% !important;
-	position: relative;
+  position: relative;
+  margin:auto;
 }
 
 .MultiCarousel .MultiCarousel-inner {
@@ -19826,6 +19839,7 @@ height: 40px;
   border-radius: 4px;
   border: solid 1px #ffffff;
   cursor: pointer;
+  background: #ffffff29;
 }
 .MultiCarousel .MultiCarousel-inner .item>div:hover{
   background-color: #ffffff;
@@ -19871,10 +19885,12 @@ height: 40px;
 }
 .owl-nav{
   margin-left: -10px;
-    margin-top: -25px;
-    width: 99%;
+    margin-top: -28px;
+    width: 100%;
 }
-
+.owl-prev{
+  margin-left: -5px;
+}
 .owl-next{
   float: right;
   margin-right: -10px;
@@ -19900,6 +19916,7 @@ height: 40px;
   height: 42px;
   cursor: pointer;
   width: 46px;
+  margin-top: 5px;
 }
 .menu_option>svg{
   transform: translateY(2px);
@@ -20467,7 +20484,7 @@ select{
     }
     
     .chat_bar li{
-      margin-top: 24px;
+      margin-top: 16px;
     }
     
     .media_form{
@@ -20477,8 +20494,8 @@ select{
       margin-top: -56px;
       display: flex;
       background: #F7F9FC;
-      position: absolute;
-      bottom: -25px;
+      position: relative;
+      bottom: 12px;
     }
     /* @media screen and (min-width: 1300px) and (max-width:1500px) {
       .media_form{
@@ -20728,7 +20745,7 @@ select{
 .sidedrawer_icon{
     position: relative;
     float: right;
-    margin-right: 16px;
+    margin-right: 8px;
     background: #fff;
     top: 10px;
     border-radius: 4px;
@@ -21149,5 +21166,6 @@ padding: 12px 42px;
     padding: 12px 24px;
     position: absolute;
     margin: 8px;
+    margin-top:12px;
     border-radius: 8px;
 }

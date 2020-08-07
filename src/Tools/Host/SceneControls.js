@@ -295,7 +295,7 @@ return (
           </div>
 
           <div id="video-controls" className="content_padding">
-            <button className={this.props.micstate?"menu_option video_on":"menu_option video_off"}  onClick={this.props.micaction}>
+            <button style={{marginRight:'8px'}} className={this.props.micstate?"menu_option video_on":"menu_option video_off"}  onClick={this.props.micaction}>
               {this.props.micstate?<svg  width={24} height={24} viewBox="0 0 24 24">
                 <path fill="#222B45" fillRule="evenodd" d="M13 17.92V20h2.105c.493 0 .895.402.895.895v.21c0 .493-.402.895-.895.895h-6.21C8.402 22 8 21.598 8 21.106v-.211c0-.493.402-.895.895-.895H11v-2.08c-3.387-.488-6-3.4-6-6.92 0-.552.447-1 1-1 .553 0 1 .448 1 1 0 2.757 2.243 5 5 5s5-2.243 5-5c0-.552.447-1 1-1 .553 0 1 .448 1 1 0 3.52-2.613 6.432-6 6.92zM10 6c0-1.103.897-2 2-2s2 .897 2 2v5c0 1.103-.897 2-2 2s-2-.897-2-2V6zm2 9c2.206 0 4-1.794 4-4V6c0-2.205-1.794-4-4-4S8 3.795 8 6v5c0 2.206 1.794 4 4 4z" />
               </svg>:<svg width={24} height={24}  viewBox="0 0 24 24">
@@ -311,7 +311,7 @@ return (
                   </g>
                   </svg>  }            
             </button>
-            <button   onClick={this.props.videoaction}  className={this.props.camstate?"menu_option video_on":"menu_option video_off"}>
+            <button style={{marginRight:'8px'}}   onClick={this.props.videoaction}  className={this.props.camstate?"menu_option video_on":"menu_option video_off"}>
               
             {this.props.camstate?<svg id="video_on"  width={24} height={24} viewBox="0 0 24 24">
                <defs>

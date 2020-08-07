@@ -60,8 +60,9 @@ componentDidMount(){
                 var ref1 = Fire.database().ref("users/"+user.uid+"/Projects/"+this.props.match.params.pid+'/Info');
                 ref1.once('value',snap=>{
                     if(snap.val().des!='undefined'){
-                        this.setState({
-                          about:snap.val().des
+                        this.setState({ 
+                          about:snap.val().des,
+                          info_about:true
                         }) 
                     }else{
                         this.setState({
@@ -164,11 +165,11 @@ room(){
                  <span className="skeleton-box"></span>
                 </div>
               </div></a></>:<>
-           <img src={this.state.img} width="81px" alt="avatar" />
+           <img src={this.state.img} width="81px" height="93px" alt="avatar" />
          
             
             <div style={{width: "300px"}}>
-        <h4 style={{paddingLeft: "25px"}} className="card-title project_heading">{this.props.match.params.pid}</h4>
+        <h4 style={{paddingLeft: "25px",paddingTop:'3px'}} className="card-title project_heading">{this.props.match.params.pid}</h4>
               <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">
                 <div>
                   <span>
@@ -215,7 +216,7 @@ room(){
                     </svg>                    
                 </span>
                 <span id="sqft" className="createroom_icon_span">
-                  {this.state.sqft} sq.ft
+                  {this.state.sqft} Sq.ft
                  </span> 
                </div>
                 
@@ -233,13 +234,13 @@ room(){
       About the project
     </div>
 
-    <div style={{display:this.state.info_about==true?'flex':'none'}} className="project_about col-md-5">
+    <div style={{display:this.state.info_about==true?'flex':'none'}} className="project_about col-md-6">
             {this.state.about}
     </div>
 
     <div  className="col-md-5" style={{paddingLeft: "10px",paddingTop: "20px"}}>
             <Link to={"/projects"}><button type="submit" className="btn create_session_back">Back</button></Link>
-            <button onClick={this.room} style={{marginLeft:'4px'}} type="submit" className="btn create_session">Create session</button>    
+            <button onClick={this.room} style={{marginLeft:'14px'}} type="submit" className="btn create_session">Create session</button>    
     </div>
     </div>
   </div>

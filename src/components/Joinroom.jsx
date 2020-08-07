@@ -22,7 +22,8 @@ class Joinroom extends React.Component {
         bath:'',
         sqft:'',
         img:'',
-        redirect:false
+        redirect:false,
+        loader:true
     }
     this.handlechange=this.handlechange.bind(this);
     this.handlejoin=this.handlejoin.bind(this);
@@ -33,7 +34,8 @@ componentDidMount(){
     var ref = Fire.database().ref("users/"+this.props.match.params.uid+'/Projects/'+this.props.match.params.pid);
     ref.once('value',child=>{
         this.setState({
-            img:child.val().thumb
+            img:child.val().thumb,
+            loader:false
         })
         if(child.hasChild('Info')){
             var ref1 = Fire.database().ref("users/"+this.props.match.params.uid+'/Projects/'+this.props.match.params.pid+"/Info");
@@ -210,7 +212,14 @@ if(this.state.redirect){
                 <div style={{margin:"0",padding:"0",width:'300px'}} className="row">
         <div className="card project_det_background">
           <div style={{padding: "0px"}} className="card-body d-flex flex-row">
-            <img src={this.state.img} width="81px" alt="avatar" />
+          {this.state.loader?
+               <><a>
+               <div>
+                <div style={{width:'280px',height:'108px'}} className="project_name">
+                 <span className="skeleton-box"></span>
+                </div>
+              </div></a></>:<>
+            <img src={this.state.img} height="93px"  width="81px" alt="avatar" />
             <div style={{width: "300px"}}>
         <h4 style={{paddingLeft: "25px"}} className="card-title project_heading">{this.props.match.params.pid}</h4>
               <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">
@@ -259,12 +268,13 @@ if(this.state.redirect){
                     </svg>                    
                 </span>
                 <span id="sqft" className="createroom_icon_span">
-                  {this.state.sqft} sq.ft
+                  {this.state.sqft} Sq.ft
                  </span> 
                </div>
                 
               </div>
             </div>
+            </>}
           </div>
         </div>
        </div>
@@ -375,7 +385,14 @@ if(this.state.redirect){
                     <p>You are invited to join the virtual property tour. Fill the required details and enjoy your session.</p>
                     <div style={{margin:0, padding:0, width:'100%'}} class="card project_det_background">    
                           <div style={{padding: "0px"}} className="card-body d-flex flex-row">
-                            <img src={this.state.img} width="81px" alt="avatar" />
+                          {this.state.loader?
+               <><a>
+               <div>
+                <div style={{width:'280px',height:'108px'}} className="project_name">
+                 <span className="skeleton-box"></span>
+                </div>
+              </div></a></>:<>
+                            <img src={this.state.img} width="81px" height="125px"  alt="avatar" />
                             <div style={{width: "100%"}}>
                                 <h4 className="card-title project_heading" style={{textAlign:"center"}}>{this.props.match.params.pid}</h4>
                                 <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">
@@ -424,13 +441,14 @@ if(this.state.redirect){
                                     </svg>                    
                                 </span>
                                 <span id="sqft" className="createroom_icon_span">
-                                    {this.state.sqft} sq.ft
+                                    {this.state.sqft} Sq.ft
                                  </span> 
                                </div>
                                                            
                             </div>
                           </div>
-                        </div>
+                         </>}
+                         </div>
                        </div>       
                 </div>
                     <div style={{margin:"0",padding:"0",paddingTop: "0px", height: 'inherit'}} className="row">    
@@ -514,7 +532,7 @@ if(this.state.redirect){
 
                                     <div style={{textAlign: "center"}} className="form-group">
                                     <button style={{margin:'10px'}} className="btn input_button">CANCEL</button>
-                                    <button id="submit" type="submit" style={{margin:'10px'}} className="btn input_button">NEXT</button>
+                                    <button id="submit" type="submit" style={{margin:'10px',marginLeft:'14px'}} className="btn input_button">NEXT</button>
                                     <button style={{cursor: "progress",display:'none'}} id="loader" type="button" className="btn input_button" disabled>
                                     <i id="loginloader" className="fa fa-circle-o-notch fa-spin" style={{ fontSize: "1rem", color: "white", paddingRight: 2, paddingLeft: 2 }}></i>
                                     </button>
