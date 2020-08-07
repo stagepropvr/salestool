@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "main": "src/index.js",
+  "homepage": "localhost:5001/salestool",
   "dependencies": {
     "@ionic/react": "^5.2.3",
     "aframe": "^1.0.4",
