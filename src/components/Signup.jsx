@@ -222,7 +222,7 @@ SignupWithGoogle(){
                 <div class="loginNew_center">
                     <h3>Create, Collaborate and Share</h3>
                     <p>Prop VR allows you to create, collaborate and share virtual tour experience of your properties with your customers. Take your customers for a virtual-guided tour and increase sales. </p>
-                    <a href="https://calendly.com/propvr/propvr-demo-call" type="submit" className="btn create_session_back">SCHEDULE DEMO</a>
+                    <a style={{lineHeight:'2.7'}} href="https://calendly.com/propvr/propvr-demo-call" type="submit" className="btn create_session_back">SCHEDULE DEMO</a>
                 </div>
 
                 <div class="loginNew_bottom">
