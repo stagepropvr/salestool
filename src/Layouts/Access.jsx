@@ -42,7 +42,8 @@ componentDidMount = () => {
   navigator.mediaDevices.enumerateDevices().then((devices) => {
     devices.forEach((device) => {
       if(device.deviceId){
-        this.setState({"access":true})
+        this.setState({"access":true});
+        this.granted()
       }
     });
   })

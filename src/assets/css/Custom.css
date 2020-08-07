@@ -133,3 +133,9 @@ background:#fff;
         transform: translateX(100%);
    }
 }
+.loader-logo{
+    padding: 32px;
+    display: flex;
+    flex-direction: row-reverse;
+    float: left;
+}
