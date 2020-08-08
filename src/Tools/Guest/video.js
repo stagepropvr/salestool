@@ -278,6 +278,10 @@ if(event.type==="local"){
 this.state.connection.userid=localStorage.getItem("guestkey");
 
 this.state.connection.onUserStatusChanged = (event)=> {
+ 
+  this.setState(ele => ({
+    rtcstreams: [...ele.rtcstreams]
+  }));
   var count=0;
   this.state.rtcstreams.map((key)=>{
     if(key.stream.active){
@@ -287,10 +291,6 @@ this.state.connection.onUserStatusChanged = (event)=> {
   this.setState({
     usercount:count
   })
-  this.setState(ele => ({
-    rtcstreams: [...ele.rtcstreams]
-  }));
-  
 };
  this.state.connection.onmessage = (event)=> {
 
@@ -347,7 +347,7 @@ this.state.connection.onUserStatusChanged = (event)=> {
     }
     if(event.data.actiontype==="mute"){
       if(event.data.user===this.state.connection.userid){
-        alert(!event.data.status);
+        
       if(!event.data.status){
        
             this.state.localStream.stream.mute("audio");
@@ -652,7 +652,7 @@ destruct = () => {
   render() {
     if(this.state.closeRoom)
     {
-      return <Redirect to="/feedback" />
+      return <Redirect to="/salestool/feedback" />
     }
 
     return (<>
@@ -827,34 +827,77 @@ destruct = () => {
         {this.state.messages.map((child,key)=>{
           if(child.type==="message"){
             return(
-              <li className={this.state.connection.userid===child.user?"self":"other"}>
-              {key<1?<div className="chat_name">{child.name}</div>:
-             this.state.messages[key].name===this.state.messages[key-1].name?<></>:<div className="chat_name">{child.name}</div>
+              key<1?
              
-             }
-            <div className={this.state.connection.userid===child.user?"self_msg":"other_msg"}>{child.message}</div>
-            </li>
+              <li className={this.state.connection.userid===child.user?"self":"other"} ><div className="chat_name">{child.name}</div> <div className={this.state.connection.userid===child.user?"self_msg":"other_msg"}>{child.message}</div>
+             </li>
+             :
+        
+              this.state.messages[key].name===this.state.messages[key-1].name?
+               <li className={this.state.connection.userid===child.user?"self":"other"} style={{"marginTop":"0px"}}> <div className={this.state.connection.userid===child.user?"self_msg":"other_msg"}>{child.message}</div>
+               </li>
+              
+              
+              : <li className={this.state.connection.userid===child.user?"self":"other"} ><div className="chat_name">{child.name}</div> <div className={this.state.connection.userid===child.user?"self_msg":"other_msg"}>{child.message}</div>
+              </li>
             )}
             else{
               return(
-                <li className={this.state.connection.userid===child.user?"self":"other"}>
-  {key<1?<div className="chat_name">{child.name}</div>:
-             this.state.messages[key].name===this.state.messages[key-1].name?<></>:<div className="chat_name">{child.name}</div>
+
+
+                key<1?
              
-             }
-  <div className= {this.state.connection.userid===child.user?" media_msg self_msg":"media_msg  other_msg"}><span className="media_file_name">{child.filename}</span>
-    <span style={{paddingRight: '8px', cursor: 'pointer'}}>
-     <a target="_blank" href={child.filedata} download> <svg   width={24} height={24} viewBox="0 0 24 24">
-        <defs>
-          <path id="prefix__download" d="M19 16c.55 0 1 .45 1 1v2c0 .51-.388.935-.884.993L19 20H5c-.55 0-1-.45-1-1v-2c0-.55.45-1 1-1s1 .45 1 1v1h12v-1c0-.55.45-1 1-1zM12 3c.553 0 1 .448 1 1v8l2.4-1.8c.442-.333 1.069-.242 1.4.2.332.442.242 1.069-.2 1.4l-4 3c-.177.133-.389.2-.6.2-.201 0-.402-.061-.575-.182l-4-2.814c-.452-.318-.561-.942-.243-1.393.318-.452.941-.561 1.393-.243l2.428 1.71L11 12V4c0-.552.447-1 1-1z" />
-        </defs>
-        <g fill="none" fillRule="evenodd">
-          <use fill="#fff" xlinkHref="#prefix__download" />
-        </g>
-      </svg></a>
-    </span>
-  </div>
-</li>
+                <li className={this.state.connection.userid===child.user?"self":"other"} ><div className="chat_name">{child.name}</div>  <div className= {this.state.connection.userid===child.user?" media_msg self_msg":"media_msg  other_msg"}><span className="media_file_name">{child.filename}</span>
+                <span style={{paddingRight: '8px', cursor: 'pointer'}}>
+                 <a target="_blank" href={child.filedata} download> <svg   width={24} height={24} viewBox="0 0 24 24">
+                    <defs>
+                      <path id="prefix__download" d="M19 16c.55 0 1 .45 1 1v2c0 .51-.388.935-.884.993L19 20H5c-.55 0-1-.45-1-1v-2c0-.55.45-1 1-1s1 .45 1 1v1h12v-1c0-.55.45-1 1-1zM12 3c.553 0 1 .448 1 1v8l2.4-1.8c.442-.333 1.069-.242 1.4.2.332.442.242 1.069-.2 1.4l-4 3c-.177.133-.389.2-.6.2-.201 0-.402-.061-.575-.182l-4-2.814c-.452-.318-.561-.942-.243-1.393.318-.452.941-.561 1.393-.243l2.428 1.71L11 12V4c0-.552.447-1 1-1z" />
+                    </defs>
+                    <g fill="none" fillRule="evenodd">
+                      <use fill="#fff" xlinkHref="#prefix__download" />
+                    </g>
+                  </svg></a>
+                </span>
+              </div>
+               </li>
+               :
+          
+                this.state.messages[key].name===this.state.messages[key-1].name?
+                 <li className={this.state.connection.userid===child.user?"self":"other"} style={{"marginTop":"0px"}}>  <div className= {this.state.connection.userid===child.user?" media_msg self_msg":"media_msg  other_msg"}><span className="media_file_name">{child.filename}</span>
+                 <span style={{paddingRight: '8px', cursor: 'pointer'}}>
+                  <a target="_blank" href={child.filedata} download> <svg   width={24} height={24} viewBox="0 0 24 24">
+                     <defs>
+                       <path id="prefix__download" d="M19 16c.55 0 1 .45 1 1v2c0 .51-.388.935-.884.993L19 20H5c-.55 0-1-.45-1-1v-2c0-.55.45-1 1-1s1 .45 1 1v1h12v-1c0-.55.45-1 1-1zM12 3c.553 0 1 .448 1 1v8l2.4-1.8c.442-.333 1.069-.242 1.4.2.332.442.242 1.069-.2 1.4l-4 3c-.177.133-.389.2-.6.2-.201 0-.402-.061-.575-.182l-4-2.814c-.452-.318-.561-.942-.243-1.393.318-.452.941-.561 1.393-.243l2.428 1.71L11 12V4c0-.552.447-1 1-1z" />
+                     </defs>
+                     <g fill="none" fillRule="evenodd">
+                       <use fill="#fff" xlinkHref="#prefix__download" />
+                     </g>
+                   </svg></a>
+                 </span>
+               </div>
+                 </li>
+                
+                
+                : <li className={this.state.connection.userid===child.user?"self":"other"} ><div className="chat_name">{child.name}</div>  <div className= {this.state.connection.userid===child.user?" media_msg self_msg":"media_msg  other_msg"}><span className="media_file_name">{child.filename}</span>
+                <span style={{paddingRight: '8px', cursor: 'pointer'}}>
+                 <a target="_blank" href={child.filedata} download> <svg   width={24} height={24} viewBox="0 0 24 24">
+                    <defs>
+                      <path id="prefix__download" d="M19 16c.55 0 1 .45 1 1v2c0 .51-.388.935-.884.993L19 20H5c-.55 0-1-.45-1-1v-2c0-.55.45-1 1-1s1 .45 1 1v1h12v-1c0-.55.45-1 1-1zM12 3c.553 0 1 .448 1 1v8l2.4-1.8c.442-.333 1.069-.242 1.4.2.332.442.242 1.069-.2 1.4l-4 3c-.177.133-.389.2-.6.2-.201 0-.402-.061-.575-.182l-4-2.814c-.452-.318-.561-.942-.243-1.393.318-.452.941-.561 1.393-.243l2.428 1.71L11 12V4c0-.552.447-1 1-1z" />
+                    </defs>
+                    <g fill="none" fillRule="evenodd">
+                      <use fill="#fff" xlinkHref="#prefix__download" />
+                    </g>
+                  </svg></a>
+                </span>
+              </div>
+                </li>
+
+
+
+
+
+
+
 
               )
             }

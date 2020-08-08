@@ -35,7 +35,7 @@ componentDidMount(){
 
     this.setState({
 
-        url:window.location.protocol+'//'+window.location.hostname+window.location.port+"/joinroom/"+this.props.user_id+'/'+this.props.pid+'/'+this.props.roomId
+        url:window.location.protocol+'//'+window.location.hostname+(window.location.port.length?":"+window.location.port:"")+"/salestool/joinroom/"+this.props.user_id+'/'+this.props.pid+'/'+this.props.roomId
 
     })
   }

@@ -217,6 +217,10 @@ this.setState(ele => ({
 };
 
 this.state.connection.onUserStatusChanged = (event)=> {
+
+  this.setState(ele => ({
+    rtcstreams: [...ele.rtcstreams]
+  }));  
   var count=0;
   this.state.rtcstreams.map((key)=>{
     if(key.stream.active){
@@ -226,9 +230,6 @@ this.state.connection.onUserStatusChanged = (event)=> {
   this.setState({
     usercount:count
   });
-  this.setState(ele => ({
-    rtcstreams: [...ele.rtcstreams]
-  }));  
 };
  this.state.connection.onmessage = (event)=> {
   if(!document.getElementById('chat_tab').getAttribute("class").includes("active show")){
@@ -441,9 +442,6 @@ this.state.connection.onunmute = (e)=> {
   }
   sendmessage(e){
     e.preventDefault();
-
-
-    
     const message = {
       actiontype:"chat",
       room: this.props.roomId,
@@ -521,7 +519,7 @@ focus = (event)=>{
     if(this.state.closeRoom)
     {
       
-      return <Redirect to="/feedback" />
+      return <Redirect to="/salestool/feedback" />
     }
 
     return (<>
@@ -698,18 +696,28 @@ return(
         {this.state.messages.map((child,key)=>{
           if(child.type==="message"){
             return(
-              <li className={this.state.connection.userid===child.user?"self":"other"}>
-             {key<1?<div className="chat_name">{child.name}</div>:
-             this.state.messages[key].name===this.state.messages[key-1].name?<></>:<div className="chat_name">{child.name}</div>
              
-             }
-              
-            <div className={this.state.connection.userid===child.user?"self_msg":"other_msg"}>{child.message}</div>
+             key<1?
+             
+             <li className={this.state.connection.userid===child.user?"self":"other"} ><div className="chat_name">{child.name}</div> <div className={this.state.connection.userid===child.user?"self_msg":"other_msg"}>{child.message}</div>
             </li>
+            :
+       
+             this.state.messages[key].name===this.state.messages[key-1].name?
+              <li className={this.state.connection.userid===child.user?"self":"other"} style={{"marginTop":"0px"}}> <div className={this.state.connection.userid===child.user?"self_msg":"other_msg"}>{child.message}</div>
+              </li>
+             
+             
+             : <li className={this.state.connection.userid===child.user?"self":"other"} ><div className="chat_name">{child.name}</div> <div className={this.state.connection.userid===child.user?"self_msg":"other_msg"}>{child.message}</div>
+             </li>
+             
+             
+              
+           
             )}
             else{
               return(
-                <li className={this.state.connection.userid===child.user?"self":"other"}>
+                <li className={this.state.connection.userid===child.user?"self":"other"} style={{marginTop:this.state.messages[key].name===this.state.messages[key-1].name?"0px":"16px"}}>
    {key<1?<div className="chat_name">{child.name}</div>:
              this.state.messages[key].name===this.state.messages[key-1].name?<></>:<div className="chat_name">{child.name}</div>
              

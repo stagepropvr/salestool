@@ -219,7 +219,7 @@ fileupload = (event)=>{
   render() {
 
     if(this.state.redirect){
-      return <Redirect to="/login"></Redirect>
+      return <Redirect to="/salestool/login"></Redirect>
     }else{
    return( 
    <>
@@ -249,13 +249,13 @@ fileupload = (event)=>{
      <div className="collapse navbar-collapse" id="navbarText">
        {/* <ul className="navbar-nav mr-auto">
          <li id="dashboard" className="nav-item active">
-           <Link to={"/dashboard"} className="nav-link">Dashboard</Link>
+           <Link to={"/salestool/dashboard"} className="nav-link">Dashboard</Link>
          </li>
          <li id="project" className="nav-item">
-           <Link to={"/projects"} className="nav-link">My projects</Link>
+           <Link to={"/salestool/projects"} className="nav-link">My projects</Link>
          </li>
          <li id="tool" className="nav-item">
-           <Link to={"/tools"} className="nav-link">Tools</Link>
+           <Link to={"/salestool/tools"} className="nav-link">Tools</Link>
          </li>
        </ul> */}
      </div>

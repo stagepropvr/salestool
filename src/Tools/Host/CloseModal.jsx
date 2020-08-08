@@ -55,10 +55,10 @@ componentDidMount(){
   render() {
   
     // if(this.state.redirect){
-    //   return <Redirect to="/projects" />
+    //   return <Redirect to="/salestool/projects" />
     // }
     // else if(this.state.redirect){
-    //   return <Redirect to="/feedback" />
+    //   return <Redirect to="/salestool/feedback" />
     // }
     // else{
       return( 

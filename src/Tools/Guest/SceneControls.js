@@ -14,7 +14,7 @@ class SceneControls extends React.Component {
     super(props);
     this.state={
 
-      share:false,
+      share:true,
       document:false,
 
       menu_bar:true,

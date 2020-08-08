@@ -219,7 +219,7 @@ googleSignin = () => {
 
   render() {
     if(this.state.redirect){
-        return <Redirect to="/projects" />
+        return <Redirect to="/salestool/projects" />
         }
     else{
         return( 
@@ -258,7 +258,7 @@ googleSignin = () => {
             <div style={{padding:"0", textAlign:'center', width:"100%"}} className="col-sm-7 col-xs-12">
                 <div className="login_card card card-signup" style={{justifyContent:'center', padding:'0px 20% 0px 20%'}}>
                     <h2 style={{paddingTop: "25px"}} className="Welcome-to-Prop-VR">Hello! Welcome back!</h2>
-                        <p className="Have-an-account-alre">New to Prop VR?   <Link style={{paddingLeft: "10px"}} to="/signup" className="login_span">Sign up</Link></p>
+                        <p className="Have-an-account-alre">New to Prop VR?   <Link style={{paddingLeft: "10px"}} to="/salestool/signup" className="login_span">Sign up</Link></p>
                     <form onSubmit={this.handlelogin} className="form" style={{paddingTop: "12px", textAlign:'left'}}>
                         <div className="card-content">							
                                 <div className="form-group">
@@ -371,7 +371,7 @@ googleSignin = () => {
             <div style={{padding:"0", textAlign:'center', width:"100%"}} className="col-sm-7 col-xs-12">
                 <div className="login_card card card-signup" style={{justifyContent:'center'}}>
                     <h2 style={{paddingTop: "25px"}} className="Welcome-to-Prop-VR">Hello! Welcome back!</h2>
-                        <p className="Have-an-account-alre">New to Prop VR?   <Link style={{paddingLeft: "10px"}} to="/signup" className="login_span">Sign up</Link></p>
+                        <p className="Have-an-account-alre">New to Prop VR?   <Link style={{paddingLeft: "10px"}} to="/salestool/signup" className="login_span">Sign up</Link></p>
                     <form onSubmit={this.handlelogin} className="form" style={{paddingTop: "12px", textAlign:'left'}}>
                         <div className="card-content">							
                                 <div className="form-group">

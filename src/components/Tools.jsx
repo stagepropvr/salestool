@@ -52,7 +52,7 @@ componentDidMount(){
                        <div style={{padding: "16px 4px"}} className="row">
                        <a href="#" className="product" id="creator">
                            <img src="https://cdn.glitch.com/d919fddc-bed5-4101-a53e-3764014fe3bb%2F5.png?v=1585560094420" /></a>
-                      <Link to={"/projects"} className="product" id="sales">
+                      <Link to={"/salestool/projects"} className="product" id="sales">
                           <img src="https://cdn.glitch.com/d919fddc-bed5-4101-a53e-3764014fe3bb%2F6.png?v=1585560098012" /></Link>
                        <a href="#" className="product" id="strtview">
                            <img src="https://cdn.glitch.com/d919fddc-bed5-4101-a53e-3764014fe3bb%2F4.png?v=1585560090774" /></a>  
@@ -63,7 +63,7 @@ componentDidMount(){
         </>)
     }
     else{
-       return(<Redirect to="/login" />)
+       return(<Redirect to="/salestool/login" />)
     }
 }
 }

@@ -239,7 +239,7 @@ room(){
     </div>
 
     <div  className="col-md-5" style={{paddingLeft: "10px",paddingTop: "20px"}}>
-            <Link to={"/projects"}><button type="submit" className="btn create_session_back">Back</button></Link>
+            <Link to={"/salestool/projects"}><button type="submit" className="btn create_session_back">Back</button></Link>
             <button onClick={this.room} style={{marginLeft:'14px'}} type="submit" className="btn create_session">Create session</button>    
     </div>
     </div>
@@ -269,11 +269,11 @@ room(){
            
         )}
         else{
-return(<Redirect to={"/room/"+this.props.match.params.pid+"/"+this.state.room}/>)
+return(<Redirect to={"/salestool/room/"+this.props.match.params.pid+"/"+this.state.room}/>)
         }
     }
     else{
-        return <Redirect to="/login"></Redirect>
+        return <Redirect to="/salestool/login"></Redirect>
     }
   }
 }

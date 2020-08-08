@@ -17,7 +17,7 @@ import Tools from './components/Tools';
 
 import { goToRoomInput } from './components/goToRoomInput';
 import SalespageClient from './Layouts/SalespageClient';
-import RTC from './components/RTC';
+  
 class App extends Component {
 
   

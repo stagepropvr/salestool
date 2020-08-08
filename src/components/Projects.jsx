@@ -99,7 +99,7 @@ componentDidMount(){
                        this.state.project_list.map((node) =>{
                          return(<>
                        
-                          <Link style={{paddingLeft:'16px'}} key={node.id} to={"/createroom/" + node.id}>
+                          <Link style={{paddingLeft:'16px'}} key={node.id} to={"/salestool/createroom/" + node.id}>
                           <div  className="project_card">
                           <img src={node.img} />
                           <div className="project_name">
@@ -117,7 +117,7 @@ componentDidMount(){
         </>)
     }
     else{
-       return(<Redirect to="/login" />)
+       return(<Redirect to="/salestool/login" />)
     }
 }
 }

@@ -195,7 +195,7 @@ SignupWithGoogle(){
 
   render() {
     if(this.state.redirect){
-        return <Redirect to="/projects" />
+        return <Redirect to="/salestool/projects" />
     }
     else{
         return( 
@@ -235,7 +235,7 @@ SignupWithGoogle(){
             <div style={{padding:"0", textAlign:'center', width:"100%"}} className="col-sm-7 col-xs-12">
                    <div className="login_card card card-signup" style={{justifyContent:'center', padding:'0px 20% 0px 20%'}}>
                         <h2 className="Welcome-to-Prop-VR" style={{paddingTop: "25px"}}>Welcome to Prop VR!</h2>
-                            <p className="Have-an-account-alre">Have an account already?   <Link style={{paddingLeft: "10px"}} to="/login" className="login_span">Login</Link>
+                            <p className="Have-an-account-alre">Have an account already?   <Link style={{paddingLeft: "10px"}} to="/salestool/login" className="login_span">Login</Link>
                             </p>
 						<form onSubmit={this.handleregister} className="form" style={{paddingTop: "25px", textAlign:'left'}}>
 							<div className="card-content">							
@@ -352,7 +352,7 @@ SignupWithGoogle(){
             <div style={{padding:"0", textAlign:'center', width:"100%"}} className="col-sm-7 col-xs-12">
                    <div className="login_card card card-signup" style={{justifyContent:'center'}}>
                         <h2 className="Welcome-to-Prop-VR" style={{paddingTop: "25px"}}>Welcome to Prop VR!</h2>
-                            <p className="Have-an-account-alre">Have an account already?   <Link style={{paddingLeft: "10px"}} to="/login" className="login_span">Login</Link>
+                            <p className="Have-an-account-alre">Have an account already?   <Link style={{paddingLeft: "10px"}} to="/salestool/login" className="login_span">Login</Link>
                             </p>
 						<form onSubmit={this.handleregister} className="form" style={{paddingTop: "25px", textAlign:'left'}}>
 							<div className="card-content">							
