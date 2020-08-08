@@ -13,7 +13,7 @@ app.get('/ping', (req, res) => {
   res.send('pong');
 });
 
-app.get('/salestool/:route', (req, res) => {
+app.get('/salestool/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
