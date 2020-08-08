@@ -44,7 +44,7 @@ self.__precacheManifest = [
     "url": "/salestool/static/media/loginBG.358c4b3f.png"
   },
   {
-    "revision": "081d64edef811ea0cb9f62dc84416283",
+    "revision": "2681be45d2df6773d27a1070af5aeeb6",
     "url": "/salestool/index.html"
   }
 ];
