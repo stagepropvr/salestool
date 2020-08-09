@@ -239,15 +239,15 @@ fileupload = (event)=>{
                </svg>
            <span>prop vr</span>                
        </a>
-       <button className="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+       {/* <button className="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
          <span className="sr-only">Toggle navigation</span>
          <span className="navbar-toggler-icon"></span>
          <span className="navbar-toggler-icon"></span>
          <span className="navbar-toggler-icon"></span>
-       </button>
+       </button> */}
      </div>
-     <div className="collapse navbar-collapse" id="navbarText">
-       {/* <ul className="navbar-nav mr-auto">
+     {/* <div className="collapse navbar-collapse" id="navbarText">
+       <ul className="navbar-nav mr-auto">
          <li id="dashboard" className="nav-item active">
            <Link to={"/salestool/dashboard"} className="nav-link">Dashboard</Link>
          </li>
@@ -257,8 +257,8 @@ fileupload = (event)=>{
          <li id="tool" className="nav-item">
            <Link to={"/salestool/tools"} className="nav-link">Tools</Link>
          </li>
-       </ul> */}
-     </div>
+       </ul>
+     </div> */}
      <ul id="profile_img_div" className="navbar-nav mr-auto">
        {/* <li className="nav-item" >
           <button className="upgrade">Upgrade now</button> 
