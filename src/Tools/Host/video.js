@@ -1,13 +1,13 @@
 import React from 'react';
 import { Redirect } from "react-router-dom";
 import '../../styles/video.css';
-import io from 'socket.io-client';
+import io from 'socket.io';
 import VideoItem from "../ToolComponents/videoItem";
 import Scene from "./Scene";
 import Firebase from "../../config/Firebase";
 import SceneControls from "./SceneControls.js";
 import Switchprojectloader from './Switchprojectloader';
-import * as RTCMultiConnection from 'rtcmulticonnection';
+import * as RTCMultiConnection from 'rtcmulticonnection-react-js';
 
 let userId = null
 
@@ -16,12 +16,8 @@ class Video extends React.Component {
     super(props);
     this.state = {
       localStream: {},
-      
-
-   
       micState: true,
       camState: true,
-  
       current_image: "",
       currentimageName:"",
       apiload: true,
@@ -42,7 +38,6 @@ class Video extends React.Component {
       connection : new RTCMultiConnection(),
       rtcstreams:[],
       usercount:0
-
         };
     
     this.Sidenav = React.createRef();
@@ -81,7 +76,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
     Firebase.auth().onAuthStateChanged((user) => {
 
      if(!user){
-       window.location="/login"
+       window.location="/salestool/login"
      }
        
         Firebase.database().ref("users/" + user.uid + "/Projects/" + this.props.pid).once("value", (node) => {
