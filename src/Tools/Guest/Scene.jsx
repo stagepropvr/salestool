@@ -17,6 +17,7 @@ class Scene extends React.Component {
         loaded:false,
         VRMode:false,
         imageload:true,
+        anirotation:"0 0 0"
     };
     this.time = null;
     this.total = 0;
@@ -25,20 +26,20 @@ class Scene extends React.Component {
     // this.change = this.change.bind(this);
 this.imageloaded=this.imageloaded.bind(this);
    }
-// componentDidMount(){
-//   this.props.connection.onmessage = (event)=> {
+componentDidMount(){
+  this.props.connection.onmessage = (event)=> {
     
 
-//   if(event.data.actiontype=="lock") { 
-//     var rotation= event.data.rotation.split(" ");
-//     var player=document.getElementById('cam1');
-//     player.components['look-controls'].yawObject.rotation.x = THREE.Math.degToRad(rotation[0]);
-//     player.components['look-controls'].yawObject.rotation.y = THREE.Math.degToRad(rotation[1]);
-
-//     player.components['look-controls'].yawObject.rotation.z = THREE.Math.degToRad(rotation[2]);
-//   }
-//   }
-// }
+  if(event.data.actiontype=="lock") {
+    
+    var player=document.getElementById('cam1');
+    player.setAttribute("rotation",event.data.rotation.x+" "+event.data.rotation.y+" "+event.data.rotation.z)
+    this.setState({
+      anirotation:event.data.rotation.x+" "+event.data.rotation.y+" "+event.data.rotation.z
+    })
+  }
+  }
+}
 imageloaded(){
   this.setState({
     imageload:false
@@ -99,7 +100,10 @@ imageloaded(){
       </div>:<></>}
     
       {/* Loads Mouse */}
-      <a-camera id="cam1" rotation="0 0 0" look-controls rotation-reader cursor="rayOrigin: mouse; fuse: false;"></a-camera>
+      <a-camera id="cam1" rotation="0 0 0" look-controls rotation-reader cursor="rayOrigin: mouse; fuse: false;">
+ 
+
+      </a-camera>
      
   </a-scene></div>
         );  

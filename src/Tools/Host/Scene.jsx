@@ -14,42 +14,42 @@ class Scene extends React.Component {
       this.state = {
         loaded:false,
         VRMode:false,
-        imageload:true,
+        imageload:true
+     
     };
     this.time = null;
     this.total = 0;
     this.assets = [];
     this.clientAssets = [];
 this.imageloaded=this.imageloaded.bind(this);
-AFRAME.registerComponent('rotation-reader', {
-  /**
-   * We use IIFE (immediately-invoked function expression) to only allocate one
-   * vector or euler and not re-create on every tick to save memory.
-   */
-  tick: ( () => {
- 
-  
-     
-    var cameraEl =document.getElementById('cam1');
-    
-    console.log(cameraEl.rotation);
-     const data = {
-      actiontype:"lock",
-     lockmode:true,
-    rotation:cameraEl.rotation
-    };
-  
-    this.props.connection.send(data)
-  
-    
-    
-  })
-});
+this.sendrotation=this.sendrotation.bind(this);
    }
+
+
+
+  
+
+sendrotation(){
+ if(this.props.lock){
+   
+   
+    var cameraEl =document.getElementById('cam1');
+   const data = {
+    actiontype:"lock",
+   lockmode:true,
+  rotation:cameraEl.getAttribute("rotation")
+  };
+  
+  this.props.connection.send(data)
+ 
+}
+}
+
 imageloaded(){
   this.setState({
     imageload:false
   })
+  
 }
 
  
@@ -90,7 +90,7 @@ imageloaded(){
             {/* Loads Assets a*/}
             <AssestsLoader sceneloader={this.props.loader} data = {this.props.data}/>
             
-            <a-sky src= {'#'+this.props.image} /> 
+            <a-sky id="sky" onMouseUp={this.sendrotation} cursor="rayOrigin: mouse; fuse: false;" src= {'#'+this.props.image} /> 
             
            
             {this.links = Object.values(this.props.data[this.props.image].links).map((item,key) => 
@@ -113,7 +113,8 @@ imageloaded(){
     })}
            
             {/* Loads Mouse */}
-            <a-camera id="cam1" rotation="0 0 0"  cursor="rayOrigin: mouse; fuse: false;" rotation-reader ></a-camera> 
+            <a-camera id="cam1" rotation="0 0 0"  cursor="rayOrigin: mouse; fuse: false;" rotation-reader >
+           </a-camera> 
             {/* {this.props.lock?
             <a-camera id="cam1" rotation="0 0 0"  cursor="rayOrigin: mouse; fuse: false;" rotation-reader ></a-camera>           
             :<a-camera id="cam1" rotation="0 0 0"  cursor="rayOrigin: mouse; fuse: false;"  ></a-camera>
