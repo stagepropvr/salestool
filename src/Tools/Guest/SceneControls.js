@@ -99,10 +99,9 @@ open_close = (name,flag) =>{
   this.setState({
     [name]:flag
   })
-  
-  this.setState({
-    [name]:flag
-  })
+    if(flag){
+      this.props.togglenav();
+    }
 }
   render() {
 return (

@@ -20844,7 +20844,10 @@ select{
     border-radius: 0;
     padding: 32px;
 }
-
+.endsession_logo{
+  height: 50px;
+    width: 150px;
+}
 .endsession_logo>span{
   position: absolute;
   left: 110px;
@@ -20885,7 +20888,7 @@ select{
   margin-left: 12px;
   margin-top: 5px;
   unicode-bidi: bidi-override;
-  direction: rtl;
+  direction: ltr;
   position: relative;
 }
 
@@ -20893,7 +20896,7 @@ select{
   margin-left: 12px;
   margin-top: 5px;
   unicode-bidi: bidi-override;
-  direction: rtl;
+  direction: ltr;
   position: relative;
 }
 
@@ -20977,7 +20980,15 @@ select{
 .rating-Mobile > input.radio-btn:checked ~ .prefix__star1{
   fill:#fff;
 }
-
+/* .star:hover{
+  fill: rgba(255, 215, 0, 0.8) !important;
+  stroke: rgba(255, 215, 0, 0.8) !important;
+}
+.star{
+  stroke: rgb(34, 43, 69) !important;
+    fill: transparent !important;
+    stroke-width: 4px !important;
+} */
 .radio_label{
   font-size: 13px;
   font-weight: 600;
@@ -21001,7 +21012,7 @@ select{
     line-height: 24px !important;
     width: 350px;
     margin-left: 15px;
-    margin-top: 15px;
+    margin-top: 5px;
     padding-left: 10px;
 }
 

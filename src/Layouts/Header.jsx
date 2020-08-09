@@ -226,7 +226,7 @@ fileupload = (event)=>{
    <nav className="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
    <div style={{ "padding-left": "20px",
   "padding-right": "20px"}} className="container">
-     <div  className="navbar-translate">
+     <div style={{flex:'auto'}} className="navbar-translate">
        <a href="/" className="navbar-brand">
          <img style={{width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/logo.webp')}></img>                  
        </a>
