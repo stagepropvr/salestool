@@ -140,7 +140,7 @@ background:#fff;
    }
 }
 .loader-logo{
-    padding: 32px;
+    padding-top: 32px;
     display: flex;
     flex-direction: row-reverse;
     float: left;

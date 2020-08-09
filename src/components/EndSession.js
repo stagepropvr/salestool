@@ -102,7 +102,6 @@ export default class EndSession extends React.Component {
     }
 
     render(){
-        console.log("pew",this.state.pid)
         if(!this.state.feedback)
         {
             return(   

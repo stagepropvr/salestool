@@ -139,16 +139,7 @@ setVideoLocal() {
             <div style={{padding:"0", maxHeight:'100vh', position:"relative"}} className="col-sm-5 d-none d-sm-block">
                 <img style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
                 <div className="loginNew_logo">
-                <svg width="72" height="39" viewBox="0 0 103 56" fill="none">
-                    <rect width="103" height="56" fill="url(#pattern0)"></rect>
-                        <defs>
-                    <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
-                    <use href="#image0" transform="scale(0.00970874 0.0178571)"></use>
-                    </pattern>
-                    <image id="image0" width="103" height="56" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGcAAAA4CAYAAADgmebbAAAABGdBTUEAALGOfPtRkwAABWpJREFUeAHtXE1oHVUUPi+mtUKkLqyFKLpIEIpRhEBBWiF0owshVRorRRqh4CKmNaXZFWoCXZVYW42KuDHukoZKiAtdWSiKIC2lhLb+dBFoU21LtW1KSJomft+bTDLvZ37evHve3JJ74CQz9+fMme+bc+fOuW8mJyllcXGxCV3boa3QxoA2YHu1yjROfCqgZ7A9lsvlLqcBJFdJJxDyFNp3Q9+EtlTSd5W3ncD5fwcdBFHXk2KRiByQwmg4AO2FrubISIprWDtG1gD0Y5DE7UiJJQfEvAULX0A3RlpylZUg8A8ad4Ggk1Gd6sIqQUoO+hHqR6GOmDCg0pUTz1HiS5zDTJStQIfH0GEI2hHW0ZUbQ+AELHUiimaKLZaQs8TkMBo6YorR0tsnQTtB0GLwEOWGtUNo4IgJoqS/TbyJe4EURA6ihjd/3mMKygt6uB0tBBg1O4KThGUSQAynyH9B3c1fC/54u5zFNYOg/DQ7OKzxOcYREw+gZgviTx7yko8cRA2f/JliYPQ4yRYBRk0Toue6Hzl7UeCIyZYU/+jkoZs7Pjnb/Rr33woEmLsUZgGYXeZEwIldCDQzcpj2d2IfAu0kh+sxTuxDoJXkcKHMiX0INNbDp5qQM/9A5NQ5Ty9Oity47aGxYb3IpudE2l72tP4R+1DKyKNGTgju4uCq02iScmxU5MqN6NN8ZoNIzw6PpOiW5mpv3xP5ckzk7J8is3MimzeJvPe6yNNPmjtGSkvTJKcgE5rSUNlutPwZFme//bFsdWjh7tdE9mIymVtOLoU2rariX1yWuw4jiv8rNPPoGo+gTpC0lmNLRqJKzqdY56uUGB8HErSPaVhF6R8SGf8l/ACM5N6dIltfDG+jWeM/hBo/BoeytMTQGfalDU357VK0dQ7DPYMi+z8XuXozuq1GrQo5vPnzHlOt0AZtacnft5JZPn1e5O0+ka+/F5mbT9bHRCsVcnjFx938kzhPG9rRk8QPtpm9L/LVuEcSJw+1EDVyTDlvCzn++fCC6T4u8vOEX6L3X4UcPseYEpO2TPk0hyg6OiKiN8/1PFUhx3/ANAGGSVsm/PFtTGLN8lrCe5bfp9L/KuRU6sTD2n5hQddzFXKYkjElJm2Z8ol2nsWCMp+DNEWFHObKTIlJW6Z8WrdW5OC7pqyF21Ehh0lMU2LSlgmfGC2DH2Kd5XkT1qJtqGSOCChPotpnHdqwhRzm25hrY1K0Vvk2lchh2p/Z5WqFNjSXEJ5oSObhqy+JjPSJvP9G7YihZyrk0DCveCYv0wr7akfNKy9Ee8fIPdYt8skH2SwhqGalbV8yuIkFvz1HSpOaWQxh5S4TknMHFY+XqzRVxhSMrYttJOibH0R+vSCygPWnLS0i72zLJlKK8L5Lcn5Hofrcwy1TF0Efv/sHyfkJ7dri27oWNUbgFCcEUzU+qDtcMgSmSA7flXdiHwJnOKy5n+PaRww9aq7DqwZ89aMGS0d2ImCpVxPkhcMaBT9gcmIRAnk+8r8Mw9DmXp6yh5lpuLLy8hTfokLBgD3+rWpPBpb4WHlrGtHTAEjcC7vZXhflX9gFWwynLiiSGE4yQIC483s45CEv/oQgv4OKk9jo96rc3xoj0L+E//Jh8xOC5T1sYHhj2TC0I1jutlUROAHr8Z9XAXsMr04oOzjRR4A488NEJbeTgmHN9wMNZ7CN39dLH7SkE8qcVI8Ace2DMmKId4mUDGvFLTDM8UUM9zG8YmCq2+esLPZjeLHk0IelafYBbPZCOeV2kg4BzsT4PGnmM5JBH0ASMwn82sd2aEuwzm1HIjCBWqZkzH+AtdxhQRSz2e3QVqj7dLEHEiOD62O+cjkm9aeL/wdo+WcsHD0GuAAAAABJRU5ErkJggg=="></image>
-                </defs>
-                </svg>
-                    <span>prop vr</span>                
+                    <img style={{width: '70%', height: '70%', objectFit: 'cover'}} src={require('../assets/logo.webp')}></img>
                 </div>
                 
                 <div class="loginNew_center">

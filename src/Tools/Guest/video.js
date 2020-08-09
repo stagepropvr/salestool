@@ -9,6 +9,8 @@ import Scene from "./Scene";
 import Firebase from "../../config/Firebase";
 import SceneControls from "./SceneControls.js";
 import * as RTCMultiConnection from 'rtcmulticonnection';
+import Projectloader from './Projectloader';
+
 
 let userId = null
 
@@ -54,7 +56,7 @@ class Video extends React.Component {
       messagescount:0,
       connection : new RTCMultiConnection(),
       rtcstreams:[],
-      clientimageName:""
+      clientimageName:"",
         };
    
     this.Sidenav = React.createRef();
@@ -91,6 +93,8 @@ this.changedevice=this.changedevice.bind(this);
 
   componentDidMount() {
 
+    this.isRoomAlive();
+
     this.start = new Date;
 
     this.setState({
@@ -113,16 +117,12 @@ this.changedevice=this.changedevice.bind(this);
             clientimageName:snap.val().currentimageName,
             apiload:false,
             init:false,
-           
             loader:true
           });
         })
     
       
         resolve("Promise resolved successfully");
-     
- 
-    
   });
 
 
@@ -649,6 +649,16 @@ destruct = () => {
      }
 }
 
+isRoomAlive = () => {
+  var ref = Firebase.database().ref("users/"+localStorage.getItem('uid')+'/Projects/'+this.props.pid+'/rooms/'+this.props.roomId+'/analytics/host/status');
+  ref.on('value',(value) => {
+    if(value.val() === "End")
+    {
+      alert("Room Session Has Ended")
+    }      
+  })
+}
+ 
   render() {
     if(this.state.closeRoom)
     {
@@ -931,10 +941,10 @@ destruct = () => {
   </div>
 </div>
 
-<div className="roomname">{this.state.clientimageName}</div>
 
-
-
+{this.state.loader ?
+<Projectloader title={"You are joining the project"}dis={this.state.loader} pid={this.state.pid}  data={this.state.data}  Switchstatus={this.state.Switchstatus}></Projectloader>
+:<div className="roomname">{this.state.clientimageName}</div>}
       </>
     );
   }
