@@ -174,7 +174,7 @@ isRoomAlive = () => {
         }
         else if(value.val() === 'End')
         {
-            alert("Room Session Has ended")
+            // alert("Room Session Has ended")
         }
             
     })

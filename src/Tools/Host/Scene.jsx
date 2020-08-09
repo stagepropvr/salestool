@@ -1,10 +1,8 @@
 import React from 'react';
 
-import 'aframe';
+import AFRAME from 'aframe';
 import 'aframe-look-at-component';
-
-// import './AframeComp';
-
+import * as THREE from 'three'
 import AssestsLoader from "./AssetsLoader";
 import Fire from "../../config/Firebase.jsx";
 
@@ -23,6 +21,30 @@ class Scene extends React.Component {
     this.assets = [];
     this.clientAssets = [];
 this.imageloaded=this.imageloaded.bind(this);
+AFRAME.registerComponent('rotation-reader', {
+  /**
+   * We use IIFE (immediately-invoked function expression) to only allocate one
+   * vector or euler and not re-create on every tick to save memory.
+   */
+  tick: ( () => {
+ 
+  
+     
+    var cameraEl =document.getElementById('cam1');
+    
+    console.log(cameraEl.rotation);
+     const data = {
+      actiontype:"lock",
+     lockmode:true,
+    rotation:cameraEl.rotation
+    };
+  
+    this.props.connection.send(data)
+  
+    
+    
+  })
+});
    }
 imageloaded(){
   this.setState({
@@ -61,7 +83,7 @@ imageloaded(){
     {
    
    
-      
+ 
     return (
       <div style={{"position":"absolute"}}>
         <a-scene loading-screen="dotsColor: transparent; backgroundColor: transparent" >
@@ -91,8 +113,11 @@ imageloaded(){
     })}
            
             {/* Loads Mouse */}
-            <a-camera id="cam1" rotation="0 0 0" rotation-reader cursor="rayOrigin: mouse; fuse: false;"></a-camera>           
-            
+            <a-camera id="cam1" rotation="0 0 0"  cursor="rayOrigin: mouse; fuse: false;" rotation-reader ></a-camera> 
+            {/* {this.props.lock?
+            <a-camera id="cam1" rotation="0 0 0"  cursor="rayOrigin: mouse; fuse: false;" rotation-reader ></a-camera>           
+            :<a-camera id="cam1" rotation="0 0 0"  cursor="rayOrigin: mouse; fuse: false;"  ></a-camera>
+    } */}
         </a-scene>
        
       </div>

@@ -116,7 +116,7 @@ this.changedevice=this.changedevice.bind(this);
             clientimage:snap.val().currentimage,
             clientimageid:snap.val().imageid,
             clientimageName:snap.val().currentimageName,
-            apiload:false,
+           
             init:false,
             loader:true
           });
@@ -594,7 +594,8 @@ this.state.connection.onUserStatusChanged = (event)=> {
   }
 loader(){
   this.setState({
-    loader:false
+    loader:false,
+    apiload:false
   })
 }
 
@@ -662,7 +663,7 @@ isRoomAlive = () => {
   ref.on('value',(value) => {
     if(value.val() === "End")
     {
-      alert("Room Session Has Ended")
+      // alert("Room Session Has Ended")
     }      
   })
 }
@@ -687,6 +688,7 @@ isRoomAlive = () => {
             clientimageid={this.state.clientimageid}
             clientimageName={this.state.clientimageName}
             getImageName={this.getImageName}
+            connection={this.state.connection}
           />:<></>}
             {/* <div style={{position: "absolute",bottom: "80px",right: "16px"}}>
     <span className="host_video_name">You</span>
@@ -705,7 +707,7 @@ isRoomAlive = () => {
           <SceneControls
               destruct={this.destruct}
               pid={this.state.pid}
-              
+              loader={this.state.loader}
               roomId={this.props.roomId}
               user_id={this.state.user_id}
               data={this.state.data}

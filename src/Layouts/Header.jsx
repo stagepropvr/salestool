@@ -250,7 +250,7 @@ fileupload = (event)=>{
          </li>
        </ul>
      </div> */}
-     <ul id="profile_img_div" className="navbar-nav mr-auto">
+     <ul id="profile_img_div" className="navbar-nav ">
        {/* <li className="nav-item" >
           <button className="upgrade">Upgrade now</button> 
        </li> */}

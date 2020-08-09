@@ -37,7 +37,8 @@ class Video extends React.Component {
       messagescount:0,
       connection : new RTCMultiConnection(),
       rtcstreams:[],
-      usercount:0
+      usercount:0,
+      lock:false
         };
     
     this.Sidenav = React.createRef();
@@ -96,7 +97,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
                 currentimageName:node.val().images[x].name,
                 images: node.val().images,
                 data:node.val(),
-                apiload:false,
+               
                 user_id:user.uid,
                 init:false,
                 name:"host"
@@ -454,7 +455,8 @@ this.state.connection.onunmute = (e)=> {
   }
 loader(){
   this.setState({
-    loader:false
+    loader:false,
+    apiload:false,
   })
 }
 audioallctrl(e){
@@ -526,12 +528,13 @@ focus = (event)=>{
             data={this.state.images}
             image={this.state.current_image}
             change={this.change}
-           
+           lock={this.state.lock}
             loader={this.loader}
             clientimage={this.state.clientimage}
             clientimageid={this.state.clientimageid}
             clientimageName={this.state.clientimageName}
             getImageName={this.getImageName}
+            connection={this.state.connection}
           />:<></>}
             
     {this.state.apiload ?<></>: <>
@@ -540,7 +543,7 @@ focus = (event)=>{
           <div id="bottom" className="container" ref={this.bottom} >
           <SceneControls
               pid={this.state.pid}
-            
+              loader={this.state.loader}
               roomId={this.props.roomId}
               user_id={this.state.user_id}
               data={this.state.data}

@@ -1,4 +1,5 @@
 import React from 'react';
+import * as THREE from 'three'
 
 import 'aframe';
 import 'aframe-look-at-component';
@@ -24,7 +25,20 @@ class Scene extends React.Component {
     // this.change = this.change.bind(this);
 this.imageloaded=this.imageloaded.bind(this);
    }
+// componentDidMount(){
+//   this.props.connection.onmessage = (event)=> {
+    
 
+//   if(event.data.actiontype=="lock") { 
+//     var rotation= event.data.rotation.split(" ");
+//     var player=document.getElementById('cam1');
+//     player.components['look-controls'].yawObject.rotation.x = THREE.Math.degToRad(rotation[0]);
+//     player.components['look-controls'].yawObject.rotation.y = THREE.Math.degToRad(rotation[1]);
+
+//     player.components['look-controls'].yawObject.rotation.z = THREE.Math.degToRad(rotation[2]);
+//   }
+//   }
+// }
 imageloaded(){
   this.setState({
     imageload:false
@@ -85,7 +99,7 @@ imageloaded(){
       </div>:<></>}
     
       {/* Loads Mouse */}
-      <a-camera id="cam1" rotation="0 0 0" rotation-reader cursor="rayOrigin: mouse; fuse: false;"></a-camera>
+      <a-camera id="cam1" rotation="0 0 0" look-controls rotation-reader cursor="rayOrigin: mouse; fuse: false;"></a-camera>
      
   </a-scene></div>
         );  
