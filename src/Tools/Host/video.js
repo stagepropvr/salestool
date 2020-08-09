@@ -510,6 +510,7 @@ focus = (event)=>{
   this.messagearea.current.focus();
 }
 
+
   render() {
     if(this.state.closeRoom)
     {

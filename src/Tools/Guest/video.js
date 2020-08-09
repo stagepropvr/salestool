@@ -9,6 +9,9 @@ import Scene from "./Scene";
 import Firebase from "../../config/Firebase";
 import SceneControls from "./SceneControls.js";
 import * as RTCMultiConnection from 'rtcmulticonnection-react-js';
+import Projectloader from './Projectloader';
+
+
 
 let userId = null
 
@@ -54,7 +57,7 @@ class Video extends React.Component {
       messagescount:0,
       connection : new RTCMultiConnection(),
       rtcstreams:[],
-      clientimageName:""
+      clientimageName:"",
         };
    
     this.Sidenav = React.createRef();
@@ -91,6 +94,8 @@ this.changedevice=this.changedevice.bind(this);
 
   componentDidMount() {
 
+    this.isRoomAlive();
+
     this.start = new Date;
 
     this.setState({
@@ -113,16 +118,12 @@ this.changedevice=this.changedevice.bind(this);
             clientimageName:snap.val().currentimageName,
             apiload:false,
             init:false,
-           
             loader:true
           });
         })
     
       
         resolve("Promise resolved successfully");
-     
- 
-    
   });
 
 
@@ -522,6 +523,7 @@ this.state.connection.onUserStatusChanged = (event)=> {
  
   togglenav(e)
   {
+    this.messagearea.current.focus();
     var a = document.querySelectorAll('.nav-link.active');
     [].forEach.call(a, function(el) {
       el.classList.remove("active");
@@ -565,6 +567,11 @@ this.state.connection.onUserStatusChanged = (event)=> {
       this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
     }
   }
+
+  focus = (event)=>{
+    this.messagearea.current.focus();
+  }
+
   sendmessage(e){
     e.preventDefault();
     const temp=this.state.connection;
@@ -650,6 +657,16 @@ destruct = () => {
      }
 }
 
+isRoomAlive = () => {
+  var ref = Firebase.database().ref("users/"+localStorage.getItem('uid')+'/Projects/'+this.props.pid+'/rooms/'+this.props.roomId+'/analytics/host/status');
+  ref.on('value',(value) => {
+    if(value.val() === "End")
+    {
+      alert("Room Session Has Ended")
+    }      
+  })
+}
+ 
   render() {
     if(this.state.closeRoom)
     {
@@ -772,7 +789,7 @@ destruct = () => {
           <li className="nav-item">
             <a id="members_tab" className="nav-link" href="#members" data-toggle="tab">Members</a>
           </li>
-          <li className="nav-item">
+          <li onClick={this.focus} className="nav-item">
             <a id="chat_tab" className="nav-link" href="#chat" data-toggle="tab">CHAT</a>
           </li>
         </ul>
@@ -932,10 +949,10 @@ destruct = () => {
   </div>
 </div>
 
-<div className="roomname">{this.state.clientimageName}</div>
 
-
-
+{this.state.loader ?
+<Projectloader title={"You are joining the project"}dis={this.state.loader} pid={this.state.pid}  data={this.state.data}  Switchstatus={this.state.Switchstatus}></Projectloader>
+:<div className="roomname">{this.state.clientimageName}</div>}
       </>
     );
   }

@@ -24,10 +24,12 @@ class Scene extends React.Component {
     // this.change = this.change.bind(this);
 this.imageloaded=this.imageloaded.bind(this);
    }
+
 imageloaded(){
   this.setState({
     imageload:false
   })
+  this.props.loader();
 }
 
   loadAssets = () => {

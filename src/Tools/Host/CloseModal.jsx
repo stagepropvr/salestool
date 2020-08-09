@@ -32,7 +32,7 @@ class CloseModal extends React.Component {
             })
         //
 
-      window.location="/projects";    
+      window.location="/salestool/projects";    
   }
   
 componentDidMount(){
