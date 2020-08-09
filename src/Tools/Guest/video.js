@@ -8,8 +8,9 @@ import VideoItem from "../ToolComponents/videoItem";
 import Scene from "./Scene";
 import Firebase from "../../config/Firebase";
 import SceneControls from "./SceneControls.js";
-import * as RTCMultiConnection from 'rtcmulticonnection';
+import * as RTCMultiConnection from 'rtcmulticonnection-react-js';
 import Projectloader from './Projectloader';
+
 
 
 let userId = null
@@ -372,6 +373,7 @@ this.state.connection.onUserStatusChanged = (event)=> {
 
 
   this.state.connection.onmute = (e)=> {
+    
     const temp=this.state.connection;
     this.setState({
       connection:temp,
