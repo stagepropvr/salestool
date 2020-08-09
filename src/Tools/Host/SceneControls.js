@@ -120,6 +120,7 @@ open_close = (name,flag) =>{
     }
   if(name!=='floorplan'){
     if(flag){
+      this.props.togglenav();
       document.getElementById('left_light_mode').style.display='none';
       document.getElementById('right_light_mode').style.display='none';
       document.getElementById('left_dark_mode').style.display='block';

@@ -43,6 +43,8 @@ class Video extends React.Component {
     this.Sidenav = React.createRef();
     this.bottom = React.createRef();
     this.togglenav=this.togglenav.bind(this); 
+    this.togglenav1=this.togglenav1.bind(this); 
+
     this.sendmessage=this.sendmessage.bind(this);
     this.loader=this.loader.bind(this);
 this.changedevice=this.changedevice.bind(this);
@@ -387,8 +389,34 @@ this.state.connection.onunmute = (e)=> {
       }
     });
   }
+togglenav1(e){
+  this.messagearea.current.focus();
+    var a = document.querySelectorAll('.nav-link.active');
+    [].forEach.call(a, function(el) {
+      el.classList.remove("active");
+      el.classList.remove("show");
+    });
+
+   a = document.querySelectorAll('.tab-pane.active');
+    [].forEach.call(a, function(el) {
+      el.classList.remove("active");
+      el.classList.remove("show");
+    });
+
+    document.getElementById('members_tab').classList.add('active');
+    document.getElementById('members_tab').classList.add('show');
+    document.getElementById('members').classList.add('active');
+    document.getElementById('members').classList.add('show');
+
+    if(this.Sidenav.current.style.width==="320px"){
+      this.Sidenav.current.style.width="0px";
+          this.bottom.current.style.width="100%";
+     this.localvideo.current.classList.add('relative-localvideo');
+    }
+}
   togglenav(e)
   {
+    console.log(e);
     this.messagearea.current.focus();
     var a = document.querySelectorAll('.nav-link.active');
     [].forEach.call(a, function(el) {
@@ -560,6 +588,7 @@ focus = (event)=>{
             
               videoinput={this.state.videoinput}
               audioinput={this.state.audioinput}
+              togglenav = {this.togglenav1}
             />  
             </div>
           </>}
