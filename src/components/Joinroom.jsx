@@ -215,8 +215,8 @@ if(this.state.redirect){
                 <div className="login_card card card-signup" style={{justifyContent:'center'}}>
                     <h2 className="Welcome-to-Prop-VR" style={{padding: "25px"}}>You are joining a virtual tour session</h2>
         
-                <div className="JoiningForm">
-                <div style={{margin:"0",padding:"0",width:'300px'}} className="row">
+                    <div style={{display:'flex',justifyContent:'center'}} className="JoiningForm">
+                <div style={{margin:"0",padding:"0"}} className="row">
         <div className="card project_det_background">
           <div style={{padding: "0px"}} className="card-body d-flex flex-row">
           {this.state.loader?
@@ -228,20 +228,19 @@ if(this.state.redirect){
               </div></a></>:<>
             <img src={this.state.img} height="93px"  width="81px" alt="avatar" />
             <div style={{width: "300px"}}>
-        <h4 style={{paddingLeft: "25px"}} className="card-title project_heading">{this.props.match.params.pid}</h4>
+        <h4 style={{paddingLeft: "25px",paddingTop:'3px'}} className="card-title project_heading">{this.props.match.params.pid}</h4>
               <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">
                 <div>
                   <span>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                       <g id="27) Icon/archive">
-                      <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor" fillRule="evenodd" clipRule="evenodd" d="M9.8662 14H14.1342C14.6102 14 15.0002 13.61 15.0002 13.134V12.866C15.0002 12.39 14.6102 12 14.1342 12H9.8662C9.3892 12 9.0002 12.39 9.0002 12.866V13.134C9.0002 13.61 9.3892 14 9.8662 14ZM18 18C18 18.551 17.552 19 17 19H7C6.449 19 6 18.551 6 18V9H18V18ZM6 5H18C18.552 5 19 5.449 19 6C19 6.551 18.552 7 18 7H6C5.449 7 5 6.551 5 6C5 5.449 5.449 5 6 5ZM21 6C21 4.346 19.654 3 18 3H6C4.346 3 3 4.346 3 6C3 6.883 3.391 7.67 4 8.22V18C4 19.654 5.346 21 7 21H17C18.654 21 20 19.654 20 18V8.22C20.609 7.67 21 6.883 21 6Z" fill="#222B45"/>
-                      <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="3" y="3" width="18" height="18">
-                      <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor_2" fillRule="evenodd" clipRule="evenodd" d="M9.8662 14H14.1342C14.6102 14 15.0002 13.61 15.0002 13.134V12.866C15.0002 12.39 14.6102 12 14.1342 12H9.8662C9.3892 12 9.0002 12.39 9.0002 12.866V13.134C9.0002 13.61 9.3892 14 9.8662 14ZM18 18C18 18.551 17.552 19 17 19H7C6.449 19 6 18.551 6 18V9H18V18ZM6 5H18C18.552 5 19 5.449 19 6C19 6.551 18.552 7 18 7H6C5.449 7 5 6.551 5 6C5 5.449 5.449 5 6 5ZM21 6C21 4.346 19.654 3 18 3H6C4.346 3 3 4.346 3 6C3 6.883 3.391 7.67 4 8.22V18C4 19.654 5.346 21 7 21H17C18.654 21 20 19.654 20 18V8.22C20.609 7.67 21 6.883 21 6Z" fill="white"/>
-                      </mask>
-                      <g mask="url(#mask0)">
+                        <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor" fillRule="evenodd" clipRule="evenodd" d="M9.8662 14H14.1342C14.6102 14 15.0002 13.61 15.0002 13.134V12.866C15.0002 12.39 14.6102 12 14.1342 12H9.8662C9.3892 12 9.0002 12.39 9.0002 12.866V13.134C9.0002 13.61 9.3892 14 9.8662 14ZM18 18C18 18.551 17.552 19 17 19H7C6.449 19 6 18.551 6 18V9H18V18ZM6 5H18C18.552 5 19 5.449 19 6C19 6.551 18.552 7 18 7H6C5.449 7 5 6.551 5 6C5 5.449 5.449 5 6 5ZM21 6C21 4.346 19.654 3 18 3H6C4.346 3 3 4.346 3 6C3 6.883 3.391 7.67 4 8.22V18C4 19.654 5.346 21 7 21H17C18.654 21 20 19.654 20 18V8.22C20.609 7.67 21 6.883 21 6Z" fill="#222B45"/>
+                        <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="3" y="3" width="18" height="18">
+                        <path id="&#240;&#159;&#142;&#168; Icon &#208;&#161;olor_2" fillRule="evenodd" clipRule="evenodd" d="M9.8662 14H14.1342C14.6102 14 15.0002 13.61 15.0002 13.134V12.866C15.0002 12.39 14.6102 12 14.1342 12H9.8662C9.3892 12 9.0002 12.39 9.0002 12.866V13.134C9.0002 13.61 9.3892 14 9.8662 14ZM18 18C18 18.551 17.552 19 17 19H7C6.449 19 6 18.551 6 18V9H18V18ZM6 5H18C18.552 5 19 5.449 19 6C19 6.551 18.552 7 18 7H6C5.449 7 5 6.551 5 6C5 5.449 5.449 5 6 5ZM21 6C21 4.346 19.654 3 18 3H6C4.346 3 3 4.346 3 6C3 6.883 3.391 7.67 4 8.22V18C4 19.654 5.346 21 7 21H17C18.654 21 20 19.654 20 18V8.22C20.609 7.67 21 6.883 21 6Z" fill="white"/>
+                        </mask>
+                        <g mask="url(#mask0)"></g>
                       </g>
-                      </g>
-                      </svg>        
+                    </svg>        
                    </span>
                    <span id="room" className="createroom_icon_span">
                     {this.state.bed} BHK
@@ -285,7 +284,9 @@ if(this.state.redirect){
           </div>
         </div>
        </div>
-                    <form onSubmit={this.handlejoin} className="form" style={{paddingTop: "25px", textAlign: "left"}}>
+      </div>
+                        <div style={{display:'flex',justifyContent:'center'}}>
+                        <form onSubmit={this.handlejoin} className="form" style={{paddingTop: "25px", textAlign: "left"}}>
 							<div className="card-content">							
 									<div className="form-group">
                                         <label className="input_Label">
@@ -382,16 +383,16 @@ if(this.state.redirect){
     </div>
 
     {/* Mobile */}
-    <div  className="login_container container d-sm-none">
+    <div  className="login_container d-sm-none">
         <div style={{background: "#eeeeee"}} className="login_container row">
             {/* Form Col */} 
-            <div style={{padding:"0", textAlign:'center', width:"100%"}} className="col-sm-7 col-xs-12">
+            <div style={{padding:"0", textAlign:'center', width:"100%"}}>
                 <div className="login_card_Mobile card card-signup" >
                 <div className="BlueBG">   
                     <h1 className="Welcome-to-Prop-VR" >Join Virtual Tour </h1>
                     <p>You are invited to join the virtual property tour. Fill the required details and enjoy your session.</p>
                     <div style={{margin:0, padding:0, width:'100%'}} class="card project_det_background">    
-                          <div style={{padding: "0px"}} className="card-body d-flex flex-row">
+                          <div style={{padding: "0px",height:'115px'}} className="card-body d-flex flex-row">
                           {this.state.loader?
                <><a>
                <div>
@@ -399,7 +400,7 @@ if(this.state.redirect){
                  <span className="skeleton-box"></span>
                 </div>
               </div></a></>:<>
-                            <img src={this.state.img} width="81px" height="125px"  alt="avatar" />
+                            <img src={this.state.img} width="81px"  alt="avatar" />
                             <div style={{width: "100%"}}>
                                 <h4 className="card-title project_heading" style={{textAlign:"center"}}>{this.props.match.params.pid}</h4>
                                 <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">

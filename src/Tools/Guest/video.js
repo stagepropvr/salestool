@@ -521,6 +521,7 @@ this.state.connection.onUserStatusChanged = (event)=> {
  
   togglenav(e)
   {
+    this.messagearea.current.focus();
     var a = document.querySelectorAll('.nav-link.active');
     [].forEach.call(a, function(el) {
       el.classList.remove("active");
@@ -564,6 +565,11 @@ this.state.connection.onUserStatusChanged = (event)=> {
       this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
     }
   }
+
+  focus = (event)=>{
+    this.messagearea.current.focus();
+  }
+
   sendmessage(e){
     e.preventDefault();
     const temp=this.state.connection;
@@ -781,7 +787,7 @@ isRoomAlive = () => {
           <li className="nav-item">
             <a id="members_tab" className="nav-link" href="#members" data-toggle="tab">Members</a>
           </li>
-          <li className="nav-item">
+          <li onClick={this.focus} className="nav-item">
             <a id="chat_tab" className="nav-link" href="#chat" data-toggle="tab">CHAT</a>
           </li>
         </ul>

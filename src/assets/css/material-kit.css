@@ -6738,7 +6738,7 @@ button.bg-dark:focus {
   display: inline-flex !important;
 }
 
-@media (min-width: 576px) {
+@media (min-width: 768px) {
   .d-sm-none {
     display: none !important;
   }
@@ -19659,6 +19659,13 @@ height: 40px;
     outline: 1px auto #e4e9f2;
     min-width: 200px;
 }
+
+@media only screen and (min-width:768px) and (max-width:1272px){
+  .project_card_join{
+      height:115px !important;
+  }
+}
+
 /* -----Projects end----- */
 
 /* -------Create session */
@@ -19812,7 +19819,7 @@ height: 40px;
 	padding: 15px;
 	width: 80% !important;
   position: relative;
-  margin:auto;
+  /* margin:auto; */
 }
 
 .MultiCarousel .MultiCarousel-inner {
@@ -20986,7 +20993,7 @@ select{
   border-radius: 4px;
   border: solid 1px #e4e9f2;
   background: #F7F9FC;
-  text-align: center;
+  text-align: start;
     font-style: normal;
     font-weight: 600;
     color: #222B45;
@@ -20995,6 +21002,7 @@ select{
     width: 350px;
     margin-left: 15px;
     margin-top: 15px;
+    padding-left: 10px;
 }
 
 .feedback{
