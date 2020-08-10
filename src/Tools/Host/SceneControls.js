@@ -231,7 +231,21 @@ return (
                 </svg>
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
-             
+             {!this.props.lock?
+             <>
+              <a onClick={this.props.setlock} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Lock">
+            lock
+              </a>
+              <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/></>
+            :
+<>
+<a onClick={this.props.setlock} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Unlock">
+unlock
+              </a>
+              <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
+</>
+
+            }
               <a onClick={()=> this.open_close('document',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Brochure">
                 <svg  width={24} height={24} viewBox="0 0 24 24">
                   <defs>
