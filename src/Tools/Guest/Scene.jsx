@@ -27,16 +27,24 @@ class Scene extends React.Component {
 this.imageloaded=this.imageloaded.bind(this);
    }
 componentDidMount(){
+
+  
   this.props.connection.onmessage = (event)=> {
     
 
   if(event.data.actiontype=="lock") {
-    
+    console.log("incoming");
     var player=document.getElementById('cam1');
-    player.setAttribute("rotation",event.data.rotation.x+" "+event.data.rotation.y+" "+event.data.rotation.z)
-    this.setState({
-      anirotation:event.data.rotation.x+" "+event.data.rotation.y+" "+event.data.rotation.z
-    })
+    player.setAttribute('look-controls-enabled',false)
+     player.setAttribute("rotation",event.data.rotation.x+" "+event.data.rotation.y+" "+event.data.rotation.z)
+     this.setState({
+       anirotation:event.data.rotation.x+" "+event.data.rotation.y+" "+event.data.rotation.z
+     })  
+  }
+  if(event.data.actiontype=="unlock"){
+    console.log("grgr");
+   var player=document.getElementById('cam1');
+   player.setAttribute('look-controls-enabled',true);
   }
   }
 }
@@ -100,7 +108,7 @@ imageloaded(){
       </div>:<></>}
     
       {/* Loads Mouse */}
-      <a-camera id="cam1" rotation="0 0 0" look-controls rotation-reader cursor="rayOrigin: mouse; fuse: false;">
+      <a-camera id="cam1" rotation="0 0 0" look-controls-enabled rotation-reader cursor="rayOrigin: mouse; fuse: false;">
  
 
       </a-camera>
