@@ -368,6 +368,20 @@ this.state.connection.onUserStatusChanged = (event)=> {
         }
       }
       }
+      if(event.data.actiontype=="lock") {
+        console.log("incoming");
+        var player=document.getElementById('cam1');
+        player.setAttribute('look-controls-enabled',false)
+         player.setAttribute("rotation",event.data.rotation.x+" "+event.data.rotation.y+" "+event.data.rotation.z)
+         this.setState({
+           anirotation:event.data.rotation.x+" "+event.data.rotation.y+" "+event.data.rotation.z
+         })  
+      }
+      if(event.data.actiontype=="unlock"){
+        console.log("grgr");
+       var player=document.getElementById('cam1');
+       player.setAttribute('look-controls-enabled',true);
+      }
   }
   this.state.connection.openOrJoin(this.props.roomId);
 
