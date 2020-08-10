@@ -105,13 +105,17 @@ this.audioallctrl=this.audioallctrl.bind(this);
                 init:false,
                 name:"host"
               });
-              if(document.getElementById(x+"_thumb")){
-                var a = document.querySelectorAll('.item_active');
-                [].forEach.call(a, function(el) {
-                          el.classList.remove("item_active");
-                });
-                document.getElementById(x+"_thumb").classList.add('item_active');
-              }
+              var thumbslider = setInterval(()=>{
+                if(document.getElementById(x+"_thumb")){
+                  console.log("GRegre");
+                  var a = document.querySelectorAll('.item_active');
+                  [].forEach.call(a, function(el) {
+                            el.classList.remove("item_active");
+                  });
+                  document.getElementById(x+"_thumb").classList.add('item_active');
+                  clearInterval(thumbslider);
+                }
+              },1000);
             break;
             }
 
@@ -418,7 +422,7 @@ togglenav1(e){
 }
   togglenav(e)
   {
-    console.log(e);
+   // console.log(e);
     this.messagearea.current.focus();
     var a = document.querySelectorAll('.nav-link.active');
     [].forEach.call(a, function(el) {
@@ -550,6 +554,16 @@ lock(){
    };
    
    this.state.connection.send(data)
+  }
+  else{
+    var cameraEl =document.getElementById('cam1');
+    const data = {
+     actiontype:"unlock",
+    lockmode:false,
+   rotation:cameraEl.getAttribute("rotation")
+   };
+
+   this.state.connection.send(data);
   }
   this.setState({
     lock:!this.state.lock
@@ -830,11 +844,10 @@ return(
 {this.state.loader ?
 <Switchprojectloader dis={this.state.loader} pid={this.state.pid}  data={this.state.data}  Switchstatus={this.state.Switchstatus}></Switchprojectloader>
 :<><div className="roomname">{this.state.currentimageName}</div>
-
 {!this.state.lock?
 
 
-<button onClick={this.lock} className="lock" style={{ background: '#fff'}}><svg  version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512"  xmlSpace="preserve">
+<button onClick={this.lock} className="lock" style={{ top:'90px',background: '#fff'}}><svg  version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512"  xmlSpace="preserve">
 <g>
   <g>
     <path d="M405.333,170.667v-21.333C405.333,67.008,338.347,0,256,0S106.667,67.008,106.667,149.333v21.333    c-35.285,0-64,28.715-64,64V448c0,35.285,28.715,64,64,64h298.667c35.285,0,64-28.715,64-64V234.667    C469.333,199.381,440.619,170.667,405.333,170.667z M149.333,149.333c0-58.816,47.851-106.667,106.667-106.667    s106.667,47.851,106.667,106.667v21.333H149.333V149.333z M426.667,448c0,11.776-9.579,21.333-21.333,21.333H106.667    c-11.755,0-21.333-9.557-21.333-21.333V234.667c0-11.776,9.579-21.333,21.333-21.333h298.667c11.755,0,21.333,9.557,21.333,21.333    V448z" />
@@ -848,7 +861,7 @@ return(
 
 
 
-</svg></button>:<button onClick={this.lock} className="lock" style={{background: 'rgb(255, 61, 113)'}}><svg  version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" style={{enableBackground: 'new 0 0 512 512', fill: '#fff'}} xmlSpace="preserve">
+</svg></button>:<button onClick={this.lock} className="lock" style={{top:'90px',background: 'rgb(255, 61, 113)'}}><svg  version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" style={{enableBackground: 'new 0 0 512 512', fill: '#fff'}} xmlSpace="preserve">
     <g>
       <g>
         <path d="M400,188H187.963v-82.23c0-36.266,30.505-65.77,68-65.77s68,29.504,68,65.77V144h40v-38.23    c0-58.322-48.449-105.77-108-105.77c-59.551,0-108,47.448-108,105.77V188H112c-33.084,0-60,26.916-60,60v204    c0,33.084,26.916,60,60,60h288c33.084,0,60-26.916,60-60V248C460,214.916,433.084,188,400,188z M420,452c0,11.028-8.972,20-20,20    H112c-11.028,0-20-8.972-20-20V248c0-11.028,8.972-20,20-20h288c11.028,0,20,8.972,20,20V452z" />
