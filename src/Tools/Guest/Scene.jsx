@@ -26,11 +26,7 @@ class Scene extends React.Component {
     // this.change = this.change.bind(this);
 this.imageloaded=this.imageloaded.bind(this);
    }
-componentDidMount(){
 
-  
- 
-}
 imageloaded(){
   this.setState({
     imageload:false

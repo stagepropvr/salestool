@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from "./registerServiceWorker";
-const version="0.1.1"
+const version="0.1.2"
 if(localStorage.getItem("version")===version){
     serviceWorker.register();
 

@@ -251,7 +251,9 @@ this.state.connection.onUserStatusChanged = (event)=> {
 this.state.connection.openOrJoin(this.props.roomId);
 this.state.connection.isAudioMuted=false;
 
- 
+ this.state.connection.onleave = (e)=> {
+
+};
 this.state.connection.onmute = (e)=> {
   const temp=this.state.connection;
   
