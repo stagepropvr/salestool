@@ -11,11 +11,11 @@ app.use(express.static(path.join(__dirname, 'salestool')));
 
 
 app.get('/salestool/service-worker.js', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'service-worker.js'));
+  res.sendFile(path.join(__dirname, 'salestool', 'service-worker.js'));
 });
 
 app.get('/salestool/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'salestool', 'index.html'));
 });
 
 app.listen(port, () => {
