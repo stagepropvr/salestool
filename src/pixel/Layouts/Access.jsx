@@ -1,7 +1,7 @@
 import React from "react";
 
-import "../assets/css/material-kit.css?v=2.0.7" ;
-import "../assets/demo/demo.css";
+import "../../assets/css/material-kit.css?v=2.0.7" ;
+import "../../assets/demo/demo.css";
 import VideoItem from "../Tools/ToolComponents/videoItem"
 class Access extends React.Component {
   constructor(props){
@@ -96,9 +96,9 @@ setVideoLocal() {
         <div style={{background: "#eeeeee"}} className="login_container row">
             {/* Image Col */}
             <div style={{padding:"0", maxHeight:'100vh', position:"relative"}} className="col-sm-5 d-none d-sm-block">
-                <img style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
+                <img style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../../assets/loginBG.png')}></img>
                 <div className="loginNew_logo">
-                    <img style={{width: '70%', height: '70%', objectFit: 'cover'}} src={require('../assets/logo.webp')}></img>
+                    <img style={{width: '70%', height: '70%', objectFit: 'cover'}} src={require('../../assets/logo.webp')}></img>
                 </div>
                 
                 <div class="loginNew_center">

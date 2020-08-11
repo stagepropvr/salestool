@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from "react-router-dom";
-import '../../styles/video.css';
+import '../../../styles/video.css';
 import io from 'socket.io';
 import VideoItem from "../ToolComponents/videoItem";
 import SceneControls from "./SceneControls.js";

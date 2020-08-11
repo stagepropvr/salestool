@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import "../../assets/css/material-kit.css?v=2.0.7" ;
-import "../../assets/demo/demo.css";
+import "../../../assets/css/material-kit.css?v=2.0.7" ;
+import "../../../assets/demo/demo.css";
 import 'jquery';
 
 class CloseModal extends React.Component {

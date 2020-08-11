@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from "react-router-dom";
 import VideoCall from '../helpers/simple-peer';
-import '../../styles/video.css';
+import '../../../styles/video.css';
 import io from 'socket.io-client';
 import Peer from 'simple-peer'
 import VideoItem from "../ToolComponents/videoItem";

@@ -1,7 +1,7 @@
 import React from "react";
-import "../../assets/css/material-kit.css?v=2.0.7" ;
-import "../../assets/demo/demo.css";
-import "../../assets/css/Custom.css";
+import "../../../assets/css/material-kit.css?v=2.0.7" ;
+import "../../../assets/demo/demo.css";
+import "../../../assets/css/Custom.css";
 
 import Share from "../ToolComponents/ShareModal";
 import ReactTooltip from "react-tooltip";
