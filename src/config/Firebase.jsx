@@ -3,7 +3,7 @@ import "firebase/auth";
 
 const config = {
     apiKey: "AIzaSyBTidLV-HH2BJeNAaoqgZCMKH4NqMfz_W4",
-    authDomain: "realvr-eb62c.firebaseapp.com",
+    authDomain: "propvr.firebaseapp.com",
     databaseURL: "https://realvr-eb62c.firebaseio.com",
     projectId: "realvr-eb62c",
     storageBucket: "realvr-eb62c.appspot.com",

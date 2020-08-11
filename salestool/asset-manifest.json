@@ -1,18 +1,19 @@
 {
-  "main.css": "/salestool/static/css/main.1a483388.chunk.css",
-  "main.js": "/salestool/static/js/main.da573e7a.chunk.js",
-  "main.js.map": "/salestool/static/js/main.da573e7a.chunk.js.map",
+  "main.css": "/salestool/static/css/main.c86c5b22.chunk.css",
+  "main.js": "/salestool/static/js/main.ee23650b.chunk.js",
+  "main.js.map": "/salestool/static/js/main.ee23650b.chunk.js.map",
   "runtime~main.js": "/salestool/static/js/runtime~main.a86b20c4.js",
   "runtime~main.js.map": "/salestool/static/js/runtime~main.a86b20c4.js.map",
   "static/css/2.199bab19.chunk.css": "/salestool/static/css/2.199bab19.chunk.css",
-  "static/js/2.795cf8a6.chunk.js": "/salestool/static/js/2.795cf8a6.chunk.js",
-  "static/js/2.795cf8a6.chunk.js.map": "/salestool/static/js/2.795cf8a6.chunk.js.map",
+  "static/js/2.998f1c0a.chunk.js": "/salestool/static/js/2.998f1c0a.chunk.js",
+  "static/js/2.998f1c0a.chunk.js.map": "/salestool/static/js/2.998f1c0a.chunk.js.map",
   "index.html": "/salestool/index.html",
-  "precache-manifest.9599faad4cb413cecb49a774ec492059.js": "/salestool/precache-manifest.9599faad4cb413cecb49a774ec492059.js",
+  "precache-manifest.13196d3ad4537db0b7373b14117ac6a2.js": "/salestool/precache-manifest.13196d3ad4537db0b7373b14117ac6a2.js",
   "service-worker.js": "/salestool/service-worker.js",
   "static/css/2.199bab19.chunk.css.map": "/salestool/static/css/2.199bab19.chunk.css.map",
-  "static/css/main.1a483388.chunk.css.map": "/salestool/static/css/main.1a483388.chunk.css.map",
+  "static/css/main.c86c5b22.chunk.css.map": "/salestool/static/css/main.c86c5b22.chunk.css.map",
   "static/media/material-kit.css?v=2.0.7": "/salestool/static/media/arrow-right.ef69e791.cur",
   "static/media/loginBG.png": "/salestool/static/media/loginBG.358c4b3f.png",
-  "static/media/logo.webp": "/salestool/static/media/logo.1a9f5987.webp"
+  "static/media/logo.webp": "/salestool/static/media/logo.1a9f5987.webp",
+  "static/media/whitelogo.png": "/salestool/static/media/whitelogo.78680d9a.png"
 }

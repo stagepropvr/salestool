@@ -40,14 +40,14 @@ componentDidMount(){
                     document.getElementById('exception').style.display='block';
                     this.setState({
                         exception:"User Not Found",
-                        redirect: false
+                        redirect: true
                     }) 
 
-                    Fire.auth().signOut().then(function() {
-                        // console.log("Signed Out")
-                      }, function(error) {
-                        // An error happened.
-                      });
+                    // Fire.auth().signOut().then(function() {
+                    //     // console.log("Signed Out")
+                    //   }, function(error) {
+                    //     // An error happened.
+                    //   });
                 }
             });
         }
@@ -232,7 +232,7 @@ googleSignin = () => {
                 <img style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
                 
                 <div className="loginNew_logo">
-                    <img style={{width: '70%', height: '70%', objectFit: 'cover'}} src={require('../assets/logo.webp')}></img>
+                    <img style={{width: '100px', height: '71px', objectFit: 'cover'}} src={require('../assets/img/whitelogo.png')}></img>
                 </div>
                 
                 <div class="loginNew_center">

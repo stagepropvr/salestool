@@ -208,7 +208,7 @@ SignupWithGoogle(){
                 <img style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
                 
                 <div className="loginNew_logo">
-                    <img style={{width: '70%', height: '70%', objectFit: 'cover'}} src={require('../assets/logo.webp')}></img>
+                    <img style={{width: '100px', height: '71px', objectFit: 'cover'}} src={require('../assets//img/whitelogo.png')}></img>
                 </div>
                 
                 <div class="loginNew_center">
