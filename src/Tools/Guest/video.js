@@ -848,7 +848,7 @@ isRoomAlive = () => {
       if(key.type=="local"){
         return(
           <li style={{marginTop:'30px'}} className="video_content">
-                          <div ref={this.localvideo}  className="fixed-video relative-localvideo">
+                          <div ref={this.localvideo}  className="guest_video fixed-video relative-localvideo">
                              <div className="videotools">
                            
                                <span className="guest_video_name video_name_option">You</span>

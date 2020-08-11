@@ -197,7 +197,7 @@ componentDidMount(){
     }
     else{
         return(
-            <div style={{display:this.props.floorplan?'block':'none'}} className="Nofloorplan_div">
+            <div style={{display:this.props.floorplan?'block':'none'}} className="modal">
             <div className="modal-dialog" role="document">
               <div className="modal-content">
                 <div className="modal-header" >

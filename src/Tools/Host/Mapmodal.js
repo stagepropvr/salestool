@@ -533,7 +533,7 @@ export class MapModal extends React.Component {
 }
 else{
     return(
-    <div style={{display:'block'}} className="Nofloorplan_div">
+    <div style={{display:'block'}} className="modal">
             <div className="modal-dialog" role="document">
               <div className="modal-content">
                 <div className="modal-header" >
