@@ -316,14 +316,13 @@ this.state.connection.onUserStatusChanged = (event)=> {
     })
   }
   if(event.data.actiontype==="pdf"){
-    console.log(event.data);
+ 
 
     this.setState({
       pdfdata:event.data.data
     })
   }
   if(event.data.actiontype==="map"){
-    console.log(event.data);
 
     this.setState({
       mapdata:event.data.data
@@ -369,7 +368,6 @@ this.state.connection.onUserStatusChanged = (event)=> {
       }
       }
       if(event.data.actiontype=="lock") {
-        console.log("incoming");
         var player=document.getElementById('cam1');
         player.setAttribute('look-controls-enabled',false)
          player.setAttribute("rotation",event.data.rotation.x+" "+event.data.rotation.y+" "+event.data.rotation.z)
@@ -378,7 +376,6 @@ this.state.connection.onUserStatusChanged = (event)=> {
          })  
       }
       if(event.data.actiontype=="unlock"){
-        console.log("grgr");
        var player=document.getElementById('cam1');
        player.setAttribute('look-controls-enabled',true);
       }
@@ -453,12 +450,9 @@ this.state.connection.onUserStatusChanged = (event)=> {
  
  
   setAudioLocal() {
-    this.state.connection.extra={
-      name:"effafsafsafas"
-    }
+ 
 
   
-    console.log(this.state.localStream)
     if (this.state.localStream.stream.getAudioTracks().length > 0) {
       this.state.localStream.stream.getAudioTracks().forEach(track => {
         if(track.enabled){

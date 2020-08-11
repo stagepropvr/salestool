@@ -94,7 +94,6 @@ this.audioallctrl=this.audioallctrl.bind(this);
                     imageid:x,
                   }
               })
-
               this.setState({
                 current_image:x,
                 currentimageName:node.val().images[x].name,
@@ -107,7 +106,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
               });
               var thumbslider = setInterval(()=>{
                 if(document.getElementById(x+"_thumb")){
-                  console.log("GRegre");
+
                   var a = document.querySelectorAll('.item_active');
                   [].forEach.call(a, function(el) {
                             el.classList.remove("item_active");
@@ -253,7 +252,18 @@ this.state.connection.openOrJoin(this.props.roomId);
 this.state.connection.isAudioMuted=false;
 
  this.state.connection.onleave = (e)=> {
-
+  this.setState(ele => ({
+    rtcstreams: [...ele.rtcstreams]
+  }));  
+  var count=0;
+  this.state.rtcstreams.map((key)=>{
+    if(key.stream.active){
+      count++;
+    }
+  })
+  this.setState({
+    usercount:count
+  });
 };
 this.state.connection.onmute = (e)=> {
   const temp=this.state.connection;
@@ -292,11 +302,9 @@ this.state.connection.onunmute = (e)=> {
 
  
   setAudioLocal() {
-    console.log(this.state.rtcstreams);
 
     this.state.connection.send("audio");
 
-    console.log(this.state.localStream)
     if (this.state.localStream.stream.getAudioTracks().length > 0) {
       this.state.localStream.stream.getAudioTracks().forEach(track => {
         if(track.enabled){
@@ -425,7 +433,6 @@ togglenav1(e){
 }
   togglenav(e)
   {
-   // console.log(e);
     this.messagearea.current.focus();
     var a = document.querySelectorAll('.nav-link.active');
     [].forEach.call(a, function(el) {

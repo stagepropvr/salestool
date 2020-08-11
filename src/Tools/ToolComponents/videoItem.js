@@ -9,7 +9,6 @@ export default class VideoItem extends React.PureComponent {
   componentDidUpdate () {
     const { stream } = this.props
     const video = this.videoRef.current
-console.log(this.props.stream)
     if ('srcObject' in video) {
       video.srcObject = stream
     } else {

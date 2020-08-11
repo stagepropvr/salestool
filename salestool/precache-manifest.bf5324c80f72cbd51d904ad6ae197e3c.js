@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "c8ee06c16744614935b0",
+    "revision": "47e1212f00ff8cce5189",
     "url": "/salestool/static/css/main.c86c5b22.chunk.css"
   },
   {
-    "revision": "c8ee06c16744614935b0",
-    "url": "/salestool/static/js/main.ac44c1ab.chunk.js"
+    "revision": "47e1212f00ff8cce5189",
+    "url": "/salestool/static/js/main.3b142ae7.chunk.js"
   },
   {
     "revision": "331347f68e2d329f69ef",
@@ -20,16 +20,12 @@ self.__precacheManifest = [
     "url": "/salestool/static/js/2.998f1c0a.chunk.js"
   },
   {
-    "revision": "c720fb4f16d69cc3c5dba61bc96cdc0d",
-    "url": "/salestool/static/media/arrow-left.c720fb4f.cur"
-  },
-  {
     "revision": "ef69e791ae57424b1901a28e2ad4d708",
     "url": "/salestool/static/media/arrow-right.ef69e791.cur"
   },
   {
-    "revision": "d7d5d4588a9f50c99264bc12e4892a7c",
-    "url": "/salestool/static/media/OpenSans-Regular.d7d5d458.ttf"
+    "revision": "c720fb4f16d69cc3c5dba61bc96cdc0d",
+    "url": "/salestool/static/media/arrow-left.c720fb4f.cur"
   },
   {
     "revision": "e1c83f9474e0cc1d84a13c6d1ddf3ca5",
@@ -38,6 +34,10 @@ self.__precacheManifest = [
   {
     "revision": "f5331cb6372b6c0d8baf2dd7e200498c",
     "url": "/salestool/static/media/OpenSans-Bold.f5331cb6.ttf"
+  },
+  {
+    "revision": "d7d5d4588a9f50c99264bc12e4892a7c",
+    "url": "/salestool/static/media/OpenSans-Regular.d7d5d458.ttf"
   },
   {
     "revision": "1a9f598752c4e28231c67ad0abecba76",
@@ -52,7 +52,7 @@ self.__precacheManifest = [
     "url": "/salestool/static/media/whitelogo.78680d9a.png"
   },
   {
-    "revision": "a88a724b38238911151e7560d6756391",
+    "revision": "218ce37485b37b46d5dd508ebf1485fb",
     "url": "/salestool/index.html"
   }
 ];

@@ -23,6 +23,7 @@ class Scene extends React.Component {
     this.clientAssets = [];
 this.imageloaded=this.imageloaded.bind(this);
 this.sendrotation=this.sendrotation.bind(this);
+
    }
 
 
@@ -83,17 +84,16 @@ imageloaded(){
     {
    
    
- 
     return (
       <div style={{"position":"absolute"}}>
         <a-scene loading-screen="dotsColor: transparent; backgroundColor: transparent" >
             {/* Loads Assets a*/}
             <AssestsLoader sceneloader={this.props.loader} data = {this.props.data}/>
             
-            <a-sky id="sky" onMouseUp={this.sendrotation} cursor="rayOrigin: mouse; fuse: false;" src= {'#'+this.props.image} /> 
+            <a-sky id="sky"  cursor="rayOrigin: mouse; fuse: false;" src= {'#'+this.props.image} /> 
             
            
-            {this.links = Object.values(this.props.data[this.props.image].links).map((item,key) => 
+            {this.props.data[this.props.image].links!==undefined? this.links = Object.values(this.props.data[this.props.image].links).map((item,key) => 
     {
       var splitrot=item.position.split(" ");
       var x= parseFloat(splitrot[0]*120);
@@ -110,7 +110,7 @@ imageloaded(){
          >
         </a-image>
       ) 
-    })}
+    }):<></>}
            
             {/* Loads Mouse */}
             <a-camera id="cam1" rotation="0 0 0"  cursor="rayOrigin: mouse; fuse: false;" rotation-reader >
