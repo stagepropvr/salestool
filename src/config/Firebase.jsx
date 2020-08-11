@@ -2,13 +2,14 @@ import Firebase from 'firebase';
 import "firebase/auth";
 
 const config = {
-    apiKey: "AIzaSyBFxRtxrD3jM6WfLSVksicZGadFgUQ9tVM",
-    authDomain: "socio-8c7cf.firebaseapp.com",
-    databaseURL: "https://socio-8c7cf.firebaseio.com",
-    projectId: "socio-8c7cf",
-    storageBucket: "socio-8c7cf.appspot.com",
-    messagingSenderId: "971172228538",
-    appId: "1:971172228538:web:0729d10ad3b47df8748183"
+    apiKey: "AIzaSyBTidLV-HH2BJeNAaoqgZCMKH4NqMfz_W4",
+    authDomain: "realvr-eb62c.firebaseapp.com",
+    databaseURL: "https://realvr-eb62c.firebaseio.com",
+    projectId: "realvr-eb62c",
+    storageBucket: "realvr-eb62c.appspot.com",
+    messagingSenderId: "172924419383",
+    appId: "1:172924419383:web:36e814bf67356da9",
+    measurementId: "G-3NZLWE7M7Y"
 };
 
 // const config = {
