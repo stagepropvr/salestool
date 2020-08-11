@@ -195,15 +195,6 @@ this.state.connection.onstream = event => {
 console.log( event.stream.streamid );
 
 
-var count=0;
-this.state.rtcstreams.map((key)=>{
-  if(key.stream.active){
-    count++;
-  }
-})
-this.setState({
-  usercount:count
-})
 console.log(this.state.rtcstreams);
 if(event.type==="local"){
   this.setState({
@@ -217,6 +208,16 @@ console.log(this.state.connection)
 this.setState(ele => ({
   rtcstreams: [...ele.rtcstreams, event]
 }))
+
+var count=0;
+this.state.rtcstreams.map((key)=>{
+  if(key.stream.active){
+    count++;
+  }
+})
+this.setState({
+  usercount:count
+})
 };
 
 this.state.connection.onUserStatusChanged = (event)=> {
