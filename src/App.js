@@ -10,13 +10,10 @@ import Createroom from "./components/Createroom";
 import Joinroom from "./components/Joinroom";
 import EndSession from "./components/EndSession"
 import JoiningRoom from "./components/JoiningRoom"
-// import MapModal from "./components/MAPFP"
 import Tools from './components/Tools';
-
-
-import { goToRoomInput } from './components/goToRoomInput';
 import SalespageClient from './Layouts/SalespageClient';
-  
+import Pixel from './pixel/pixel'
+
 class App extends Component {
 
   
@@ -30,8 +27,7 @@ class App extends Component {
        <Switch> 
     
         <Route  path='/salestool/login' component={Login} />
-        {/* <Route  path='/' exa ct component={MapModal} /> */}
-
+      
          <Route path='/salestool/signup' component={Signup} />
 
          <Route  path='/salestool/projects' component={Projects} />
@@ -50,6 +46,7 @@ class App extends Component {
 
          <Route  path='/salestool/joining' component={JoiningRoom} />
 
+         <Route  path='/salestool/pixel' component={Pixel} />
 
          </Switch>
          </Router>         
