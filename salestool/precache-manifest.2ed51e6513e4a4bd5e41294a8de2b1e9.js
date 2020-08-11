@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "821a85b1f85b009e24ac",
+    "revision": "c8ee06c16744614935b0",
     "url": "/salestool/static/css/main.c86c5b22.chunk.css"
   },
   {
-    "revision": "821a85b1f85b009e24ac",
-    "url": "/salestool/static/js/main.ee23650b.chunk.js"
+    "revision": "c8ee06c16744614935b0",
+    "url": "/salestool/static/js/main.ac44c1ab.chunk.js"
   },
   {
     "revision": "331347f68e2d329f69ef",
@@ -52,7 +52,7 @@ self.__precacheManifest = [
     "url": "/salestool/static/media/whitelogo.78680d9a.png"
   },
   {
-    "revision": "4e68534f541c5cc7ec7804c46e8fe6de",
+    "revision": "a88a724b38238911151e7560d6756391",
     "url": "/salestool/index.html"
   }
 ];
