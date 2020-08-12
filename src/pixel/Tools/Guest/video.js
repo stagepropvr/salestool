@@ -498,7 +498,7 @@ getstreamstatus(stream){
 
     return (<>
         <div style={{position:'absolute', left: '0', right: '0', bottom: '0', top: '0px' }}>
-            <iframe src="http://pixel.propvr.tech/join" zIndex="-1" width="100%" height="100%"></iframe>
+            <iframe src="https://pixel.propvr.tech/join" zIndex="-1" width="100%" height="100%"></iframe>
           </div>
           
         <div  id="bottom" className="container" ref={this.bottom} >
