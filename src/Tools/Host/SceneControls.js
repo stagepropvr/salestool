@@ -168,6 +168,7 @@ open_close = (name,flag) =>{
       }
     }
   }else{
+    this.menu_bar_open();
     if(!flag){
       this.props.connection.send({actiontype:"floorplan",roomid:this.props.roomId,data:false,pin:null})
   }
