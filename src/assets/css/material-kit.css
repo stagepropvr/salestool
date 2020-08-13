@@ -20326,21 +20326,14 @@ select{
     border-right-style: solid;
     border-right-width: 6px;
 }
-@media only screen and (min-width:993px){
-  .floorplan_div{
-    top: 80px !important;
-    left: 16px !important;
-    transform: none !important;
-  }
-}
+
 .floorplan_div{
   position: fixed;
   top: 50%;
   left: 50%;
+  transform: translate(-50%,-50%);
   width: 308px;
   height: 263px;
-  z-index: 11111;
-  transform: translate(-50%,-50%);
   border-radius: 6px;
   box-shadow: 0 -10px 24px 0 rgba(52, 52, 52, 0.5);
   background-color: #ffffff;
@@ -20788,18 +20781,7 @@ select{
     font-weight: bold;
     font-size: 15px;
 }
-.relative-localvideo .user-video{
-  height: 100px !important;
-  width: 180px;
-}
-.relative-localvideo .videotools{
-  top: 76px !important;
-}
 
-.relative-localvideo.fixed-video{
-    height: 100px;
-    width: 180px;
-}
 .relative-localvideo .video_hide{
   position: fixed;
     right: 1.3vh;
