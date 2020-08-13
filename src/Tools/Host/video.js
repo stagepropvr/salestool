@@ -219,6 +219,18 @@ this.setState({
 })
 };
 
+
+this.state.connection.checkPresence(this.props.roomId, (isRoomExist, roomid, error) =>{
+  if (isRoomExist === true) {
+      this.state.connection.join(roomid);
+  } else {
+      this.state.connection.open(roomid);
+  }
+});
+
+
+
+
 this.state.connection.onUserStatusChanged = (event)=> {
 
   this.setState(ele => ({
@@ -234,6 +246,7 @@ this.state.connection.onUserStatusChanged = (event)=> {
     usercount:count
   });
 };
+
  this.state.connection.onmessage = (event)=> {
   if(!document.getElementById('chat_tab').getAttribute("class").includes("active show")){
     this.setState({
@@ -246,12 +259,11 @@ this.state.connection.onUserStatusChanged = (event)=> {
    
   };
  
-  var socket = this.state.connection.getSocket();
 
-this.state.connection.openOrJoin(this.props.roomId);
+
 this.state.connection.isAudioMuted=false;
-
  this.state.connection.onleave = (e)=> {
+   alert(e.userid);
   this.setState(ele => ({
     rtcstreams: [...ele.rtcstreams]
   }));  
@@ -407,7 +419,7 @@ this.state.connection.onunmute = (e)=> {
     });
   }
 togglenav1(e){
-  this.messagearea.current.focus();
+ 
     var a = document.querySelectorAll('.nav-link.active');
     [].forEach.call(a, function(el) {
       el.classList.remove("active");
@@ -433,7 +445,6 @@ togglenav1(e){
 }
   togglenav(e)
   {
-    this.messagearea.current.focus();
     var a = document.querySelectorAll('.nav-link.active');
     [].forEach.call(a, function(el) {
       el.classList.remove("active");
@@ -457,6 +468,7 @@ togglenav1(e){
       this.setState({
         messagescount:0
         })
+        this.messagearea.current.focus();
       document.getElementById('chat').classList.add('active');
       document.getElementById('chat').classList.add('show');
     }else if(e.target.getAttribute('datasrc')==="close_icon"){
@@ -551,9 +563,7 @@ muteclient(id,status){
 
 
 }
-focus = (event)=>{
-  this.messagearea.current.focus();
-}
+
 lock(){
   if(!this.state.lock){
     var cameraEl =document.getElementById('cam1');
@@ -685,7 +695,7 @@ lock(){
           <li className="nav-item">
             <a id="members_tab" className="nav-link" href="#members" data-toggle="tab">Members</a>
           </li>
-          <li onClick={this.focus} className="nav-item">
+          <li  className="nav-item">
             <a id="chat_tab" className="nav-link" href="#chat" data-toggle="tab">CHAT</a>
           </li>
         </ul>

@@ -295,6 +295,29 @@ this.state.connection.onUserStatusChanged = (event)=> {
     usercount:count
   })
 };
+this.state.connection.checkPresence(this.props.roomId, (isRoomExist, roomid, error) =>{
+  if (isRoomExist === true) {
+      this.state.connection.join(roomid);
+  } else {
+      this.state.connection.open(roomid);
+  }
+});
+
+this.state.connection.onleave = (e)=> {
+  alert(e.userid);
+  this.setState(ele => ({
+    rtcstreams: [...ele.rtcstreams]
+  }));  
+  var count=0;
+  this.state.rtcstreams.map((key)=>{
+    if(key.stream.active){
+      count++;
+    }
+  })
+  this.setState({
+    usercount:count
+  });
+};
  this.state.connection.onmessage = (event)=> {
 
    if(event.data.actiontype==="chat"){
@@ -381,7 +404,6 @@ this.state.connection.onUserStatusChanged = (event)=> {
        player.setAttribute('look-controls-enabled',true);
       }
   }
-  this.state.connection.openOrJoin(this.props.roomId);
 
  
 
@@ -532,7 +554,7 @@ this.state.connection.onUserStatusChanged = (event)=> {
     }
   }
   togglenav1(e){
-    this.messagearea.current.focus();
+   
       var a = document.querySelectorAll('.nav-link.active');
       [].forEach.call(a, function(el) {
         el.classList.remove("active");
@@ -558,7 +580,6 @@ this.state.connection.onUserStatusChanged = (event)=> {
   }
   togglenav(e)
   {
-    this.messagearea.current.focus();
     var a = document.querySelectorAll('.nav-link.active');
     [].forEach.call(a, function(el) {
       el.classList.remove("active");
@@ -582,6 +603,7 @@ this.state.connection.onUserStatusChanged = (event)=> {
       this.setState({
         messagescount:0
         })
+        this.messagearea.current.focus();
       document.getElementById('chat').classList.add('active');
       document.getElementById('chat').classList.add('show');
     }else if(e.target.getAttribute('datasrc')==="close_icon"){
@@ -603,9 +625,7 @@ this.state.connection.onUserStatusChanged = (event)=> {
     }
   }
 
-  focus = (event)=>{
-    this.messagearea.current.focus();
-  }
+ 
 
   sendmessage(e){
     e.preventDefault();
@@ -827,7 +847,7 @@ isRoomAlive = () => {
           <li className="nav-item">
             <a id="members_tab" className="nav-link" href="#members" data-toggle="tab">Members</a>
           </li>
-          <li onClick={this.focus} className="nav-item">
+          <li  className="nav-item">
             <a id="chat_tab" className="nav-link" href="#chat" data-toggle="tab">CHAT</a>
           </li>
         </ul>
