@@ -134,13 +134,14 @@ export class MapModal extends React.Component {
       //  const {google} = this.state.google_props;
          var data = this.props.data;
 
-        if(data.hasOwnProperty('latlng')){
-            var latlng = this.props.data.latlng;
+        if(data!="false"){
+            var latlng = this.props.data;
             latlng = latlng.split(",");
             this.setState({
                 lat:parseFloat(latlng[0]),
                 long:parseFloat(latlng[1])
             })
+            console.log(this.state.lat);
             var pyrmont = {lat: parseFloat(this.state.lat), lng: parseFloat(this.state.long)};         
             var request = {
                 location: pyrmont,

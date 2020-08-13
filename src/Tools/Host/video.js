@@ -822,9 +822,9 @@ return(
               </g>
             </svg>
           </span>
-          <input  type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message" autofocus required/>
+          <input  type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message"  required/>
           <button style={{cursor: "pointer",background: "#f7f9fc",border: "none",marginTop:'-5px'}} type="submit">
-          <svg focusable="false" width={24} height={24} viewBox="0 0 24 24" class="Hdh4hc cIGbvc NMm5M hhikbc">
+          <svg focusable="false" width={24} height={24} viewBox="0 0 24 24" className="Hdh4hc cIGbvc NMm5M hhikbc">
             <path d="M2 3v18l20-9L2 3zm2 11l9-2-9-2V6.09L17.13 12 4 17.91V14z" style={{fill: "#222b45"}}></path>
           </svg>
           </button>

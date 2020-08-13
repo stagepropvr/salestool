@@ -109,9 +109,10 @@ open_close = (name,flag) =>{
           mapdata:this.props.data["latlng"],
           map:true
         })
+       // console.log(this.props.data["latlng"]);
       }
       else{
-        this.props.connection.send({actiontype:"map",data:false});
+        this.props.connection.send({actiontype:"map",data:"false"});
         this.setState({
           mapdata:false,
           map:true

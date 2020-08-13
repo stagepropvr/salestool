@@ -41,12 +41,12 @@ class JoiningRoom extends React.Component {
                     <span>prop vr</span>                
                 </div>
                 
-                <div class="loginNew_center">
+                <div className="loginNew_center">
                     <h3>Virtual Property Tour Invite</h3>
                     <p>You are invited for a virtual guided property tour. Ask your questions, virtually experience the property and book your dream property.</p>
                 </div>
 
-                <div class="loginNew_bottom">
+                <div className="loginNew_bottom">
                     <p>Powered by <u>PROPVR.in</u></p>   
                 </div>
                 
@@ -58,13 +58,13 @@ class JoiningRoom extends React.Component {
                         <h2 className="Welcome-to-Prop-VR" style={{paddingTop: "25px"}}>You are joining a virtual tour session</h2>
                          
                          {/* card */}
-                         <div style={{margin:0, padding:0, marginTop: '10px'}} class="row">
-    <div style={{margin:0, padding:0, width:'100%'}} class="card project_det_background">
-        <div style={{padding: "0px"}} class="card-body d-flex flex-row">
+                         <div style={{margin:0, padding:0, marginTop: '10px'}} className="row">
+    <div style={{margin:0, padding:0, width:'100%'}} className="card project_det_background">
+        <div style={{padding: "0px"}} className="card-body d-flex flex-row">
             <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" width="81px" alt="avatar"/>
             <div style={{width: '300px', textAlign:"left"}}>
-                <h4 style={{paddingLeft: '25px'}} class="card-title project_heading">Brigade Gateway</h4>
-                <div class="card-text flex-row project_icon_content">
+                <h4 style={{paddingLeft: '25px'}} className="card-title project_heading">Brigade Gateway</h4>
+                <div className="card-text flex-row project_icon_content">
                     <div>
                         <span>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -78,7 +78,7 @@ class JoiningRoom extends React.Component {
                             </g>
                             </svg>        
                         </span>
-                        <span id="room" class="createroom_icon_span">
+                        <span id="room" className="createroom_icon_span">
                             2 BHK
                         </span> 
                     </div>
@@ -96,7 +96,7 @@ class JoiningRoom extends React.Component {
                             </svg>
                             
                         </span>
-                        <span id="bath" class="createroom_icon_span">
+                        <span id="bath" className="createroom_icon_span">
                         2 Bath
                         </span> 
                     </div>
@@ -108,7 +108,7 @@ class JoiningRoom extends React.Component {
                             </g>
                             </svg>                    
                         </span>
-                        <span id="sqft" class="createroom_icon_span">
+                        <span id="sqft" className="createroom_icon_span">
                         782 sq ft
                         </span> 
                     </div>      

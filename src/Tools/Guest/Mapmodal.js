@@ -81,6 +81,8 @@ export class MapModal extends React.Component {
      // this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
     }
   }
+
+
   componentDidMount(){   
 
     window.scrollTo(0, 0);
@@ -101,9 +103,10 @@ export class MapModal extends React.Component {
     this.setState({
         icons:a
     })
-        
-        if(this.props.data.length>1){
+        console.log(this.props.data);
+        if(this.props.data!="false"){
             var latlng = this.props.data;
+            console.log(latlng);
             latlng = latlng.split(",");
             this.setState({
                 lat:parseFloat(latlng[0]),
@@ -130,8 +133,8 @@ export class MapModal extends React.Component {
       //  const {google} = this.state.google_props;
          var data = this.props.data;
 
-        if(data.hasOwnProperty('latlng')){
-            var latlng = this.props.data.latlng;
+        if(data!="false"){
+            var latlng = this.props.data;
             latlng = latlng.split(",");
             this.setState({
                 lat:parseFloat(latlng[0]),
