@@ -113,14 +113,16 @@ this.changedevice=this.changedevice.bind(this);
           host:false
         })
       
-        Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage").on("value",(snap)=>{
+        Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage")
+        .on("value",(snap)=>{
           this.setState({
             clientimage:snap.val().currentimage,
             clientimageid:snap.val().imageid,
             clientimageName:snap.val().currentimageName,
+            clientimageThumb:snap.val().currentimageThumb,
            
             init:false,
-            loader:true
+            // loader:true
           });
         })
     
@@ -742,6 +744,7 @@ isRoomAlive = () => {
             clientimage={this.state.clientimage}
             clientimageid={this.state.clientimageid}
             clientimageName={this.state.clientimageName}
+            clientimageThumb={this.state.clientimageThumb}
             getImageName={this.getImageName}
             connection={this.state.connection}
           />:<></>}

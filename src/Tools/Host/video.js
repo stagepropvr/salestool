@@ -90,13 +90,16 @@ this.audioallctrl=this.audioallctrl.bind(this);
               Firebase.database().ref("roomsession/"+this.props.roomId).update({
                 currentimage:{
                     currentimage:node.val().images[x].url,
+                    currentimageThumb:node.val().images[x].thumbnail,
                     currentimageName:node.val().images[x].name,
+
                     imageid:x,
                   }
               })
               this.setState({
                 current_image:x,
                 currentimageName:node.val().images[x].name,
+      
                 images: node.val().images,
                 data:node.val(),
                
@@ -369,6 +372,7 @@ this.state.connection.onunmute = (e)=> {
   changeImage = (str) => {
     Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage").set({
       currentimage:this.state.images[str].url,
+      currentimageThumb:this.state.images[str].thumbnail,
       currentimageName:this.state.images[str].name,
       imageid:str
     })
@@ -410,6 +414,7 @@ this.state.connection.onunmute = (e)=> {
           });
           Firebase.database().ref("roomsession/"+this.props.roomId+"/currentimage").set({
             currentimage:node.val().images[x].url,
+            currentimageThumb:node.val().images[x].thumbnail,
             currentimageName:node.val().images[x].name,
             imageid:x
           })

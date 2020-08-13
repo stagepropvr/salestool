@@ -17,29 +17,41 @@ class Scene extends React.Component {
         loaded:false,
         VRMode:false,
         imageload:true,
-        anirotation:"0 0 0"
+        anirotation:"0 0 0",
+        thumb:true
     };
-    this.time = null;
+    this.first = true;
     this.total = 0;
     this.assets = [];
     this.clientAssets = [];
     // this.change = this.change.bind(this);
-this.imageloaded=this.imageloaded.bind(this);
+// this.imageloaded=this.imageloaded.bind(this);
    }
 
-imageloaded(){
+imageloaded = () => {
   this.setState({
-    imageload:false
+    imageload:false,
+    thumb:false
   })
+}
+
+
+Thumbloaded = () => {
   this.props.loader();
+  this.setState({
+    imageload:false,
+  })
+  this.first = false
 }
 
   loadAssets = () => {
     if(!this.assets.includes(this.props.clientimageid))
     {this.setState({
-      imageload:true
+      imageload:true,
+      thumb:true
     })
       this.assets.push(this.props.clientimageid)
+      this.assets.push(this.props.clientimageid+'Thumb')
 
       this.clientAssets.push(
         <img 
@@ -52,12 +64,19 @@ imageloaded(){
         />
         )
 
+        this.clientAssets.push(
+        <img 
+          crossOrigin="anonymous" 
+          id={this.props.clientimageid+'Thumb'}  
+          src={this.props.clientimageThumb} 
+          alt={this.props.clientimageid} 
+          key={this.props.clientimageid+'Thumb'}
+          onLoad={this.Thumbloaded}
+        />
+        )
+
     }
-
-
-    
-    }
-
+  }
   
   render()
     {
@@ -73,7 +92,11 @@ imageloaded(){
         {this.clientAssets}
       </a-assets>
 
-      <a-sky src= {'#'+this.props.clientimageid} /> 
+      {this.state.thumb?
+        <a-sky src= {'#'+this.props.clientimageid+'Thumb'} /> :
+        <a-sky src= {'#'+this.props.clientimageid} />
+      } 
+
 {this.state.imageload?
       <div className="imageswitch">
         <div className="switch_project_loader2">
@@ -82,7 +105,10 @@ imageloaded(){
                   <path fill="#36F" fillRule="evenodd" d="M6.659.473L7.977 0l.947 2.637-1.319.473C4.748 4.134 2.802 6.854 2.802 9.943c0 4.007 3.246 7.256 7.248 7.256 3.103 0 5.833-1.971 6.842-4.856l.463-1.322 2.645.925-.463 1.322c-1.4 4-5.183 6.732-9.487 6.732C4.5 20 0 15.497 0 9.943c0-4.28 2.697-8.049 6.659-9.47z"></path>
                 </svg>
             </span>
-          <span style={{paddingLeft: "16px",marginTop: "-5px"}}>Switching image</span>    
+            
+          <span style={{paddingLeft: "16px",marginTop: "-5px"}}>
+            {this.first? <>Loading image</>: <>Switching Image</>}
+          </span>    
         </div>
       </div>:<></>}
     
