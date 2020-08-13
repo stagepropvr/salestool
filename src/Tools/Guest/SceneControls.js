@@ -25,7 +25,7 @@ class SceneControls extends React.Component {
       floorplandata:"false",
       pdfdata:"false",
       settings:false,
-      mapdata:""
+      mapdata:"false"
     }
   }
 
@@ -38,13 +38,22 @@ class SceneControls extends React.Component {
     //document.addEventListener('click', this.handleOutsideClick, false);
     this.menu.addEventListener("click", this.menu_bar_open);
     //this.menu_bar_open();
-   
-    
+    console.log(this.props.mapdata);
+    this.setState({
+        mapdata:this.props.mapdata
+      })
+      
 
    
    
   }
-
+  componentDidUpdate(prevProps){
+    if (this.props.mapdata !== prevProps.mapdata) {
+      this.setState({
+        mapdata:this.props.mapdata
+      })
+    }
+  }
   // handleOutsideClick(e) {
 
 
@@ -104,6 +113,9 @@ open_close = (name,flag) =>{
     }
 }
   render() {
+
+    
+
 return (
 
   <>
@@ -227,8 +239,7 @@ return (
 
 {this.props.floorplandata!="false"?<FloorplanClient data={this.props.floorplandata}/>:<></>}
 {this.props.pdfdata!="false"?<PDFclient data={this.props.pdfdata}/>:<></>}
-
-{this.props.mapdata?<MapModal
+{this.props.mapdata!="false"?<MapModal
         open_close={this.open_close}
         data={this.state.mapdata}
       />:<></>}

@@ -142,12 +142,12 @@ setVideoLocal() {
                     <img style={{width: '70%', height: '70%', objectFit: 'cover'}} src={require('../assets/logo.webp')}></img>
                 </div>
                 
-                <div class="loginNew_center">
+                <div className="loginNew_center">
                     <h3>Virtual Property Tour Invite</h3>
                     <p>You are invited for a virtual guided property tour. Ask your questions, virtually experience the property and book your dream property.</p>
                 </div>
 
-                <div class="loginNew_bottom">
+                <div className="loginNew_bottom">
                     <p>Powered by <u>PROPVR.in</u></p>   
                 </div>
                 

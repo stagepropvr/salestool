@@ -179,7 +179,7 @@ componentDidMount(){
                         return(
                             <div className="map_div" key={index} id={value.id} style={{display:(value.index==0 ? 'block':'none')}}>
                             <div className="map">
-                            <img  src={value.url} style={{width: "100%"}}/>
+                            <img  src={value.url} style={{width: "100%",height:'240px'}}/>
                             </div>
                             {value.pins.map((sub)=>{
                                 return(

@@ -31,7 +31,7 @@ class Video extends React.Component {
       peers: {},
       floorplandata:"false",
       pdfdata:"false",
-      mapdata:"",
+      mapdata:"false",
       streams: {},
       current_image: "",  
       currentimageName:"",
@@ -327,6 +327,7 @@ this.state.connection.onUserStatusChanged = (event)=> {
     this.setState({
       mapdata:event.data.data
     })
+    console.log(this.state.mapdata);
   }
 
   if(event.data.actiontype==="muteall"){
@@ -802,7 +803,7 @@ isRoomAlive = () => {
     <button datasrc="chat_icon" onClick={this.togglenav} className="menu_option" style={{background: '#fff',display:'flex'}}>
      <svg style={{transform:'translateY(8px) translateX(-1px)'}} datasrc="chat_icon"  height={24}  width={24} viewBox="0 0 24 24">
       <g datasrc="chat_icon" data-name="Layer 2">
-        <g datasrc="chat_icon" fill="#3366ff" dataName="message-square">
+        <g datasrc="chat_icon" fill="#3366ff" dataname="message-square">
           <rect datasrc="chat_icon" width="24" height="24" opacity="0"/>
           <circle datasrc="chat_icon" cx="12" cy="11" r="1"/>
           <circle datasrc="chat_icon" cx="16" cy="11" r="1"/>
@@ -971,9 +972,9 @@ isRoomAlive = () => {
               </g>
             </svg>
           </span>
-          <input  type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message" autofocus required/>
+          <input  type="text" className="input_box" ref={this.messagearea}    placeholder="Type your message"  required/>
           <button style={{cursor: "pointer",background: "#f7f9fc",border: "none",marginTop:'-5px'}} type="submit">
-          <svg focusable="false" width={24} height={24} viewBox="0 0 24 24" class="Hdh4hc cIGbvc NMm5M hhikbc">
+          <svg focusable="false" width={24} height={24} viewBox="0 0 24 24" className="Hdh4hc cIGbvc NMm5M hhikbc">
             <path d="M2 3v18l20-9L2 3zm2 11l9-2-9-2V6.09L17.13 12 4 17.91V14z" style={{fill: "#222b45"}}></path>
           </svg>
           </button>

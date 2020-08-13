@@ -55,6 +55,7 @@ componentDidMount(){
  
 
   handleChange = (event) => {
+    document.getElementById('view_doc').disabled=false;
     this.setState({
         pdf_data:event.target.value
     })
@@ -117,7 +118,7 @@ componentDidMount(){
             <div style={{display: "block"}} className="modal-footer">
                 <center className="modal_button_div">
                     <button onClick={() => this.props.open_close('document',false)} type="button" className="btn cancel">Cancel</button>
-                    <button style={{marginLeft: "20px"}} type="submit " className="btn proceed">View  document</button>
+                    <button id="view_doc" style={{marginLeft: "20px"}} type="submit " className="btn proceed" disabled>View  document</button>
                 </center>
             </div>
             </form>

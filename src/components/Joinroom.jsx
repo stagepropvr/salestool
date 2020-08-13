@@ -199,12 +199,12 @@ if(this.state.redirect){
                     <img style={{width: '70%', height: '70%', objectFit: 'cover'}} src={require('../assets/logo.webp')}></img>
                 </div>
                 
-                <div class="loginNew_center">
+                <div className="loginNew_center">
                     <h3>Virtual Property Tour Invite</h3>
                     <p>You are invited for a virtual guided property tour. Ask your questions, virtually experience the property and book your dream property.</p>
                 </div>
 
-                <div class="loginNew_bottom">
+                <div className="loginNew_bottom">
                     <p>Powered by <u>PROPVR.in</u></p>   
                 </div>
                 
@@ -391,7 +391,7 @@ if(this.state.redirect){
                 <div className="BlueBG">   
                     <h1 className="Welcome-to-Prop-VR" >Join Virtual Tour </h1>
                     <p>You are invited to join the virtual property tour. Fill the required details and enjoy your session.</p>
-                    <div style={{margin:0, padding:0, width:'100%'}} class="card project_det_background">    
+                    <div style={{margin:0, padding:0, width:'100%'}} className="card project_det_background">    
                           <div style={{padding: "0px",height:'115px'}} className="card-body d-flex flex-row">
                           {this.state.loader?
                <><a>
