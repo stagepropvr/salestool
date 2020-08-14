@@ -4,9 +4,7 @@ export default class VideoItem extends React.PureComponent {
   videoRef = React.createRef()
 
   componentDidMount () {
-    this.componentDidUpdate()
-  }
-  componentDidUpdate () {
+    
     const { stream } = this.props
     const video = this.videoRef.current
     if ('srcObject' in video) {
@@ -15,14 +13,14 @@ export default class VideoItem extends React.PureComponent {
       video.src = window.URL.createObjectURL(stream) // for older browsers
     }
   }
+  
 
   render () {
     const { userId } = this.props
-
     return (
         <video className="user-video"
           id={`video-${userId}`}
-          autoPlay muted={this.props.stream.type==="local"?true:false}
+          autoPlay muted={this.props.type}
           ref={this.videoRef}
         />
     )

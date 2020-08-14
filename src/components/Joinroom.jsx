@@ -170,7 +170,7 @@ isRoomAlive = () => {
     ref.on('value',(value) => {
         if(value.val() === null)
         {
-            alert("Invalid Room ID")
+            //alert("Invalid Room ID")
         }
         else if(value.val() === 'End')
         {

@@ -202,7 +202,6 @@ if(event.type==="local"){
   this.setState({
     localStream:event
   })
-  this.state.localStream.stream.unmute("audio");
 console.log(this.state.connection)
 }else{
   event.isAudioMuted=!event.extra.initaudio;
@@ -265,11 +264,19 @@ this.state.connection.onUserStatusChanged = (event)=> {
 
 
 this.state.connection.isAudioMuted=false;
- this.state.connection.onleave = (e)=> {
-   alert(e.userid);
-  this.setState(ele => ({
-    rtcstreams: [...ele.rtcstreams]
-  }));  
+this.state.connection.onleave = (e)=> {
+
+ var updated=[];
+  Object.values(this.state.rtcstreams).map((node)=>{
+if(node.userid!==e.userid){
+updated.push(node)
+}
+
+  })
+  console.log(updated)
+this.setState({
+  rtcstreams:updated
+})
   var count=0;
   this.state.rtcstreams.map((key)=>{
     if(key.stream.active){
@@ -732,6 +739,7 @@ return(
       key={key.userid}
       userId={key.userid}
       stream={key.stream}
+      type={true}
     />
                   </div>
                </li>
@@ -767,6 +775,7 @@ return(
       key={key.userid}
       userId={key.userid}
       stream={key.stream}
+      type={false}
     />
       </div>
                </li>

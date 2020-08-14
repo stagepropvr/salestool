@@ -90,7 +90,7 @@ imageloaded(){
             {/* Loads Assets a*/}
             <AssestsLoader sceneloader={this.props.loader} data = {this.props.data}/>
             
-            <a-sky id="sky"  cursor="rayOrigin: mouse; fuse: false;" src= {'#'+this.props.image} /> 
+            <a-sky id="sky"  onMouseUp={this.sendrotation} cursor="rayOrigin: mouse; fuse: false;" src= {'#'+this.props.image} /> 
             
            
             {this.props.data[this.props.image].links!==undefined? this.links = Object.values(this.props.data[this.props.image].links).map((item,key) => 

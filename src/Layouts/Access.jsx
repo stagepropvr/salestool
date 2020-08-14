@@ -332,8 +332,9 @@ setVideoLocal() {
          
       </div>
       {this.state.localStream?<VideoItem
-      key={"you"}
-      userId={"you"}
+      key="you"
+      type={true}
+      userId="you"
       stream={this.state.localStream}
     />:<></>}
       </div>
@@ -518,8 +519,9 @@ setVideoLocal() {
          
       </div>
       {this.state.localStream?<VideoItem
-      key={"you"}
-      userId={"you"}
+      key="you"
+      type={true}
+      userId="you"
       stream={this.state.localStream}
     />:<></>}
       </div>

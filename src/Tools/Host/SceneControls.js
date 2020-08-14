@@ -295,7 +295,7 @@ return (
               
 
               {/* {this.state.data.latlng && */}
-              <>
+              {/* <>
               <a  onClick={()=> this.open_close('map',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Near By">
                 <svg  width={24} height={24} viewBox="0 0 24 24">
                   <defs>
@@ -307,7 +307,7 @@ return (
                 </svg>
               </a>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
-              </>
+              </> */}
               {/* } */}
 {/*               
               <a onClick={()=> this.open_close('settings',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Settings">

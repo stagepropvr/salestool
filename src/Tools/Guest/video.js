@@ -19,7 +19,7 @@ class Video extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      localStream: {},
+      localStream:[],
       remoteStreamUrl: '',
       streamUrl: '',
       initiator: false,
@@ -38,7 +38,7 @@ class Video extends React.Component {
       host: true,
       apiload: true,
       images:"",
-      user_id:'',
+      user_id:this.props.uid,
       camera:"user",
       data:'',
       messages:[],
@@ -58,6 +58,7 @@ class Video extends React.Component {
       connection : new RTCMultiConnection(),
       rtcstreams:[],
       clientimageName:"",
+      hoststream:[]
         };
    
     this.Sidenav = React.createRef();
@@ -251,7 +252,7 @@ if(!this.state.camState){
   this.state.localStream.stream.mute("video");
 
 }
-if(!this.state.micState){
+if(this.state.micState){
 
   this.state.localStream.stream.mute("audio");
  
@@ -273,6 +274,11 @@ if(event.type==="local"){
     localStream:event
   })
 }
+if(event.userid==="host"){
+  this.setState({
+    hoststream:event
+  })
+}
 }
 
 
@@ -283,7 +289,11 @@ if(event.type==="local"){
 this.state.connection.userid=localStorage.getItem("guestkey");
 
 this.state.connection.onUserStatusChanged = (event)=> {
- 
+ if(event.userid==="host"){
+  this.setState({
+    hoststream:[]
+  });
+ }
   this.setState(ele => ({
     rtcstreams: [...ele.rtcstreams]
   }));
@@ -306,10 +316,18 @@ this.state.connection.checkPresence(this.props.roomId, (isRoomExist, roomid, err
 });
 
 this.state.connection.onleave = (e)=> {
-  alert(e.userid);
-  this.setState(ele => ({
-    rtcstreams: [...ele.rtcstreams]
-  }));  
+
+ var updated=[];
+  Object.values(this.state.rtcstreams).map((node)=>{
+if(node.userid!==e.userid){
+updated.push(node)
+}
+
+  })
+  console.log(updated)
+this.setState({
+  rtcstreams:updated
+})
   var count=0;
   this.state.rtcstreams.map((key)=>{
     if(key.stream.active){
@@ -410,25 +428,25 @@ this.state.connection.onleave = (e)=> {
  
 
 
-  this.state.connection.onmute = (e)=> {
+  // this.state.connection.onmute = (e)=> {
     
-    const temp=this.state.connection;
-    this.setState({
-      connection:temp,
-      micState:!this.state.localStream.isAudioMuted
-    });
+  //   const temp=this.state.connection;
+  //   this.setState({
+  //     connection:temp,
+  //     micState:!this.state.localStream.isAudioMuted
+  //   });
     
 
-  };
+  // };
   
-  this.state.connection.onunmute = (e)=> {
-    const temp=this.state.connection;
-    this.setState({
-      connection:temp,
-      micState:!this.state.localStream.isAudioMuted
-    });
+  // this.state.connection.onunmute = (e)=> {
+  //   const temp=this.state.connection;
+  //   this.setState({
+  //     connection:temp,
+  //     micState:!this.state.localStream.isAudioMuted
+  //   });
   
-  };
+  // };
   
 
 
@@ -861,27 +879,31 @@ isRoomAlive = () => {
       
       <ul className="video_div" style={{padding:'0px',height:'90%',overflowX:'hidden',overflowY: "auto", listStyle:"none",width:'85%',paddingLeft:'12px'}}>
       
-   
-               {this.state.rtcstreams.map((key)=>{
-      if(key.userid=="host"){
+  
+
+
+                     
+                       
+            {this.state.rtcstreams.map((key)=>{
+      if(key.userid==="host"){
         return(
-          <li style={{marginTop:'30px'}} className="video_content">
-                          <div ref={this.localvideo}  className="guest_video fixed-video relative-localvideo">
-                             <div className="videotools">
-                           
-                               <span className="guest_video_name video_name_option">HOST</span>
-                             
-                          </div>
-                          <VideoItem
-              key={key.userid}
-              userId={key.userid}
-              stream={key.stream}
-            />
-                          </div>
-                       </li>
+<li className="video_content">
+      <div ref={this.localvideo}  className="guest_video fixed-video relative-localvideo">
+         <div className="videotools">
           
-        )
-            }else{
+           <span className="guest_video_name video_name_option">{key.extra.name}</span>
+         
+      </div>
+      <VideoItem
+      key={key.userid}
+      userId={key.userid}
+      stream={key.stream}
+      type={true}
+    />
+      </div>
+               </li>
+     ) }else{
+      if(key.type!=="local"){
      return(
       <li className="video_content">
       <div className="fixed-video">
@@ -894,10 +916,29 @@ isRoomAlive = () => {
       key={key.userid}
       userId={key.userid}
       stream={key.stream}
+      type={true}
     />
       </div>
                </li>
      )}
+    else{
+      return(
+      <li className="video_content">
+      <div className="fixed-video">
+         <div className="videotools">
+          
+           <span className="guest_video_name video_name_option">{key.extra.name}</span>
+         
+      </div>
+      <VideoItem
+      key={key.userid}
+      userId={key.userid}
+      stream={key.stream}
+      type={true}
+    />
+      </div>
+               </li>
+      )}}
    })}
               </ul>
       </div>

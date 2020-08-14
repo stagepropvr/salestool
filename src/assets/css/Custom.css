@@ -189,3 +189,12 @@ background:#fff;
     }
  
   }
+  .host-offline{
+    color: #fff;
+    height: 100%;
+    width: fit-content;
+    margin: auto;
+    position: relative;
+    bottom: 99%;
+    left: 33%;
+  }

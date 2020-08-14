@@ -34,7 +34,7 @@ class SalespageClient extends Component {
       window.location="/invalidinvitation"
     }else{
     return (
-     <Video  video={this.state.video} audio={this.state.audio} pid={this.props.match.params.pid} roomId={this.props.match.params.roomid}/>
+     <Video  video={this.state.video} audio={this.state.audio} uid={this.props.match.params.uid} pid={this.props.match.params.pid} roomId={this.props.match.params.roomid}/>
     
     )}}
   }
