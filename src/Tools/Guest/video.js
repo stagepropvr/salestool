@@ -863,13 +863,13 @@ isRoomAlive = () => {
       
    
                {this.state.rtcstreams.map((key)=>{
-      if(key.type=="local"){
+      if(key.userid=="host"){
         return(
           <li style={{marginTop:'30px'}} className="video_content">
                           <div ref={this.localvideo}  className="guest_video fixed-video relative-localvideo">
                              <div className="videotools">
                            
-                               <span className="guest_video_name video_name_option">You</span>
+                               <span className="guest_video_name video_name_option">HOST</span>
                              
                           </div>
                           <VideoItem
