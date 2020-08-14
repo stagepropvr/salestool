@@ -9,7 +9,7 @@ class DocumentModal extends React.Component {
     super(props);
     this.state={
       pdf_modal:false,
-      pdf_data:'https://arxiv.org/pdf/quant-ph/0410100.pdf',
+      pdf_data:'',
       pdf_list:[]
     }
     this.handleregister=this.handleregister.bind(this);
@@ -125,7 +125,9 @@ componentDidMount(){
           </div>
         </div>
         </div>
-        <Pdfviewer open_close_pdf={this.open_close_pdf} pdf={this.state.pdf_modal} data={this.state.pdf_data}></Pdfviewer>
+        {this.state.pdf_data!=""?<Pdfviewer open_close_pdf={this.open_close_pdf} pdf={this.state.pdf_modal} data={this.state.pdf_data}></Pdfviewer>
+          :<></>
+        }
           </>
         
       )
