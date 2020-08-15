@@ -327,7 +327,7 @@ this.state.connection.onunmute = (e)=> {
  
   setAudioLocal() {
 
-    this.state.connection.send("audio");
+      
 
     if (this.state.localStream.stream.getAudioTracks().length > 0) {
       this.state.localStream.stream.getAudioTracks().forEach(track => {

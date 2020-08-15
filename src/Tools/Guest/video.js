@@ -636,11 +636,15 @@ this.setState({
     if(this.Sidenav.current.style.width==="320px"){
       this.Sidenav.current.style.width="0px";
           this.bottom.current.style.width="100%";
+          if(this.localvideo.current!==null){
          this.localvideo.current.classList.add('relative-localvideo');
+        }
     }
     else{
       this.Sidenav.current.style.width="320px";
-      this.localvideo.current.classList.remove('relative-localvideo');
+      
+      if(document.getElementsByClassName("relative-localvideo").length){
+      this.localvideo.current.classList.remove('relative-localvideo');}
       this.bottom.current.style.width=this.bottom.current.offsetWidth-259+"px";
     }
   }
@@ -879,7 +883,21 @@ isRoomAlive = () => {
       
       <ul className="video_div" style={{padding:'0px',height:'90%',overflowX:'hidden',overflowY: "auto", listStyle:"none",width:'85%',paddingLeft:'12px'}}>
       
-  
+  {this.state.rtcstreams.length? <li className="video_content">
+      <div className="fixed-video">
+         <div className="videotools">
+          
+           <span className="guest_video_name video_name_option">(YOU)</span>
+         
+      </div>
+      <VideoItem
+      key={this.state.localStream.userid}
+      userId={this.state.localStream.userid}
+      stream={this.state.localStream.stream}
+      type={true}
+    />
+      </div>
+               </li>:<></>}
 
 
                      
@@ -898,7 +916,7 @@ isRoomAlive = () => {
       key={key.userid}
       userId={key.userid}
       stream={key.stream}
-      type={true}
+      type={false}
     />
       </div>
                </li>
@@ -916,29 +934,12 @@ isRoomAlive = () => {
       key={key.userid}
       userId={key.userid}
       stream={key.stream}
-      type={true}
+      type={false}
     />
       </div>
                </li>
      )}
-    else{
-      return(
-      <li className="video_content">
-      <div className="fixed-video">
-         <div className="videotools">
-          
-           <span className="guest_video_name video_name_option">{key.extra.name}</span>
-         
-      </div>
-      <VideoItem
-      key={key.userid}
-      userId={key.userid}
-      stream={key.stream}
-      type={true}
-    />
-      </div>
-               </li>
-      )}}
+    }
    })}
               </ul>
       </div>
