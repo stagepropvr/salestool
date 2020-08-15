@@ -289,19 +289,21 @@ this.setState({
 };
 this.state.connection.onmute = (e)=> {
   const temp=this.state.connection;
-  
+
+ 
+
   this.setState({
-    connection:temp,
-    micState:!this.state.localStream.isAudioMuted
+    connection:temp
+    
   });
 };
 
 this.state.connection.onunmute = (e)=> {
   const temp=this.state.connection;
- 
+
   this.setState({
-    connection:temp,
-    micState:!this.state.localStream.isAudioMuted
+    connection:temp
+    
   });
 };
 

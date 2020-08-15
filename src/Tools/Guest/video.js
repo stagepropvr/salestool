@@ -252,7 +252,7 @@ if(!this.state.camState){
   this.state.localStream.stream.mute("video");
 
 }
-if(this.state.micState){
+if(!this.state.micState){
 
   this.state.localStream.stream.mute("audio");
  
