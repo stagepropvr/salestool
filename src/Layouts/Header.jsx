@@ -32,8 +32,6 @@ componentDidMount(){
     if (user) {
       var ref = Fire.database().ref("users/"+user.uid);
       ref.once('value',child=>{
-        if(child.hasChild('username') && child.hasChild('email'))
-        {
           if(child.hasChild('username')){
             this.setState({
               username:child.val().username,
@@ -42,7 +40,8 @@ componentDidMount(){
             })
           }else{
             this.setState({
-              username:'John Doe'
+              username:'John Doe',
+              loader:false
             })
           }
           if(child.hasChild('profile_pic')){
@@ -60,10 +59,6 @@ componentDidMount(){
           this.setState({
             email:child.val().email
           })
-        }
-        else{
-          console.log("User Not Found")    
-        }
       })
     }else{
       this.setState({
@@ -129,7 +124,8 @@ handleregister(event){
               myaccount:false,
             //  username:this.state.name,
               button_dis:true,
-              local_pic:url
+              local_pic:url,
+              file:""
             })
           })
         }
@@ -139,7 +135,8 @@ handleregister(event){
   
   
     }
-  }else if(this.state.username!==this.state.name){
+  }
+  else if(this.state.username!==this.state.name){
     this.fireBaseListener2 = Fire.auth().onAuthStateChanged((user) => {
       if (user) {
         Fire.database().ref("users/"+user.uid).update({
@@ -224,8 +221,7 @@ fileupload = (event)=>{
    return( 
    <>
    <nav className="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
-   <div style={{ "padding-left": "20px",
-  "padding-right": "20px"}} className="container">
+   <div style={{paddingLeft: "20px",paddingRight: "20px"}} className="container">
      <div style={{flex:'auto'}} className="navbar-translate">
        <a href="/" className="navbar-brand">
          <img style={{width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/logo.webp')}></img>                  
