@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-// import * as serviceWorker from "./registerServiceWorker";
+ import * as serviceWorker from "./registerServiceWorker";
 // const version="0.0.4"
 // if(localStorage.getItem("version")===version){
 //     serviceWorker.register();
@@ -10,7 +10,7 @@ import App from './App';
 // }
 // else{
 // localStorage.setItem("version",version);
-// serviceWorker.unregister();
+ serviceWorker.unregister();
 // }
 ReactDOM.render(<App />, document.getElementById('root'));
 
