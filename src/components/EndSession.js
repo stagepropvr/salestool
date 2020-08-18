@@ -93,7 +93,7 @@ export default class EndSession extends React.Component {
        
         if(uid && pid && rid && key)
         {
-            var ref =  Fire.database().ref('users/'+uid+'/Projects/'+pid+'/rooms/'+rid+'/analytics/'+key)
+            Fire.database().ref('users/'+uid+'/Projects/'+pid+'/rooms/'+rid+'/analytics/'+key)
             .update(
                 {feedback:{
                     Rating:this.state.stars,
@@ -119,25 +119,25 @@ export default class EndSession extends React.Component {
                     <div  className="endsession_container row">
                         <div style={{padding:0}}>
                             <div class="endsession_card card card-signup ">
-                            <a  className="endsession_logo">
-                                <img style={{width: '100%', height: '100%', objectFit: 'contain'}} src={require('../assets/logo.webp')}></img>                  
-                            </a>
+                            <div className="endsession_logo">
+                                <img alt="Logo" style={{width: '100%', height: '100%', objectFit: 'contain'}} src={require('../assets/logo.webp')}></img>                  
+                            </div>
                                 <h2 class="End-session-heading">Your session has ended</h2>
                                 <div style={{display:'flex',justifyContent:'flex-start',padding:'0',marginLeft:'-10px'}} className="JoiningForm">
                                         <div style={{margin:"0",padding:"0"}} className="row">
                                      <div className="card project_det_background">
                                     <div style={{padding: "0px"}} className="card-body d-flex flex-row">
                                       {this.state.loader?
-                                             <><a>
+                                             <><div>
                                               <div>
                                       <div style={{width:'280px',height:'108px'}} className="project_name">
                                       <span className="skeleton-box"></span>
                                      </div>
-                                  </div></a></>:<>
+                                  </div></div></>:<>
                                  <img src={this.state.img_src} height="93px"  width="81px" alt="avatar" />
                                   <div style={{width: "300px"}}>
         <h4 style={{paddingLeft: "25px",paddingTop:'3px'}} className="card-title project_heading">{this.state.pid}</h4>
-              <div style={{display:this.state.info_det==true?'flex':'none'}} className="card-text flex-row project_icon_content">
+              <div style={{display:this.state.info_det===true?'flex':'none'}} className="card-text flex-row project_icon_content">
                 <div>
                   <span>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -285,9 +285,9 @@ export default class EndSession extends React.Component {
 			<div  className="endsession_container row">
 				<div style={{padding:"0px"}} className="col-sm-12">
                     <div style={{boxShadow: 'none'}} className="endsession_card card card-signup">
-                    <a  className="endsession_logo">
-                                <img style={{width: '100%', height: '100%', objectFit: 'contain'}} src={require('../assets/logo.webp')}></img>                  
-                            </a>
+                    <div  className="endsession_logo">
+                                <img alt="Logo" style={{width: '100%', height: '100%', objectFit: 'contain'}} src={require('../assets/logo.webp')}></img>                  
+                            </div>
                         <div style={{margin:'0', padding:'0', marginTop: '10px', display: 'flex', height: '75%', justifyContent: 'center',alignItems: 'center'}} className="row">
                             <div style={{marginLeft: '0px'}}>
                                 <h2 className="End-session-heading" style={{fontSize: '26px'}}>Thanks for your feedback! We will get in touch.</h2>
@@ -296,16 +296,16 @@ export default class EndSession extends React.Component {
         <div className="card project_det_background">
           <div style={{padding: "0px"}} className="card-body d-flex flex-row">
           {this.state.loader?
-               <><a>
+               <><div>
                <div>
                 <div style={{width:'280px',height:'108px'}} className="project_name">
                  <span className="skeleton-box"></span>
                 </div>
-              </div></a></>:<>
+              </div></div></>:<>
             <img src={this.state.img_src} height="93px"  width="81px" alt="avatar" />
             <div style={{width: "300px"}}>
         <h4 style={{paddingLeft: "25px",paddingTop:'3px'}} className="card-title project_heading">{this.state.pid}</h4>
-              <div style={{display:this.state.info_det==true?'flex':'none'}} className="card-text flex-row project_icon_content">
+              <div style={{display:this.state.info_det===true?'flex':'none'}} className="card-text flex-row project_icon_content">
                 <div>
                   <span>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">

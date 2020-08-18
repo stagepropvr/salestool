@@ -123,7 +123,7 @@ return (
         <div style={{height: '72px', flexWrap: 'nowrap'}} className="row">
           <div className="content_padding dropup">
             <button ref={elem => this.menu = elem}  id="menu_bar" type="button" className="menu_option dropdown-toggle menu_option_click">
-              <span id="menu_bar_up" style={{display:this.state.menu_bar==false?'block':'none'}}>
+              <span id="menu_bar_up" style={{display:this.state.menu_bar===false?'block':'none'}}>
                 <svg id="menu_bar_up_icon" style={{transform: 'translateY(2px)'}}  width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__a" d="M6.373 7.22c.371-.298.901-.294 1.267.012l6 5c.424.354.481.984.128 1.408-.198.238-.482.36-.769.36-.225 0-.452-.076-.639-.232L6.99 9.293l-5.363 4.314c-.43.347-1.059.279-1.406-.152-.347-.43-.278-1.06.152-1.406zm0-7c.371-.298.901-.295 1.267.012l6 5c.425.353.482.983.128 1.408-.198.237-.482.36-.768.36-.226 0-.453-.077-.64-.232L6.989 2.292 1.627 6.607c-.43.346-1.059.278-1.406-.152-.346-.43-.278-1.06.152-1.407z" />
@@ -133,7 +133,7 @@ return (
                   </g>
                 </svg>
               </span>
-              <span style={{display:this.state.menu_bar==true?'block':'none', transform: 'translateY(2px)'}} id="menu_bar_down">
+              <span style={{display:this.state.menu_bar===true?'block':'none', transform: 'translateY(2px)'}} id="menu_bar_down">
                 <svg id="menu_bar_down_icon"  width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__down" d="M.232 7.36c.353-.424.983-.482 1.408-.128l5.371 4.476 5.362-4.315c.43-.345 1.061-.277 1.406.152.346.43.278 1.06-.152 1.407l-6 4.828c-.183.147-.405.22-.627.22-.228 0-.455-.077-.64-.232l-6-5c-.425-.353-.482-.983-.128-1.408zm0-7c.354-.425.983-.48 1.408-.128l5.37 4.475L12.374.393c.43-.346 1.06-.278 1.406.152.347.43.278 1.06-.152 1.406l-6 4.828C7.444 6.926 7.222 7 7 7c-.227 0-.455-.077-.64-.232l-6-5C-.064 1.414-.121.784.232.36z" />
@@ -146,7 +146,7 @@ return (
             </button>
             <div id="tools_div" className="tools_div_guest menudrop dropdown-menu show" x-placement="top-start" style={{position: 'absolute', top: '0px', left: '15px', willChange: 'top, left'}}>
 
-              <a onClick={()=> this.open_close('share',true)} name="share"  className="menudrop_item dropdown-item" href="#" data-tip="Share">
+              <div onClick={()=> this.open_close('share',true)} name="share"  className="menudrop_item dropdown-item" href="#" data-tip="Share">
                 <svg  width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__b" d="M16 16c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1M3 10c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1m13-8c.552 0 1 .448 1 1s-.448 1-1 1-1-.448-1-1 .448-1 1-1m0 10c-.817 0-1.557.33-2.099.861L5.966 9.335C5.979 9.224 6 9.114 6 9c0-.114-.021-.224-.034-.335l7.935-3.526C14.443 5.67 15.183 6 16 6c1.654 0 3-1.346 3-3s-1.346-3-3-3-3 1.346-3 3c0 .114.021.224.034.335L5.099 6.861C4.557 6.33 3.817 6 3 6 1.346 6 0 7.346 0 9s1.346 3 3 3c.817 0 1.557-.33 2.099-.861l7.935 3.526c-.013.111-.034.221-.034.335 0 1.654 1.346 3 3 3s3-1.346 3-3-1.346-3-3-3" />
@@ -155,7 +155,7 @@ return (
                     <use className="icon_svg" fill="#36F" xlinkHref="#prefix__b" />
                   </g>
                 </svg>
-              </a>
+              </div>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
              
               {/* <a onClick={()=> this.open_close('settings',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Settings">
@@ -237,9 +237,9 @@ return (
     {this.state.settings?<Settings videoinput={this.props.videoinput}
               audioinput={this.props.audioinput} changedevice={this.props.changedevice} open_close={this.open_close} />:<></>}
 
-{this.props.floorplandata!="false"?<FloorplanClient data={this.props.floorplandata}/>:<></>}
-{this.props.pdfdata!="false"?<PDFclient data={this.props.pdfdata}/>:<></>}
-{this.props.mapdata!="false"?<MapModal
+{this.props.floorplandata!=="false"?<FloorplanClient data={this.props.floorplandata}/>:<></>}
+{this.props.pdfdata!=="false"?<PDFclient data={this.props.pdfdata}/>:<></>}
+{this.props.mapdata!=="false"?<MapModal
         open_close={this.open_close}
         data={this.state.mapdata}
       />:<></>}

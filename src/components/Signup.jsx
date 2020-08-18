@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import Fire,{Firebase} from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
@@ -68,12 +68,12 @@ class Signup extends React.Component {
 handleregister(event){
     event.preventDefault();
 
-    if(this.state.name!='' && this.state.email!='' && this.state.password!=''){
+    if(this.state.name!=='' && this.state.email!=='' && this.state.password!==''){
 
         var alpha = /^[a-zA-Z-,]+(\s{0,1}[a-zA-Z-, ])*$/;
         if(this.state.name.match(alpha)){
 
-            var email=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            var email=/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
             if(this.state.email.match(email)){
                     document.getElementById('submit').style.display='none';
                     document.getElementById('loader').style.display='inline-block';
@@ -122,31 +122,31 @@ handleregister(event){
     
     }
     else{
-        if(this.state.name==''){
+        if(this.state.name===''){
             document.getElementById('name').classList.add('input_error_border');
             document.getElementById('name_error').childNodes[0].classList.remove('input_error_hide');
 
 
         }
 
-        if(this.state.cname==''){
+        if(this.state.cname===''){
                 document.getElementById('cname').classList.add('input_error_border');
                 document.getElementById('cname_error').childNodes[0].classList.remove('input_error_hide');
         }
 
-        if(this.state.number==''){
+        if(this.state.number===''){
             document.getElementById('number').classList.add('input_error_border');
             document.getElementById('number_error').childNodes[0].classList.remove('input_error_hide');
 
         }
 
-        if(this.state.password==''){
+        if(this.state.password===''){
             document.getElementById('password').classList.add('input_error_border');
             document.getElementById('password_error').childNodes[0].classList.remove('input_error_hide');
 
         }
 
-        if(this.state.email==''){
+        if(this.state.email===''){
             document.getElementById('email').classList.add('input_error_border');
             document.getElementById('email_error').childNodes[0].classList.remove('input_error_hide');
 
@@ -202,10 +202,10 @@ SignupWithGoogle(){
 			<div  className="login_container row">
             {/* image Col */}
             <div style={{padding:"0", maxHeight:'100vh', position:"relative"}} className="col-sm-5 d-none d-sm-block">
-                <img style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
+                <img alt='Background' style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
                 
                 <div className="loginNew_logo">
-                    <img style={{width: '100px', height: '71px', objectFit: 'cover'}} src={require('../assets//img/whitelogo.png')}></img>
+                    <img alt='Logo' style={{width: '100px', height: '71px', objectFit: 'cover'}} src={require('../assets//img/whitelogo.png')}></img>
                 </div>
                 
                 <div class="loginNew_center">

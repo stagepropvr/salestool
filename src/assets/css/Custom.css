@@ -12,7 +12,7 @@ background:#fff;
     display: -webkit-box;
     display: -moz-box;
     display: -ms-box;
-    display: box;
+    /* display: box; */
     }
 .owl-item{
     margin:0px 7px !important;

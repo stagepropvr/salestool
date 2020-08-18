@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
+// import { Redirect, Route, Link } from "react-router-dom";
 import Fire from "../../config/Firebase.jsx";
 import "../../assets/css/material-kit.css?v=2.0.7" ;
 import "../../assets/demo/demo.css";
@@ -51,7 +51,7 @@ componentDidMount(){
   render() {
       return( 
           <>
-    <div className="modal" style={{display:this.props.project==true?'block':'none'}} id="project_modal" tabIndex="-1" role="dialog">
+    <div className="modal" style={{display:this.props.project===true?'block':'none'}} id="project_modal" tabIndex="-1" role="dialog">
     <div className="modal-dialog" role="document">
       <div className="modal-content">
         <div className="modal-header">

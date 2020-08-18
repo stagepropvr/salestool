@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
+// import { Redirect, Route, Link } from "react-router-dom";
 import Fire from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
@@ -134,9 +134,9 @@ setVideoLocal() {
         <div style={{background: "#eeeeee"}} className="login_container row">
             {/* Image Col */}
             <div style={{padding:"0", maxHeight:'100vh', position:"relative"}} className="col-sm-5 d-none d-sm-block">
-                <img style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
+                <img alt="PropVR" style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
                 <div className="loginNew_logo">
-                    <img style={{width: '70%', height: '70%', objectFit: 'cover'}} src={require('../assets/logo.webp')}></img>
+                    <img alt="Logo" style={{width: '70%', height: '70%', objectFit: 'cover'}} src={require('../assets/logo.webp')}></img>
                 </div>
                 
                 <div className="loginNew_center">
@@ -161,16 +161,16 @@ setVideoLocal() {
         <div className="card project_det_background">
           <div style={{padding: "0px"}} className="card-body d-flex flex-row">
           {this.state.loader?
-               <><a>
+               <><div>
                <div>
                 <div style={{width:'280px',height:'108px'}} className="project_name">
                  <span className="skeleton-box"></span>
                 </div>
-              </div></a></>:<>
+              </div></div></>:<>
             <img src={this.state.img} height="125px"  width="81px" alt="avatar" />
             <div style={{width: "300px"}}>
         <h4 style={{paddingLeft: "25px",paddingTop:'3px'}} className="card-title project_heading">{this.props.pid}</h4>
-              <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">
+              <div style={{display:this.state.info_details===true?'flex':'none'}} className="card-text flex-row project_icon_content">
                 <div>
                   <span>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -352,16 +352,16 @@ setVideoLocal() {
         <div className="card project_det_background">
           <div style={{padding: "0px"}} className="card-body d-flex flex-row">
           {this.state.loader?
-               <><a>
+               <><div>
                <div>
                 <div style={{width:'280px',height:'108px'}} className="project_name">
                  <span className="skeleton-box"></span>
                 </div>
-              </div></a></>:<>
+              </div></div></>:<>
             <img src={this.state.img} height="93px"  width="81px" alt="avatar" />
             <div style={{width: "300px"}}>
         <h4 style={{paddingLeft: "25px",paddingTop:'3px'}} className="card-title project_heading">{this.props.pid}</h4>
-              <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">
+              <div style={{display:this.state.info_details===true?'flex':'none'}} className="card-text flex-row project_icon_content">
                 <div>
                   <span>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">

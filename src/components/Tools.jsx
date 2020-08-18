@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import Fire from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
@@ -50,12 +50,12 @@ componentDidMount(){
             <div className="project_list">
                    <div className="container" style={{"padding":"0"}}>
                        <div style={{padding: "16px 4px"}} className="row">
-                       <a href="#" className="product" id="creator">
-                           <img src="https://cdn.glitch.com/d919fddc-bed5-4101-a53e-3764014fe3bb%2F5.png?v=1585560094420" /></a>
+                       <div className="product" id="creator">
+                           <img alt="Creation Tool" src="https://cdn.glitch.com/d919fddc-bed5-4101-a53e-3764014fe3bb%2F5.png?v=1585560094420" /></div>
                       <Link to={"/salestool/projects"} className="product" id="sales">
-                          <img src="https://cdn.glitch.com/d919fddc-bed5-4101-a53e-3764014fe3bb%2F6.png?v=1585560098012" /></Link>
-                       <a href="#" className="product" id="strtview">
-                           <img src="https://cdn.glitch.com/d919fddc-bed5-4101-a53e-3764014fe3bb%2F4.png?v=1585560090774" /></a>  
+                          <img alt="Sales Tool " src="https://cdn.glitch.com/d919fddc-bed5-4101-a53e-3764014fe3bb%2F6.png?v=1585560098012" /></Link>
+                       <div className="product" id="strtview">
+                           <img alt="Street View Editor" src="https://cdn.glitch.com/d919fddc-bed5-4101-a53e-3764014fe3bb%2F4.png?v=1585560090774" /></div>  
                        </div>
                    </div>
             </div>

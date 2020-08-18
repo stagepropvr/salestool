@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Fire from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
@@ -169,13 +169,6 @@ handlechange(event){
 }
 
 
-
-handlechange(event){
-  const { name, value } = event.target;
-  this.setState({ [name]: value });
-
-}
-
 fileupload = (event)=>{
   let file = event.target.files[0];
   this.setState({
@@ -224,7 +217,7 @@ fileupload = (event)=>{
    <div style={{paddingLeft: "20px",paddingRight: "20px"}} className="container">
      <div style={{flex:'auto'}} className="navbar-translate">
        <a href="/" className="navbar-brand">
-         <img style={{width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/logo.webp')}></img>                  
+         <img alt="Logo" style={{width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/logo.webp')}></img>                  
        </a>
        {/* <button className="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
          <span className="sr-only">Toggle navigation</span>
@@ -262,7 +255,7 @@ fileupload = (event)=>{
            <b className="caret"></b>
          </a>}
          <div className="dropdown-menu dropdown-menu-right">
-           <a  style={{color:'#8f9bb3'}} className="header_dropdown header_dropdown_email dropdown-item">{this.state.email}</a>
+           <div  style={{color:'#8f9bb3'}} className="header_dropdown header_dropdown_email dropdown-item">{this.state.email}</div>
            {/* <a href="#javascript" style={{flexDirection: "column",height: "90px"}} className="header_dropdown dropdown-item">
            <span>Enterprise plan</span>
            <span className="header_dropdown_subtext">794 MB of 10000 MB used</span>
@@ -270,18 +263,18 @@ fileupload = (event)=>{
          <div className="progress-bar" role="progressbar" style={{width: "25%"}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
          </div>
          </a> */}
-           <a  className="header_dropdown dropdown-item">Downloads</a>
-           <a  onClick={()=> this.setState({
+           <div  className="header_dropdown dropdown-item">Downloads</div>
+           <div  onClick={()=> this.setState({
              myaccount:true
-           })} className="header_dropdown dropdown-item">My Account</a>
-           <a target="_blank" href="https://www.touchwizardtechnologies.com/#comp-jqhpwkc6" className="header_dropdown dropdown-item">Contact us</a>
-           <a href="#" style={{border:'none'}} onClick={this.signout} className="header_dropdown dropdown-item">Sign out</a>
+           })} className="header_dropdown dropdown-item">My Account</div>
+           <a target="_blank" rel="noopener noreferrer" href="https://www.touchwizardtechnologies.com/#comp-jqhpwkc6" className="header_dropdown dropdown-item">Contact us</a>
+           <div style={{border:'none'}} onClick={this.signout} className="header_dropdown dropdown-item">Sign out</div>
          </div>
        </li>
    </ul>
    </div>
  </nav>
- <div className="modal" style={{display:this.state.myaccount==true?'block':'none'}} id="myaccount_modal" tabIndex="-1" role="dialog">
+ <div className="modal" style={{display:this.state.myaccount===true?'block':'none'}} id="myaccount_modal" tabIndex="-1" role="dialog">
     <div className="modal-dialog" role="document">
       <div className="modal-content">
         <div className="modal-header">
@@ -327,7 +320,7 @@ fileupload = (event)=>{
                 <span style={{cursor:'pointer'}} onClick={this.onBtnClick} className="profile_edit">
                   <i className="fa fa-pencil profile_icon"></i>
                 </span>
-                  <img src={this.state.profile_pic} className="rounded-circle img-fluid" style={{height: "80px",width: "80px"}} />                  
+                  <img alt='Profile' src={this.state.profile_pic} className="rounded-circle img-fluid" style={{height: "80px",width: "80px"}} />                  
                 </div>
              </div>
           </div>

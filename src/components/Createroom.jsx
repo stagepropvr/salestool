@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import Fire from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
@@ -59,7 +59,7 @@ componentDidMount(){
             if(child.hasChild('Info')){
                 var ref1 = Fire.database().ref("users/"+user.uid+"/Projects/"+this.props.match.params.pid+'/Info');
                 ref1.once('value',snap=>{
-                    if(snap.val().des!='undefined'){
+                    if(snap.val().des!=='undefined'){
                         this.setState({ 
                           about:snap.val().des,
                           info_about:true
@@ -70,7 +70,7 @@ componentDidMount(){
                         })
                     }
 
-                    if(snap.val().baths=='' || snap.val().beds=='' || snap.val().sqft==''){
+                    if(snap.val().baths==='' || snap.val().beds==='' || snap.val().sqft===''){
                         this.setState({
                           info_details:false
                         })
@@ -142,7 +142,7 @@ room(){
   render() {
     if(this.state.redirect){
         const current_tag = 1;
-        if(this.state.room==""){
+        if(this.state.room===""){
         return(
             <>
              <Header current_tag={current_tag}/>
@@ -159,18 +159,18 @@ room(){
                         
           <div style={{padding: "0px"}} className="card-body d-flex flex-row">
           {this.state.loader?
-               <><a>
+               <><div>
                <div>
                 <div style={{width:'280px',height:'108px'}} className="project_name">
                  <span className="skeleton-box"></span>
                 </div>
-              </div></a></>:<>
+              </div></div></>:<>
            <img src={this.state.img} width="81px" height="93px" alt="avatar" />
          
             
             <div style={{width: "300px"}}>
         <h4 style={{paddingLeft: "25px",paddingTop:'3px'}} className="card-title project_heading">{this.props.match.params.pid}</h4>
-              <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">
+              <div style={{display:this.state.info_details===true?'flex':'none'}} className="card-text flex-row project_icon_content">
                 <div>
                   <span>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -230,11 +230,11 @@ room(){
       
     
      
-    <div style={{display:this.state.info_about==true?'flex':'none'}}  className="project_heading heading_align">
+    <div style={{display:this.state.info_about===true?'flex':'none'}}  className="project_heading heading_align">
       About the project
     </div>
 
-    <div style={{display:this.state.info_about==true?'flex':'none'}} className="project_about col-md-6">
+    <div style={{display:this.state.info_about===true?'flex':'none'}} className="project_about col-md-6">
             {this.state.about}
     </div>
 
@@ -246,7 +246,7 @@ room(){
   </div>
 
 
-  <div className="modal" style={{display: this.state.modal==true? 'block':'none'}} id="username_modal" tabIndex="-1" role="dialog">
+  <div className="modal" style={{display: this.state.modal===true? 'block':'none'}} id="username_modal" tabIndex="-1" role="dialog">
     <div className="modal-dialog" role="document">
       <div className="modal-content">
         <div className="modal-body">          

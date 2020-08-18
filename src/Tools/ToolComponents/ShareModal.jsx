@@ -1,9 +1,9 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
+// import { Redirect, Route, Link } from "react-router-dom";
 import "../../assets/css/material-kit.css?v=2.0.7" ;
 import "../../assets/demo/demo.css";
 import 'jquery';
-import ReactTooltip from "react-tooltip";
+// import ReactTooltip from "react-tooltip";
 
 class Share extends React.Component {
   constructor(props){
@@ -54,7 +54,7 @@ componentDidMount(){
 
   render() {
       return( 
-      <div style={{display:this.props.share==true?'block':'none'}} className="modal" id="share_modal" tabIndex="-1" role="dialog">
+      <div style={{display:this.props.share===true?'block':'none'}} className="modal" id="share_modal" tabIndex="-1" role="dialog">
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">

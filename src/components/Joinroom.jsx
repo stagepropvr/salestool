@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Fire from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
@@ -66,10 +66,10 @@ componentDidMount(){
  handlejoin(event){
     event.preventDefault();
     
-    if(this.state.name!='' && this.state.email!='' && this.state.number!=''){
+    if(this.state.name!=='' && this.state.email!=='' && this.state.number!==''){
         var alpha = /^[a-zA-Z-,]+(\s{0,1}[a-zA-Z-, ])*$/;
         if(this.state.name.match(alpha)){
-            var email=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            var email=/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
             if(this.state.email.match(email)){
                 var phoneno = /^\d{10}$/;
 
@@ -125,7 +125,7 @@ componentDidMount(){
         }
     }
     else{
-        if(this.state.name==''){
+        if(this.state.name===''){
             document.getElementById('name').classList.add('input_error_border');
             document.getElementById('name_error').childNodes[0].classList.remove('input_error_hide');
         }
@@ -135,7 +135,7 @@ componentDidMount(){
         //         document.getElementById('cname_error').childNodes[0].classList.remove('input_error_hide');
         // }
 
-        if(this.state.number==''){
+        if(this.state.number===''){
             document.getElementById('number').classList.add('input_error_border');
             document.getElementById('number_error').childNodes[0].classList.remove('input_error_hide');
 
@@ -147,7 +147,7 @@ componentDidMount(){
 
         // }
 
-        if(this.state.email==''){
+        if(this.state.email===''){
             document.getElementById('email').classList.add('input_error_border');
             document.getElementById('email_error').childNodes[0].classList.remove('input_error_hide');
 
@@ -194,9 +194,9 @@ if(this.state.redirect){
         <div style={{background: "#eeeeee"}} className="login_container row">
             {/* Image Col */}
             <div style={{padding:"0", maxHeight:'100vh', position:"relative"}} className="col-sm-5 d-none d-sm-block">
-                <img style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
+                <img alt="Background" style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
                 <div className="loginNew_logo">
-                    <img style={{width: '70%', height: '70%', objectFit: 'cover'}} src={require('../assets/logo.webp')}></img>
+                    <img alt="Logo" style={{width: '70%', height: '70%', objectFit: 'cover'}} src={require('../assets/logo.webp')}></img>
                 </div>
                 
                 <div className="loginNew_center">
@@ -220,16 +220,16 @@ if(this.state.redirect){
         <div className="card project_det_background">
           <div style={{padding: "0px"}} className="card-body d-flex flex-row">
           {this.state.loader?
-               <><a>
+               <><div>
                <div>
                 <div style={{width:'280px',height:'108px'}} className="project_name">
                  <span className="skeleton-box"></span>
                 </div>
-              </div></a></>:<>
+              </div></div></>:<>
             <img src={this.state.img} height="93px"  width="81px" alt="avatar" />
             <div style={{width: "300px"}}>
         <h4 style={{paddingLeft: "25px",paddingTop:'3px'}} className="card-title project_heading">{this.props.match.params.pid}</h4>
-              <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">
+              <div style={{display:this.state.info_details===true?'flex':'none'}} className="card-text flex-row project_icon_content">
                 <div>
                   <span>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -394,16 +394,16 @@ if(this.state.redirect){
                     <div style={{margin:0, padding:0, width:'100%'}} className="card project_det_background">    
                           <div style={{padding: "0px",height:'115px'}} className="card-body d-flex flex-row">
                           {this.state.loader?
-               <><a>
+               <><div>
                <div>
                 <div style={{width:'280px',height:'108px'}} className="project_name">
                  <span className="skeleton-box"></span>
                 </div>
-              </div></a></>:<>
+              </div></div></>:<>
                             <img src={this.state.img} width="81px"  alt="avatar" />
                             <div style={{width: "100%"}}>
                                 <h4 className="card-title project_heading" style={{textAlign:"center"}}>{this.props.match.params.pid}</h4>
-                                <div style={{display:this.state.info_details==true?'flex':'none'}} className="card-text flex-row project_icon_content">
+                                <div style={{display:this.state.info_details===true?'flex':'none'}} className="card-text flex-row project_icon_content">
                                     <div className="col">
                                     <span>
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">

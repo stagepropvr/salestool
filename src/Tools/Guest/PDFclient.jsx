@@ -1,9 +1,9 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
-import Fire from "../../config/Firebase.jsx";
+// import { Redirect, Route, Link } from "react-router-dom";
+// import Fire from "../../config/Firebase.jsx";
 import "../../assets/css/material-kit.css?v=2.0.7" ;
 import "../../assets/demo/demo.css";
-import $ from 'jquery';
+// import $ from 'jquery';
 import PDFViewer from 'mgr-pdf-viewer-react'
 
 class Pdfviewer extends React.Component {
@@ -12,13 +12,13 @@ class Pdfviewer extends React.Component {
     this.state={
       
     }
-   this. ExamplePDFViewer = this. ExamplePDFViewer.bind(this);
+   this.ExamplePDFViewer = this.ExamplePDFViewer.bind(this);
 }
   
 componentDidMount(){
     
     window.scrollTo(0, 0);
-    var data = this.props.data;
+    // var data = this.props.data;
   
     //document.getElementById('pdf_viewer').style.display='block'; 
 

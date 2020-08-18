@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import Fire,{Firebase} from "../config/Firebase.jsx";
 import "../assets/css/material-kit.css?v=2.0.7" ;
 import "../assets/demo/demo.css";
@@ -62,8 +62,8 @@ componentDidMount(){
   }
 
   forgetpass(event){
-      if(this.state.forget_email!=''){
-        var email=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if(this.state.forget_email!==''){
+        var email=/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
         if(this.state.forget_email.match(email)){
             Fire.auth().sendPasswordResetEmail(this.state.forget_email).then(()=>{
                 document.getElementById('other_exception').childNodes[0].classList.remove('input_error_hide'); 
@@ -102,9 +102,9 @@ componentDidMount(){
   }
   handlelogin(event){
       event.preventDefault();
-      if(this.state.email!='' && this.state.password!=''){
-            if(this.state.email!=''){
-                    if(this.state.password!=''){
+      if(this.state.email!=='' && this.state.password!==''){
+            if(this.state.email!==''){
+                    if(this.state.password!==''){
                         document.getElementById('submit').style.display='none';
                         document.getElementById('loader').style.display='inline-block';
                         Fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then( result => {
@@ -167,7 +167,6 @@ googleSignin = () => {
 
      Fire.auth().signInWithPopup(provider).then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = result.credential.accessToken;
         // The signed-in user info.
         var user = result.user;
         localStorage.setItem("id", user.uid);
@@ -194,21 +193,9 @@ googleSignin = () => {
 
         // ...
       }).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        // ...
+        
       });
 }
-
-
-
-
-
 
   render() {
     if(this.state.redirect){
@@ -222,10 +209,10 @@ googleSignin = () => {
 			<div  className="login_container row">
             {/* image Col */}
             <div style={{padding:"0", maxHeight:'100vh', position:"relative"}} className="col-sm-5">
-                <img style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
+                <img alt="PropVR" style={{  width: '100%', height: '100%', objectFit: 'cover'}} src={require('../assets/loginBG.png')}></img>
                 
                 <div className="loginNew_logo">
-                    <img style={{width: '100px', height: '71px', objectFit: 'cover'}} src={require('../assets/img/whitelogo.png')}></img>
+                    <img alt="Logo" style={{width: '100px', height: '71px', objectFit: 'cover'}} src={require('../assets/img/whitelogo.png')}></img>
                 </div>
                 
                 <div class="loginNew_center">
@@ -296,7 +283,7 @@ googleSignin = () => {
 		</div>
 	</div>
 
-    <div className="modal" style={{display: this.state.modal==true? 'block':'none'}} id="forget_modal" tabIndex="-1" role="dialog">
+    <div className="modal" style={{display: this.state.modal===true? 'block':'none'}} id="forget_modal" tabIndex="-1" role="dialog">
     <div className="modal-dialog" role="document">
       <div className="modal-content">
         <div className="modal-header">
@@ -409,7 +396,7 @@ googleSignin = () => {
 		</div>
 	</div>
 
-    <div className="modal" style={{display: this.state.modal==true? 'block':'none'}} id="forget_modal" tabIndex="-1" role="dialog">
+    <div className="modal" style={{display: this.state.modal===true? 'block':'none'}} id="forget_modal" tabIndex="-1" role="dialog">
     <div className="modal-dialog" role="document">
       <div className="modal-content">
         <div className="modal-header">
