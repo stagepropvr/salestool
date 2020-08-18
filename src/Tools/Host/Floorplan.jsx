@@ -1,6 +1,6 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
-import Fire from "../../config/Firebase.jsx";
+// import { Redirect, Route, Link } from "react-router-dom";
+// import Fire from "../../config/Firebase.jsx";
 import "../../assets/css/material-kit.css?v=2.0.7" ;
 import "../../assets/demo/demo.css";
 import Select from 'react-select';
@@ -88,7 +88,7 @@ componentDidMount(){
             var k;
             for(j in list[i]['pins']){
                 for(k in this.props.data.images){
-                    if(this.props.data.images[k].url==list[i]['pins'][j].dest){
+                    if(this.props.data.images[k].url===list[i]['pins'][j].dest){
                         pins.push({
                             x:list[i]['pins'][j].posx,
                             y:list[i]['pins'][j].posy,
@@ -177,9 +177,9 @@ componentDidMount(){
                 <div className="row">
                     {this.state.floorplan_list.map((value,index)=>{
                         return(
-                            <div className="map_div" key={index} id={value.id} style={{display:(value.index==0 ? 'block':'none')}}>
+                            <div className="map_div" key={index} id={value.id} style={{display:(value.index===0 ? 'block':'none')}}>
                             <div className="map">
-                            <img  src={value.url} style={{width: "100%",height:'240px'}}/>
+                            <img alt="Floor" src={value.url} style={{width: "100%",height:'240px'}}/>
                             </div>
                             {value.pins.map((sub)=>{
                                 return(

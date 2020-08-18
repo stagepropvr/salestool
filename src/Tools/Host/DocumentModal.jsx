@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
+// import { Redirect, Route, Link } from "react-router-dom";
 import "../../assets/css/material-kit.css?v=2.0.7" ;
 import "../../assets/demo/demo.css";
 import Pdfviewer from "./Pdfviewer";
@@ -40,7 +40,7 @@ componentDidMount(){
   }
 
   open_close_pdf = (name,flag) =>{
-    if(flag==true){
+    if(flag===true){
       this.props.open_close('document',false);
 
     }
@@ -70,7 +70,7 @@ componentDidMount(){
   render() {
       return( 
           <>
-          <div style={{display:this.props.document==true?'block':'none'}} className="modal" id="document_modal" tabIndex="-1" role="dialog">
+          <div style={{display:this.props.document===true?'block':'none'}} className="modal" id="document_modal" tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
@@ -125,7 +125,7 @@ componentDidMount(){
           </div>
         </div>
         </div>
-        {this.state.pdf_data!=""?<Pdfviewer open_close_pdf={this.open_close_pdf} pdf={this.state.pdf_modal} data={this.state.pdf_data}></Pdfviewer>
+        {this.state.pdf_data!==""?<Pdfviewer open_close_pdf={this.open_close_pdf} pdf={this.state.pdf_modal} data={this.state.pdf_data}></Pdfviewer>
           :<></>
         }
           </>

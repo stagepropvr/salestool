@@ -8,10 +8,7 @@ import OwlCarousel from 'react-owl-carousel';
 
 
 export default class BottomSlider extends React.Component { 
-    
-constructor(props){
-    super(props);
-}
+ 
 
 render(){
     const res = {

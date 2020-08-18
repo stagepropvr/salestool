@@ -1,10 +1,9 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Fire from "../../config/Firebase.jsx";
 import "../../assets/css/material-kit.css?v=2.0.7" ;
 import "../../assets/demo/demo.css";
 import 'jquery';
-import ReactTooltip from "react-tooltip";
 
 class CloseModal extends React.Component {
   constructor(props){
@@ -29,7 +28,7 @@ class CloseModal extends React.Component {
       
       if(uid && key && end)
       {
-        var ref =  Fire.database().ref('users/'+uid+'/Projects/'+this.props.project+'/rooms/'+this.props.room+'/analytics/'+key).update({
+        Fire.database().ref('users/'+uid+'/Projects/'+this.props.project+'/rooms/'+this.props.room+'/analytics/'+key).update({
             endTime:end,
         });
         //
@@ -66,7 +65,7 @@ componentDidMount(){
     }
     else{
       return( 
-        <div style={{display:this.props.close==true?'block':'none'}} className="modal" id="close_modal" tabIndex="-1" role="dialog">
+        <div style={{display:this.props.close===true?'block':'none'}} className="modal" id="close_modal" tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">

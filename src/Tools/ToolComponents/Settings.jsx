@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
+// import { Redirect, Route, Link } from "react-router-dom";
 class Settings extends React.Component{
     constructor(props){
         super(props);
@@ -16,8 +16,7 @@ this.change=this.change.bind(this);
 this.submit=this.submit.bind(this);
 
         navigator.mediaDevices.enumerateDevices().then((device)=>{
-Object.values(device.map((value)=>{
-
+Object.values(device.foreach((value)=>{
   this.setState(ele => ({
     [value.kind]: [...ele[value.kind], {value}]
   }))

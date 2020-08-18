@@ -68,10 +68,10 @@ open_close = (name,flag) =>{
     }
     }else{
       document.getElementById('bottom').classList.remove('bottom_modal_open');
-      var a = document.querySelectorAll('pad15_modal_open_active');
-       a = document.querySelectorAll('.pad15');
-      for(var i =0 ; i<a.length;i++){
-          var classname = a[i].parentNode.className;
+      a = document.querySelectorAll('pad15_modal_open_active');
+      a = document.querySelectorAll('.pad15');
+      for(i =0 ; i<a.length;i++){
+          classname = a[i].parentNode.className;
           if(classname.includes('item_active')){
               a[i].classList.remove('pad15_modal_open_active');
               a[i].childNodes[0].classList.remove('slider_name_modal_open_active');
@@ -117,7 +117,7 @@ return (
             </button>
             <div id="tools_div" className="tools_div_guest menudrop dropdown-menu show" x-placement="top-start" style={{position: 'absolute', top: '0px', left: '15px', willChange: 'top, left'}}>
 
-              <a onClick={()=> this.open_close('share',true)} name="share"  className="menudrop_item dropdown-item" href="#" data-tip="Share">
+              <div onClick={()=> this.open_close('share',true)} name="share"  className="menudrop_item dropdown-item" href="#" data-tip="Share">
                 <svg  width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__b" d="M16 16c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1M3 10c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1m13-8c.552 0 1 .448 1 1s-.448 1-1 1-1-.448-1-1 .448-1 1-1m0 10c-.817 0-1.557.33-2.099.861L5.966 9.335C5.979 9.224 6 9.114 6 9c0-.114-.021-.224-.034-.335l7.935-3.526C14.443 5.67 15.183 6 16 6c1.654 0 3-1.346 3-3s-1.346-3-3-3-3 1.346-3 3c0 .114.021.224.034.335L5.099 6.861C4.557 6.33 3.817 6 3 6 1.346 6 0 7.346 0 9s1.346 3 3 3c.817 0 1.557-.33 2.099-.861l7.935 3.526c-.013.111-.034.221-.034.335 0 1.654 1.346 3 3 3s3-1.346 3-3-1.346-3-3-3" />
@@ -126,7 +126,7 @@ return (
                     <use className="icon_svg" fill="#36F" xlinkHref="#prefix__b" />
                   </g>
                 </svg>
-              </a>
+              </div>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
 
             </div>

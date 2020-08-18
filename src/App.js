@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import Salespage from './Layouts/Salespage'
@@ -9,7 +9,7 @@ import Projects from "./components/Projects";
 import Createroom from "./components/Createroom";
 import Joinroom from "./components/Joinroom";
 import EndSession from "./components/EndSession"
-import JoiningRoom from "./components/JoiningRoom"
+// imsport JoiningRoom from "./components/JoiningRoom"
 import Tools from './components/Tools';
 import SalespageClient from './Layouts/SalespageClient';
 import Pixel from './pixel/pixel'
@@ -44,7 +44,7 @@ class App extends Component {
 
          <Route  path='/salestool/feedback' component={EndSession} />
 
-         <Route  path='/salestool/joining' component={JoiningRoom} />
+         {/* <Route  path='/salestool/joining' component={JoiningRoom} /> */}
 
          <Route  path='/salestool/pixel' component={Pixel} />
 

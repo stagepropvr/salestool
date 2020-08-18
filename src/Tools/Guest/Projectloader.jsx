@@ -55,7 +55,7 @@ componentDidMount(){
 				<div style={{padding:"0",height:'100%'}}>
                     <div style={{padding:'0',boxShadow: "none",position:'absolute',width:'100%',background:'#fff'}} className="endsession_card">
                     <div className="loader-logo">
-                      <img style={{width: '70%', height: '70%', objectFit: 'cover'}} src={require('../../assets/logo.webp')}></img>
+                      <img alt="Logo" style={{width: '70%', height: '70%', objectFit: 'cover'}} src={require('../../assets/logo.webp')}></img>
                     </div>
                    
                 <div style={{margin:"auto",bottom:'0',position:'absolute',padding:"0",flexDirection:'column',display: "flex",height: "70%",alignItems: "center",width:'100%'}}>

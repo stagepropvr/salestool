@@ -27,8 +27,7 @@ class SceneControls extends React.Component {
       floorplandata:"false",
       pdfdata:"false",
       settings:false,
-      mapdata:"",
-      map:false,
+      mapdata:""
     }
   }
 
@@ -151,10 +150,10 @@ open_close = (name,flag) =>{
       document.getElementById('right_light_mode').style.display='block';
   
       document.getElementById('bottom').classList.remove('bottom_modal_open');
-      var a = document.querySelectorAll('pad15_modal_open_active');
+      a = document.querySelectorAll('pad15_modal_open_active');
        a = document.querySelectorAll('.pad15');
-      for(var i =0 ; i<a.length;i++){
-          var classname = a[i].parentNode.className;
+      for( i =0 ; i<a.length;i++){
+           classname = a[i].parentNode.className;
           if(classname.includes('item_active')){
               a[i].classList.remove('pad15_modal_open_active');
               a[i].childNodes[0].classList.remove('slider_name_modal_open_active');
@@ -210,7 +209,7 @@ return (
             </button>
             <div id="tools_div" className="menudrop dropdown-menu show" x-placement="top-start" style={{position: 'absolute', top: '0px', left: '15px', willChange: 'top, left'}}>
 
-              <a onClick={()=> this.open_close('share',true)} name="share"  className="menudrop_item dropdown-item" href="#" data-tip="Share">
+              <div onClick={()=> this.open_close('share',true)} name="share"  className="menudrop_item dropdown-item" href="#" data-tip="Share">
                 <svg  width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__b" d="M16 16c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1M3 10c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1m13-8c.552 0 1 .448 1 1s-.448 1-1 1-1-.448-1-1 .448-1 1-1m0 10c-.817 0-1.557.33-2.099.861L5.966 9.335C5.979 9.224 6 9.114 6 9c0-.114-.021-.224-.034-.335l7.935-3.526C14.443 5.67 15.183 6 16 6c1.654 0 3-1.346 3-3s-1.346-3-3-3-3 1.346-3 3c0 .114.021.224.034.335L5.099 6.861C4.557 6.33 3.817 6 3 6 1.346 6 0 7.346 0 9s1.346 3 3 3c.817 0 1.557-.33 2.099-.861l7.935 3.526c-.013.111-.034.221-.034.335 0 1.654 1.346 3 3 3s3-1.346 3-3-1.346-3-3-3" />
@@ -219,10 +218,10 @@ return (
                     <use className="icon_svg" fill="#36F" xlinkHref="#prefix__b" />
                   </g>
                 </svg>
-              </a>
+              </div>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
             
-              <a onClick={()=> this.open_close('project',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Switch project">
+              <div onClick={()=> this.open_close('project',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Switch project">
                 <svg  width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__c" d="M4.4 9.2c.443-.33 1.069-.242 1.4.2.331.442.242 1.07-.2 1.4L4 12h13c.552 0 1 .447 1 1 0 .553-.448 1-1 1H3.918l1.558 1.21c.436.34.515.968.176 1.403-.197.254-.492.387-.79.387-.215 0-.431-.068-.613-.21l-3.862-3c-.247-.19-.389-.486-.387-.799.002-.31.15-.604.4-.79zM12.348.387c.339-.437.968-.516 1.403-.177l3.862 3c.247.191.389.486.387.8-.002.31-.15.603-.4.79l-4 3c-.18.135-.391.2-.599.2-.304 0-.605-.138-.801-.4-.331-.442-.242-1.069.2-1.4L14 5H1c-.552 0-1-.447-1-1 0-.553.448-1 1-1h13.082l-1.558-1.21c-.436-.339-.515-.968-.176-1.403z" />
@@ -231,12 +230,12 @@ return (
                     <use className="icon_svg" fill="#36F" xlinkHref="#prefix__c" />
                   </g>
                 </svg>
-              </a>
+              </div>
               
              {!this.props.lock?
              <>
              <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
-              <a onClick={this.props.setlock} data-toggle="tooltip" data-placement="right"  className="menudrop_item dropdown-item" href="#" data-tip="Lock">
+              <div onClick={this.props.setlock} data-toggle="tooltip" data-placement="right"  className="menudrop_item dropdown-item" href="#" data-tip="Lock">
               <svg height={24}  width={24}  viewBox="0 0 24 24">
                     <g data-name="Layer 2">
                       <g fill="#36F" data-name="lock">
@@ -246,12 +245,12 @@ return (
                       </g>
                     </g>
               </svg>
-              </a>
+              </div>
               </>
             :
             <>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
-            <a onClick={this.props.setlock} data-toggle="tooltip" data-placement="right" className="menudrop_item dropdown-item" href="#" data-tip="Unlock">
+            <div onClick={this.props.setlock} data-toggle="tooltip" data-placement="right" className="menudrop_item dropdown-item" href="#" data-tip="Unlock">
                   <svg height={24}  width={24}   viewBox="0 0 24 24">
                       <g data-name="Layer 2">
                       <g fill="#FF3D71" data-name="unlock">
@@ -260,12 +259,12 @@ return (
                           <path d="M12 12a3 3 0 1 0 3 3 3 3 0 0 0-3-3zm0 4a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"/>
                       </g></g>
                     </svg>
-              </a>
+              </div>
             
 </>
 
             }
-              <a onClick={()=> this.open_close('document',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Brochure">
+              <div onClick={()=> this.open_close('document',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Brochure">
                 <svg  width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__d" d="M11 14c.553 0 1 .448 1 1s-.447 1-1 1H5c-.552 0-1-.448-1-1s.448-1 1-1zm-3-4c.552 0 1 .448 1 1s-.448 1-1 1H5c-.552 0-1-.448-1-1s.448-1 1-1zm5.444 8H2.555C2.25 18 2 17.776 2 17.5v-15c0-.276.25-.5.555-.5H8v3.15C8 6.722 9.217 8 10.714 8H14v9.5c0 .276-.249.5-.556.5zM10 2.978L12.742 6h-2.028C10.32 6 10 5.619 10 5.15V2.978zm5.74 3.35l-5.444-6C10.106.119 9.838 0 9.556 0h-7C1.145 0 0 1.122 0 2.5v15C0 18.878 1.146 20 2.555 20h10.89C14.852 20 16 18.878 16 17.5V7c0-.249-.093-.488-.26-.672z" />
@@ -274,12 +273,12 @@ return (
                     <use className="icon_svg" fill="#36F" xlinkHref="#prefix__d" />
                   </g>
                 </svg>
-              </a>
+              </div>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
 
               {/* {this.state.data.plans && */}
               <>
-              <a onClick={()=> this.open_close('floorplan',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Floor Plan">
+              <div onClick={()=> this.open_close('floorplan',true)} data-toggle="tooltip" data-placement="right" title="" className="menudrop_item dropdown-item" href="#" data-tip="Floor Plan">
                 <svg  width={24} height={24} viewBox="0 0 24 24">
                   <defs>
                     <path id="prefix__e" d="M15.69 12.963L10 15.607V8.89l6-2.787v6.435c0 .174-.118.336-.31.424zm-13.387 0c-.189-.087-.305-.25-.303-.431V6.104L8 8.89v6.718l-5.697-2.645zm6.404-10.9C8.798 2.022 8.9 2 9 2c.1 0 .201.02.292.064l5.33 2.474L9 7.15 3.378 4.538l5.33-2.474zm8.95 2.196c-.004-.008-.003-.017-.007-.025-.003-.008-.01-.013-.016-.021-.046-.076-.102-.143-.155-.213-.03-.034-.056-.072-.09-.101-.235-.276-.512-.52-.856-.678l-6.4-2.973-.002-.001c-.719-.332-1.544-.331-2.265 0L1.47 3.22c-.344.159-.622.4-.857.677-.037.03-.064.073-.097.11-.052.067-.105.132-.149.204-.005.009-.013.015-.017.023-.004.009-.003.018-.007.027C.132 4.623 0 5.03 0 5.458v7.067c-.008.95.564 1.834 1.458 2.252l6.4 2.972c.361.169.75.253 1.138.253.388 0 .776-.084 1.137-.252l6.397-2.972c.892-.412 1.47-1.29 1.47-2.238V5.457c0-.428-.132-.835-.344-1.198z" />
@@ -288,7 +287,7 @@ return (
                     <use className="icon_svg" fill="#36F" xlinkHref="#prefix__e" />
                   </g>
                 </svg>
-              </a>
+              </div>
               <ReactTooltip aria-haspopup='true'  place="right" type="light" effect="solid"/>
               </>
               {/* } */}

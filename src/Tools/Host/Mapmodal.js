@@ -1,5 +1,5 @@
 import React from 'react';
-import {Map, InfoWindow, Marker, GoogleApiWrapper,Circle,Listing} from 'google-maps-react';
+import {Map, Marker, GoogleApiWrapper,Circle} from 'google-maps-react';
 import "../../styles/mapmodal.css"
 
 export class MapModal extends React.Component {
@@ -51,7 +51,7 @@ export class MapModal extends React.Component {
 
     collapse = (str) => {
         this.searchplace(str)
-        if(str != this.state.tab)
+        if(str !== this.state.tab)
         {
             this.setState({
                 current_tab:str
@@ -126,7 +126,7 @@ export class MapModal extends React.Component {
             maps:new google.maps.places.PlacesService(map),
             current_map:map
         })
-        const service = new google.maps.places.PlacesService(map);
+        // const service = new google.maps.places.PlacesService(map);
         // ...  
       }
 
@@ -134,7 +134,7 @@ export class MapModal extends React.Component {
       //  const {google} = this.state.google_props;
          var data = this.props.data;
 
-        if(data!="false"){
+        if(data!=="false"){
             var latlng = this.props.data;
             latlng = latlng.split(",");
             this.setState({
@@ -159,9 +159,15 @@ export class MapModal extends React.Component {
         this.setState({
             places:results
         })
-        this.state.getNextPage = pagination.hasNextPage && function() {
-          pagination.nextPage();
-        };
+        console.log('Pew',this.state.getNextPage,pagination.hasNextPage)
+        
+        this.setState({getNextPage:pagination.hasNextPage && function() {
+            pagination.nextPage();
+          }})
+
+        //   this.state.getNextPage = pagination.hasNextPage && function() {
+        //     pagination.nextPage();
+        //   };
       }
 
       changetype_local=(e,str)=>{
@@ -220,7 +226,7 @@ export class MapModal extends React.Component {
                             
                             {this.state.show && this.state.tab === "train_station" &&
                                 <div className="contentg">                                   
-                                {this.state.places!=undefined && this.state.places.map((value,index)=>{
+                                {this.state.places!==undefined && this.state.places.map((value,index)=>{
                                           return(
                                             <div key={index} className="map-row content-button1">
                                             <div className="map-col stick-left" >{value.name}</div>
@@ -245,7 +251,7 @@ export class MapModal extends React.Component {
                             
                             {this.state.show && this.state.tab === "bus_station" &&
                                  <div className="contentg"> 
-                                    {this.state.places!=undefined && this.state.places.map((value,index)=>{
+                                    {this.state.places!==undefined && this.state.places.map((value,index)=>{
                                           return(
                                             <div className="map-row content-button1">
                                             <div className="map-col stick-left" >{value.name}</div>
@@ -268,7 +274,7 @@ export class MapModal extends React.Component {
                             
                             {this.state.show && this.state.tab === "airport" &&
                                 <div className="contentg">
-                                    {this.state.places!=undefined && this.state.places.map((value,index)=>{
+                                    {this.state.places!==undefined && this.state.places.map((value,index)=>{
                                           return(
                                             <div className="map-row content-button1">
                                             <div className="map-col stick-left" >{value.name}</div>
@@ -298,7 +304,7 @@ export class MapModal extends React.Component {
                             
                             {this.state.show && this.state.tab === "bank" &&
                                 <div className="contentg">
-                                    {this.state.places!=undefined && this.state.places.map((value,index)=>{
+                                    {this.state.places!==undefined && this.state.places.map((value,index)=>{
                                           return(
                                             <div className="map-row content-button1">
                                             <div className="map-col stick-left" >{value.name}</div>
@@ -321,7 +327,7 @@ export class MapModal extends React.Component {
                             
                             {this.state.show && this.state.tab === "hospital" &&
                                 <div className="contentg">
-                                        {this.state.places!=undefined && this.state.places.map((value,index)=>{
+                                        {this.state.places!==undefined && this.state.places.map((value,index)=>{
                                           return(
                                             <div className="map-row content-button1">
                                             <div className="map-col stick-left" >{value.name}</div>
@@ -344,7 +350,7 @@ export class MapModal extends React.Component {
                             
                             {this.state.show && this.state.tab === "school" &&
                                 <div className="contentg">
-                                    {this.state.places!=undefined && this.state.places.map((value,index)=>{
+                                    {this.state.places!==undefined && this.state.places.map((value,index)=>{
                                           return(
                                             <div className="map-row content-button1">
                                             <div className="map-col stick-left" >{value.name}</div>
@@ -366,7 +372,7 @@ export class MapModal extends React.Component {
                             
                             {this.state.show && this.state.tab === "department_store" &&
                                 <div className="contentg">
-                                    {this.state.places!=undefined && this.state.places.map((value,index)=>{
+                                    {this.state.places!==undefined && this.state.places.map((value,index)=>{
                                           return(
                                             <div className="map-row content-button1">
                                             <div className="map-col stick-left" >{value.name}</div>
@@ -394,7 +400,7 @@ export class MapModal extends React.Component {
                             
                             {this.state.show && this.state.tab === "restaurants" &&
                                 <div className="contentg">
-                                    {this.state.places!=undefined && this.state.places.map((value,index)=>{
+                                    {this.state.places!==undefined && this.state.places.map((value,index)=>{
                                           return(
                                             <div className="map-row content-button1">
                                             <div className="map-col stick-left" >{value.name}</div>
@@ -417,7 +423,7 @@ export class MapModal extends React.Component {
                             
                             {this.state.show && this.state.tab === "movie_theater" &&
                                 <div className="contentg">
-                                        {this.state.places!=undefined && this.state.places.map((value,index)=>{
+                                        {this.state.places!==undefined && this.state.places.map((value,index)=>{
                                           return(
                                             <div className="map-row content-button1">
                                             <div className="map-col stick-left" >{value.name}</div>
@@ -440,7 +446,7 @@ export class MapModal extends React.Component {
                             
                             {this.state.show && this.state.tab === "park" &&
                                 <div className="contentg">
-                                    {this.state.places!=undefined && this.state.places.map((value,index)=>{
+                                    {this.state.places!==undefined && this.state.places.map((value,index)=>{
                                           return(
                                             <div className="map-row content-button1">
                                             <div className="map-col stick-left" >{value.name}</div>
@@ -462,7 +468,7 @@ export class MapModal extends React.Component {
                             
                             {this.state.show && this.state.tab === "bar" &&
                                 <div className="contentg">
-                                    {this.state.places!=undefined && this.state.places.map((value,index)=>{
+                                    {this.state.places!==undefined && this.state.places.map((value,index)=>{
                                         return(
                                             <div className="map-row content-button1">
                                             <div className="map-col stick-left" >{value.name}</div>
@@ -480,7 +486,7 @@ export class MapModal extends React.Component {
                 </div>
                   </div>
                 </div>
-                <div className="map-col" className="map-col">
+                <div className="map-col">
                 <div className="map">
                     {/* <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyDH_UFxLxEo1w5RuI8R3QHoVkWY2r6Xc0M' }}
@@ -510,7 +516,7 @@ export class MapModal extends React.Component {
                          position={{ lat: this.state.lat, lng: this.state.long }}
                                 name={'Current location'} />
 
-{this.state.places!=undefined && this.state.places.map((value,index)=>{
+{this.state.places!==undefined && this.state.places.map((value,index)=>{
     return(<Marker
         name={value.name}
         position={{lat: value.geometry.location.lat(), lng: value.geometry.location.lng()}}

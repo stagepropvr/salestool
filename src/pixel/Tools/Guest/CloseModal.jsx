@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import "../../../assets/css/material-kit.css?v=2.0.7" ;
 import "../../../assets/demo/demo.css";
 import 'jquery';
@@ -40,7 +40,7 @@ componentDidMount(){
     }
     else{
       return( 
-        <div style={{display:this.props.close==true?'block':'none'}} className="modal" id="close_modal" tabIndex="-1" role="dialog">
+        <div style={{display:this.props.close===true?'block':'none'}} className="modal" id="close_modal" tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">

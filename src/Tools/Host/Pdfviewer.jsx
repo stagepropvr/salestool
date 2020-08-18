@@ -9,14 +9,14 @@ class Pdfviewer extends React.Component {
     this.state={
       
     }
-   this. ExamplePDFViewer = this. ExamplePDFViewer.bind(this);
+   this.ExamplePDFViewer = this.ExamplePDFViewer.bind(this);
  
 }
   
 componentDidMount(){
     
     window.scrollTo(0, 0);
-    var data = this.props.data;
+    // var data = this.props.data;
   
     //document.getElementById('pdf_viewer').style.display='block'; 
 
@@ -57,7 +57,7 @@ componentDidMount(){
 
   render() {
       return( 
-        <div style={{display:this.props.pdf==true?'block':'none'}} className="modal" id="pdf_modal" tabIndex="-1" role="dialog">
+        <div style={{display:this.props.pdf===true?'block':'none'}} className="modal" id="pdf_modal" tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
           <div style={{height:'fit-content'}} className="modal-content">   
               <div id="df_manual_book">

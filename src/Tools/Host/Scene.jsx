@@ -1,10 +1,9 @@
 import React from 'react';
 
-import AFRAME from 'aframe';
+import 'aframe';
 import 'aframe-look-at-component';
-import * as THREE from 'three'
 import AssestsLoader from "./AssetsLoader";
-import Fire from "../../config/Firebase.jsx";
+// import Fire from "../../config/Firebase.jsx";
 
 class Scene extends React.Component {
 
