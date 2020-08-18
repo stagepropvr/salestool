@@ -141,7 +141,7 @@ this.audioallctrl=this.audioallctrl.bind(this);
       this.state.connection.socketURL = 'https://propvrrtc.propvr.tech/';
   
 
-
+      this.state.connection.enableLogs = false;
       this.state.connection.session = {
           audio: true,
           video: true
@@ -194,15 +194,15 @@ this.state.connection.onstreamended = (event)=> {
   })); 
 };
 this.state.connection.onstream = event => {
-console.log( event.stream.streamid );
 
 
-console.log(this.state.rtcstreams);
+
+
 if(event.type==="local"){
   this.setState({
     localStream:event
   })
-console.log(this.state.connection)
+
 }else{
   event.isAudioMuted=!event.extra.initaudio;
 }
@@ -273,7 +273,7 @@ updated.push(node)
 }
 
   })
-  console.log(updated)
+
 this.setState({
   rtcstreams:updated
 })
@@ -338,7 +338,7 @@ this.state.connection.onunmute = (e)=> {
           })
         }
         else{
-          alert("sf");
+         
           this.state.localStream.stream.unmute("audio");
           this.setState({
             micState: true

@@ -35,7 +35,6 @@ export default class EndSession extends React.Component {
         let pid = localStorage.getItem("pid");
         var ref = Fire.database().ref("users/"+uid+"/Projects/"+pid);
         ref.once("value",child=>{
-            console.log(child.val());
             this.setState({
                 project:pid,
                 img_src:child.val().thumb,

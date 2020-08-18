@@ -57,7 +57,7 @@ this.changedevice=this.changedevice.bind(this);
   componentDidMount() {
    
     this.state.connection.socketURL = 'https://propvrrtc.propvr.tech/';  
-
+    this.state.connection.enableLogs = false;
       this.state.connection.session = {
           audio: true,
           video: true,
@@ -70,7 +70,7 @@ this.changedevice=this.changedevice.bind(this);
       var bitrates = 512;
 
 
-
+      
 var  videoConstraints = {
   width: { min: 160, ideal: 640, max: 1280 },
   height: { min: 120, ideal: 360, max: 720 },
@@ -160,7 +160,7 @@ this.state.connection.onstreamended = (event)=> {
 this.state.connection.onopen =  (event)=> {
 
   
-console.log(this.state.connection)
+
 if(!this.state.camState){
 
   this.state.localStream.stream.mute("video");
@@ -177,12 +177,12 @@ if(!this.state.micState){
 }
 };
 this.state.connection.onstream = event => {
-console.log( event.stream.streamid );
+
 this.setState(ele => ({
   rtcstreams: [...ele.rtcstreams, event]
 }))
 
-console.log(this.state.rtcstreams);
+
 if(event.type==="local"){
   this.setState({
     localStream:event

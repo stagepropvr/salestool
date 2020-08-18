@@ -29,7 +29,7 @@ class Signup extends React.Component {
         // {
         //     this.setState({name:user.displayName})
         //     this.setState({email:user.email})
-        //     console.log("User:",user.email)
+
         // }
         // if (user) {
         //    this.setState({
@@ -50,7 +50,6 @@ class Signup extends React.Component {
                     });
                 }
                 else{    
-                    console.log("User Not Found")
                     this.setState({
                         redirect: false
                     }) 
@@ -165,7 +164,6 @@ handlechange(event){
 }
 
 SignupWithGoogle(){
- console.log("Goog")
  
  var provider = new Firebase.auth.GoogleAuthProvider();
  Fire.auth().signInWithPopup(provider).then((result) => {
@@ -184,11 +182,10 @@ SignupWithGoogle(){
                         redirect:true
                     })
                 });
-    console.log(user.displayName)
-    console.log(user.email)
+
     
   }).catch(function(error) {
-        console.log(error)
+    
   });
 }
 

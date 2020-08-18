@@ -141,7 +141,7 @@ export class MapModal extends React.Component {
                 lat:parseFloat(latlng[0]),
                 long:parseFloat(latlng[1])
             })
-            console.log(this.state.lat);
+
             var pyrmont = {lat: parseFloat(this.state.lat), lng: parseFloat(this.state.long)};         
             var request = {
                 location: pyrmont,

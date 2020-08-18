@@ -23,12 +23,7 @@ class Access extends React.Component {
         localStream:false,
         micstate:true,
         loader:true,
-        camstate:{
-          width: { min: 160, ideal: 640, max: 1280 },
-          height: { min: 120, ideal: 360, max: 720 }
-         
-          
-        },
+        camstate:true,
         access:false,
     }
     this.setAudioLocal=this.setAudioLocal.bind(this);
@@ -118,8 +113,10 @@ navigator.getUserMedia(
 
 }
 setVideoLocal() {
+   
   if (this.state.localStream.getVideoTracks().length > 0) {
     this.state.localStream.getVideoTracks().forEach(track => {
+      
       track.enabled = !track.enabled;
     });
   }

@@ -44,6 +44,7 @@ class Video extends React.Component {
   componentDidMount() {
     
       this.state.connection.socketURL = 'https://propvrrtc.propvr.tech/';
+      this.state.connection.enableLogs = false;
       this.state.connection.session = {
           audio: true,
           video: true
@@ -96,7 +97,7 @@ this.state.connection.onstreamended = (event)=> {
   })); 
 };
 this.state.connection.onstream = event => {
-console.log( event.stream.streamid );
+
 
 
 var count=0;
@@ -108,13 +109,13 @@ this.state.rtcstreams.map((key)=>{
 this.setState({
   usercount:count
 })
-console.log(this.state.rtcstreams);
+
 if(event.type==="local"){
   this.setState({
     localStream:event
   })
   this.state.localStream.stream.unmute("audio");
-console.log(this.state.connection)
+
 }else{
   event.isAudioMuted=!event.extra.initaudio;
 }
@@ -193,11 +194,10 @@ this.state.connection.onunmute = (e)=> {
 
  
   setAudioLocal() {
-    console.log(this.state.rtcstreams);
+
 
     this.state.connection.send("audio");
 
-    console.log(this.state.localStream)
     if (this.state.localStream.stream.getAudioTracks().length > 0) {
       this.state.localStream.stream.getAudioTracks().forEach(track => {
         if(track.enabled){
@@ -271,7 +271,7 @@ togglenav1(e){
 }
   togglenav(e)
   {
-    console.log(e);
+
     this.messagearea.current.focus();
     var a = document.querySelectorAll('.nav-link.active');
     [].forEach.call(a, function(el) {

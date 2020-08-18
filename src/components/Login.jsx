@@ -36,7 +36,6 @@ componentDidMount(){
                     });
                 }
                 else{    
-                    console.log("User Not Found")
                     document.getElementById('exception').style.display='block';
                     this.setState({
                         exception:"User Not Found",
@@ -44,7 +43,6 @@ componentDidMount(){
                     }) 
 
                     // Fire.auth().signOut().then(function() {
-                    //     // console.log("Signed Out")
                     //   }, function(error) {
                     //     // An error happened.
                     //   });
@@ -165,7 +163,6 @@ componentDidMount(){
 }
 
 googleSignin = () => {
-    console.log("Perform ")
     var provider = new Firebase.auth.GoogleAuthProvider();
 
      Fire.auth().signInWithPopup(provider).then((result) => {
@@ -185,7 +182,6 @@ googleSignin = () => {
                 });
             }
             else{    
-                console.log("User Not Found")
                 document.getElementById('exception').style.display='block';
                 document.getElementById('exception').childNodes[0].classList.remove('input_error_hide');
                         
@@ -196,8 +192,6 @@ googleSignin = () => {
             }
         });
 
-        console.log(user.displayName)
-        console.log(user.email)
         // ...
       }).catch(function(error) {
         // Handle Errors here.
@@ -207,7 +201,6 @@ googleSignin = () => {
         var email = error.email;
         // The firebase.auth.AuthCredential type that was used.
         var credential = error.credential;
-        console.log(error)
         // ...
       });
 }

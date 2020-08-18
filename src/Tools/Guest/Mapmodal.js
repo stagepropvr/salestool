@@ -103,10 +103,10 @@ export class MapModal extends React.Component {
     this.setState({
         icons:a
     })
-        console.log(this.props.data);
+
         if(this.props.data!="false"){
             var latlng = this.props.data;
-            console.log(latlng);
+
             latlng = latlng.split(",");
             this.setState({
                 lat:parseFloat(latlng[0]),
