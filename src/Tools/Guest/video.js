@@ -168,45 +168,6 @@ var  videoConstraints = {
 
 
 
-// var CodecsHandler = this.state.connection.CodecsHandler;
-// var resolutions = 'HD';
-// this.state.connection.processSdp = (sdp)=> {
-//     var codecs = 'vp8';
-    
-//     if (codecs.length) {
-//         sdp = CodecsHandler.preferCodec(sdp, codecs.toLowerCase());
-//     }
-
-//     if (resolutions == 'HD') {
-//         sdp = CodecsHandler.setApplicationSpecificBandwidth(sdp, {
-//             audio: 128,
-//             video: bitrates,
-//             screen: bitrates
-//         });
-
-//         sdp = CodecsHandler.setVideoBitrates(sdp, {
-//             min: bitrates * 8 * 1024,
-//             max: bitrates * 8 * 1024,
-//         });
-//     }
-
-//     if (resolutions == 'Ultra-HD') {
-//         sdp = CodecsHandler.setApplicationSpecificBandwidth(sdp, {
-//             audio: 128,
-//             video: bitrates,
-//             screen: bitrates
-//         });
-
-//         sdp = CodecsHandler.setVideoBitrates(sdp, {
-//             min: bitrates * 8 * 1024,
-//             max: bitrates * 8 * 1024,
-//         });
-//     }
-
-//     return sdp;
-// };
-
-
 
 
 
@@ -395,7 +356,7 @@ this.setState({
       if(event.data.user===this.state.connection.userid){
         
       if(!event.data.status){
-       
+    
             this.state.localStream.stream.mute("audio");
             this.setState({
               micState: false,
@@ -403,7 +364,7 @@ this.setState({
             })
         }else{
               this.state.localStream.stream.unmute("audio");
-          
+             
           this.setState({
             micState: true,
             hostaudioctrl:false
@@ -425,7 +386,26 @@ this.setState({
       }
   }
 
- 
+  this.state.connection.onmute = (e)=> {
+    const temp=this.state.connection;
+  
+   
+  
+    this.setState({
+      connection:temp
+      
+    });
+  };
+  
+  this.state.connection.onunmute = (e)=> {
+    const temp=this.state.connection;
+  
+    this.setState({
+      connection:temp
+      
+    });
+  };
+  
 
 
   // this.state.connection.onmute = (e)=> {
@@ -516,9 +496,7 @@ this.setState({
   
   }
   setVideoLocal() {
-    this.state.connection.extra={
-      name:"asdd"
-    }
+   
     if (this.state.localStream.stream.getVideoTracks().length > 0) {
       this.state.localStream.stream.getVideoTracks().forEach(track => {
         if(track.enabled){
@@ -883,50 +861,52 @@ isRoomAlive = () => {
       
       <ul className="video_div" style={{padding:'0px',height:'90%',overflowX:'hidden',overflowY: "auto", listStyle:"none",width:'85%',paddingLeft:'12px'}}>
       
-  {this.state.rtcstreams.length? <li className="video_content">
-      <div className="fixed-video">
-         <div className="videotools">
-          
-           <span className="guest_video_name video_name_option">(YOU)</span>
-         
-      </div>
-      <VideoItem
-      key={this.state.localStream.userid}
-      userId={this.state.localStream.userid}
-      stream={this.state.localStream.stream}
-      type={true}
-    />
-      </div>
-               </li>:<></>}
+      {this.state.rtcstreams.map((key)=>{
+    if(key.type=="local"){
+return(
+
+  <li className="video_content">
+                  <div ref={this.localvideo}  className=" fixed-video relative-localvideo">
 
 
+                     <div className="videotools">
+                   
+                       <span className="guest_video_name video_name_option">You</span>
                      
-                       
-            {this.state.rtcstreams.map((key)=>{
-      if(key.userid==="host"){
-        return(
-<li className="video_content">
-      <div ref={this.localvideo}  className="guest_video fixed-video relative-localvideo">
-         <div className="videotools">
-          
-           <span className="guest_video_name video_name_option">{key.extra.name}</span>
-         
-      </div>
-      <VideoItem
+                  </div>
+                  <VideoItem
       key={key.userid}
       userId={key.userid}
       stream={key.stream}
-      type={false}
+      type={true}
     />
-      </div>
+                  </div>
                </li>
-     ) }else{
-      if(key.type!=="local"){
+  
+)
+    }else{
+      if(key.stream.active){
      return(
       <li className="video_content">
       <div className="fixed-video">
          <div className="videotools">
           
+           
+           {!key.isAudioMuted? <button id={key} onClick={() => this.muteclient(key.userid,key.isAudioMuted)}   className="menu_option video_on guest_video_mute video_mute_option"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#222B45" fill-rule="evenodd" d="M13 17.92V20h2.105c.493 0 .895.402.895.895v.21c0 .493-.402.895-.895.895h-6.21C8.402 22 8 21.598 8 21.106v-.211c0-.493.402-.895.895-.895H11v-2.08c-3.387-.488-6-3.4-6-6.92 0-.552.447-1 1-1 .553 0 1 .448 1 1 0 2.757 2.243 5 5 5s5-2.243 5-5c0-.552.447-1 1-1 .553 0 1 .448 1 1 0 3.52-2.613 6.432-6 6.92zM10 6c0-1.103.897-2 2-2s2 .897 2 2v5c0 1.103-.897 2-2 2s-2-.897-2-2V6zm2 9c2.206 0 4-1.794 4-4V6c0-2.205-1.794-4-4-4S8 3.795 8 6v5c0 2.206 1.794 4 4 4z"></path></svg>
+           </button>:
+              <button id={key} onClick={() => this.muteclient(key.userid,key.isAudioMuted)}  style={{"background":"rgb(255, 61, 113)"}} className="menu_option video_on guest_video_mute video_mute_option"> <svg width={24} height={24} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
+            <g data-name="Layer 2">
+               <g data-name="mic-off">
+                  <rect width={24} height={24} opacity={0} />
+                  <path fill="#fff" d="M10 6a2 2 0 0 1 4 0v5a1 1 0 0 1 0 .16l1.6 1.59A4 4 0 0 0 16 11V6a4 4 0 0 0-7.92-.75L10 7.17z" />
+                  <path fill="#fff" d="M19 11a1 1 0 0 0-2 0 4.86 4.86 0 0 1-.69 2.48L17.78 15A7 7 0 0 0 19 11z" />
+                  <path fill="#fff" d="M12 15h.16L8 10.83V11a4 4 0 0 0 4 4z" />
+                  <path fill="#fff" d="M20.71 19.29l-16-16a1 1 0 0 0-1.42 1.42l16 16a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z" />
+                  <path fill="#fff" d="M15 20h-2v-2.08a7 7 0 0 0 1.65-.44l-1.6-1.6A4.57 4.57 0 0 1 12 16a5 5 0 0 1-5-5 1 1 0 0 0-2 0 7 7 0 0 0 6 6.92V20H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2z" />
+               </g>
+            </g>
+            </svg>   </button>}
+      
            <span className="guest_video_name video_name_option">{key.extra.name}</span>
          
       </div>
@@ -938,8 +918,7 @@ isRoomAlive = () => {
     />
       </div>
                </li>
-     )}
-    }
+     )}}
    })}
               </ul>
       </div>

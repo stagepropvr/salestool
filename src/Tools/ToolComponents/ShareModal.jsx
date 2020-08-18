@@ -24,7 +24,7 @@ onClick(event){
   this.props.open_close('share',false);
 }
 handlecopy(event){
-  navigator.clipboard.writeText(this.state.url);
+  navigator.clipboard.writeText(encodeURI(this.state.url));
   this.setState({
     tooltip:true
   })
@@ -75,7 +75,7 @@ componentDidMount(){
           </div>
           <div className="modal-body">
             <p className="share_content">Share the link with people you want to invite to the session</p>
-             <span className="share_link">{this.state.url}</span>
+             <span className="share_link">{encodeURI(this.state.url)}</span>
           </div>
           <div className="modal-footer">
             <span>

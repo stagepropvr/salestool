@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import Video from '../Tools/Guest/video'
-import Access from './Access'
+//import Access from './Access'
 
 class SalespageClient extends Component {
   constructor(props){
     super(props);
     this.state={
-      grant:false,
+      grant:true,
       audio:true,
       video:true
     }
@@ -23,11 +23,7 @@ class SalespageClient extends Component {
   render() {
     if(!this.state.grant){
       return(
-        <Access
-        uid={this.props.match.params.uid}
-        pid={this.props.match.params.pid}
-        rid={this.props.match.params.roomId}
-        join={this.joinroom} />
+     <></>
       )
     }else{
     if(localStorage.getItem("rid")===null){

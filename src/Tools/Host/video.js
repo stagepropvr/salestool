@@ -338,6 +338,7 @@ this.state.connection.onunmute = (e)=> {
           })
         }
         else{
+          alert("sf");
           this.state.localStream.stream.unmute("audio");
           this.setState({
             micState: true
