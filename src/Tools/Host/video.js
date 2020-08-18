@@ -155,9 +155,9 @@ this.audioallctrl=this.audioallctrl.bind(this);
 
 
 var  videoConstraints = {
-  width: { min: 160, ideal: 640, max: 1280 },
-  height: { min: 120, ideal: 360, max: 720 },
-  frameRate: 30,
+  width: { min: 80, ideal: 320, max: 640 },
+  height: { min: 45, ideal: 180, max: 360 },
+  frameRate: 24,
   deviceId:this.state.videoinput
 };
 

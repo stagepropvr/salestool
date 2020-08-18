@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import VideoCall from '../helpers/simple-peer';
 import '../../styles/video.css';
 import io from 'socket.io-client';
-import Peer from 'simple-peer'
+
 import VideoItem from "../ToolComponents/videoItem";
 import Scene from "./Scene";
 import Firebase from "../../config/Firebase";
@@ -158,9 +158,9 @@ this.state.connection.enableLogs = false;
 
 
 var  videoConstraints = {
-  width: { min: 160, ideal: 640, max: 1280 },
-  height: { min: 120, ideal: 360, max: 720 },
-  frameRate: 30,
+  width: { min: 80, ideal: 320, max: 640 },
+  height: { min: 45, ideal: 180, max: 360 },
+  frameRate: 24,
   deviceId:this.state.videoinput
 };
 
