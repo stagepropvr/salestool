@@ -154,11 +154,13 @@ this.audioallctrl=this.audioallctrl.bind(this);
 
 
 
-var  videoConstraints = {
+var  videoConstraints ={
   width: { min: 80, ideal: 320, max: 640 },
   height: { min: 45, ideal: 180, max: 360 },
   frameRate: 24,
+  facingMode: { exact: "user" },
   deviceId:this.state.videoinput
+
 };
 
 this.state.connection.iceServers = [{
