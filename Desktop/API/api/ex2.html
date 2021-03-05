@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="engine2.js"></script>
+
+    <title>SOA Lab</title>
+
+    <style>
+        .btn{
+            /* width: 100%; */
+            margin-bottom: 5px;
+        }
+
+.ans{
+    height: 30%;
+}
+
+        .col-1{
+            padding: 0px 1px 0px 1px;
+        }
+
+        select{
+            width: 100%;
+            background-color: #e9ecef;
+            height: 35px;
+            border-radius: 10px;
+        }
+        
+    </style>
+
+    <script>
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <h1 style="margin:20px 0px 20px 0px; text-align: center;">Web Services Lab Exercises - II</h1>
+            <div class="col-8" style="overflow-y: scroll; height:520px;">
+                <!-- Question 1 -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card mb-3">
+                            <h5 class="card-header">Electrical Calculator</h5>
+                            <div class="card-body" style="overflow-y: scroll; height:400px;">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header">
+                                            Amps to Watts
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label>Select Current Type</label> 
+                                                    <select class="form-control" id="current_type_1" onchange='currenttype_changed(this)'>
+                                                       <option value='dc'>DC</option>
+                                                       <option value='ac-single'>AC - Single Phase</option>
+                                                       <option value='ac-triple'>AC - Triple Phase</option>
+                                                    </select>
+                                                 </div>
+                                                 <div class="form-group">
+                                                    <label>Enter current in amps</label> 
+                                                    <div class="input-group">
+                                                       <input id="current_1" type="text" class="form-control"> 
+                                                       <div class="input-group-append"> <span class="input-group-text">Amps</span> </div>
+                                                    </div>
+                                                 </div>
+                                                 <div class="form-group">
+                                                    <label>Enter voltage in volts</label> 
+                                                    <div class="input-group">
+                                                       <input id="voltage_1" type="text" class="form-control"> 
+                                                       <div class="input-group-append"> <span class="input-group-text">Volts</span> </div>
+                                                    </div>
+                                                 </div>
+                                                 <div class="form-group" id="amps_ext"> </div>
+
+                                               <button class="btn btn-primary mt-3" onclick="amps_to_w_converter()">Convert</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header">
+                                            Amps to Volt-Amps
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label>Select Phase</label> 
+                                                    <select class="form-control" id="phase_type_2" onchange='phasetype_changed(this)'>
+                                                       <option value='single'>Single Phase</option>
+                                                       <option value='three'>Three Phase</option>
+                                                    </select>
+                                                 </div>
+                                                 <div class="form-group">
+                                                    <label>Enter current in amps</label> 
+                                                    <div class="input-group">
+                                                       <input id="current_2" type="text" class="form-control"> 
+                                                       <div class="input-group-append"> <span class="input-group-text">Amps</span> </div>
+                                                    </div>
+                                                 </div>
+                                                 <div class="form-group">
+                                                    <label>Enter voltage in volts</label> 
+                                                    <div class="input-group">
+                                                       <input id="voltage_2" type="text" class="form-control"> 
+                                                       <div class="input-group-append"> <span class="input-group-text">Volts</span> </div>
+                                                    </div>
+                                                 </div>
+                                                 <div class="form-group" id="amps_2_ext">
+                                                </div>
+                                                <button class="btn btn-primary mt-3" onclick="amps_to_va_converter()">Convert</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header">
+                                            Amps to Volts
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label>Select Calculation</label> 
+                                                    <select class="form-control" id="calc_type_3" onchange='calc_type_changed(this)'>
+                                                       <option value='watts'>Using Watts</option>
+                                                       <option value='ohms'>Using Ohms</option>
+                                                    </select>
+                                                 </div>
+                                                 <div class="form-group">
+                                                    <label>Enter Amps</label> 
+                                                    <div class="input-group">
+                                                       <input id="current_3" type="text" class="form-control"> 
+                                                       <div class="input-group-append"> <span class="input-group-text">Amps</span> </div>
+                                                    </div>
+                                                 </div>
+                                                 <div class="form-group">
+                                                    <label id="calc_type_3_label">Enter Watts</label> 
+                                                    <div class="input-group">
+                                                       <input id="voltage_3" type="text" class="form-control"> 
+                                                       <div class="input-group-append"> <span class="input-group-text" id="calc_type_3_unit">Watts</span> </div>
+                                                    </div>
+                                                 </div>
+                                                <button class="btn btn-primary mt-3" onclick="amps_to_volts_converter()">Convert</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header">
+                                            Volt-Amps to Amps
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label>Select Phase</label> 
+                                                    <select class="form-control" id="phase_type_4" onchange='phasetype_2_changed(this)'>
+                                                       <option value='single'>Single Phase</option>
+                                                       <option value='three'>Three Phase</option>
+                                                    </select>
+                                                 </div>
+                                                 <div class="form-group">
+                                                    <label>Enter Volt-Amps</label> 
+                                                    <div class="input-group">
+                                                       <input id="voltamps_1" type="text" class="form-control"> 
+                                                       <div class="input-group-append"> <span class="input-group-text">Volt-Amps</span> </div>
+                                                    </div>
+                                                 </div>
+                                                 <div class="form-group">
+                                                    <label>Enter Volts</label> 
+                                                    <div class="input-group">
+                                                       <input id="voltage_4" type="text" class="form-control"> 
+                                                       <div class="input-group-append"> <span class="input-group-text">Volts</span> </div>
+                                                    </div>
+                                                 </div>
+                                                 <div class="form-group" id="voltamps_1_ext">
+                                                </div>
+                                                <button class="btn btn-primary mt-3" onclick="va_to_amps_converter()">Convert</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header">
+                                            Volt-Amps to Watts
+                                            </div>
+                                            <div class="card-body">
+                                                 <div class="form-group">
+                                                    <label>Enter Volt-Amps</label> 
+                                                    <div class="input-group">
+                                                       <input id="voltamps_2" type="text" class="form-control"> 
+                                                       <div class="input-group-append"> <span class="input-group-text">Volt-Amps</span> </div>
+                                                    </div>
+                                                 </div>
+                                                 <div class="form-group">
+                                                    <label>Enter Power Factor</label> 
+                                                    <div class="input-group">
+                                                       <input id="pf_5" type="text" class="form-control"> 
+                                                    </div>
+                                                 </div>
+                                                 <div class="form-group" id="voltamps_5_ext">
+                                                </div>
+                                                <button class="btn btn-primary mt-3" onclick="va_to_w_converter()">Convert</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header">
+                                            Watts to Volt-Amps
+                                            </div>
+                                            <div class="card-body">
+                                                 <div class="form-group">
+                                                    <label>Enter Watts</label> 
+                                                    <div class="input-group">
+                                                       <input id="watts_6" type="text" class="form-control"> 
+                                                       <div class="input-group-append"> <span class="input-group-text">Watts</span> </div>
+                                                    </div>
+                                                 </div>
+                                                 <div class="form-group">
+                                                    <label>Enter Power factor</label> 
+                                                    <div class="input-group">
+                                                       <input id="pf_6" type="text" class="form-control"> 
+                                                    </div>
+                                                 </div>
+                                                <button class="btn btn-primary mt-3" onclick="w_to_va_converter()">Convert</button>
+                                            </div>
+                                        </div>                                       
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-3">
+                                
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header">
+                                            Watts to Volts
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label>Select Current Type</label> 
+                                                    <select class="form-control" id="current_type_7" onchange='currenttype_7_changed(this)'>
+                                                        <option value='dc'>DC</option>
+                                                        <option value='ac-single'>AC - Single Phase</option>
+                                                        <option value='ac-triple'>AC - Triple Phase</option>
+                                                    </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <label>Enter Watts</label> 
+                                                    <div class="input-group">
+                                                        <input id="watts_7" type="text" class="form-control"> 
+                                                        <div class="input-group-append"> <span class="input-group-text">Watts</span> </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <label>Enter Amps</label> 
+                                                    <div class="input-group">
+                                                        <input id="amps_7" type="text" class="form-control"> 
+                                                        <div class="input-group-append"> <span class="input-group-text">Amps</span> </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="form-group" id="watts_7_ext"> </div>
+
+                                                <button class="btn btn-primary mt-3" onclick="w_to_v_converter()">Convert</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header">
+                                            Watts to Joules
+                                            </div>
+                                            <div class="card-body">
+                                                 <div class="form-group">
+                                                    <label>Enter Watts</label> 
+                                                    <div class="input-group">
+                                                       <input id="watts_8" type="text" class="form-control"> 
+                                                       <div class="input-group-append"> <span class="input-group-text">Watts</span> </div>
+                                                    </div>
+                                                 </div>
+                                                 <div class="form-group">
+                                                    <label>Enter Time</label> 
+                                                    <div class="input-group">
+                                                       <input id="time_8" type="text" class="form-control"> 
+                                                       <div class="input-group-append"> <span class="input-group-text">Secs</span> </div>
+                                                    </div>
+                                                 </div>
+                                                <button class="btn btn-primary mt-3" onclick="w_to_j_converter()">Convert</button>
+                                            </div>
+                                        </div>                                       
+                                    </div>
+
+                                    
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header">
+                                            Watts to Amps
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label>Select Current Type</label> 
+                                                    <select class="form-control" id="current_type_9" onchange='currenttype_9_changed(this)'>
+                                                        <option value='dc'>DC</option>
+                                                        <option value='ac-single'>AC - Single Phase</option>
+                                                        <option value='ac-triple'>AC - Triple Phase</option>
+                                                    </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <label>Enter Watts</label> 
+                                                    <div class="input-group">
+                                                        <input id="watts_9" type="text" class="form-control"> 
+                                                        <div class="input-group-append"> <span class="input-group-text">Watts</span> </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <label>Enter Volts</label> 
+                                                    <div class="input-group">
+                                                        <input id="volts_9" type="text" class="form-control"> 
+                                                        <div class="input-group-append"> <span class="input-group-text">Volts</span> </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="form-group" id="watts_9_ext"> </div>
+
+                                                <button class="btn btn-primary mt-3" onclick="w_to_amps_converter()">Convert</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col">
+                                        <div class="col">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                Joules to Watts
+                                                </div>
+                                                <div class="card-body">
+                                                     <div class="form-group">
+                                                        <label>Enter Joules</label> 
+                                                        <div class="input-group">
+                                                           <input id="joules_10" type="text" class="form-control"> 
+                                                           <div class="input-group-append"> <span class="input-group-text">Watts</span> </div>
+                                                        </div>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label>Enter Time</label> 
+                                                        <div class="input-group">
+                                                           <input id="time_10" type="text" class="form-control"> 
+                                                           <div class="input-group-append"> <span class="input-group-text">Secs</span> </div>
+                                                        </div>
+                                                     </div>
+                                                    <button class="btn btn-primary mt-3" onclick="j_to_w_converter()">Convert</button>
+                                                </div>
+                                            </div>                                       
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header">
+                                            Joules to Volts
+                                            </div>
+                                            <div class="card-body">
+                                                    <div class="form-group">
+                                                    <label>Enter Joules</label> 
+                                                    <div class="input-group">
+                                                        <input id="joules_11" type="text" class="form-control"> 
+                                                        <div class="input-group-append"> <span class="input-group-text">Watts</span> </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <label>Enter Coulombs</label> 
+                                                    <div class="input-group">
+                                                        <input id="coulombs_11" type="text" class="form-control"> 
+                                                        <div class="input-group-append"> <span class="input-group-text">C</span> </div>
+                                                    </div>
+                                                    </div>
+                                                <button class="btn btn-primary mt-3" onclick="j_to_v_converter()">Convert</button>
+                                            </div>
+                                        </div>                                       
+                            
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header">
+                                            Volts to Watts
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label>Select Current Type</label> 
+                                                    <select class="form-control" id="current_type_12" onchange='currenttype_12_changed(this)'>
+                                                        <option value='dc'>DC</option>
+                                                        <option value='ac-single'>AC - Single Phase</option>
+                                                        <option value='ac-triple'>AC - Triple Phase</option>
+                                                    </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <label>Enter Volts</label> 
+                                                    <div class="input-group">
+                                                        <input id="volts_12" type="text" class="form-control"> 
+                                                        <div class="input-group-append"> <span class="input-group-text">Volts</span> </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <label>Enter Amps</label> 
+                                                    <div class="input-group">
+                                                        <input id="amps_12" type="text" class="form-control"> 
+                                                        <div class="input-group-append"> <span class="input-group-text">Amps</span> </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="form-group" id="watts_12_ext"> </div>
+
+                                                <button class="btn btn-primary mt-3" onclick="v_to_w_converter()">Convert</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header">
+                                            Volts to Joules
+                                            </div>
+                                            <div class="card-body">
+                                                    <div class="form-group">
+                                                    <label>Enter Volts</label> 
+                                                    <div class="input-group">
+                                                        <input id="volts_13" type="text" class="form-control"> 
+                                                        <div class="input-group-append"> <span class="input-group-text">Watts</span> </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <label>Enter Coulombs</label> 
+                                                    <div class="input-group">
+                                                        <input id="coulombs_13" type="text" class="form-control"> 
+                                                        <div class="input-group-append"> <span class="input-group-text">C</span> </div>
+                                                    </div>
+                                                    </div>
+                                                <button class="btn btn-primary mt-3" onclick="v_to_j_converter()">Convert</button>
+                                            </div>
+                                        </div>                                       
+                                    </div>
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header">
+                                            Volts to Amps
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label>Select Calculation</label> 
+                                                    <select class="form-control" id="calc_type_14" onchange='calc_type_14_changed(this)'>
+                                                       <option value='watts'>Using Watts</option>
+                                                       <option value='ohms'>Using Ohms</option>
+                                                    </select>
+                                                 </div>
+                                                 <div class="form-group">
+                                                    <label>Enter Volts</label> 
+                                                    <div class="input-group">
+                                                       <input id="volts_14" type="text" class="form-control"> 
+                                                       <div class="input-group-append"> <span class="input-group-text">Volts</span> </div>
+                                                    </div>
+                                                 </div>
+                                                 <div class="form-group">
+                                                    <label id="calc_type_14_label">Enter Watts</label> 
+                                                    <div class="input-group">
+                                                       <input id="type_14" type="text" class="form-control"> 
+                                                       <div class="input-group-append"> <span class="input-group-text" id="calc_type_14_unit">Watts</span> </div>
+                                                    </div>
+                                                 </div>
+                                                <button class="btn btn-primary mt-3" onclick="volts_to_amps_converter()">Convert</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+                <!-- Question 2 -->
+                <div class="row mt-3">
+                    <!-- <div class="col-4">2. Logarithm</div> -->
+                    <div class="col-12">
+                        <div class="card mb-3">
+                            <h5 class="card-header">Logarithm</h5>
+                            <div class="card-body">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-default">Value</span>
+                                    </div>
+                                    <input type="text" class="form-control" id="log_input" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                </div>
+        
+                                <button class="btn btn-primary" onclick="log()">Log</button>
+                                <button class="btn btn-primary" onclick="natural_log()">Natural Log</button>
+                                <button class="btn btn-primary" onclick="anti_log()">Anti Log</button>        
+                            </div>
+                          </div>
+                    </div>    
+                </div>
+
+                <!-- Question 3 -->
+                <div class="row">
+                    <!-- <div class="col-4">Question 3</div> -->
+                    <div class="col-12">
+                        <!-- Card for gcf and lcm -->
+                        <div class="card mb-3">
+                            <h5 class="card-header">GCD and LCM</h5>
+                            <div class="card-body">
+                                <!-- input a -->
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-default">A</span>
+                                    </div>
+                                    <input type="text" class="form-control" id="3_a" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                </div>
+                                <!-- input b -->
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-default">B</span>
+                                    </div>
+                                    <input type="text" class="form-control" id="3_b" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                </div>
+
+                                <!-- buttons -->
+                                <button class="btn btn-primary" onclick="gcf()">GCF</button>
+                                <button class="btn btn-primary" onclick="lcm()">LCM</button>
+                            </div>
+                        </div>
+
+                        <!-- Card For Roots -->
+                        <div class="card mb-3">
+                            <h5 class="card-header">Roots</h5>
+                            <div class="card-body">
+                                <!-- input a -->
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-default">Value</span>
+                                    </div>
+                                    <input type="text" class="form-control" id="3_input" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-default">Root</span>
+                                    </div>
+                                    <input type="text" class="form-control" id="nthroot" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                </div>
+                                
+                                
+                                <button class="btn btn-primary" onclick="root(2)">SQUARE ROOT</button>
+                                <button class="btn btn-primary" onclick="root(3)">CUBE ROOT</button>
+                                <button class="btn btn-primary" onclick="root('nth')">N-th ROOT</button>
+                                
+                                    
+                            </div>
+                        </div>
+               
+                    </div>    
+                </div>
+
+                                    <!-- Question 4 -->
+                                    <div class="row">
+                                        <!-- <div class="col-4">2. Logarithm</div> -->
+                                        <div class="col-12">
+                                            <div class="card mb-3">
+                                                <h5 class="card-header">Trigonometry</h5>
+                                                <div class="card-body">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroup-sizing-default">Angle</span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="trig_data" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                                    </div>
+                            
+                                                    <div class="mb-3" role="">
+                                                        <button type="button" onclick="trigonometry('sin')" class="btn btn-primary">Sine</button>
+                                                        <button type="button" onclick="trigonometry('cos')" class="btn btn-primary">Cosine</button>
+                                                        <button type="button" onclick="trigonometry('tan')" class="btn btn-primary">Tangent</button>
+                                                        <button type="button" onclick="trigonometry('sec')" class="btn btn-primary">Secant</button>
+                                                        <button type="button" onclick="trigonometry('cosec')" class="btn btn-primary">Cosecant</button>
+                                                        <button type="button" onclick="trigonometry('cot')" class="btn btn-primary">Cotangent</button>
+                                                      </div>
+                
+                                                      <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroup-sizing-default">Value</span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="trig_arc_data" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                                    </div>
+                            
+                                                        <button type="button" onclick="arcsin()" class="btn btn-primary">Arcsin</button>
+                                                        <button type="button" onclick="arccos()" class="btn btn-primary">Arccos</button>
+                                                        <button type="button" onclick="arctan()" class="btn btn-primary">Arctan</button>
+                                               
+                                                </div>
+                                              </div>
+                                        </div>    
+                                    </div>
+                
+                <!-- Question 5.1 -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card mb-3">
+                            <h5 class="card-header">Standard Deviation And Variance</h5>
+                            <div class="card-body">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-default">Values</span>
+                                    </div>
+                                    <input type="text" value="9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4" class="form-control" id="sd_data" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                </div>
+
+                                <button class="btn btn-primary" onclick="sd()">Standard Deviation</button>
+                                <button class="btn btn-primary" onclick="variance()">Variance</button>
+    
+                            </div>
+                          </div>
+                    </div>    
+                </div>
+
+                <!-- Question 5.2 -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card mb-3">
+                            <h5 class="card-header">Linear Regression</h5>
+                            <div class="card-body">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-default">Set A</span>
+                                    </div>
+                                    <input type="text" value="5,9,10,3,5,7" class="form-control" id="regx_data" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-default">Set B</span>
+                                    </div>
+                                    <input type="text" value="6,11,6,4,6,9"class="form-control" id="regy_data" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                </div>
+
+                                <button class="btn btn-primary" onclick="linear_regression()">Linear Regression</button>
+                            </div>
+                          </div>
+                    </div>    
+                </div>
+            </div>
+            <div class='col-4'>
+                <div class="card ans bg-warning mb-3">
+                    <h5 class="card-header">Javascript</h5>
+                    <div class="card-body">
+                      <h5 class="card-title" id="answer"></h5>
+                    </div>
+                </div>
+                <div class="card ans text-white bg-danger mb-3">
+                    <h5 class="card-header">Python</h5>
+                    <div class="card-body">
+                      <h5 class="card-title" id="answer_py"></h5>
+                    </div>
+                </div>
+                <div class="card ans text-white bg-primary mb-3">
+                    <h5 class="card-header">PHP</h5>
+                    <div class="card-body">
+                      <h5 class="card-title" id="answer_php"></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
